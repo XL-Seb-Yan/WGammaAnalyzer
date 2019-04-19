@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # output ntuple directory
-NTUPDIR=/afs/cern.ch/work/x/xuyan/work5/CMSSW_9_4_0/src/VgammaTuplizer/Analyzer/flat
+NTUPDIR=SelOutPut
 
 # integrated luminosity for data
 LUMI=2215
 
-root -l -q select.C+\(\"muon.conf\",\"${NTUPDIR}\",0\)
+root -l -q select_trigger.C+\(\"samples.conf\",\"${NTUPDIR}\",0\)
 
 rm *.so *.d *.pcm
