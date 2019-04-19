@@ -1,0 +1,2 @@
+rootcint -f aDict.cxx  -c  a.h LinkDef.h
+g++ -o libMylib.so aDict.cxx `root-config --cflags --libs` -shared -fPIC
