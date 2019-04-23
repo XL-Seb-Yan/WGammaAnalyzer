@@ -115,7 +115,7 @@ void select_trigger(const TString conf="samples.conf", // input file
       eventTree->SetBranchAddress("ph_N", &ph_N);                               TBranch *photonNBr = eventTree->GetBranch("ph_N");
       eventTree->SetBranchAddress("ph_pt", &ph_pt);                             TBranch *photonPtBr = eventTree->GetBranch("ph_pt");
       //--Triggers
-      eventTree->SetBranchAddress("HLT_isFired", &HLT_isFired);                           TBranch *HLTisFiredBr = eventTree->GetBranch("HLT_isFired");
+      eventTree->SetBranchAddress("HLT_isFired", &HLT_isFired);                 TBranch *HLTisFiredBr = eventTree->GetBranch("HLT_isFired");
 
       for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
         //if(ientry%50000==0) cout << "Processing event " << ientry << ". " << (double)ientry/(double)eventTree->GetEntries()*100 << " percent done with this file." << endl;
@@ -125,7 +125,7 @@ void select_trigger(const TString conf="samples.conf", // input file
 	evtNumBr->GetEntry(ientry);
 	photonNBr->GetEntry(ientry);
 	ph_pt->clear();                photonPtBr->GetEntry(ientry);
-	HLTisFiredBr->GetEntry(ientry);
+	HLT_isFired->clear();          HLTisFiredBr->GetEntry(ientry);
 
 
 	std::vector<float> p_pt;
@@ -134,7 +134,7 @@ void select_trigger(const TString conf="samples.conf", // input file
 	  p_pt.push_back(*it);
 
 	//Only study events contain photons  -- trigger study
-	if(ph_N < 1) 
+	if(ph_N < 1)
 	  continue;
 	count1++;
 	count3++;
@@ -142,27 +142,31 @@ void select_trigger(const TString conf="samples.conf", // input file
 	hist01->Fill(p_pt[0]);
 
 	/*
-	bool print = false;
-	for(map<string,bool>::iterator it = HLT_isFired->begin(); it != HLT_isFired->end(); ++it){
-	  if(it->second == 1){
-	    cout<<it->first<<" "<<it->second<<endl;
-	    print =true;	  
+	if(count1 < 2){
+	  for(map<string,bool>::iterator it = HLT_isFired->begin(); it != HLT_isFired->end(); ++it){
+	    cout<<it->second<<" "<<it->first<<endl;
 	  }
-	}
-	if (print)
 	  cout<<endl;
+	}
 	*/
 
 	bool passTrig = false;
 	for(map<string,bool>::iterator it = HLT_isFired->begin(); it != HLT_isFired->end(); ++it) {
-	  std::string trigName = it->first;
-	  if (trigName.find("HLT_Photon175_v") != std::string::npos){
-	    passTrig |= (1==it->second);
-	  }
+	  if (it->first.find("HLT_Photon175_") != std::string::npos && it->second == 1)
+	    passTrig = true;
+	  if (it->first.find("HLT_Photon165_HE10_") != std::string::npos && it->second == 1)
+	    passTrig = true;
 	}
 	if (!passTrig) continue;
 	count2++;
 	count4++;
+
+	if(count2 < 2){
+	  for(map<string,bool>::iterator it = HLT_isFired->begin(); it != HLT_isFired->end(); ++it){
+	    cout<<it->second<<" "<<it->first<<endl;
+	  }
+	  cout<<endl;
+	}
 
 	hist02->Fill(p_pt[0]);
 	/*
