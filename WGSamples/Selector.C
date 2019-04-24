@@ -35,8 +35,9 @@
 
 Int_t count1 = 0;
 Int_t count2 = 0;
-TH1 *hist1 = new TH1F("1","pt_{#gamma}",100,0,2500);
-TH1 *hist2 = new TH1F("2","pt_{#gamma}",100,0,2500);
+TH1 *hist1 = new TH1F("1","pt_{#gamma}",100,0,1000);
+TH1 *hist2 = new TH1F("2","pt_{#gamma}",100,0,1000);
+TH1 *hist3 = new TH1F("3","pt_{#gamma}",100,0,1000);
 
 void Selector::Begin(TTree * /*tree*/)
 {
@@ -91,30 +92,24 @@ Bool_t Selector::Process(Long64_t entry)
        //if (HLT_isFired[i].first.find("HLT_Photon165_HE10_") != std::string::npos)
        //passTrig_165 = HLT_isFired[i].second;
      }
-     bool passTrig = (passTrig_175 ||  passTrig_165);
+     bool passTrig = (passTrig_175 || passTrig_165);
      hist1->Fill(ph_pt[0]);
-     count1++;
-     if(passTrig){
-       hist2->Fill(ph_pt[0]);
-       count2++;
-
-       if (entry < 10000){
-	 for(int i=0; i<HLT_isFired.GetSize(); i++){
-	   cout<<HLT_isFired[i].second<<" "<<HLT_isFired[i].first<<endl;
-	 }
-	 cout<<endl;
+     if(ph_passLooseId[0] == 1){
+       hist3->Fill(ph_pt[0]);
+       if(passTrig){
+	 hist2->Fill(ph_pt[0]);
        }
      }
-     /*
-     else{
-       if (entry < 10000){
+       /*
+	 else{
+	 if (entry < 10000){
 	 for(int i=0; i<HLT_isFired.GetSize(); i++){
-	   cout<<HLT_isFired[i].second<<" "<<HLT_isFired[i].first<<endl;
+	 cout<<HLT_isFired[i].second<<" "<<HLT_isFired[i].first<<endl;
 	 }
 	 cout<<endl;
-       }
-     }
-     */
+	 }
+	 }
+       */
    }
    
 
@@ -135,11 +130,9 @@ void Selector::Terminate()
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
 
-  cout<<count1<<" "<<count2<<endl;
-
   gStyle->SetOptStat(0);
     //Tirgger Efficiency
-  TEfficiency *Eff = new TEfficiency(*hist2, *hist1);
+  TEfficiency *Eff = new TEfficiency(*hist2, *hist3);
   
   //Non stacked plots
 
@@ -156,11 +149,15 @@ void Selector::Terminate()
   c01->cd();
   hist1->SetLineWidth(2);
   hist1->Draw("HIST");
-  hist2->SetFillColor(3);
-  hist2->SetLineColor(3);
+  hist3->SetLineWidth(2);
+  hist3->SetLineColor(2);
+  hist3->Draw("SAMEHIST");
+  hist2->SetFillColor(30);
+  hist2->SetLineColor(30);
   hist2->Draw("SAMEHIST");
   legend->Clear();
   legend->AddEntry(hist1,"2016 SingleMuon C, with photons","f");
+  legend->AddEntry(hist3,"2016 SingleMuon C, pass loose ID","f");
   legend->AddEntry(hist2,"2016 SingleMuon C, fired trigger","f");
   legend->Draw();
   c01->Print("p_pt.png");

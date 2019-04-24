@@ -58,8 +58,9 @@ void select_trigger(const TString conf="samples.conf", // input file
     cout<<"Wrong data type"<<endl;
 
   //Photons
-  TH1* hist01 = new TH1F("WGamma00",histotitle+", pt_{#gamma}",48,0,2400);
-  TH1* hist02 = new TH1F("WGamma01",histotitle+", pt_{#gamma}",48,0,2400);
+  TH1* hist01 = new TH1F("WGamma00",histotitle+", pt_{#gamma}",24,0,1200);
+  TH1* hist02 = new TH1F("WGamma01",histotitle+", pt_{#gamma}",24,0,1200);
+  TH1* hist03 = new TH1F("WGamma02",histotitle+", pt_{#gamma}",24,0,1200);
   
   UInt_t count1=0, count2=0, count3=0, count4=0, count5=0, count6=0;
   gStyle->SetOptStat(0);
@@ -81,6 +82,7 @@ void select_trigger(const TString conf="samples.conf", // input file
   //--Photons---
   Int_t ph_N = -99;//for int we need to use this to initialize the container
   std::vector<float> *ph_pt = new std::vector<float>();
+  std::vector<int>   *ph_passLooseId = new std::vector<int>();
   //Trigger
   std::map<std::string,bool> *HLT_isFired = new std::map<std::string,bool>();
   
@@ -114,6 +116,7 @@ void select_trigger(const TString conf="samples.conf", // input file
       //--Photons--
       eventTree->SetBranchAddress("ph_N", &ph_N);                               TBranch *photonNBr = eventTree->GetBranch("ph_N");
       eventTree->SetBranchAddress("ph_pt", &ph_pt);                             TBranch *photonPtBr = eventTree->GetBranch("ph_pt");
+       eventTree->SetBranchAddress("ph_passLooseId", &ph_passLooseId);           TBranch *photonPassLooseIdBr = eventTree->GetBranch("ph_passLooseId");
       //--Triggers
       eventTree->SetBranchAddress("HLT_isFired", &HLT_isFired);                 TBranch *HLTisFiredBr = eventTree->GetBranch("HLT_isFired");
 
@@ -125,30 +128,29 @@ void select_trigger(const TString conf="samples.conf", // input file
 	evtNumBr->GetEntry(ientry);
 	photonNBr->GetEntry(ientry);
 	ph_pt->clear();                photonPtBr->GetEntry(ientry);
+	ph_passLooseId->clear();       photonPassLooseIdBr->GetEntry(ientry);
 	HLT_isFired->clear();          HLTisFiredBr->GetEntry(ientry);
 
 
 	std::vector<float> p_pt;
+	std::vector<int> p_looseID;
 
         for(vector<float>::iterator it = ph_pt->begin(); it != ph_pt->end(); it++)
 	  p_pt.push_back(*it);
+	for(vector<int>::iterator it = ph_passLooseId->begin(); it != ph_passLooseId->end(); it++)
+	  p_looseID.push_back(*it);
 
 	//Only study events contain photons  -- trigger study
 	if(ph_N < 1)
 	  continue;
+	hist01->Fill(p_pt[0]);
+	
+	if(p_looseID[0] != 1) //validating EM obejects to be photons
+	  continue;
 	count1++;
 	count3++;
 	
-	hist01->Fill(p_pt[0]);
-
-	/*
-	if(count1 < 2){
-	  for(map<string,bool>::iterator it = HLT_isFired->begin(); it != HLT_isFired->end(); ++it){
-	    cout<<it->second<<" "<<it->first<<endl;
-	  }
-	  cout<<endl;
-	}
-	*/
+	hist02->Fill(p_pt[0]);
 
 	bool passTrig = false;
 	for(map<string,bool>::iterator it = HLT_isFired->begin(); it != HLT_isFired->end(); ++it) {
@@ -156,26 +158,13 @@ void select_trigger(const TString conf="samples.conf", // input file
 	    passTrig = true;
 	  if (it->first.find("HLT_Photon165_HE10_") != std::string::npos && it->second == 1)
 	    passTrig = true;
+	  if (it->first.find("HLT_Photon200") != std::string::npos && it->second == 1)
+	    passTrig = true;
 	}
 	if (!passTrig) continue;
 	count2++;
 	count4++;
-
-	if(count2 < 2){
-	  for(map<string,bool>::iterator it = HLT_isFired->begin(); it != HLT_isFired->end(); ++it){
-	    cout<<it->second<<" "<<it->first<<endl;
-	  }
-	  cout<<endl;
-	}
-
-	hist02->Fill(p_pt[0]);
-	/*
-	if(p_pt[0]<150){
-	  for(int i=0; i<p_pt.size();i++)
-	    cout<<p_pt[i]<<" ";
-	  cout<<endl;
-	}
-	*/
+	hist03->Fill(p_pt[0]);
 	
       }//end of event loop
       //cout<<"Number of events in this file: "<<eventTree->GetEntries()<<endl;
@@ -189,12 +178,11 @@ void select_trigger(const TString conf="samples.conf", // input file
   cout<<"Total number of events passed trigger: "<<count4<<endl;
 
   //Tirgger Efficiency
-  TEfficiency *Eff = new TEfficiency(*hist02, *hist01);
-  
-  //Non stacked plots
-  hist01->SetLineWidth(2);
+  TEfficiency *Eff = new TEfficiency(*hist03, *hist02);
 
-  TLegend *legend = new TLegend(0.7,0.85,0.9,0.9);
+  //Non stacked plots
+
+  TLegend *legend = new TLegend(0.65,0.8,0.9,0.9);
 
   TCanvas *c01 = new TCanvas("c01","pt_{#gamma}",1200,900);
   TAxis *xaxis = hist01->GetXaxis();
@@ -205,31 +193,25 @@ void select_trigger(const TString conf="samples.conf", // input file
   //yaxis->SetRangeUser(0,0.14);
   c01->SetLogy();
   c01->cd();
+  hist01->SetLineWidth(2);
   hist01->Draw("HIST");
+  hist02->SetLineWidth(2);
+  hist02->SetLineColor(2);
+  hist02->Draw("SAMEHIST");
+  hist03->SetFillColor(30);
+  hist03->SetLineColor(30);
+  hist03->Draw("SAMEHIST");
   legend->Clear();
-  legend->AddEntry(hist01,"2017 SingleMuon B, with photons","f");
+  legend->AddEntry(hist01,"2016 SingleMuon C, with EM objects","f");
+  legend->AddEntry(hist02,"2016 SingleMuon C, pass photon loose ID","f");
+  legend->AddEntry(hist03,"2016 SingleMuon C, fired trigger","f");
   legend->Draw();
   c01->Print("p_pt.png");
 
-  TCanvas *c02 = new TCanvas("c02","Trigger Efficiency (HLT_Photon175)",1200,900);
+  TCanvas *c02 = new TCanvas("c02","Trigger Efficiency",1200,900);
   c02->cd();
   Eff->Draw();
   c02->Print("eff.png");
-
-  TCanvas *c03 = new TCanvas("c03","pt_{#gamma}",1200,900);
-  xaxis = hist02->GetXaxis();
-  yaxis = hist02->GetYaxis();
-  xaxis->SetTitle("pt_{#gamma} (GeV)");
-  yaxis->SetTitle("Entries / 50 GeV");
-  yaxis->SetTitleOffset(1.3);
-  //yaxis->SetRangeUser(0,0.14);
-  c03->SetLogy();
-  c03->cd();
-  hist02->Draw("HIST");
-  legend->Clear();
-  legend->AddEntry(hist02,"2017 SingleMuon B, fired trigger","f");
-  legend->Draw();
-  c03->Print("p_pt_fired.png");
 
   gBenchmark->Show("selectWG");
 

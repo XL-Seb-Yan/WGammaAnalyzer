@@ -33,6 +33,7 @@ public :
    // Readers to access the data (delete the ones you do not need).
    TTreeReaderValue<Int_t> ph_N = {fReader, "ph_N"};
    TTreeReaderArray<float> ph_pt = {fReader, "ph_pt"};
+   TTreeReaderArray<int> ph_passLooseId = {fReader, "ph_passLooseId"};
    TTreeReaderArray<pair<string,bool>> HLT_isFired = {fReader, "HLT_isFired"};
 
 

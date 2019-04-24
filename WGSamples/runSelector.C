@@ -1,6 +1,6 @@
 void runSelector()
 {
-  TFile infile("flatTuple_muon_johnC.root");
+  TFile infile("flatTuple_muon_johnB.root");
   TDirectory *folder;
   folder = (TDirectory*)infile.Get("ntuplizer");
   TTree* tree = (TTree*)folder->Get("tree");
