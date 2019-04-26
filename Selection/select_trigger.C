@@ -58,9 +58,9 @@ void select_trigger(const TString conf="samples.conf", // input file
     cout<<"Wrong data type"<<endl;
 
   //Photons
-  TH1* hist01 = new TH1F("WGamma00",histotitle+", pt_{#gamma}",24,0,1200);
-  TH1* hist02 = new TH1F("WGamma01",histotitle+", pt_{#gamma}",24,0,1200);
-  TH1* hist03 = new TH1F("WGamma02",histotitle+", pt_{#gamma}",24,0,1200);
+  TH1* hist01 = new TH1F("WGamma00",histotitle+", pt_{#gamma}",50,0,50);
+  TH1* hist02 = new TH1F("WGamma01",histotitle+", pt_{#gamma}",50,0,50);
+  TH1* hist03 = new TH1F("WGamma02",histotitle+", pt_{#gamma}",50,0,50);
   
   UInt_t count1=0, count2=0, count3=0, count4=0, count5=0, count6=0;
   gStyle->SetOptStat(0);
@@ -140,6 +140,8 @@ void select_trigger(const TString conf="samples.conf", // input file
 	for(vector<int>::iterator it = ph_passLooseId->begin(); it != ph_passLooseId->end(); it++)
 	  p_looseID.push_back(*it);
 
+	count5++;
+
 	//Only study events contain photons  -- trigger study
 	if(ph_N < 1)
 	  continue;
@@ -149,6 +151,9 @@ void select_trigger(const TString conf="samples.conf", // input file
 	  continue;
 	count1++;
 	count3++;
+	
+	if(p_pt[0]>15)
+	  count6++;
 	
 	hist02->Fill(p_pt[0]);
 
@@ -176,7 +181,8 @@ void select_trigger(const TString conf="samples.conf", // input file
   }//end of sample loop
   cout<<"Total number of events contain photon: "<<count3<<endl;
   cout<<"Total number of events passed trigger: "<<count4<<endl;
-
+  cout<<"Total number of events: "<<count5<<endl;
+  cout<<"Total number of events with pt>15: "<<count6<<endl;
   //Tirgger Efficiency
   TEfficiency *Eff = new TEfficiency(*hist03, *hist02);
 
