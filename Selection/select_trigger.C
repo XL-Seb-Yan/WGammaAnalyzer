@@ -58,9 +58,9 @@ void select_trigger(const TString conf="samples.conf", // input file
     cout<<"Wrong data type"<<endl;
 
   //Photons
-  TH1* hist01 = new TH1F("WGamma00",histotitle+", pt_{#gamma}",50,0,50);
-  TH1* hist02 = new TH1F("WGamma01",histotitle+", pt_{#gamma}",50,0,50);
-  TH1* hist03 = new TH1F("WGamma02",histotitle+", pt_{#gamma}",50,0,50);
+  TH1* hist01 = new TH1F("WGamma00",histotitle+", pt_{#gamma}",40,0,2000);
+  TH1* hist02 = new TH1F("WGamma01",histotitle+", pt_{#gamma}",40,0,2000);
+  TH1* hist03 = new TH1F("WGamma02",histotitle+", pt_{#gamma}",40,0,2000);
   
   UInt_t count1=0, count2=0, count3=0, count4=0, count5=0, count6=0;
   gStyle->SetOptStat(0);
@@ -208,9 +208,9 @@ void select_trigger(const TString conf="samples.conf", // input file
   hist03->SetLineColor(30);
   hist03->Draw("SAMEHIST");
   legend->Clear();
-  legend->AddEntry(hist01,"2016 SingleMuon C, with EM objects","f");
-  legend->AddEntry(hist02,"2016 SingleMuon C, pass photon loose ID","f");
-  legend->AddEntry(hist03,"2016 SingleMuon C, fired trigger","f");
+  legend->AddEntry(hist01,"2017 SingleMuon B, with EM objects","f");
+  legend->AddEntry(hist02,"2017 SingleMuon B, pass photon loose ID","f");
+  legend->AddEntry(hist03,"2017 SingleMuon B, fired trigger","f");
   legend->Draw();
   c01->Print("p_pt.png");
 
