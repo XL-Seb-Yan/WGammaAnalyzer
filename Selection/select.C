@@ -38,7 +38,7 @@ void select(const TString conf="samples.conf", // input file
   //--------------------------------------------------------------------------------------------------------------
   // Settings 
   //=============================================================================================================
-  TString type = "CONTROL"; //DATA, SIGNAL, BKG, CONTROL
+  TString type = "DATA"; //DATA, SIGNAL, BKG, CONTROL
   TString formate = "DIVIDED"; //DIVIDED RANGE
   TString histotitle;
   if(type == "SIGNAL"){
@@ -135,21 +135,28 @@ void select(const TString conf="samples.conf", // input file
   */
 
   //Photons
-  TH1F* hist01 = new TH1F("WGamma00",histotitle+", pt_{#gamma}",48,0,2400);
-  TH1F* hist02 = new TH1F("WGamma01",histotitle+", #eta_{#gamma}",50,-5,5);
-  TH1F* hist03 = new TH1F("WGamma02",histotitle+", #varphi_{#gamma}",50,-3.14,3.14);
-  TH1F* hist04 = new TH1F("WGamma03",histotitle+", E_{#gamma}",48,0,2400);
-  TH1F* hist05 = new TH1F("WGamma04",histotitle+", Et_{#gamma}",48,0,2400);
-  TH1F* hist06 = new TH1F("WGamma05",histotitle+", H/E_{#gamma}",50,0,1);
-  TH1F *hist07 = new TH1F("WGamma06",histotitle+", cos(#theta^{*})_{#gamma}",50,0,1.1);
+  TH1F* hist01p = new TH1F("WGamma00p",histotitle+", pt_{#gamma}",48,0,2400);
+  TH1F* hist02p = new TH1F("WGamma01p",histotitle+", #eta_{#gamma}",50,-5,5);
+  TH1F* hist03p = new TH1F("WGamma02p",histotitle+", #varphi_{#gamma}",50,-3.14,3.14);
+  TH1F* hist04p = new TH1F("WGamma03p",histotitle+", E_{#gamma}",48,0,2400);
+  TH1F* hist05p = new TH1F("WGamma04p",histotitle+", Et_{#gamma}",48,0,2400);
+  TH1F* hist06p = new TH1F("WGamma05p",histotitle+", H/E_{#gamma}",50,0,1);
+  TH1F *hist07p = new TH1F("WGamma06p",histotitle+", cos(#theta^{*})_{#gamma}",50,0,1.1);
+  TH1F *hist08p = new TH1F("WGamma07p",histotitle+", Loose Photon ID",50,-2,2);
+  TH1F *hist09p = new TH1F("WGamma08p",histotitle+", Medium Photon ID",50,-2,2);
+  TH1F *hist10p = new TH1F("WGamma09p",histotitle+", Tight Photon ID",50,-2,2);
+  TH1F *hist11p = new TH1F("WGamma10p",histotitle+", Photon mvaID Value",50,-1.5,1.5);
+  TH1F *hist12p = new TH1F("WGamma11p",histotitle+", Photon mvaID Category",50,-2,2);
   //Jets
-  TH1F* hist11 = new TH1F("WGamma11",histotitle+", pt_{j} (AK8)",48,0,2400);
-  TH1F* hist12 = new TH1F("WGamma12",histotitle+", #eta_{j} (AK8)",50,-5,5);
-  TH1F* hist13 = new TH1F("WGamma13",histotitle+", #varphi_{j} (AK8)",50,-3.14,3.14);
-  TH1F* hist14 = new TH1F("WGamma14",histotitle+", E_{j} (AK8)",48,0,2400);
-  TH1F* hist15 = new TH1F("WGamma15",histotitle+", m_{j} (AK8)",50,0,250);
-  TH1F* hist16 = new TH1F("WGamma16",histotitle+", softdrop m_{j} (AK8)",50,0,250);
-  TH1F* hist17 = new TH1F("WGamma17",histotitle+", HT",100,0,5000);
+  TH1F* hist01j = new TH1F("WGamma01j",histotitle+", pt_{j} (AK8)",48,0,2400);
+  TH1F* hist02j = new TH1F("WGamma02j",histotitle+", #eta_{j} (AK8)",50,-5,5);
+  TH1F* hist03j = new TH1F("WGamma03j",histotitle+", #varphi_{j} (AK8)",50,-3.14,3.14);
+  TH1F* hist04j = new TH1F("WGamma04j",histotitle+", E_{j} (AK8)",48,0,2400);
+  TH1F* hist05j = new TH1F("WGamma05j",histotitle+", m_{j} (AK8)",50,0,250);
+  TH1F* hist06j = new TH1F("WGamma06j",histotitle+", softdrop m_{j} (AK8)",50,0,250);
+  TH1F* hist07j = new TH1F("WGamma07j",histotitle+", HT",100,0,5000);
+  TH1F* hist08j = new TH1F("WGamma08j",histotitle+", Loose jet ID",50,-2,2);
+  TH1F* hist09j = new TH1F("WGamma09j",histotitle+", Tight jet ID",50,-2,2);
   
   UInt_t count1=0, count2=0, count3=0, count4=0, count5=0, count6=0;
   gStyle->SetOptStat(0);
@@ -343,7 +350,7 @@ void select(const TString conf="samples.conf", // input file
       eventTree->SetBranchAddress("HLT_isFired", &HLT_isFired);                           TBranch *HLTisFiredBr = eventTree->GetBranch("HLT_isFired");
 
       for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
-        if(ientry%50000==0) cout << "Processing event " << ientry << ". " << (double)ientry/(double)eventTree->GetEntries()*100 << " percent done with this file." << endl;
+        if(ientry%500==0) cout << "Processing event " << ientry << ". " << (double)ientry/(double)eventTree->GetEntries()*100 << " percent done with this file." << endl;
 
 	// Get Events
 	runNumBr->GetEntry(ientry);
@@ -400,11 +407,16 @@ void select(const TString conf="samples.conf", // input file
 	jetAK8_softdrop_jecDown->clear(); jetAK8SoftdropJecDownBr->GetEntry(ientry);
 	HLTisFiredBr->GetEntry(ientry);
 
-	std::vector<float> p_pt, p_eta, p_phi, p_e, p_et, p_hOverE;
-	std::vector<float> j_pt, j_eta, j_phi, j_e, j_mass, j_jec;
-	std::vector<float> j_softdrop_mass;
-	//std::vector<TriggerObjects> hltMatchBits;
+	//Only study events contain photons (EM objects here) and jets -- DATA
+	if(ph_N < 1 || jetAK8_N <1) continue;
 
+	std::vector<float> p_pt, p_eta, p_phi, p_e, p_et, p_hOverE, p_mvaVal, p_mvaCat;
+	std::vector<int> p_passLooseId, p_passMediumId, p_passTightId;
+	std::vector<float> j_pt, j_eta, j_phi, j_e, j_mass, j_jec;
+	std::vector<bool> j_IDLoose, j_IDTight;
+	std::vector<float> j_softdrop_mass;
+
+	//Use local vectors -> easy access by index
         for(vector<float>::iterator it = ph_pt->begin(); it != ph_pt->end(); it++)
 	  p_pt.push_back(*it);
 	for(vector<float>::iterator it = ph_eta->begin(); it != ph_eta->end(); it++)
@@ -417,6 +429,16 @@ void select(const TString conf="samples.conf", // input file
 	  p_et.push_back(*it);
 	for(vector<float>::iterator it = ph_hOverE->begin(); it != ph_hOverE->end(); it++)
 	  p_hOverE.push_back(*it);
+	for(vector<int>::iterator it = ph_passLooseId->begin(); it != ph_passLooseId->end(); it++)
+	  p_passLooseId.push_back(*it);
+	for(vector<int>::iterator it = ph_passMediumId->begin(); it != ph_passMediumId->end(); it++)
+	  p_passMediumId.push_back(*it);
+	for(vector<int>::iterator it = ph_passTightId->begin(); it != ph_passTightId->end(); it++)
+	  p_passTightId.push_back(*it);
+	for(vector<float>::iterator it = ph_mvaVal->begin(); it != ph_mvaVal->end(); it++)
+	  p_mvaVal.push_back(*it);
+	for(vector<float>::iterator it = ph_mvaCat->begin(); it != ph_mvaCat->end(); it++)
+	  p_mvaCat.push_back(*it);	
 	for(vector<float>::iterator it = jetAK8_pt->begin(); it != jetAK8_pt->end(); it++)
 	  j_pt.push_back(*it);
 	for(vector<float>::iterator it = jetAK8_eta->begin(); it != jetAK8_eta->end(); it++)
@@ -427,26 +449,32 @@ void select(const TString conf="samples.conf", // input file
 	  j_e.push_back(*it);
 	for(vector<float>::iterator it = jetAK8_mass->begin(); it != jetAK8_mass->end(); it++)
 	  j_mass.push_back(*it);
+	for(vector<bool>::iterator it = jetAK8_IDLoose->begin(); it != jetAK8_IDLoose->end(); it++)
+	  j_IDLoose.push_back(*it);
+	for(vector<bool>::iterator it = jetAK8_IDTight->begin(); it != jetAK8_IDTight->end(); it++)
+	  j_IDTight.push_back(*it);
 	for(vector<float>::iterator it = jetAK8_softdrop_mass->begin(); it != jetAK8_softdrop_mass->end(); it++)
 	  j_softdrop_mass.push_back(*it);
 	for(vector<float>::iterator it = jetAK8_jec->begin(); it != jetAK8_jec->end(); it++)
 	  j_jec.push_back(*it);
-	//for(vector<TriggerObjects>::iterator it = muon_hltMatchBits->begin(); it != muon_hltMatchBits->end(); it++)
-	//hltMatchBits.push_back(*it);
 
-	//Only study events contain photons and jets -- DATA
-	if(ph_N < 1 || jetAK8_N <1) {
-	  //if(ientry < 20) cout<<ph_N<<" "<<jetAK8_N<<endl;
-	  continue;
+	//Locate the first photon in EM objects array (highest pt)
+	Int_t index_p = -99;
+	for(int i=0; i<p_passLooseId.size(); i++){
+	  if(p_passLooseId[i] == 1){
+	    index_p = i;
+	    break;
+	  }
 	}
+	if(index_p == -99) continue;
 	count1++;
 	
 	//Trigger decision
 	/*
 	bool passTrig = false;
-	for(map<string,bool>::iterator it = HLT_isFired->begin(); it != HLT_isFired->end(); ++it) {
-	  if (it->first == "HLT_Photon200_v8" || it->first == "HLT_Photon175_v9"){
-	    passTrig |= (1==it->second);
+	for(map<string,bool>::iterator it = HLT_isFired->begin(); it != HLT_isFired->end(); ++it){
+	  if (it->first.find("HLT_Photon200") != std::string::npos && it->second == 1){
+	    passTrig = true;
 	  }
 	}
 	if (!passTrig) continue;
@@ -465,26 +493,33 @@ void select(const TString conf="samples.conf", // input file
 	Double_t cosstar = 0;
 	TLorentzVector v_j, v_p;
 	v_j.SetPtEtaPhiE(j_pt[0], j_eta[0], j_phi[0], j_e[0]);
-	v_p.SetPtEtaPhiE(p_pt[0], p_eta[0], p_phi[0], p_e[0]);
+	v_p.SetPtEtaPhiE(p_pt[index_p], p_eta[index_p], p_phi[index_p], p_e[index_p]);
 	invmass = (v_j+v_p).M();
-	cosstar = p_pt[0]/invmass;
+	cosstar = p_pt[index_p]/invmass;
 
 	//Use photon and jet with highest pt (this first one in this ntuple)
 	//Un-weighted filling
-	hist01->Fill(p_pt[0]);
-	hist02->Fill(p_eta[0]);
-	hist03->Fill(p_phi[0]);
-	hist04->Fill(p_e[0]);
-	hist05->Fill(p_et[0]);
-	hist06->Fill(p_hOverE[0]);
-	hist07->Fill(cosstar);
-	hist11->Fill(j_pt[0]);
-	hist12->Fill(j_eta[0]);
-	hist13->Fill(j_phi[0]);
-	hist14->Fill(j_e[0]);
-	hist15->Fill(j_mass[0]);
-	hist16->Fill(j_softdrop_mass[0]);
-	hist17->Fill(HT);
+	hist01p->Fill(p_pt[index_p]);
+	hist02p->Fill(p_eta[index_p]);
+	hist03p->Fill(p_phi[index_p]);
+	hist04p->Fill(p_e[index_p]);
+	hist05p->Fill(p_et[index_p]);
+	hist06p->Fill(p_hOverE[index_p]);
+	hist07p->Fill(cosstar);
+	hist08p->Fill(p_passLooseId[index_p]);
+	hist09p->Fill(p_passMediumId[index_p]);
+	hist10p->Fill(p_passTightId[index_p]);
+	hist11p->Fill(p_mvaVal[0]);
+	hist12p->Fill(p_mvaCat[index_p]);
+	hist01j->Fill(j_pt[0]);
+	hist02j->Fill(j_eta[0]);
+	hist03j->Fill(j_phi[0]);
+	hist04j->Fill(j_e[0]);
+	hist05j->Fill(j_mass[0]);
+	hist06j->Fill(j_softdrop_mass[0]);
+	hist07j->Fill(HT);
+	hist08j->Fill(j_IDLoose[0]);
+	hist09j->Fill(j_IDTight[0]);
       }//end of event loop
       cout<<"Number of events in this file: "<<eventTree->GetEntries()<<endl;
       cout<<"Events with more than 1 photons: "<<count1<<endl;
@@ -500,7 +535,8 @@ void select(const TString conf="samples.conf", // input file
 	histMC03a = (TH1F*)hist03->Clone(); histMC03a->SetLineColor(kBlue); histMC03a->SetLineWidth(2);	histMC03a->SetLineStyle(2); histMC03a->Scale(scale);
 	histMC04a = (TH1F*)hist04->Clone(); histMC04a->SetLineColor(kBlue); histMC04a->SetLineWidth(2);	histMC04a->SetLineStyle(2); histMC04a->Scale(scale);
 	histMC05a = (TH1F*)hist05->Clone(); histMC05a->SetLineColor(kBlue); histMC05a->SetLineWidth(2);	histMC05a->SetLineStyle(2); histMC05a->Scale(scale);
-	histMC06a = (TH1F*)hist06->Clone(); histMC06a->SetLineColor(kBlue); histMC06a->SetLineWidth(2);	histMC06a->SetLineStyle(2); histMC06a->Scale(scale);
+	histMC06a = (TH1F*)hist06->Clone(); histMC06a->SetLineColor(kBlue); histMC06a->SetLineWidth(2);	histMC06a->
+SetLineStyle(2); histMC06a->Scale(scale);
 	histMC07a = (TH1F*)hist07->Clone(); histMC07a->SetLineColor(kBlue); histMC07a->SetLineWidth(2);	histMC07a->SetLineStyle(2); histMC07a->Scale(scale);
 	histMC11a = (TH1F*)hist11->Clone(); histMC11a->SetLineColor(kBlue); histMC11a->SetLineWidth(2); histMC11a->SetLineStyle(2); histMC11a->Scale(scale);
 	histMC12a = (TH1F*)hist12->Clone(); histMC12a->SetLineColor(kBlue); histMC12a->SetLineWidth(2); histMC12a->SetLineStyle(2); histMC12a->Scale(scale);
@@ -1095,235 +1131,359 @@ void select(const TString conf="samples.conf", // input file
   c17->Print("HT.png");
   */
 
-  /*
   //Non stacked plots
-  hist01->SetLineWidth(2);
-  hist02->SetLineWidth(2);
-  hist03->SetLineWidth(2);
-  hist04->SetLineWidth(2);
-  hist05->SetLineWidth(2);
-  hist06->SetLineWidth(2);
-  hist11->SetLineWidth(2);
-  hist12->SetLineWidth(2);
-  hist13->SetLineWidth(2);
-  hist14->SetLineWidth(2);
-  hist15->SetLineWidth(2);
-  hist16->SetLineWidth(2);
-  hist17->SetLineWidth(2);
+  hist01p->SetLineWidth(2);
+  hist02p->SetLineWidth(2);
+  hist03p->SetLineWidth(2);
+  hist04p->SetLineWidth(2);
+  hist05p->SetLineWidth(2);
+  hist06p->SetLineWidth(2);
+  hist07p->SetLineWidth(2);
+  hist08p->SetLineWidth(2);
+  hist09p->SetLineWidth(2);
+  hist10p->SetLineWidth(2);
+  hist11p->SetLineWidth(2);
+  hist12p->SetLineWidth(2);
+  hist01j->SetLineWidth(2);
+  hist02j->SetLineWidth(2);
+  hist03j->SetLineWidth(2);
+  hist04j->SetLineWidth(2);
+  hist05j->SetLineWidth(2);
+  hist06j->SetLineWidth(2);
+  hist07j->SetLineWidth(2);
+  hist08j->SetLineWidth(2);
+  hist09j->SetLineWidth(2);
   
   TLegend *legend = new TLegend(0.7,0.85,0.9,0.9);
   
-  TCanvas *c01 = new TCanvas("c01","pt_{#gamma}",1200,900);
-  TAxis *xaxis = hist01->GetXaxis();
-  TAxis *yaxis = hist01->GetYaxis();
+  TCanvas *c01p = new TCanvas("c01p","pt_{#gamma}",1200,900);
+  TAxis *xaxis = hist01p->GetXaxis();
+  TAxis *yaxis = hist01p->GetYaxis();
   xaxis->SetTitle("pt_{#gamma} (GeV)");
   yaxis->SetTitle("Entries / 50 GeV");
   yaxis->SetTitleOffset(1.3);
+  xaxis->SetTitleOffset(1.2);
   //yaxis->SetRangeUser(0,0.14);
-  c01->SetLogy();
-  c01->cd();
-  hist01->Draw("HIST");
+  c01p->SetLogy();
+  c01p->cd();
+  hist01p->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist01,"2017 Data","f");
+  legend->AddEntry(hist01p,"2017 Data","f");
   legend->Draw();
-  c01->Print("p_pt.png");
+  c01p->Print("p_pt.png");
 
-  TCanvas *c02 = new TCanvas("c02","#eta_{#gamma}",1200,900);
-  xaxis = hist02->GetXaxis();
-  yaxis = hist02->GetYaxis();
+  TCanvas *c02p = new TCanvas("c02p","#eta_{#gamma}",1200,900);
+  xaxis = hist02p->GetXaxis();
+  yaxis = hist02p->GetYaxis();
   xaxis->SetTitle("#eta_{#gamma}");
   yaxis->SetTitle("Entries / 0.2");
   yaxis->SetTitleOffset(1.3);
+  xaxis->SetTitleOffset(1.2);
   //yaxis->SetRangeUser(0,0.14);
-  c02->SetLogy();
-  c02->cd();
-  hist02->Draw("HIST");
+  c02p->SetLogy();
+  c02p->cd();
+  hist02p->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist02,"2017 Data","f");
+  legend->AddEntry(hist02p,"2017 Data","f");
   legend->Draw();
-  c02->Print("p_eta.png");
+  c02p->Print("p_eta.png");
 
-  TCanvas *c03 = new TCanvas("c03","#varphi_{#gamma}",1200,900);
-  xaxis = hist03->GetXaxis();
-  yaxis = hist03->GetYaxis();
+  TCanvas *c03p = new TCanvas("c03p","#varphi_{#gamma}",1200,900);
+  xaxis = hist03p->GetXaxis();
+  yaxis = hist03p->GetYaxis();
   xaxis->SetTitle("#varphi_{#gamma} (rad)");
   yaxis->SetTitle("Entries / #pi/25");
   yaxis->SetTitleOffset(1.3);
+  xaxis->SetTitleOffset(1.2);
   yaxis->SetRangeUser(1,10000);
-  c03->SetLogy();
-  c03->cd();
-  hist03->Draw("HIST");
+  c03p->SetLogy();
+  c03p->cd();
+  hist03p->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist03,"2017 Data","f");
+  legend->AddEntry(hist03p,"2017 Data","f");
   legend->Draw();
-  c03->Print("p_phi.png");
+  c03p->Print("p_phi.png");
 
-  TCanvas *c04 = new TCanvas("c04","E_{#gamma}",1200,900);
-  xaxis = hist04->GetXaxis();
-  yaxis = hist04->GetYaxis();
+  TCanvas *c04p = new TCanvas("c04p","E_{#gamma}",1200,900);
+  xaxis = hist04p->GetXaxis();
+  yaxis = hist04p->GetYaxis();
   xaxis->SetTitle("E_{#gamma} (GeV)");
   yaxis->SetTitle("Entries / 50 GeV");
   yaxis->SetTitleOffset(1.3);
+  xaxis->SetTitleOffset(1.2);
   //yaxis->SetRangeUser(0,0.14);
-  c04->SetLogy();
-  c04->cd();
-  hist04->Draw("HIST");
+  c04p->SetLogy();
+  c04p->cd();
+  hist04p->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist04,"2017 Data","f");
+  legend->AddEntry(hist04p,"2017 Data","f");
   legend->Draw();
-  c04->Print("p_e.png");
+  c04p->Print("p_e.png");
 
-  TCanvas *c05 = new TCanvas("c05","Et_{#gamma}",1200,900);
-  xaxis = hist05->GetXaxis();
-  yaxis = hist05->GetYaxis();
+  TCanvas *c05p = new TCanvas("c05p","Et_{#gamma}",1200,900);
+  xaxis = hist05p->GetXaxis();
+  yaxis = hist05p->GetYaxis();
   xaxis->SetTitle("Et_{#gamma} (GeV)");
   yaxis->SetTitle("Entries / 50 GeV");
   yaxis->SetTitleOffset(1.3);
+  xaxis->SetTitleOffset(1.2);
   //yaxis->SetRangeUser(0,0.14);
-  c05->SetLogy();
-  c05->cd();
-  hist05->Draw("HIST");
+  c05p->SetLogy();
+  c05p->cd();
+  hist05p->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist05,"2017 Data","f");
+  legend->AddEntry(hist05p,"2017 Data","f");
   legend->Draw();
-  c05->Print("p_et.png");
+  c05p->Print("p_et.png");
 
-  TCanvas *c06 = new TCanvas("c06","hovere_{#gamma}",1200,900);
-  xaxis = hist06->GetXaxis();
-  yaxis = hist06->GetYaxis();
+  TCanvas *c06p = new TCanvas("c06p","hovere_{#gamma}",1200,900);
+  xaxis = hist06p->GetXaxis();
+  yaxis = hist06p->GetYaxis();
   xaxis->SetTitle("H/E_{#gamma}");
   yaxis->SetTitle("Entries / 0.02");
   yaxis->SetTitleOffset(1.3);
+  xaxis->SetTitleOffset(1.2);
   //yaxis->SetRangeUser(0,0.14);
-  c06->SetLogy();
-  c06->cd();
-  hist06->Draw("HIST");
+  c06p->SetLogy();
+  c06p->cd();
+  hist06p->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist06,"2017 Data","f");
+  legend->AddEntry(hist06p,"2017 Data","f");
   legend->Draw();
-  c06->Print("p_hovere.png");
+  c06p->Print("p_hovere.png");
 
-  TCanvas *c07 = new TCanvas("c07","cos(#theta^{*})_{#gamma}",1200,900);
-  xaxis = hist07->GetXaxis();
-  yaxis = hist07->GetYaxis();
+  TCanvas *c07p = new TCanvas("c07p","cos(#theta^{*})_{#gamma}",1200,900);
+  xaxis = hist07p->GetXaxis();
+  yaxis = hist07p->GetYaxis();
   xaxis->SetTitle("cos(#theta^{*})_{#gamma}");
   yaxis->SetTitle("Entries / 0.04");
   yaxis->SetTitleOffset(1.3);
+  xaxis->SetTitleOffset(1.2);
   //yaxis->SetRangeUser(0,0.14);
-  c07->SetLogy();
-  c07->cd();
-  hist07->Draw("HIST");
+  c07p->SetLogy();
+  c07p->cd();
+  hist07p->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist07,"2017 Data","f");
+  legend->AddEntry(hist07p,"2017 Data","f");
   legend->Draw();
-  c07->Print("p_costheta.png");
+  c07p->Print("p_costheta.png");
 
-  TCanvas *c11 = new TCanvas("c11","pt_{j}",1200,900);
-  xaxis = hist11->GetXaxis();
-  yaxis = hist11->GetYaxis();
+  TCanvas *c08p = new TCanvas("c08p","Loose Photon ID",1200,900);
+  xaxis = hist08p->GetXaxis();
+  yaxis = hist08p->GetYaxis();
+  xaxis->SetTitle("Loose Photon ID");
+  yaxis->SetTitle("Entries");
+  yaxis->SetTitleOffset(1.3);
+  xaxis->SetTitleOffset(1.2);
+  //yaxis->SetRangeUser(0,0.14);
+  c08p->SetLogy();
+  c08p->cd();
+  hist08p->Draw("HIST");
+  legend->Clear();
+  legend->AddEntry(hist08p,"2017 Data","f");
+  legend->Draw();
+  c08p->Print("p_looseID.png");
+
+  TCanvas *c09p = new TCanvas("c09p","Medium Photon ID",1200,900);
+  xaxis = hist09p->GetXaxis();
+  yaxis = hist09p->GetYaxis();
+  xaxis->SetTitle("Medium Photon ID");
+  yaxis->SetTitle("Entries");
+  yaxis->SetTitleOffset(1.3);
+  xaxis->SetTitleOffset(1.2);
+  //yaxis->SetRangeUser(0,0.14);
+  c09p->SetLogy();
+  c09p->cd();
+  hist09p->Draw("HIST");
+  legend->Clear();
+  legend->AddEntry(hist09p,"2017 Data","f");
+  legend->Draw();
+  c09p->Print("p_mediumID.png");
+
+  TCanvas *c10p = new TCanvas("c10p","Tight Photon ID",1200,900);
+  xaxis = hist10p->GetXaxis();
+  yaxis = hist10p->GetYaxis();
+  xaxis->SetTitle("Tight Photon ID");
+  yaxis->SetTitle("Entries");
+  yaxis->SetTitleOffset(1.3);
+  xaxis->SetTitleOffset(1.2);
+  //yaxis->SetRangeUser(0,0.14);
+  c10p->SetLogy();
+  c10p->cd();
+  hist10p->Draw("HIST");
+  legend->Clear();
+  legend->AddEntry(hist10p,"2017 Data","f");
+  legend->Draw();
+  c10p->Print("p_tightID.png");
+
+  TCanvas *c11p = new TCanvas("c11p","Photon mvaID Value",1200,900);
+  xaxis = hist11p->GetXaxis();
+  yaxis = hist11p->GetYaxis();
+  xaxis->SetTitle("Photon mvaID Value");
+  yaxis->SetTitle("Entries");
+  yaxis->SetTitleOffset(1.3);
+  xaxis->SetTitleOffset(1.2);
+  //yaxis->SetRangeUser(0,0.14);
+  c11p->SetLogy();
+  c11p->cd();
+  hist11p->Draw("HIST");
+  legend->Clear();
+  legend->AddEntry(hist11p,"2017 Data","f");
+  legend->Draw();
+  c11p->Print("p_mvaVal.png");
+
+  TCanvas *c12p = new TCanvas("c12p","Photon mvaID Category",1200,900);
+  xaxis = hist12p->GetXaxis();
+  yaxis = hist12p->GetYaxis();
+  xaxis->SetTitle("Photon mvaID Category");
+  yaxis->SetTitle("Entries");
+  yaxis->SetTitleOffset(1.3);
+  xaxis->SetTitleOffset(1.2);
+  //yaxis->SetRangeUser(0,0.14);
+  c12p->SetLogy();
+  c12p->cd();
+  hist12p->Draw("HIST");
+  legend->Clear();
+  legend->AddEntry(hist12p,"2017 Data","f");
+  legend->Draw();
+  c12p->Print("p_mvaCat.png");
+
+
+  TCanvas *c01j = new TCanvas("c01j","pt_{j}",1200,900);
+  xaxis = hist01j->GetXaxis();
+  yaxis = hist01j->GetYaxis();
   xaxis->SetTitle("pt_{j}");
   yaxis->SetTitle("Entries / 50 GeV");
   yaxis->SetTitleOffset(1.3);
   //yaxis->SetRangeUser(0,0.14);
-  c11->SetLogy();
-  c11->cd();
-  hist11->Draw("HIST");
+  c01j->SetLogy();
+  c01j->cd();
+  hist01j->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist11,"2017 Data","f");
+  legend->AddEntry(hist01j,"2017 Data","f");
   legend->Draw();
-  c11->Print("j_pt.png");
+  c01j->Print("j_pt.png");
 
-  TCanvas *c12 = new TCanvas("c12","#eta_{j}",1200,900);
-  xaxis = hist12->GetXaxis();
-  yaxis = hist12->GetYaxis();
+  TCanvas *c02j = new TCanvas("c02j","#eta_{j}",1200,900);
+  xaxis = hist02j->GetXaxis();
+  yaxis = hist02j->GetYaxis();
   xaxis->SetTitle("#eta_{j}");
   yaxis->SetTitle("Entries / 0.2");
   yaxis->SetTitleOffset(1.3);
   //yaxis->SetRangeUser(0,0.14);
-  c12->SetLogy();
-  c12->cd();
-  hist12->Draw("HIST");
+  c02j->SetLogy();
+  c02j->cd();
+  hist02j->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist12,"2017 Data","f");
+  legend->AddEntry(hist02j,"2017 Data","f");
   legend->Draw();
-  c12->Print("j_eta.png");
+  c02j->Print("j_eta.png");
 
-  TCanvas *c13 = new TCanvas("c13","#varphi_{j}",1200,900);
-  xaxis = hist13->GetXaxis();
-  yaxis = hist13->GetYaxis();
+  TCanvas *c03j = new TCanvas("c03j","#varphi_{j}",1200,900);
+  xaxis = hist03j->GetXaxis();
+  yaxis = hist03j->GetYaxis();
   xaxis->SetTitle("#varphi_{j}");
   yaxis->SetTitle("Entries / #pi/25");
   yaxis->SetTitleOffset(1.3);
   yaxis->SetRangeUser(1,10000);
-  c13->SetLogy();
-  c13->cd();
-  hist13->Draw("HIST");
+  c03j->SetLogy();
+  c03j->cd();
+  hist03j->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist13,"2017 Data","f");
+  legend->AddEntry(hist03j,"2017 Data","f");
   legend->Draw();
-  c13->Print("j_phi.png");
+  c03j->Print("j_phi.png");
 
-  TCanvas *c14 = new TCanvas("c14","E_{j}",1200,900);
-  xaxis = hist14->GetXaxis();
-  yaxis = hist14->GetYaxis();
+  TCanvas *c04j = new TCanvas("c04j","E_{j}",1200,900);
+  xaxis = hist04j->GetXaxis();
+  yaxis = hist04j->GetYaxis();
   xaxis->SetTitle("E_{j}");
   yaxis->SetTitle("Entries / 50 GeV");
   yaxis->SetTitleOffset(1.3);
   //yaxis->SetRangeUser(0,0.14);
-  c14->SetLogy();
-  c14->cd();
-  hist14->Draw("HIST");
+  c04j->SetLogy();
+  c04j->cd();
+  hist04j->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist14,"2017 Data","f");
+  legend->AddEntry(hist04j,"2017 Data","f");
   legend->Draw();
-  c14->Print("j_e.png");
+  c04j->Print("j_e.png");
 
-  TCanvas *c15 = new TCanvas("c15","m_{j}",1200,900);
-  xaxis = hist15->GetXaxis();
-  yaxis = hist15->GetYaxis();
+  TCanvas *c05j = new TCanvas("c05j","m_{j}",1200,900);
+  xaxis = hist05j->GetXaxis();
+  yaxis = hist05j->GetYaxis();
   xaxis->SetTitle("m_{j}");
   yaxis->SetTitle("Entries / 5 GeV");
   yaxis->SetTitleOffset(1.3);
-  //yaxis->SetRangeUser(0,0.15);
-  c15->SetLogy();
-  c15->cd();
-  hist15->Draw("HIST");
+  //yaxis->SetRangeUser(0,0.015);
+  c05j->SetLogy();
+  c05j->cd();
+  hist05j->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist15,"2017 Data","f");
+  legend->AddEntry(hist05j,"2017 Data","f");
   legend->Draw();
-  c15->Print("j_m.png");
+  c05j->Print("j_m.png");
 
-  TCanvas *c16 = new TCanvas("c16","m_softdrop_{j}",1200,900);
-  xaxis = hist16->GetXaxis();
-  yaxis = hist16->GetYaxis();
+  TCanvas *c06j = new TCanvas("c06j","m_softdrop_{j}",1200,900);
+  xaxis = hist06j->GetXaxis();
+  yaxis = hist06j->GetYaxis();
   xaxis->SetTitle("m_softdrop_{j}");
   yaxis->SetTitle("Entries / 5 GeV");
   yaxis->SetTitleOffset(1.3);
   //yaxis->SetRangeUser(0,0.16);
-  c16->SetLogy();
-  c16->cd();
-  hist16->Draw("HIST");
+  c06j->SetLogy();
+  c06j->cd();
+  hist06j->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist16,"2017 Data","f");
+  legend->AddEntry(hist06j,"2017 Data","f");
   legend->Draw();
-  c16->Print("j_m_softdrop.png");
+  c06j->Print("j_m_softdrop.png");
 
-  TCanvas *c17 = new TCanvas("c17","HT",1200,900);
-  xaxis = hist17->GetXaxis();
-  yaxis = hist17->GetYaxis();
+  TCanvas *c07j = new TCanvas("c07j","HT",1200,900);
+  xaxis = hist07j->GetXaxis();
+  yaxis = hist07j->GetYaxis();
   xaxis->SetTitle("HT (GeV)");
   yaxis->SetTitle("Entries / 50 GeV");
   yaxis->SetTitleOffset(1.3);
   //yaxis->SetRangeUser(0,0.16);
-  c17->SetLogy();
-  c17->cd();
-  hist17->Draw("HIST");
+  c07j->SetLogy();
+  c07j->cd();
+  hist07j->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist17,"2017 Data","f");
+  legend->AddEntry(hist07j,"2017 Data","f");
   legend->Draw();
-  c17->Print("HT.png");
+  c07j->Print("HT.png");
+
+  TCanvas *c08j = new TCanvas("c08j","Loose jet ID",1200,900);
+  xaxis = hist08j->GetXaxis();
+  yaxis = hist08j->GetYaxis();
+  xaxis->SetTitle("Loose jet ID");
+  yaxis->SetTitle("Entries");
+  yaxis->SetTitleOffset(1.3);
+  //yaxis->SetRangeUser(0,0.16);
+  c08j->SetLogy();
+  c08j->cd();
+  hist08j->Draw("HIST");
+  legend->Clear();
+  legend->AddEntry(hist08j,"2017 Data","f");
+  legend->Draw();
+  c08j->Print("j_looseID.png");
+
+  TCanvas *c09j = new TCanvas("c09j","Tight jet ID",1200,900);
+  xaxis = hist09j->GetXaxis();
+  yaxis = hist09j->GetYaxis();
+  xaxis->SetTitle("Tight jet ID");
+  yaxis->SetTitle("Entries");
+  yaxis->SetTitleOffset(1.3);
+  //yaxis->SetRangeUser(0,0.16);
+  c09j->SetLogy();
+  c09j->cd();
+  hist09j->Draw("HIST");
+  legend->Clear();
+  legend->AddEntry(hist09j,"2017 Data","f");
+  legend->Draw();
+  c09j->Print("j_tightID.png");
   //Non stacked hist END-------------------------------------------------------------------
-  */
 
   gBenchmark->Show("selectWG");
 

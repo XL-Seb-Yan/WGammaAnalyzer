@@ -87,7 +87,7 @@ Bool_t Selector::Process(Long64_t entry)
      bool passTrig_175 = false;
      bool passTrig_165 = false;
      for(int i=0; i<HLT_isFired.GetSize(); i++){
-       if (HLT_isFired[i].first.find("HLT_Photon175_") != std::string::npos)
+       if (HLT_isFired[i].first.find("HLT_Photon200_") != std::string::npos)
 	 passTrig_175 = HLT_isFired[i].second;
        //if (HLT_isFired[i].first.find("HLT_Photon165_HE10_") != std::string::npos)
        //passTrig_165 = HLT_isFired[i].second;
