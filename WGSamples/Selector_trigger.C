@@ -36,7 +36,8 @@
 Int_t count1 = 0;
 Int_t count2 = 0;
 TH1 *hist1 = new TH1F("1","pt_{#gamma}",100,0,1000);
-TH1 *hist2 = new TH1F("2","eta_{#gamma}",100,-5,5);
+TH1 *hist2 = new TH1F("2","pt_{#gamma}",100,0,1000);
+TH1 *hist3 = new TH1F("3","pt_{#gamma}",100,0,1000);
 
 void Selector::Begin(TTree * /*tree*/)
 {
@@ -83,12 +84,32 @@ Bool_t Selector::Process(Long64_t entry)
    
    if (*ph_N > 0){
 
-     for(int i=0; i<ph_passLooseId.GetSize(); i++){
-       if(ph_passLooseId[i] == 1 && ph_passEleVeto[i] == true){
-	 hist1->Fill(ph_pt[i]);
-	 hist2->Fill(ph_eta[i]);
+     bool passTrig_175 = false;
+     bool passTrig_165 = false;
+     for(int i=0; i<HLT_isFired.GetSize(); i++){
+       if (HLT_isFired[i].first.find("HLT_Photon200_") != std::string::npos)
+	 passTrig_175 = HLT_isFired[i].second;
+       //if (HLT_isFired[i].first.find("HLT_Photon165_HE10_") != std::string::npos)
+       //passTrig_165 = HLT_isFired[i].second;
+     }
+     bool passTrig = (passTrig_175 || passTrig_165);
+     hist1->Fill(ph_pt[0]);
+     if(ph_passLooseId[0] == 1){
+       hist3->Fill(ph_pt[0]);
+       if(passTrig){
+	 hist2->Fill(ph_pt[0]);
        }
      }
+       /*
+	 else{
+	 if (entry < 10000){
+	 for(int i=0; i<HLT_isFired.GetSize(); i++){
+	 cout<<HLT_isFired[i].second<<" "<<HLT_isFired[i].first<<endl;
+	 }
+	 cout<<endl;
+	 }
+	 }
+       */
    }
    
 
@@ -128,24 +149,21 @@ void Selector::Terminate()
   c01->cd();
   hist1->SetLineWidth(2);
   hist1->Draw("HIST");
+  hist3->SetLineWidth(2);
+  hist3->SetLineColor(2);
+  hist3->Draw("SAMEHIST");
+  hist2->SetFillColor(30);
+  hist2->SetLineColor(30);
+  hist2->Draw("SAMEHIST");
   legend->Clear();
-  legend->AddEntry(hist1,"2016 SingleMuon C, pass LooseID and EleVeto","f");
+  legend->AddEntry(hist1,"2016 SingleMuon C, with photons","f");
+  legend->AddEntry(hist3,"2016 SingleMuon C, pass loose ID","f");
+  legend->AddEntry(hist2,"2016 SingleMuon C, fired trigger","f");
   legend->Draw();
   c01->Print("p_pt.png");
 
-  TCanvas *c02 = new TCanvas("c02","eta_{#gamma}",1200,900);
-  xaxis = hist1->GetXaxis();
-  yaxis = hist1->GetYaxis();
-  xaxis->SetTitle("pt_{#gamma} (GeV)");
-  yaxis->SetTitle("Entries / 50 GeV");
-  yaxis->SetTitleOffset(1.3);
-  //yaxis->SetRangeUser(0,0.14);
-  c02->SetLogy();
+  TCanvas *c02 = new TCanvas("c02","Trigger Efficiency",1200,900);
   c02->cd();
-  hist2->SetLineWidth(2);
-  hist2->Draw("HIST");
-  legend->Clear();
-  legend->AddEntry(hist2,"2016 SingleMuon C, pass LooseID and EleVeto","f");
-  legend->Draw();
-  c02->Print("p_eta.png");
+  Eff->Draw();
+  c02->Print("eff.png");
 }

@@ -40,7 +40,7 @@ void select_trig_debug(const TString conf="samples.conf", // input file
   //--------------------------------------------------------------------------------------------------------------
   // Settings 
   //=============================================================================================================
-  TString type = "DATA"; //DATA, SIGNAL, BKG, CONTROL
+  TString type = "CONTROL"; //DATA, SIGNAL, BKG, CONTROL
   TString formate = "DIVIDED"; //DIVIDED RANGE
   TString histotitle;
   if(type == "SIGNAL"){
@@ -59,57 +59,68 @@ void select_trig_debug(const TString conf="samples.conf", // input file
     cout<<"Wrong data type"<<endl;
 
   //Photons
-  TH1F* hist01pa = new TH1F("WGamma01pa",histotitle+", pt_{#gamma}",36,0,1800); //Pass: Loose ID and EleVeto
+  TH1F* hist01pa = new TH1F("WGamma01pa",histotitle+", pt_{#gamma}",60,0,1200); //Pass: Loose ID and EleVeto
   TH1F* hist02pa = new TH1F("WGamma02pa",histotitle+", #eta_{#gamma}",50,-5,5);
   TH1F* hist03pa = new TH1F("WGamma03pa",histotitle+", E_{#gamma}",48,0,2400);
   TH1F* hist04pa = new TH1F("WGamma04pa",histotitle+", Et_{#gamma}",48,0,2400);
   TH1F* hist05pa = new TH1F("WGamma05pa",histotitle+", H/E_{#gamma}",50,0,1);
-  TH1F *hist06pa = new TH1F("WGamma06pa",histotitle+", isoGamma_{#gamma}",50,0,200);
-  TH1F *hist07pa = new TH1F("WGamma07pa",histotitle+", isoCh_{#gamma}",50,0,200);
-  TH1F *hist08pa = new TH1F("WGamma08pa",histotitle+", Loose Photon ID",50,-1,2);
-  TH1F *hist09pa = new TH1F("WGamma09pa",histotitle+", Pass EleVeto",50,-1,2);
-  TH1F *hist10pa = new TH1F("WGamma10pa",histotitle+", Photon mvaID Value",50,-1.5,1.5);
-  TH1F *hist11pa = new TH1F("WGamma11pa",histotitle+", Photon mvaID Category",50,-2,2);
+  TH1F *hist06pa = new TH1F("WGamma06pa",histotitle+", isoGamma_{#gamma}",50,0,20);
+  TH1F *hist07pa = new TH1F("WGamma07pa",histotitle+", isoCh_{#gamma}",50,0,50);
+  TH1F *hist08pa = new TH1F("WGamma08pa",histotitle+", Loose Photon ID",10,-1,3);
+  TH1F *hist09pa = new TH1F("WGamma09pa",histotitle+", Pass EleVeto",10,-1,3);
+  TH1F *hist10pa = new TH1F("WGamma10pa",histotitle+", Photon mvaID Value",10,-1,3);
+  TH1F *hist11pa = new TH1F("WGamma11pa",histotitle+", Photon mvaID Category",10,-1,3);
 
-  TH1F* hist01pb = new TH1F("WGamma01pb",histotitle+", pt_{#gamma}",36,0,1800); //Fired trigger 175
+  TH1F* hist01pb = new TH1F("WGamma01pb",histotitle+", pt_{#gamma}",60,0,1200); //Fired trigger 175
   TH1F* hist02pb = new TH1F("WGamma02pb",histotitle+", #eta_{#gamma}",50,-5,5);
   TH1F* hist03pb = new TH1F("WGamma03pb",histotitle+", E_{#gamma}",48,0,2400);
   TH1F* hist04pb = new TH1F("WGamma04pb",histotitle+", Et_{#gamma}",48,0,2400);
   TH1F* hist05pb = new TH1F("WGamma05pb",histotitle+", H/E_{#gamma}",50,0,1);
-  TH1F *hist06pb = new TH1F("WGamma06pb",histotitle+", isoGamma_{#gamma}",50,0,200);
-  TH1F *hist07pb = new TH1F("WGamma07pb",histotitle+", isoCh_{#gamma}",50,0,200);
-  TH1F *hist08pb = new TH1F("WGamma08pb",histotitle+", Loose Photon ID",50,-1,2);
-  TH1F *hist09pb = new TH1F("WGamma09pb",histotitle+", Pass EleVeto",50,-1,2);
-  TH1F *hist10pb = new TH1F("WGamma10pb",histotitle+", Photon mvaID Value",50,-1.5,1.5);
-  TH1F *hist11pb = new TH1F("WGamma11pb",histotitle+", Photon mvaID Category",50,-2,2);
+  TH1F *hist06pb = new TH1F("WGamma06pb",histotitle+", isoGamma_{#gamma}",50,0,20);
+  TH1F *hist07pb = new TH1F("WGamma07pb",histotitle+", isoCh_{#gamma}",50,0,50);
+  TH1F *hist08pb = new TH1F("WGamma08pb",histotitle+", Loose Photon ID",10,-1,3);
+  TH1F *hist09pb = new TH1F("WGamma09pb",histotitle+", Pass EleVeto",10,-1,3);
+  TH1F *hist10pb = new TH1F("WGamma10pb",histotitle+", Photon mvaID Value",10,-1,3);
+  TH1F *hist11pb = new TH1F("WGamma11pb",histotitle+", Photon mvaID Category",10,-1,3);
 
-  TH1F* hist01pc = new TH1F("WGamma01pc",histotitle+", pt_{#gamma}",36,0,1800); //Fired trigger 200
+  TH1F* hist01pc = new TH1F("WGamma01pc",histotitle+", pt_{#gamma}",60,0,1200); //Fired trigger 200
   TH1F* hist02pc = new TH1F("WGamma02pc",histotitle+", #eta_{#gamma}",50,-5,5);
   TH1F* hist03pc = new TH1F("WGamma03pc",histotitle+", E_{#gamma}",48,0,2400);
   TH1F* hist04pc = new TH1F("WGamma04pc",histotitle+", Et_{#gamma}",48,0,2400);
   TH1F* hist05pc = new TH1F("WGamma05pc",histotitle+", H/E_{#gamma}",50,0,1);
-  TH1F *hist06pc = new TH1F("WGamma06pc",histotitle+", isoGamma_{#gamma}",50,0,200);
-  TH1F *hist07pc = new TH1F("WGamma07pc",histotitle+", isoCh_{#gamma}",50,0,200);
-  TH1F *hist08pc = new TH1F("WGamma08pc",histotitle+", Loose Photon ID",50,-1,2);
-  TH1F *hist09pc = new TH1F("WGamma09pc",histotitle+", Pass EleVeto",50,-1,2);
-  TH1F *hist10pc = new TH1F("WGamma10pc",histotitle+", Photon mvaID Value",50,-1.5,1.5);
-  TH1F *hist11pc = new TH1F("WGamma11pc",histotitle+", Photon mvaID Category",50,-2,2);
-  /*
-  TH1F* hist01pd = new TH1F("WGamma01pd",histotitle+", pt_{#gamma}",48,0,2400); //Fired trigger
+  TH1F *hist06pc = new TH1F("WGamma06pc",histotitle+", isoGamma_{#gamma}",50,0,20);
+  TH1F *hist07pc = new TH1F("WGamma07pc",histotitle+", isoCh_{#gamma}",50,0,50);
+  TH1F *hist08pc = new TH1F("WGamma08pc",histotitle+", Loose Photon ID",10,-1,3);
+  TH1F *hist09pc = new TH1F("WGamma09pc",histotitle+", Pass EleVeto",10,-1,3);
+  TH1F *hist10pc = new TH1F("WGamma10pc",histotitle+", Photon mvaID Value",10,-1,3);
+  TH1F *hist11pc = new TH1F("WGamma11pc",histotitle+", Photon mvaID Category",10,-1,3);
+
+  TH1F* hist01pd = new TH1F("WGamma01pd",histotitle+", pt_{#gamma}",60,0,1200); //Fired trigger 150
   TH1F* hist02pd = new TH1F("WGamma02pd",histotitle+", #eta_{#gamma}",50,-5,5);
   TH1F* hist03pd = new TH1F("WGamma03pd",histotitle+", E_{#gamma}",48,0,2400);
   TH1F* hist04pd = new TH1F("WGamma04pd",histotitle+", Et_{#gamma}",48,0,2400);
   TH1F* hist05pd = new TH1F("WGamma05pd",histotitle+", H/E_{#gamma}",50,0,1);
-  TH1F *hist06pd = new TH1F("WGamma06pd",histotitle+", isoGamma_{#gamma}",50,0,200);
-  TH1F *hist07pd = new TH1F("WGamma07pd",histotitle+", isoCh_{#gamma}",50,0,200);
-  TH1F *hist08pd = new TH1F("WGamma08pd",histotitle+", Loose Photon ID",50,-1,2);
-  TH1F *hist09pd = new TH1F("WGamma09pd",histotitle+", Pass EleVeto",50,-1,2);
-  TH1F *hist10pd = new TH1F("WGamma10pd",histotitle+", Photon mvaID Value",50,-1.5,1.5);
-  TH1F *hist11pd = new TH1F("WGamma11pd",histotitle+", Photon mvaID Category",50,-2,2);
-  */
+  TH1F *hist06pd = new TH1F("WGamma06pd",histotitle+", isoGamma_{#gamma}",50,0,20);
+  TH1F *hist07pd = new TH1F("WGamma07pd",histotitle+", isoCh_{#gamma}",50,0,50);
+  TH1F *hist08pd = new TH1F("WGamma08pd",histotitle+", Loose Photon ID",10,-1,3);
+  TH1F *hist09pd = new TH1F("WGamma09pd",histotitle+", Pass EleVeto",10,-1,3);
+  TH1F *hist10pd = new TH1F("WGamma10pd",histotitle+", Photon mvaID Value",10,-1,3);
+  TH1F *hist11pd = new TH1F("WGamma11pd",histotitle+", Photon mvaID Category",10,-1,3);
+
+  TH1F* hist01pe = new TH1F("WGamma01pe",histotitle+", pt_{#gamma}",60,0,1200); //Fired trigger 165
+  TH1F* hist02pe = new TH1F("WGamma02pe",histotitle+", #eta_{#gamma}",50,-5,5);
+  TH1F* hist03pe = new TH1F("WGamma03pe",histotitle+", E_{#gamma}",48,0,2400);
+  TH1F* hist04pe = new TH1F("WGamma04pe",histotitle+", Et_{#gamma}",48,0,2400);
+  TH1F* hist05pe = new TH1F("WGamma05pe",histotitle+", H/E_{#gamma}",50,0,1);
+  TH1F *hist06pe = new TH1F("WGamma06pe",histotitle+", isoGamma_{#gamma}",50,0,20);
+  TH1F *hist07pe = new TH1F("WGamma07pe",histotitle+", isoCh_{#gamma}",50,0,50);
+  TH1F *hist08pe = new TH1F("WGamma08pe",histotitle+", Loose Photon ID",10,-1,3);
+  TH1F *hist09pe = new TH1F("WGamma09pe",histotitle+", Pass EleVeto",10,-1,3);
+  TH1F *hist10pe = new TH1F("WGamma10pe",histotitle+", Photon mvaID Value",10,-1,3);
+  TH1F *hist11pe = new TH1F("WGamma11pe",histotitle+", Photon mvaID Category",10,-1,3);
   
   UInt_t count1=0, count2=0, count3=0, count4=0, count5=0, count6=0;
-  gStyle->SetOptStat(111111);
+  gStyle->SetOptStat(0);
 
 
   //--------------------------------------------------------------------------------------------------------------
@@ -162,7 +173,7 @@ void select_trig_debug(const TString conf="samples.conf", // input file
 
     // loop through files
     const UInt_t nfiles = samp->fnamev.size();
-    for(UInt_t ifile=0; ifile<10; ifile++) {  
+    for(UInt_t ifile=0; ifile<400; ifile++) {  
       
       // Read input file and get the TTrees
       cout << "Processing " << samp->fnamev[ifile]; cout.flush();
@@ -210,7 +221,7 @@ void select_trig_debug(const TString conf="samples.conf", // input file
 	ph_isoGamma->clear();          photonIsoGammaBr->GetEntry(ientry);
 	ph_isoCh->clear();             photonIsoChBr->GetEntry(ientry);
 	ph_passEleVeto->clear();       photonPassEleVetoBr->GetEntry(ientry);
-	ph_passLooseId->clear();       photonPassLooseIdBr->GetEntry(ientry);
+	ph_passTightId->clear();       photonPassTightIdBr->GetEntry(ientry);
 	ph_mvaVal->clear();            photonMvaValBr->GetEntry(ientry);
 	ph_mvaCat->clear();            photonMvaCatBr->GetEntry(ientry);
 	HLTisFiredBr->GetEntry(ientry);
@@ -219,7 +230,7 @@ void select_trig_debug(const TString conf="samples.conf", // input file
 	if(ph_N < 1) continue;
 
 	std::vector<float> p_pt, p_eta, p_e, p_et, p_hOverE, p_isoGamma, p_isoCh, p_mvaVal, p_mvaCat;
-	std::vector<int> p_passLooseId;
+	std::vector<int> p_passTightId;
 	std::vector<bool> p_passEleVeto;
 
 	//Use local vectors -> easy access by index
@@ -241,15 +252,16 @@ void select_trig_debug(const TString conf="samples.conf", // input file
 	  p_mvaVal.push_back(*it);
 	for(vector<float>::iterator it = ph_mvaCat->begin(); it != ph_mvaCat->end(); it++)
 	  p_mvaCat.push_back(*it);
-	for(vector<int>::iterator it = ph_passLooseId->begin(); it != ph_passLooseId->end(); it++)
-	  p_passLooseId.push_back(*it);
+	for(vector<int>::iterator it = ph_passTightId->begin(); it != ph_passTightId->end(); it++)
+	  p_passTightId.push_back(*it);
 	for(vector<bool>::iterator it = ph_passEleVeto->begin(); it != ph_passEleVeto->end(); it++)
 	  p_passEleVeto.push_back(*it);
 
 	//Locate the first photon in EM objects array (highest pt)
 	Int_t index_p = -99;
-	for(int i=0; i<p_passLooseId.size(); i++){
-	  if(p_passLooseId[i] == 1 && p_passEleVeto[i] == true){
+	for(int i=0; i<p_passTightId.size(); i++){
+	  if(p_passTightId[i] == 1 && p_passEleVeto[i] == true){
+	    //if(p_passTightId[i] == 1 && p_passEleVeto[i] == true && p_pt[i] > 150){
 	    index_p = i;
 	    break;
 	  }
@@ -263,7 +275,7 @@ void select_trig_debug(const TString conf="samples.conf", // input file
 	hist05pa->Fill(p_hOverE[index_p]);
 	hist06pa->Fill(p_isoGamma[index_p]);
 	hist07pa->Fill(p_isoCh[index_p]);
-	hist08pa->Fill(p_passLooseId[index_p]);
+	hist08pa->Fill(p_passTightId[index_p]);
 	hist09pa->Fill(p_passEleVeto[index_p]);
 	hist10pa->Fill(p_mvaVal[index_p]);
 	hist11pa->Fill(p_mvaCat[index_p]);
@@ -279,7 +291,7 @@ void select_trig_debug(const TString conf="samples.conf", // input file
 	    hist05pb->Fill(p_hOverE[index_p]);
 	    hist06pb->Fill(p_isoGamma[index_p]);
 	    hist07pb->Fill(p_isoCh[index_p]);
-	    hist08pb->Fill(p_passLooseId[index_p]);
+	    hist08pb->Fill(p_passTightId[index_p]);
 	    hist09pb->Fill(p_passEleVeto[index_p]);
 	    hist10pb->Fill(p_mvaVal[index_p]);
 	    hist11pb->Fill(p_mvaCat[index_p]);
@@ -293,10 +305,38 @@ void select_trig_debug(const TString conf="samples.conf", // input file
 	    hist05pc->Fill(p_hOverE[index_p]);
 	    hist06pc->Fill(p_isoGamma[index_p]);
 	    hist07pc->Fill(p_isoCh[index_p]);
-	    hist08pc->Fill(p_passLooseId[index_p]);
+	    hist08pc->Fill(p_passTightId[index_p]);
 	    hist09pc->Fill(p_passEleVeto[index_p]);
 	    hist10pc->Fill(p_mvaVal[index_p]);
 	    hist11pc->Fill(p_mvaCat[index_p]);
+	    passTrig = true;
+	  }
+	  if (it->first.find("HLT_Photon150") != std::string::npos && it->second == 1){
+	    hist01pd->Fill(p_pt[index_p]);
+	    hist02pd->Fill(p_eta[index_p]);
+	    hist03pd->Fill(p_e[index_p]);
+	    hist04pd->Fill(p_et[index_p]);
+	    hist05pd->Fill(p_hOverE[index_p]);
+	    hist06pd->Fill(p_isoGamma[index_p]);
+	    hist07pd->Fill(p_isoCh[index_p]);
+	    hist08pd->Fill(p_passTightId[index_p]);
+	    hist09pd->Fill(p_passEleVeto[index_p]);
+	    hist10pd->Fill(p_mvaVal[index_p]);
+	    hist11pd->Fill(p_mvaCat[index_p]);
+	    passTrig = true;
+	  }
+	  if (it->first.find("HLT_Photon165") != std::string::npos && it->second == 1){
+	    hist01pe->Fill(p_pt[index_p]);
+	    hist02pe->Fill(p_eta[index_p]);
+	    hist03pe->Fill(p_e[index_p]);
+	    hist04pe->Fill(p_et[index_p]);
+	    hist05pe->Fill(p_hOverE[index_p]);
+	    hist06pe->Fill(p_isoGamma[index_p]);
+	    hist07pe->Fill(p_isoCh[index_p]);
+	    hist08pe->Fill(p_passTightId[index_p]);
+	    hist09pe->Fill(p_passEleVeto[index_p]);
+	    hist10pe->Fill(p_mvaVal[index_p]);
+	    hist11pe->Fill(p_mvaCat[index_p]);
 	    passTrig = true;
 	  }
 	}
@@ -314,10 +354,12 @@ void select_trig_debug(const TString conf="samples.conf", // input file
   //Tirgger Efficiency
   TEfficiency *Eff1 = new TEfficiency(*hist01pb, *hist01pa);
   TEfficiency *Eff2 = new TEfficiency(*hist01pc, *hist01pa);
+  TEfficiency *Eff3 = new TEfficiency(*hist01pd, *hist01pa);
+  TEfficiency *Eff4 = new TEfficiency(*hist01pe, *hist01pa);
 
   //Non stacked plots
   TLegend *legend1 = new TLegend(0.6,0.75,0.85,0.85);
-  TLegend *legend2 = new TLegend(0.6,0.75,0.85,0.85);
+  TLegend *legend2 = new TLegend(0.6,0.7,0.85,0.8);
   TAxis *xaxis = NULL;
   TAxis *yaxis = NULL;
 
@@ -325,7 +367,7 @@ void select_trig_debug(const TString conf="samples.conf", // input file
   xaxis = hist01pa->GetXaxis();
   yaxis = hist01pa->GetYaxis();
   xaxis->SetTitle("pt_{#gamma} (GeV)");
-  yaxis->SetTitle("Entries / 50 GeV");
+  yaxis->SetTitle("Entries / 20 GeV");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
   //yaxis->SetRangeUser(0,0.14);
@@ -340,10 +382,18 @@ void select_trig_debug(const TString conf="samples.conf", // input file
   hist01pc->SetLineWidth(2);
   hist01pc->SetLineColor(4);
   hist01pc->Draw("SAMEHIST");
+  hist01pd->SetLineWidth(2);
+  hist01pd->SetLineColor(6);
+  hist01pd->Draw("SAMEHIST");
+  hist01pe->SetLineWidth(2);
+  hist01pe->SetLineColor(8);
+  hist01pe->Draw("SAMEHIST");
   legend1->Clear();
-  legend1->AddEntry(hist01pa,"2017 SingleMuon, Photon looseID and EleVeto","f");
-  legend1->AddEntry(hist01pb,"2017 SingleMuon, HLT_Photon175","f");
-  legend1->AddEntry(hist01pc,"2017 SingleMuon, HLT_Photon200","f");
+  legend1->AddEntry(hist01pa, histotitle+", Photon TightID and EleVeto","f");
+  legend1->AddEntry(hist01pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist01pc,histotitle+", HLT_Photon200","f");
+  legend1->AddEntry(hist01pd,histotitle+", HLT_Photon150","f");
+  legend1->AddEntry(hist01pe,histotitle+", HLT_Photon165","f");
   legend1->Draw();
   c01->Print("p_pt.png");
 
@@ -354,7 +404,7 @@ void select_trig_debug(const TString conf="samples.conf", // input file
   yaxis->SetTitle("Entries / 0.2");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.01,10000);
+  yaxis->SetRangeUser(0.1,100000);
   c02->SetLogy();
   c02->cd();
   hist02pa->SetLineWidth(2);
@@ -366,10 +416,18 @@ void select_trig_debug(const TString conf="samples.conf", // input file
   hist02pc->SetLineWidth(2);
   hist02pc->SetLineColor(4);
   hist02pc->Draw("SAMEHIST");
+  hist02pd->SetLineWidth(2);
+  hist02pd->SetLineColor(6);
+  hist02pd->Draw("SAMEHIST");
+  hist02pe->SetLineWidth(2);
+  hist02pe->SetLineColor(8);
+  hist02pe->Draw("SAMEHIST");
   legend1->Clear();
-  legend1->AddEntry(hist02pa,"2017 SingleMuon, Photon looseID and EleVeto","f");
-  legend1->AddEntry(hist02pb,"2017 SingleMuon, HLT_Photon175","f");
-  legend1->AddEntry(hist02pc,"2017 SingleMuon, HLT_Photon200","f");
+  legend1->AddEntry(hist02pa,histotitle+", Photon TightID and EleVeto","f");
+  legend1->AddEntry(hist02pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist02pc,histotitle+", HLT_Photon200","f");
+  legend1->AddEntry(hist02pd,histotitle+", HLT_Photon150","f");
+  legend1->AddEntry(hist02pe,histotitle+", HLT_Photon165","f");
   legend1->Draw();
   c02->Print("p_eta.png");
 
@@ -392,10 +450,18 @@ void select_trig_debug(const TString conf="samples.conf", // input file
   hist03pc->SetLineWidth(2);
   hist03pc->SetLineColor(4);
   hist03pc->Draw("SAMEHIST");
+  hist03pd->SetLineWidth(2);
+  hist03pd->SetLineColor(6);
+  hist03pd->Draw("SAMEHIST");
+  hist03pe->SetLineWidth(2);
+  hist03pe->SetLineColor(8);
+  hist03pe->Draw("SAMEHIST");
   legend1->Clear();
-  legend1->AddEntry(hist03pa,"2017 SingleMuon, Photon looseID and EleVeto","f");
-  legend1->AddEntry(hist03pb,"2017 SingleMuon, HLT_Photon175","f");
-  legend1->AddEntry(hist03pc,"2017 SingleMuon, HLT_Photon200","f");
+  legend1->AddEntry(hist03pa,histotitle+", Photon TightID and EleVeto","f");
+  legend1->AddEntry(hist03pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist03pc,histotitle+", HLT_Photon200","f");
+  legend1->AddEntry(hist03pd,histotitle+", HLT_Photon150","f");
+  legend1->AddEntry(hist03pe,histotitle+", HLT_Photon165","f");
   legend1->Draw();
   c03->Print("p_e.png");
 
@@ -418,10 +484,18 @@ void select_trig_debug(const TString conf="samples.conf", // input file
   hist04pc->SetLineWidth(2);
   hist04pc->SetLineColor(4);
   hist04pc->Draw("SAMEHIST");
+  hist04pd->SetLineWidth(2);
+  hist04pd->SetLineColor(6);
+  hist04pd->Draw("SAMEHIST");
+  hist04pe->SetLineWidth(2);
+  hist04pe->SetLineColor(8);
+  hist04pe->Draw("SAMEHIST");
   legend1->Clear();
-  legend1->AddEntry(hist04pa,"2017 SingleMuon, Photon looseID and EleVeto","f");
-  legend1->AddEntry(hist04pb,"2017 SingleMuon, HLT_Photon175","f");
-  legend1->AddEntry(hist04pc,"2017 SingleMuon, HLT_Photon200","f");
+  legend1->AddEntry(hist04pa,histotitle+", Photon TightID and EleVeto","f");
+  legend1->AddEntry(hist04pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist04pc,histotitle+", HLT_Photon200","f");
+  legend1->AddEntry(hist04pd,histotitle+", HLT_Photon150","f");
+  legend1->AddEntry(hist04pe,histotitle+", HLT_Photon165","f");
   legend1->Draw();
   c04->Print("p_et.png");
 
@@ -444,10 +518,18 @@ void select_trig_debug(const TString conf="samples.conf", // input file
   hist05pc->SetLineWidth(2);
   hist05pc->SetLineColor(4);
   hist05pc->Draw("SAMEHIST");
+  hist05pd->SetLineWidth(2);
+  hist05pd->SetLineColor(6);
+  hist05pd->Draw("SAMEHIST");
+  hist05pe->SetLineWidth(2);
+  hist05pe->SetLineColor(8);
+  hist05pe->Draw("SAMEHIST");
   legend1->Clear();
-  legend1->AddEntry(hist05pa,"2017 SingleMuon, Photon looseID and EleVeto","f");
-  legend1->AddEntry(hist05pb,"2017 SingleMuon, HLT_Photon175","f");
-  legend1->AddEntry(hist05pc,"2017 SingleMuon, HLT_Photon200","f");
+  legend1->AddEntry(hist05pa,histotitle+", Photon TightID and EleVeto","f");
+  legend1->AddEntry(hist05pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist05pc,histotitle+", HLT_Photon200","f");
+  legend1->AddEntry(hist05pd,histotitle+", HLT_Photon150","f");
+  legend1->AddEntry(hist05pe,histotitle+", HLT_Photon165","f");
   legend1->Draw();
   c05->Print("p_hOverE.png");
 
@@ -455,7 +537,7 @@ void select_trig_debug(const TString conf="samples.conf", // input file
   xaxis = hist06pa->GetXaxis();
   yaxis = hist06pa->GetYaxis();
   xaxis->SetTitle("isoGamma_{#gamma} (GeV)");
-  yaxis->SetTitle("Entries / 4");
+  yaxis->SetTitle("Entries / 0.4");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
   //yaxis->SetRangeUser(0,0.14);
@@ -470,10 +552,18 @@ void select_trig_debug(const TString conf="samples.conf", // input file
   hist06pc->SetLineWidth(2);
   hist06pc->SetLineColor(4);
   hist06pc->Draw("SAMEHIST");
+  hist06pd->SetLineWidth(2);
+  hist06pd->SetLineColor(6);
+  hist06pd->Draw("SAMEHIST");
+  hist06pe->SetLineWidth(2);
+  hist06pe->SetLineColor(8);
+  hist06pe->Draw("SAMEHIST");
   legend1->Clear();
-  legend1->AddEntry(hist06pa,"2017 SingleMuon, Photon looseID and EleVeto","f");
-  legend1->AddEntry(hist06pb,"2017 SingleMuon, HLT_Photon175","f");
-  legend1->AddEntry(hist06pc,"2017 SingleMuon, HLT_Photon200","f");
+  legend1->AddEntry(hist06pa,histotitle+", Photon TightID and EleVeto","f");
+  legend1->AddEntry(hist06pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist06pc,histotitle+", HLT_Photon200","f");
+  legend1->AddEntry(hist06pd,histotitle+", HLT_Photon150","f");
+  legend1->AddEntry(hist06pe,histotitle+", HLT_Photon165","f");
   legend1->Draw();
   c06->Print("p_isoGamma.png");
 
@@ -481,7 +571,7 @@ void select_trig_debug(const TString conf="samples.conf", // input file
   xaxis = hist07pa->GetXaxis();
   yaxis = hist07pa->GetYaxis();
   xaxis->SetTitle("isoCh_{#gamma} (GeV)");
-  yaxis->SetTitle("Entries / 4");
+  yaxis->SetTitle("Entries / 1");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
   //yaxis->SetRangeUser(0,0.14);
@@ -496,21 +586,29 @@ void select_trig_debug(const TString conf="samples.conf", // input file
   hist07pc->SetLineWidth(2);
   hist07pc->SetLineColor(4);
   hist07pc->Draw("SAMEHIST");
+  hist07pd->SetLineWidth(2);
+  hist07pd->SetLineColor(6);
+  hist07pd->Draw("SAMEHIST");
+  hist07pe->SetLineWidth(2);
+  hist07pe->SetLineColor(8);
+  hist07pe->Draw("SAMEHIST");
   legend1->Clear();
-  legend1->AddEntry(hist07pa,"2017 SingleMuon, Photon looseID and EleVeto","f");
-  legend1->AddEntry(hist07pb,"2017 SingleMuon, HLT_Photon175","f");
-  legend1->AddEntry(hist07pc,"2017 SingleMuon, HLT_Photon200","f");
+  legend1->AddEntry(hist07pa,histotitle+", Photon TightID and EleVeto","f");
+  legend1->AddEntry(hist07pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist07pc,histotitle+", HLT_Photon200","f");
+  legend1->AddEntry(hist07pd,histotitle+", HLT_Photon150","f");
+  legend1->AddEntry(hist07pe,histotitle+", HLT_Photon165","f");
   legend1->Draw();
   c07->Print("p_isoCh.png");
 
-  TCanvas *c08 = new TCanvas("c08","Loose Photon ID",1200,900);
+  TCanvas *c08 = new TCanvas("c08","Tight Photon ID",1200,900);
   xaxis = hist08pa->GetXaxis();
   yaxis = hist08pa->GetYaxis();
-  xaxis->SetTitle("Loose Photon ID");
+  xaxis->SetTitle("Tight Photon ID");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.01,1000000);
+  yaxis->SetRangeUser(0.1,1000000);
   c08->SetLogy();
   c08->cd();
   hist08pa->SetLineWidth(2);
@@ -522,12 +620,20 @@ void select_trig_debug(const TString conf="samples.conf", // input file
   hist08pc->SetLineWidth(2);
   hist08pc->SetLineColor(4);
   hist08pc->Draw("SAMEHIST");
+  hist08pd->SetLineWidth(2);
+  hist08pd->SetLineColor(6);
+  hist08pd->Draw("SAMEHIST");
+  hist08pe->SetLineWidth(2);
+  hist08pe->SetLineColor(8);
+  hist08pe->Draw("SAMEHIST");
   legend1->Clear();
-  legend1->AddEntry(hist08pa,"2017 SingleMuon, Photon looseID and EleVeto","f");
-  legend1->AddEntry(hist08pb,"2017 SingleMuon, HLT_Photon175","f");
-  legend1->AddEntry(hist08pc,"2017 SingleMuon, HLT_Photon200","f");
+  legend1->AddEntry(hist08pa,histotitle+", Photon TightID and EleVeto","f");
+  legend1->AddEntry(hist08pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist08pc,histotitle+", HLT_Photon200","f");
+  legend1->AddEntry(hist08pd,histotitle+", HLT_Photon150","f");
+  legend1->AddEntry(hist08pe,histotitle+", HLT_Photon165","f");
   legend1->Draw();
-  c08->Print("p_LooseID.png");
+  c08->Print("p_TightID.png");
 
   TCanvas *c09 = new TCanvas("c09","Electron Veto",1200,900);
   xaxis = hist09pa->GetXaxis();
@@ -536,7 +642,7 @@ void select_trig_debug(const TString conf="samples.conf", // input file
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.01,1000000);
+  yaxis->SetRangeUser(0.1,1000000);
   c09->SetLogy();
   c09->cd();
   hist09pa->SetLineWidth(2);
@@ -548,10 +654,18 @@ void select_trig_debug(const TString conf="samples.conf", // input file
   hist09pc->SetLineWidth(2);
   hist09pc->SetLineColor(4);
   hist09pc->Draw("SAMEHIST");
+  hist09pd->SetLineWidth(2);
+  hist09pd->SetLineColor(6);
+  hist09pd->Draw("SAMEHIST");
+  hist09pe->SetLineWidth(2);
+  hist09pe->SetLineColor(8);
+  hist09pe->Draw("SAMEHIST");
   legend1->Clear();
-  legend1->AddEntry(hist09pa,"2017 SingleMuon, Photon looseID and EleVeto","f");
-  legend1->AddEntry(hist09pb,"2017 SingleMuon, HLT_Photon175","f");
-  legend1->AddEntry(hist09pc,"2017 SingleMuon, HLT_Photon200","f");
+  legend1->AddEntry(hist09pa,histotitle+", Photon TightID and EleVeto","f");
+  legend1->AddEntry(hist09pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist09pc,histotitle+", HLT_Photon200","f");
+  legend1->AddEntry(hist09pd,histotitle+", HLT_Photon150","f");
+  legend1->AddEntry(hist09pe,histotitle+", HLT_Photon165","f");
   legend1->Draw();
   c09->Print("p_EleVeto.png");
 
@@ -562,7 +676,7 @@ void select_trig_debug(const TString conf="samples.conf", // input file
   yaxis->SetTitle("Entries / 0.06");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.01,1000000);
+  yaxis->SetRangeUser(0.1,1000000);
   c10->SetLogy();
   c10->cd();
   hist10pa->SetLineWidth(2);
@@ -574,10 +688,18 @@ void select_trig_debug(const TString conf="samples.conf", // input file
   hist10pc->SetLineWidth(2);
   hist10pc->SetLineColor(4);
   hist10pc->Draw("SAMEHIST");
+  hist10pd->SetLineWidth(2);
+  hist10pd->SetLineColor(6);
+  hist10pd->Draw("SAMEHIST");
+  hist10pe->SetLineWidth(2);
+  hist10pe->SetLineColor(8);
+  hist10pe->Draw("SAMEHIST");
   legend1->Clear();
-  legend1->AddEntry(hist10pa,"2017 SingleMuon, Photon looseID and EleVeto","f");
-  legend1->AddEntry(hist10pb,"2017 SingleMuon, HLT_Photon175","f");
-  legend1->AddEntry(hist10pc,"2017 SingleMuon, HLT_Photon200","f");
+  legend1->AddEntry(hist10pa,histotitle+", Photon TightID and EleVeto","f");
+  legend1->AddEntry(hist10pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist10pc,histotitle+", HLT_Photon200","f");
+  legend1->AddEntry(hist10pd,histotitle+", HLT_Photon150","f");
+  legend1->AddEntry(hist10pe,histotitle+", HLT_Photon165","f");
   legend1->Draw();
   c10->Print("p_mvaVal.png");
 
@@ -588,7 +710,7 @@ void select_trig_debug(const TString conf="samples.conf", // input file
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.01,1000000);
+  yaxis->SetRangeUser(0.1,1000000);
   c11->SetLogy();
   c11->cd();
   hist11pa->SetLineWidth(2);
@@ -600,10 +722,18 @@ void select_trig_debug(const TString conf="samples.conf", // input file
   hist11pc->SetLineWidth(2);
   hist11pc->SetLineColor(4);
   hist11pc->Draw("SAMEHIST");
+  hist11pd->SetLineWidth(2);
+  hist11pd->SetLineColor(6);
+  hist11pd->Draw("SAMEHIST");
+  hist11pe->SetLineWidth(2);
+  hist11pe->SetLineColor(8);
+  hist11pe->Draw("SAMEHIST");
   legend1->Clear();
-  legend1->AddEntry(hist11pa,"2017 SingleMuon, Photon looseID and EleVeto","f");
-  legend1->AddEntry(hist11pb,"2017 SingleMuon, HLT_Photon175","f");
-  legend1->AddEntry(hist11pc,"2017 SingleMuon, HLT_Photon200","f");
+  legend1->AddEntry(hist11pa,histotitle+", Photon TightID and EleVeto","f");
+  legend1->AddEntry(hist11pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist11pc,histotitle+", HLT_Photon200","f");
+  legend1->AddEntry(hist11pd,histotitle+", HLT_Photon150","f");
+  legend1->AddEntry(hist11pe,histotitle+", HLT_Photon165","f");
   legend1->Draw();
   c11->Print("p_mvaCat.png");
 
@@ -611,18 +741,28 @@ void select_trig_debug(const TString conf="samples.conf", // input file
   ceff->cd();
   Eff1->SetTitle("Trigger Efficiency");
   Eff1->SetLineWidth(2);
-  Eff1->SetLineColor(9);
+  Eff1->SetLineColor(2);
   Eff1->Draw();
   gPad->Update();
-  Eff1->GetPaintedGraph()->GetXaxis()->SetTitle("pt_{#gamma} (GeV)");
-  Eff1->GetPaintedGraph()->GetYaxis()->SetTitle("Efficiency");
+  Eff1->SetTitle("Trigger Efficiency; pt_{#gamma} (GeV); Efficiency"); 
+  //Eff1->GetPaintedGraph()->GetXaxis()->SetTitle("pt_{#gamma} (GeV)");
+  //Eff1->GetPaintedGraph()->GetYaxis()->SetTitle("Efficiency");
   Eff1->GetPaintedGraph()->GetYaxis()->SetRangeUser(-0.1,1.1);
+  Eff1->Draw("SAME");
   Eff2->SetLineWidth(2);
-  Eff2->SetLineColor(6);
+  Eff2->SetLineColor(4);
   Eff2->Draw("SAME");
+  Eff3->SetLineWidth(2);
+  Eff3->SetLineColor(6);
+  Eff3->Draw("SAME");
+  Eff4->SetLineWidth(2);
+  Eff4->SetLineColor(8);
+  Eff4->Draw("SAME");
   legend2->Clear();
   legend2->AddEntry(Eff1,"HLT_Photon175_","f");
   legend2->AddEntry(Eff2,"HLT_Photon200_","f");
+  legend2->AddEntry(Eff3,"HLT_Photon150_","f");
+  legend2->AddEntry(Eff4,"HLT_Photon165_","f");
   legend2->Draw();
   ceff->Print("eff.png");
 
