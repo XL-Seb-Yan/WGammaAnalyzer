@@ -6,7 +6,7 @@
 #include <string>                   // C++ string class
 #include <sstream>                  // class for parsing strings
 #include <TString.h>                // ROOT string class
-#include "../Utils/CSample.hh"  // helper class to handle samples
+#include "CSample.hh"  // helper class to handle samples
 
 void confParse(const TString    conf,      // input conf file
                vector<TString>  &snamev,   // vector to store output of sample names
@@ -16,10 +16,14 @@ void confParse(const TString    conf,      // input conf file
   ifs.open(conf.Data());
   assert(ifs.is_open());
   string line;
+  bool read_sample = false;
+  bool read_prescale = false;
   while(getline(ifs,line)) {
+
     if(line[0]=='#') continue;
     
     if(line[0]=='$') {
+      read_sample = true;
       samplev.push_back(new CSample());
       stringstream ss(line);
       string chr;
@@ -33,16 +37,33 @@ void confParse(const TString    conf,      // input conf file
       samplev.back()->linecol = linecol;
       continue;
     }
-    
-    string fname;
-    string json;
-    Double_t xsec;
-    stringstream ss(line);
-    ss >> fname >> xsec >> json;
-    samplev.back()->fnamev.push_back(fname);
-    samplev.back()->typev.push_back(0);
-    samplev.back()->xsecv.push_back(xsec);
-    samplev.back()->jsonv.push_back(json);
+    if(read_sample){
+      string fname;
+      string json;
+      Double_t xsec;
+      stringstream ss(line);
+      ss >> fname >> xsec >> json;
+      samplev.back()->fnamev.push_back(fname);
+      samplev.back()->typev.push_back(0);
+      samplev.back()->xsecv.push_back(xsec);
+      samplev.back()->jsonv.push_back(json);
+    }
+      
+    if(line[0]=='%'){
+      read_sample = false;
+      read_prescale = true;
+      continue;
+    }
+    if(read_prescale){
+      string prejsonname;
+      double xsec;
+      int factor;
+      stringstream ss(line);
+      ss >> prejsonname >> xsec >> factor;
+      samplev.back()->prescaleJSONv.push_back(prejsonname);
+      samplev.back()->prescalexsecv.push_back(xsec);
+      samplev.back()->prescalev.push_back(factor);
+    }
   }
   ifs.close();
 }

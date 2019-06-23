@@ -17,6 +17,9 @@ public:
   vector<Double_t> xsecv;    // per file cross section
   vector<TString>  jsonv;    // per file JSON file
   vector<Double_t> weightv;  // per file event weight
+  vector<string>  prescaleJSONv; //prescaleJSON files
+  vector<Double_t> prescalexsecv; //prescaleJSON xsec
+  vector<Int_t> prescalev; //prescale factor
   
   // data type
   //  0 : MC

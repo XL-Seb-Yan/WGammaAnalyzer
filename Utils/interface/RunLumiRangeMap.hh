@@ -1,0 +1,23 @@
+#ifndef UTILS_RUNLUMIRANGEMAP_HH
+#define UTILS_RUNLUMIRANGEMAP_HH
+
+#include <string>
+#include <vector>
+#include <map>
+
+class RunLumiRangeMap
+{
+public:
+  typedef std::pair<unsigned int, unsigned int>                RunLumiPairType;
+  typedef std::map<unsigned int, std::vector<RunLumiPairType>> MapType;
+      
+  RunLumiRangeMap(){}
+  ~RunLumiRangeMap(){}
+      
+  void addJSONFile(const std::string &filepath);
+  bool hasRunLumi(const RunLumiPairType &runLumi) const;
+    
+protected:
+  MapType fMap; // mapped run-lumi ranges to accept
+};
+#endif
