@@ -25,7 +25,7 @@
 #include "TRandom.h"
 #include "../Utils/interface/ConfParse.hh"             // input conf file parser
 #include "../Utils/interface/CSample.hh"      // helper class to handle samples
-#include "BaconAna/Utils/interface/RunLumiRangeMap.hh"
+#include "../Utils/interface/RunLumiRangeMap.hh"
 //#include "../Utils/MyTools.hh"      // various helper functions
 // C++ tool
 #include <algorithm>
@@ -174,20 +174,22 @@ void select_trigger(const TString conf="samples.conf", // input file
     cout<<"begin loop over files"<<endl;
     TStopwatch stopwatch;
 
-    //Lumi-section check
+    // Lumi-section
     vector<RunLumiRangeMap*> Lumi_Photon175;
     Int_t nprescales = samp->prescaleJSONv.size();
     for(int iprescale=0; iprescale<nprescales; iprescale++){
+      if(samp->prescaletriggernamev[iprescale] != "HLT_Photon175") continue;
       Lumi_Photon175.push_back(new RunLumiRangeMap());
       Lumi_Photon175.back()->addJSONFile(samp->prescaleJSONv[iprescale]);
+      cout<<samp->prescaleJSONv[iprescale]<<endl;
     }
 
     // loop through files
     const UInt_t nfiles = samp->fnamev.size();
-    for(UInt_t ifile=0; ifile<10; ifile++) {  
+    for(UInt_t ifile=0; ifile<nfiles; ifile++) {  
       
       // Read input file and get the TTrees
-      cout << "Processing " << samp->fnamev[ifile]; cout.flush();
+      cout << "Processing " << samp->fnamev[ifile]<<endl; cout.flush();
       TFile *infile = TFile::Open(samp->fnamev[ifile]);
       assert(infile);
 
@@ -224,6 +226,9 @@ void select_trigger(const TString conf="samples.conf", // input file
 
       for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
 	// Get Events
+	runNumBr->GetEntry(ientry);
+	evtNumBr->GetEntry(ientry);
+	lumiBlockBr->GetEntry(ientry);
 	photonNBr->GetEntry(ientry);
 	ph_pt->clear();                photonPtBr->GetEntry(ientry);
 	ph_eta->clear();               photonEtaBr->GetEntry(ientry);
@@ -252,17 +257,34 @@ void select_trigger(const TString conf="samples.conf", // input file
 	}
 	if(index_p == -99) continue;
 	count1++;
-	hist01pa->Fill(ph_pt->at(index_p));
-	hist02pa->Fill(ph_eta->at(index_p));
-	hist03pa->Fill(ph_E->at(index_p));
-	hist04pa->Fill(ph_Et->at(index_p));
-	hist05pa->Fill(ph_hOverE->at(index_p));
-	hist06pa->Fill(ph_isoGamma->at(index_p));
-	hist07pa->Fill(ph_isoCh->at(index_p));
-	hist08pa->Fill(ph_passTightId->at(index_p));
-	hist09pa->Fill(ph_passEleVeto->at(index_p));
-	hist10pa->Fill(ph_mvaVal->at(index_p));
-	hist11pa->Fill(ph_mvaCat->at(index_p));
+
+	//Trigger pre-scale
+	Int_t tri_prescale = -99;
+	RunLumiRangeMap::RunLumiPairType rl(runnum, lumiBlock);
+	for(int iprescale=0; iprescale<nprescales; iprescale++){
+	  if(Lumi_Photon175[iprescale]->hasRunLumi(rl)){
+	    if(tri_prescale > -99 && tri_prescale != samp->prescalev[iprescale]){
+	      cout<<"Error: Multiple pre-scale conflict"<<endl;
+	      cout<<tri_prescale<<" and "<<samp->prescalev[iprescale]<<" Run: "<<runnum<<" Lumiblock: "<<lumiBlock<<" Evtnum: "<<evtnum<<endl;
+	    }
+	    tri_prescale = samp->prescalev[iprescale];
+	  }
+	}
+	if(tri_prescale == -99)
+	  cout<<"Error: No prescale found"<<endl;
+
+	Double_t weight = 1/double(tri_prescale);
+	hist01pa->Fill(ph_pt->at(index_p),weight);
+	hist02pa->Fill(ph_eta->at(index_p),weight);
+	hist03pa->Fill(ph_E->at(index_p),weight);
+	hist04pa->Fill(ph_Et->at(index_p),weight);
+	hist05pa->Fill(ph_hOverE->at(index_p),weight);
+	hist06pa->Fill(ph_isoGamma->at(index_p),weight);
+	hist07pa->Fill(ph_isoCh->at(index_p),weight);
+	hist08pa->Fill(ph_passTightId->at(index_p),weight);
+	hist09pa->Fill(ph_passEleVeto->at(index_p),weight);
+	hist10pa->Fill(ph_mvaVal->at(index_p),weight);
+	hist11pa->Fill(ph_mvaCat->at(index_p),weight);
 
 	//Trigger decision
 	bool passTrig = false;
@@ -330,16 +352,6 @@ void select_trigger(const TString conf="samples.conf", // input file
 	}
 	if (!passTrig) continue;
 	count2++;
-
-	//Trigger pre-scale
-	Int_t tri_prescale = -99;
-	RunLumiRangeMap::RunLumiPairType rl(runnum, lumiBlock); 
-	for(int iprescale=0; iprescale<nprescales; iprescale++){
-	  if(Lumi_Photon175[iprescale]->hasRunLumi(rl)){
-	    tri_prescale = samp->prescalev[iprescale];
-	    cout<<tri_prescale<<endl;
-	  }
-	}
       }//end of event loop
       cout<<"Number of events in this file: "<<eventTree->GetEntries()<<endl;
       cout<<"Events with more than 1 photons: "<<count1<<endl;
@@ -364,16 +376,19 @@ void select_trigger(const TString conf="samples.conf", // input file
 	}
       }
       cout<<"Time remaining: "<<hours<<":"<<minutes<<":"<<seconds<<endl;
+      cout<<endl;
       eventTree = 0;
       delete infile;
     }//end of file loop
   }//end of sample loop
 
   //Tirgger Efficiency
+  /*
   TEfficiency *Eff1 = new TEfficiency(*hist01pb, *hist01pa);
   TEfficiency *Eff2 = new TEfficiency(*hist01pc, *hist01pa);
   TEfficiency *Eff3 = new TEfficiency(*hist01pd, *hist01pa);
   TEfficiency *Eff4 = new TEfficiency(*hist01pe, *hist01pa);
+  */
 
   //Non stacked plots
   TLegend *legend1 = new TLegend(0.6,0.75,0.85,0.85);
@@ -755,6 +770,7 @@ void select_trigger(const TString conf="samples.conf", // input file
   legend1->Draw();
   c11->Print("p_mvaCat.png");
 
+  /*
   TCanvas *ceff = new TCanvas("ceff","Trigger Efficiency",1200,900);
   ceff->cd();
   Eff1->SetTitle("Trigger Efficiency");
@@ -783,6 +799,7 @@ void select_trigger(const TString conf="samples.conf", // input file
   legend2->AddEntry(Eff4,"HLT_Photon165_","f");
   legend2->Draw();
   ceff->Print("eff.png");
+  */
 
   gBenchmark->Show("selectWG");
 

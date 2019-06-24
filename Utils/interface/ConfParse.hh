@@ -37,6 +37,11 @@ void confParse(const TString    conf,      // input conf file
       samplev.back()->linecol = linecol;
       continue;
     }
+    if(line[0]=='%'){
+      read_sample = false;
+      read_prescale = true;
+      continue;
+    }
     if(read_sample){
       string fname;
       string json;
@@ -48,20 +53,16 @@ void confParse(const TString    conf,      // input conf file
       samplev.back()->xsecv.push_back(xsec);
       samplev.back()->jsonv.push_back(json);
     }
-      
-    if(line[0]=='%'){
-      read_sample = false;
-      read_prescale = true;
-      continue;
-    }
     if(read_prescale){
       string prejsonname;
-      double xsec;
+      string triggername;
+      double lumi;
       int factor;
       stringstream ss(line);
-      ss >> prejsonname >> xsec >> factor;
+      ss >> prejsonname >> triggername >> lumi >> factor;
       samplev.back()->prescaleJSONv.push_back(prejsonname);
-      samplev.back()->prescalexsecv.push_back(xsec);
+      samplev.back()->prescaletriggernamev.push_back(triggername);
+      samplev.back()->prescalelumiv.push_back(lumi);
       samplev.back()->prescalev.push_back(factor);
     }
   }

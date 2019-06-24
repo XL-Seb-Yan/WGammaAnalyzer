@@ -212,6 +212,8 @@ void select(const TString conf="samples.conf", // input file
   // Data structures to store info from produced flat ntuples
   Int_t runnum = -999;
   Int_t evtnum = -999;
+  Int_t lumiBlock = -999;
+  
   //--Photons---
   Int_t ph_N = -99;//for int we need to use this to initialize the container
   std::vector<float> *ph_pt = new std::vector<float>();
@@ -294,12 +296,14 @@ void select(const TString conf="samples.conf", // input file
     cout<<"begin loop over files"<<endl;
     TStopwatch stopwatch;
 
-    //Lumi-section check
+    // Lumi-section
     vector<RunLumiRangeMap*> Lumi_Photon175;
     Int_t nprescales = samp->prescaleJSONv.size();
     for(int iprescale=0; iprescale<nprescales; iprescale++){
+      if(samp->prescaletriggernamev[iprescale] != "HLT_Photon175") continue;
       Lumi_Photon175.push_back(new RunLumiRangeMap());
       Lumi_Photon175.back()->addJSONFile(samp->prescaleJSONv[iprescale]);
+      cout<<samp->prescaleJSONv[iprescale]<<endl;
     }
 
     // loop through files
@@ -318,6 +322,7 @@ void select(const TString conf="samples.conf", // input file
       assert(eventTree);
       eventTree->SetBranchAddress("EVENT_run", &runnum);                        TBranch *runNumBr = eventTree->GetBranch("EVENT_run");
       eventTree->SetBranchAddress("EVENT_event", &evtnum);                      TBranch *evtNumBr = eventTree->GetBranch("EVENT_event");
+      eventTree->SetBranchAddress("EVENT_lumiBlock", &lumiBlock);               TBranch *lumiBlockBr = eventTree->GetBranch("EVENT_lumiBlock");
       //--Photons--
       eventTree->SetBranchAddress("ph_N", &ph_N);                               TBranch *photonNBr = eventTree->GetBranch("ph_N");
       eventTree->SetBranchAddress("ph_pt", &ph_pt);                             TBranch *photonPtBr = eventTree->GetBranch("ph_pt");
@@ -447,11 +452,26 @@ void select(const TString conf="samples.conf", // input file
 	if(index_p == -99) continue;
 	count1++;
 
+	//Trigger pre-scale
+	Int_t tri_prescale = -99;
+	RunLumiRangeMap::RunLumiPairType rl(runnum, lumiBlock);
+	for(int iprescale=0; iprescale<nprescales; iprescale++){
+	  if(Lumi_Photon175[iprescale]->hasRunLumi(rl)){
+	    if(tri_prescale > -99 && tri_prescale != samp->prescalev[iprescale]){
+	      cout<<"Error: Multiple pre-scale conflict"<<endl;
+	      cout<<tri_prescale<<" and "<<samp->prescalev[iprescale]<<" Run: "<<runnum<<" Lumiblock: "<<lumiBlock<<" Evtnum: "<<evtnum<<endl;
+	    }
+	    tri_prescale = samp->prescalev[iprescale];
+	  }
+	}
+	if(tri_prescale == -99)
+	  cout<<"!!!Error: No prescale found!!!"<<endl;
+
 	// Calculate HT (pt>10GeV, |eta|<3)
 	Double_t HT = 0;
 	for(int i=0; i<jetAK8_pt->size(); i++){
 	  if(jetAK8_pt->at(i)>10 && abs(jetAK8_eta->at(i))<3)
-	  HT += jetAK8_pt->at(i);
+	    HT += jetAK8_pt->at(i);
 	}
 
 	// Assigning leading photon and W jet
