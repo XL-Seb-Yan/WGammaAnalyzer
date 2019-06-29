@@ -9,6 +9,7 @@
 #include <TVector2.h>               // 2D vector class
 #include <TMath.h>                  // ROOT math library
 #include <vector>                   // STL vector class
+#include <utility>
 #include <iostream>                 // standard I/O
 #include <iomanip>                  // functions to format standard I/O
 #include <fstream>                  // functions for file I/O
@@ -137,11 +138,11 @@ void select(const TString conf="samples.conf", // input file
   */
 
   // ------------------------Photons------------------------
-  TH1F* hist01pa = new TH1F("WGamma01pa",histotitle+", pt_{#gamma}",48,0,2400); // Pass pre-selection and trigger selection
+  TH1F* hist01pa = new TH1F("WGamma01pa",histotitle+", pt_{#gamma}",48,0,2400); // Pass Trigger + Photon MVAID + Basic jet selection
   TH1F* hist02pa = new TH1F("WGamma02pa",histotitle+", #eta_{#gamma}",50,-5,5);
   TH1F* hist03pa = new TH1F("WGamma03pa",histotitle+", #varphi_{#gamma}",50,-3.14,3.14);
   TH1F* hist04pa = new TH1F("WGamma04pa",histotitle+", E_{#gamma}",48,0,2400);
-  TH1F* hist05pa = new TH1F("WGamma05pa",histotitle+", cos(#theta^*)_{#gamma}",50,0,1);
+  TH1F* hist05pa = new TH1F("WGamma05pa",histotitle+", cos(#theta^{*})_{#gamma}",50,0,1);
   TH1F* hist06pa = new TH1F("WGamma06pa",histotitle+", H/E_{#gamma}",50,0,1);
   TH1F *hist07pa = new TH1F("WGamma07pa",histotitle+", pt/M",50,0,1000);
   TH1F *hist08pa = new TH1F("WGamma08pa",histotitle+", Loose Photon ID",10,-1,3);
@@ -153,11 +154,11 @@ void select(const TString conf="samples.conf", // input file
   TH1F *hist14pa = new TH1F("WGamma14pa",histotitle+", isoCh_{#gamma}",50,0,50);
   TH1F *hist15pa = new TH1F("WGamma15pa",histotitle+", Eletron Veto",10,-1,3);
 
-  TH1F* hist01pb = new TH1F("WGamma01pb",histotitle+", pt_{#gamma}",48,0,2400); // Pass photon mvaID
+  TH1F* hist01pb = new TH1F("WGamma01pb",histotitle+", pt_{#gamma}",48,0,2400); 
   TH1F* hist02pb = new TH1F("WGamma02pb",histotitle+", #eta_{#gamma}",50,-5,5);
   TH1F* hist03pb = new TH1F("WGamma03pb",histotitle+", #varphi_{#gamma}",50,-3.14,3.14);
   TH1F* hist04pb = new TH1F("WGamma04pb",histotitle+", E_{#gamma}",48,0,2400);
-  TH1F* hist05pb = new TH1F("WGamma05pb",histotitle+", cos(#theta^*)_{#gamma}",50,0,1);
+  TH1F* hist05pb = new TH1F("WGamma05pb",histotitle+", cos(#theta^{*})_{#gamma}",50,0,1);
   TH1F* hist06pb = new TH1F("WGamma06pb",histotitle+", H/E_{#gamma}",50,0,1);
   TH1F *hist07pb = new TH1F("WGamma07pb",histotitle+", pt/M",50,0,1000);
   TH1F *hist08pb = new TH1F("WGamma08pb",histotitle+", Loose Photon ID",10,-1,3);
@@ -169,15 +170,29 @@ void select(const TString conf="samples.conf", // input file
   TH1F *hist14pb = new TH1F("WGamma14pb",histotitle+", isoCh_{#gamma}",50,0,50);
   TH1F *hist15pb = new TH1F("WGamma15pb",histotitle+", Eletron Veto",10,-1,3);
   //Jets
-  TH1F* hist01ja = new TH1F("WGamma01ja",histotitle+", pt_{j} (AK8)",48,0,2400);
-  TH1F* hist02ja = new TH1F("WGamma02ja",histotitle+", #eta_{j} (AK8)",50,-5,5);
-  TH1F* hist03ja = new TH1F("WGamma03ja",histotitle+", #varphi_{j} (AK8)",50,-3.14,3.14);
-  TH1F* hist04ja = new TH1F("WGamma04ja",histotitle+", E_{j} (AK8)",48,0,2400);
-  TH1F* hist05ja = new TH1F("WGamma05ja",histotitle+", m_{j} (AK8)",50,0,250);
-  TH1F* hist06ja = new TH1F("WGamma06ja",histotitle+", softdrop m_{j} (AK8)",50,0,250);
-  TH1F* hist07ja = new TH1F("WGamma07ja",histotitle+", HT",100,0,5000);
-  TH1F* hist08ja = new TH1F("WGamma08ja",histotitle+", Loose jet ID",50,-2,2);
-  TH1F* hist09ja = new TH1F("WGamma09ja",histotitle+", Tight jet ID",50,-2,2);
+  TH1F* hist01ja = new TH1F("WGamma01ja",histotitle+", pt_{j} (AK8 Puppi Softdrop)",50,0,2500); // Pass Trigger + Photon MVAID + Basic jet selection
+  TH1F* hist02ja = new TH1F("WGamma02ja",histotitle+", #eta_{j} (AK8 Puppi Softdrop)",50,-5,5);
+  TH1F* hist03ja = new TH1F("WGamma03ja",histotitle+", #varphi_{j} (AK8 Puppi Softdrop)",50,-3.14,3.14);
+  TH1F* hist04ja = new TH1F("WGamma04ja",histotitle+", E_{j} (AK8 Puppi Softdrop)",50,0,8000);
+  TH1F* hist05ja = new TH1F("WGamma05ja",histotitle+", m_{j} (AK8 Puppi Softdrop)",50,60,110);
+  //TH1F* hist05ja = new TH1F("WGamma05ja",histotitle+", m_{j} (AK8 Puppi)",50,0,600);
+  TH1F* hist06ja = new TH1F("WGamma06ja",histotitle+", #tau1 (AK8 Puppi)",50,0,1);
+  TH1F* hist07ja = new TH1F("WGamma07ja",histotitle+", #tau2 (AK8 Puppi)",50,0,1);
+  TH1F* hist08ja = new TH1F("WGamma08ja",histotitle+", #tau2/#tau1 (AK8 Puppi)",50,0,1);
+  TH1F* hist09ja = new TH1F("WGamma09ja",histotitle+", Jet Tight Lepton Veto (AK8 Puppi)",10,-1,3);
+  TH1F* hist10ja = new TH1F("WGamma10ja",histotitle+", Jet Tight ID (AK8 Puppi)",10,-1,3);
+
+  TH1F* hist01jb = new TH1F("WGamma01jb",histotitle+", pt_{j} (AK8 Puppi Softdrop)",50,0,2500);
+  TH1F* hist02jb = new TH1F("WGamma02jb",histotitle+", #eta_{j} (AK8 Puppi Softdrop)",50,-5,5);
+  TH1F* hist03jb = new TH1F("WGamma03jb",histotitle+", #varphi_{j} (AK8 Puppi Softdrop)",50,-3.14,3.14);
+  TH1F* hist04jb = new TH1F("WGamma04jb",histotitle+", E_{j} (AK8 Puppi Softdrop)",50,0,8000);
+  TH1F* hist05jb = new TH1F("WGamma05jb",histotitle+", m_{j} (AK8 Puppi Softdrop)",50,60,110);
+  //TH1F* hist05jb = new TH1F("WGamma05jb",histotitle+", m_{j} (AK8 Puppi)",50,0,600);
+  TH1F* hist06jb = new TH1F("WGamma06jb",histotitle+", #tau1 (AK8 Puppi)",50,0,1);
+  TH1F* hist07jb = new TH1F("WGamma07jb",histotitle+", #tau2 (AK8 Puppi)",50,0,1);
+  TH1F* hist08jb = new TH1F("WGamma08jb",histotitle+", #tau2/#tau1 (AK8 Puppi)",50,0,1);
+  TH1F* hist09jb = new TH1F("WGamma09jb",histotitle+", Jet Tight Lepton Veto (AK8 Puppi)",10,-1,3);
+  TH1F* hist10jb = new TH1F("WGamma10jb",histotitle+", Jet Tight ID (AK8 Puppi)",10,-1,3);
   
   UInt_t count1=0, count2=0, count3=0, count4=0, count5=0, count6=0;
   gStyle->SetOptStat(0);
@@ -235,15 +250,21 @@ void select(const TString conf="samples.conf", // input file
   std::vector<float> *ph_mvaVal = new std::vector<float>();
   std::vector<float> *ph_mvaCat = new std::vector<float>();
   //--Jets(AK8)--
-  Int_t jetAK8_N = -99;
-  std::vector<float> *jetAK8_pt = new std::vector<float>();
-  std::vector<float> *jetAK8_eta = new std::vector<float>();
-  std::vector<float> *jetAK8_phi = new std::vector<float>();
-  std::vector<float> *jetAK8_mass = new std::vector<float>();
-  std::vector<float> *jetAK8_E = new std::vector<float>();
-  std::vector<float> *jetAK8_jec = new std::vector<float>();
-  std::vector<float> *jetAK8_jecUp = new std::vector<float>();
-  std::vector<float> *jetAK8_jecDown = new std::vector<float>();
+  Int_t jetAK8_puppi_N = -99;
+  std::vector<bool>  *jetAK8_puppi_IDTight = new std::vector<bool>();
+  std::vector<bool>  *jetAK8_puppi_IDTightLepVeto = new std::vector<bool>();
+  std::vector<float> *jetAK8_puppi_softdrop_pt = new std::vector<float>();
+  std::vector<float> *jetAK8_puppi_softdrop_eta = new std::vector<float>();
+  std::vector<float> *jetAK8_puppi_softdrop_phi = new std::vector<float>();
+  std::vector<float> *jetAK8_puppi_softdrop_mass = new std::vector<float>();
+  std::vector<float> *jetAK8_puppi_softdrop_E = new std::vector<float>();
+  std::vector<float> *jetAK8_puppi_tau1 = new std::vector<float>();
+  std::vector<float> *jetAK8_puppi_tau2 = new std::vector<float>();
+  
+  /*
+  std::vector<float> *jetAK8_puppi_jec = new std::vector<float>();
+  std::vector<float> *jetAK8_puppi_jecUp = new std::vector<float>();
+  std::vector<float> *jetAK8_puppi_jecDown = new std::vector<float>();
   std::vector<bool>  *jetAK8_IDLoose = new std::vector<bool>();
   std::vector<bool>  *jetAK8_IDTight = new std::vector<bool>();
   std::vector<bool>  *jetAK8_IDTightLepVeto = new std::vector<bool>();
@@ -257,6 +278,7 @@ void select(const TString conf="samples.conf", // input file
   std::vector<float> *jetAK8_jer_sf_up = new std::vector<float>();
   std::vector<float> *jetAK8_jer_sf_down = new std::vector<float>();
   std::vector<float> *jetAK8_jer_sigma_pt = new std::vector<float>();
+  */
   //--Jets(AK8 pruned)
   /*
   std::vector<float> *jetAK8_chs_pruned_mass = new std::vector<float>();
@@ -266,11 +288,13 @@ void select(const TString conf="samples.conf", // input file
   std::vector<float> *jetAK8_chs_pruned_jecDown = new std::vector<float>();
   */
   //--Jets(AK8 softdrop)
+  /*
   std::vector<float> *jetAK8_softdrop_mass = new std::vector<float>();
   std::vector<float> *jetAK8_softdrop_massCorr = new std::vector<float>();
   std::vector<float> *jetAK8_softdrop_jec = new std::vector<float>();
   std::vector<float> *jetAK8_softdrop_jecUp = new std::vector<float>();
   std::vector<float> *jetAK8_softdrop_jecDown = new std::vector<float>();
+  */
   //--Jets(AK8 puppi)
   /*
   UInt_t* jetAK8_puppi_N = new UInt_t();
@@ -287,7 +311,6 @@ void select(const TString conf="samples.conf", // input file
   */
   //Trigger
   std::map<std::string,bool> *HLT_isFired = new std::map<std::string,bool>();
-  //std::vector<TriggerObjects>   *muon_hltMatchBits = new std::vector<std::bitset<256> >();
   
   // loop over samples
   TTree* eventTree = 0;
@@ -296,6 +319,7 @@ void select(const TString conf="samples.conf", // input file
     cout<<"begin loop over files"<<endl;
     TStopwatch stopwatch;
 
+    /*
     // Lumi-section
     vector<RunLumiRangeMap*> Lumi_Photon175;
     Int_t nprescales = samp->prescaleJSONv.size();
@@ -305,13 +329,18 @@ void select(const TString conf="samples.conf", // input file
       Lumi_Photon175.back()->addJSONFile(samp->prescaleJSONv[iprescale]);
       cout<<samp->prescaleJSONv[iprescale]<<endl;
     }
+    */
 
     // loop through files
     const UInt_t nfiles = samp->fnamev.size();
-    for(UInt_t ifile=0; ifile<nfiles; ifile++) {  
+    for(UInt_t ifile=0; ifile<nfiles; ifile++) {
+
+      // Initialize counter
+      count1 = 0;
+      count2 = 0;
       
       // Read input file and get the TTrees
-      cout << "Processing " << samp->fnamev[ifile]; cout.flush();
+      cout << "Processing " << samp->fnamev[ifile]<<endl; cout.flush();
       TFile *infile = TFile::Open(samp->fnamev[ifile]);
       assert(infile);
 
@@ -329,11 +358,11 @@ void select(const TString conf="samples.conf", // input file
       eventTree->SetBranchAddress("ph_eta", &ph_eta);                           TBranch *photonEtaBr = eventTree->GetBranch("ph_eta");
       eventTree->SetBranchAddress("ph_phi", &ph_phi);                           TBranch *photonPhiBr = eventTree->GetBranch("ph_phi");
       eventTree->SetBranchAddress("ph_e", &ph_E);                               TBranch *photonEBr = eventTree->GetBranch("ph_e");
-      eventTree->SetBranchAddress("ph_et", &ph_Et);                             TBranch *photonEtBr = eventTree->GetBranch("ph_et");
-      eventTree->SetBranchAddress("ph_mass", &ph_m);                            TBranch *photonMBr = eventTree->GetBranch("ph_mass");
-      eventTree->SetBranchAddress("ph_superCluster_eta", &ph_superCluster_eta); TBranch *photonSupCluEtaBr = eventTree->GetBranch("ph_superCluster_eta");
-      eventTree->SetBranchAddress("ph_superCluster_phi", &ph_superCluster_phi); TBranch *photonSupCluPhiBr = eventTree->GetBranch("ph_superCluster_phi");
-      eventTree->SetBranchAddress("ph_sigmaIetaIeta", &ph_sigmaIetaIeta);       TBranch *photonSigmaIEtaIEtaBr = eventTree->GetBranch("ph_sigmaIetaIeta");
+      //eventTree->SetBranchAddress("ph_et", &ph_Et);                             TBranch *photonEtBr = eventTree->GetBranch("ph_et");
+      //eventTree->SetBranchAddress("ph_mass", &ph_m);                            TBranch *photonMBr = eventTree->GetBranch("ph_mass");
+      //eventTree->SetBranchAddress("ph_superCluster_eta", &ph_superCluster_eta); TBranch *photonSupCluEtaBr = eventTree->GetBranch("ph_superCluster_eta");
+      //eventTree->SetBranchAddress("ph_superCluster_phi", &ph_superCluster_phi); TBranch *photonSupCluPhiBr = eventTree->GetBranch("ph_superCluster_phi");
+      //eventTree->SetBranchAddress("ph_sigmaIetaIeta", &ph_sigmaIetaIeta);       TBranch *photonSigmaIEtaIEtaBr = eventTree->GetBranch("ph_sigmaIetaIeta");
       eventTree->SetBranchAddress("ph_hOverE", &ph_hOverE);                     TBranch *photonHoverEBr = eventTree->GetBranch("ph_hOverE");
       eventTree->SetBranchAddress("ph_isoGamma", &ph_isoGamma);                 TBranch *photonIsoGammaBr = eventTree->GetBranch("ph_isoGamma");
       eventTree->SetBranchAddress("ph_isoCh", &ph_isoCh);                       TBranch *photonIsoChBr = eventTree->GetBranch("ph_isoCh");
@@ -343,8 +372,19 @@ void select(const TString conf="samples.conf", // input file
       eventTree->SetBranchAddress("ph_passTightId", &ph_passTightId);           TBranch *photonPassTightIdBr = eventTree->GetBranch("ph_passTightId");
       eventTree->SetBranchAddress("ph_mvaVal", &ph_mvaVal);                     TBranch *photonMvaValBr = eventTree->GetBranch("ph_mvaVal");
       eventTree->SetBranchAddress("ph_mvaCat", &ph_mvaCat);                     TBranch *photonMvaCatBr = eventTree->GetBranch("ph_mvaCat");
+      //--Jets (AK8 PUPPI)
+      eventTree->SetBranchAddress("jetAK8_puppi_N", &jetAK8_puppi_N);                                   TBranch *jetAK8PuppiNBr = eventTree->GetBranch("jetAK8_puppi_N");
+      eventTree->SetBranchAddress("jetAK8_puppi_softdrop_pt", &jetAK8_puppi_softdrop_pt);               TBranch *jetAK8PuppiSoftdropPtBr = eventTree->GetBranch("jetAK8_puppi_softdrop_pt");
+      eventTree->SetBranchAddress("jetAK8_puppi_softdrop_eta", &jetAK8_puppi_softdrop_eta);             TBranch *jetAK8PuppiSoftdropEtaBr = eventTree->GetBranch("jetAK8_puppi_softdrop_eta");
+      eventTree->SetBranchAddress("jetAK8_puppi_softdrop_phi", &jetAK8_puppi_softdrop_phi);             TBranch *jetAK8PuppiSoftdropPhiBr = eventTree->GetBranch("jetAK8_puppi_softdrop_phi");
+      eventTree->SetBranchAddress("jetAK8_puppi_softdrop_e", &jetAK8_puppi_softdrop_E);                 TBranch *jetAK8PuppiSoftdropEBr = eventTree->GetBranch("jetAK8_puppi_softdrop_e");
+      eventTree->SetBranchAddress("jetAK8_puppi_softdrop_mass", &jetAK8_puppi_softdrop_mass);           TBranch *jetAK8PuppiSoftdropMBr = eventTree->GetBranch("jetAK8_puppi_softdrop_mass");
+      eventTree->SetBranchAddress("jetAK8_puppi_tau1", &jetAK8_puppi_tau1);                             TBranch *jetAK8PuppiTau1Br = eventTree->GetBranch("jetAK8_puppi_tau1");
+      eventTree->SetBranchAddress("jetAK8_puppi_tau2", &jetAK8_puppi_tau2);                             TBranch *jetAK8PuppiTau2Br = eventTree->GetBranch("jetAK8_puppi_tau2");
+      eventTree->SetBranchAddress("jetAK8_puppi_IDTight", &jetAK8_puppi_IDTight);                       TBranch *jetAK8PuppiIDTightBr = eventTree->GetBranch("jetAK8_puppi_IDTight");
+      eventTree->SetBranchAddress("jetAK8_puppi_IDTightLepVeto", &jetAK8_puppi_IDTightLepVeto);         TBranch *jetAK8PuppiIDTightLepVetoBr = eventTree->GetBranch("jetAK8_puppi_IDTightLepVeto");
+      /*
       //--Jets(AK8 softdrop)
-      eventTree->SetBranchAddress("jetAK8_N", &jetAK8_N);                                 TBranch *jetAK8NBr = eventTree->GetBranch("jetAK8_N");
       eventTree->SetBranchAddress("jetAK8_pt", &jetAK8_pt);                               TBranch *jetAK8PtBr = eventTree->GetBranch("jetAK8_pt");
       eventTree->SetBranchAddress("jetAK8_eta", &jetAK8_eta);                             TBranch *jetAK8EtaBr = eventTree->GetBranch("jetAK8_eta");
       eventTree->SetBranchAddress("jetAK8_phi", &jetAK8_phi);                             TBranch *jetAK8PhiBr = eventTree->GetBranch("jetAK8_phi");
@@ -354,9 +394,8 @@ void select(const TString conf="samples.conf", // input file
       eventTree->SetBranchAddress("jetAK8_jecUp", &jetAK8_jecUp);                         TBranch *jetAK8JecUpBr = eventTree->GetBranch("jetAK8_jecUp");
       eventTree->SetBranchAddress("jetAK8_jecDown", &jetAK8_jecDown);                     TBranch *jetAK8JecDownBr = eventTree->GetBranch("jetAK8_jecDown");
       eventTree->SetBranchAddress("jetAK8_IDLoose", &jetAK8_IDLoose);                     TBranch *jetAK8IdLooseBr = eventTree->GetBranch("jetAK8_IDLoose");
-      eventTree->SetBranchAddress("jetAK8_IDTight", &jetAK8_IDTight);                     TBranch *jetAK8IdTightBr = eventTree->GetBranch("jetAK8_IDTight");
-      eventTree->SetBranchAddress("jetAK8_IDTightLepVeto", &jetAK8_IDTightLepVeto);       TBranch *jetAK8IDTightLepVetoBr = eventTree->GetBranch("jetAK8_IDTightLepVeto");
       eventTree->SetBranchAddress("jetAK8_charge", &jetAK8_charge);                       TBranch *jetAK8ChargeBr = eventTree->GetBranch("jetAK8_charge");
+      */
 
       //MC specific variables------------------------------------------------
       /*
@@ -371,11 +410,13 @@ void select(const TString conf="samples.conf", // input file
       eventTree->SetBranchAddress("jetAK8_jer_sigma_pt", &jetAK8_jer_sigma_pt);           TBranch *jetAK8Jer_sigma_ptBr = eventTree->GetBranch("jetAK8_jer_sigma_pt");
       */
       //----------------------------------------------------------------------
+      /*
       eventTree->SetBranchAddress("jetAK8_softdrop_mass", &jetAK8_softdrop_mass);         TBranch *jetAK8SoftdropMBr = eventTree->GetBranch("jetAK8_softdrop_mass");
       eventTree->SetBranchAddress("jetAK8_softdrop_massCorr", &jetAK8_softdrop_massCorr); TBranch *jetAK8SoftdropMCorrBr = eventTree->GetBranch("jetAK8_softdrop_massCorr");
       eventTree->SetBranchAddress("jetAK8_softdrop_jec", &jetAK8_softdrop_jec);           TBranch *jetAK8SoftdropJecBr = eventTree->GetBranch("jetAK8_softdrop_jec");
       eventTree->SetBranchAddress("jetAK8_softdrop_jecUp", &jetAK8_softdrop_jecUp);       TBranch *jetAK8SoftdropJecUpBr = eventTree->GetBranch("jetAK8_softdrop_jecUp");
       eventTree->SetBranchAddress("jetAK8_softdrop_jecDown", &jetAK8_softdrop_jecDown);   TBranch *jetAK8SoftdropJecDownBr = eventTree->GetBranch("jetAK8_softdrop_jecDown");
+      */
       eventTree->SetBranchAddress("HLT_isFired", &HLT_isFired);                           TBranch *HLTisFiredBr = eventTree->GetBranch("HLT_isFired");
 
       for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
@@ -383,16 +424,17 @@ void select(const TString conf="samples.conf", // input file
 	// Get Events
 	runNumBr->GetEntry(ientry);
 	evtNumBr->GetEntry(ientry);
+	lumiBlockBr->GetEntry(ientry);
 	photonNBr->GetEntry(ientry);
 	ph_pt->clear();                photonPtBr->GetEntry(ientry);
 	ph_eta->clear();               photonEtaBr->GetEntry(ientry);
 	ph_phi->clear();               photonPhiBr->GetEntry(ientry);
 	ph_E->clear();                 photonEBr->GetEntry(ientry);
-	ph_Et->clear();                photonEtBr->GetEntry(ientry);
-	ph_m->clear();                 photonMBr->GetEntry(ientry);
-	ph_superCluster_eta->clear();  photonSupCluEtaBr->GetEntry(ientry);
-	ph_superCluster_phi->clear();  photonSupCluPhiBr->GetEntry(ientry);
-	ph_sigmaIetaIeta->clear();     photonSigmaIEtaIEtaBr->GetEntry(ientry);
+	//ph_Et->clear();                photonEtBr->GetEntry(ientry);
+	//ph_m->clear();                 photonMBr->GetEntry(ientry);
+	//ph_superCluster_eta->clear();  photonSupCluEtaBr->GetEntry(ientry);
+	//ph_superCluster_phi->clear();  photonSupCluPhiBr->GetEntry(ientry);
+	//ph_sigmaIetaIeta->clear();     photonSigmaIEtaIEtaBr->GetEntry(ientry);
 	ph_hOverE->clear();            photonHoverEBr->GetEntry(ientry);
 	ph_isoGamma->clear();          photonIsoGammaBr->GetEntry(ientry);
 	ph_isoCh->clear();             photonIsoChBr->GetEntry(ientry);
@@ -402,19 +444,16 @@ void select(const TString conf="samples.conf", // input file
 	ph_passTightId->clear();       photonPassTightIdBr->GetEntry(ientry);
 	ph_mvaVal->clear();            photonMvaValBr->GetEntry(ientry);
 	ph_mvaCat->clear();            photonMvaCatBr->GetEntry(ientry);
-	jetAK8NBr->GetEntry(ientry);
-	jetAK8_pt->clear();               jetAK8PtBr->GetEntry(ientry);
-	jetAK8_eta->clear();              jetAK8EtaBr->GetEntry(ientry);
-	jetAK8_phi->clear();              jetAK8PhiBr->GetEntry(ientry);
-	jetAK8_mass->clear();             jetAK8MBr->GetEntry(ientry);
-	jetAK8_E->clear();                jetAK8EBr->GetEntry(ientry);
-	jetAK8_jec->clear();              jetAK8JecBr->GetEntry(ientry);
-	jetAK8_jecUp->clear();            jetAK8JecUpBr->GetEntry(ientry);
-	jetAK8_jecDown->clear();          jetAK8JecDownBr->GetEntry(ientry);
-	jetAK8_IDLoose->clear();          jetAK8IdLooseBr->GetEntry(ientry);
-	jetAK8_IDTight->clear();          jetAK8IdTightBr->GetEntry(ientry);
-	jetAK8_IDTightLepVeto->clear();   jetAK8IDTightLepVetoBr->GetEntry(ientry);
-	jetAK8_charge->clear();           jetAK8ChargeBr->GetEntry(ientry);
+	jetAK8PuppiNBr->GetEntry(ientry);
+	jetAK8_puppi_softdrop_pt->clear();               jetAK8PuppiSoftdropPtBr->GetEntry(ientry);
+	jetAK8_puppi_softdrop_eta->clear();              jetAK8PuppiSoftdropEtaBr->GetEntry(ientry);
+	jetAK8_puppi_softdrop_phi->clear();              jetAK8PuppiSoftdropPhiBr->GetEntry(ientry);
+	jetAK8_puppi_softdrop_mass->clear();             jetAK8PuppiSoftdropMBr->GetEntry(ientry);
+	jetAK8_puppi_softdrop_E->clear();                jetAK8PuppiSoftdropEBr->GetEntry(ientry);
+	jetAK8_puppi_tau1->clear();             jetAK8PuppiTau1Br->GetEntry(ientry);
+	jetAK8_puppi_tau2->clear();             jetAK8PuppiTau2Br->GetEntry(ientry);
+	jetAK8_puppi_IDTight->clear();          jetAK8PuppiIDTightBr->GetEntry(ientry);
+	jetAK8_puppi_IDTightLepVeto->clear();   jetAK8PuppiIDTightLepVetoBr->GetEntry(ientry);
 	//MC specific variables-----------------------------
 	/*
 	jetAK8_partonFlavour->clear();    jetAK8PartonFlavourBr->GetEntry(ientry);
@@ -428,30 +467,29 @@ void select(const TString conf="samples.conf", // input file
 	jetAK8_jer_sigma_pt->clear();     jetAK8Jer_sigma_ptBr->GetEntry(ientry);
 	*/
 	//--------------------------------------------------
+	/*
 	jetAK8_softdrop_mass->clear();    jetAK8SoftdropMBr->GetEntry(ientry);
 	jetAK8_softdrop_massCorr->clear();jetAK8SoftdropMCorrBr->GetEntry(ientry);
 	jetAK8_softdrop_jec->clear();     jetAK8SoftdropJecBr->GetEntry(ientry);
 	jetAK8_softdrop_jecUp->clear();   jetAK8SoftdropJecUpBr->GetEntry(ientry);
 	jetAK8_softdrop_jecDown->clear(); jetAK8SoftdropJecDownBr->GetEntry(ientry);
+	*/
 	HLTisFiredBr->GetEntry(ientry);
 
 	//Only study events contain photons (EM objects here) and jets -- DATA -- 1st skimming
-	if(ph_N < 1 || jetAK8_N <1) continue;
+	if(ph_N < 1 || jetAK8_puppi_N <1) continue;
 
-	// Locate the first mvaID photon in EM objects array (highest pt) and kinetic cut
-	// See https://twiki.cern.ch/twiki/bin/view/CMS/MultivariatePhotonIdentificationRun2
-	Int_t index_p = -99;
-	for(int i=0; i<ph_pt->size(); i++){
-	  if(ph_passEleVeto->at(i) != true) continue;
-	  if(abs(ph_eta->at(i)) > 2.4) continue;
-	  if(abs(ph_eta->at(i)) > 1.4442 && abs(ph_eta->at(i))< 1.566) continue;
-	  if((ph_mvaCat->at(i) == 0 && ph_mvaVal->at(i)< -0.02) || (ph_mvaCat->at(i) == 1 && ph_mvaVal->at(i)< -0.26)) continue;
-	  index_p = i;
-	  break;
-	} 
-	if(index_p == -99) continue;
-	count1++;
+	//-------------------------------------Trigger----------------------------------------------
+	// HLT Trigger decision
+	bool passTrig = false;
+	for(map<string,bool>::iterator it = HLT_isFired->begin(); it != HLT_isFired->end(); ++it) {
+	  if (it->first.find("HLT_Photon200_v") != std::string::npos && it->second == 1){
+	    passTrig = true;
+	  }
+	}
+	if (!passTrig) continue;
 
+	/*
 	//Trigger pre-scale
 	Int_t tri_prescale = -99;
 	RunLumiRangeMap::RunLumiPairType rl(runnum, lumiBlock);
@@ -466,21 +504,100 @@ void select(const TString conf="samples.conf", // input file
 	}
 	if(tri_prescale == -99)
 	  cout<<"!!!Error: No prescale found!!!"<<endl;
+	*/
+	
+	//-----------------------------------Photon-----------------------------------------------------
+	// Photon selection Flags
+	Bool_t pass_p1 = false;
+	Bool_t pass_p2 = false;
 
-	// Calculate HT (pt>10GeV, |eta|<3)
-	Double_t HT = 0;
-	for(int i=0; i<jetAK8_pt->size(); i++){
-	  if(jetAK8_pt->at(i)>10 && abs(jetAK8_eta->at(i))<3)
-	    HT += jetAK8_pt->at(i);
-	}
+	// Locate the first mvaID photon in EM objects array (highest pt) and kinetic cut
+	// See https://twiki.cern.ch/twiki/bin/view/CMS/MultivariatePhotonIdentificationRun2
+	Int_t index_p = -99;
+	for(int i=0; i<ph_pt->size(); i++){
+	  if(ph_passEleVeto->at(i) != true) continue;
+	  if(abs(ph_eta->at(i)) > 2.4) continue;
+	  if(abs(ph_eta->at(i)) > 1.4442 && abs(ph_eta->at(i))< 1.566) continue;
+	  if((ph_mvaCat->at(i) == 0 && ph_mvaVal->at(i)< -0.02) || (ph_mvaCat->at(i) == 1 && ph_mvaVal->at(i)< -0.26)) continue;
+	  index_p = i;
+	  break;
+	} 
+	if(index_p == -99) continue;
+	count1++;
+	pass_p1 = true;
+	pass_p2 = true;
 
-	// Assigning leading photon and W jet
-	TLorentzVector v_j, v_p, v_sys;
-	v_j.SetPtEtaPhiE(jetAK8_pt->at(0), jetAK8_eta->at(0), jetAK8_phi->at(0), jetAK8_E->at(0));
+	// Assigning leading photon
+	TLorentzVector v_p;
 	v_p.SetPtEtaPhiE(ph_pt->at(index_p), ph_eta->at(index_p), ph_phi->at(index_p), ph_E->at(index_p));
+
+	//--------------------------------------Jet----------------------------------------------------
+
+	// Jet selection Flags
+	Bool_t pass_j1 = false;
+	Bool_t pass_j2 = false;
+	
+	// Calculate HT (pt>10GeV, |eta|<3)
+	//Double_t HT = 0;
+	//for(int i=0; i<jetAK8_pt->size(); i++){
+	//if(jetAK8_pt->at(i)>10 && abs(jetAK8_eta->at(i))<3)
+	//HT += jetAK8_pt->at(i);
+	//}
+	
+	//Jet tight ID
+	/*Leading jet selection - not in use currently
+	Int_t index_j = -99;
+	for(int i=0; i<jetAK8_puppi_pt->size(); i++){
+	  if(jetAK8_puppi_IDTightLepVeto->at(i) != true) continue;
+	  if(jetAK8_puppi_IDTight->at(i) != true) continue;
+	  if(jetAK8_puppi_pt->at(i) < 200) continue;
+	  TLorentzVector v_jtemp;
+	  v_jtemp.SetptEtaPhiE(jetAK8_puppi_pt->at(i),jetAK8_puppi_eta->at(i),jetAK8_puppi_phi->at(i),jetAK8_puppi_E->at(i));
+	  if(v_jtemp.DeltaR(v_p) < 0.8) continue;
+	  index_j = i;
+	  break;
+	} 
+	if(index_j == -99) continue;
+	count2++;
+	*/
+
+	// Selection
+	Int_t index_j = -99;
+	Double_t mass_diff = 99999;
+	for(int i=0; i<jetAK8_puppi_softdrop_pt->size(); i++){
+	  //if(jetAK8_puppi_IDTightLepVeto->at(i) != true) continue;
+	  //if(jetAK8_puppi_IDTight->at(i) != true) continue;
+	  if(jetAK8_puppi_softdrop_pt->at(i) < 200) continue;
+	  TLorentzVector v_temp1;
+	  v_temp1.SetPtEtaPhiE(jetAK8_puppi_softdrop_pt->at(i),jetAK8_puppi_softdrop_eta->at(i),jetAK8_puppi_softdrop_phi->at(i),jetAK8_puppi_softdrop_E->at(i));
+	  if(v_temp1.DeltaR(v_p) < 0.8) continue;
+	  if(abs(jetAK8_puppi_softdrop_mass->at(i) - 80.379) < mass_diff){
+	    mass_diff = abs(jetAK8_puppi_softdrop_mass->at(i) - 80.379);
+	    index_j = i;
+	  }
+	}
+	if(index_j == -99) continue;
+	pass_j1 = true;
+
+	// N-subjettiness
+	Double_t tau21 = jetAK8_puppi_tau2->at(index_j) / jetAK8_puppi_tau1->at(index_j);	
+
+	// Assigning candidate jet
+	TLorentzVector v_j;
+	v_j.SetPtEtaPhiE(jetAK8_puppi_softdrop_pt->at(index_j), jetAK8_puppi_softdrop_eta->at(index_j), jetAK8_puppi_softdrop_phi->at(index_j), jetAK8_puppi_softdrop_E->at(index_j));
+
+	// Tight Selection
+	// Tau21: https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetWtagging
+	Bool_t tau21_cut = (tau21 < 0.45);
+	Bool_t mass_range = (jetAK8_puppi_softdrop_mass->at(index_j) > 65 && jetAK8_puppi_softdrop_mass->at(index_j) < 105);
+	pass_j2 = (tau21_cut && mass_range);
+	if(pass_j2)
+	  count2++;
+
+	//-----------------------------------------W+Gamma system--------------------------------------------------
+	TLorentzVector v_sys;
 	v_sys = v_j + v_p;
 	
-
 	// Calculate pt/m
 	Double_t invmass = 0;
 	Double_t ptoverM = 0;
@@ -493,62 +610,66 @@ void select(const TString conf="samples.conf", // input file
 	v_boosted_p = v_p;
         v_boosted_p.Boost(-(v_sys.BoostVector()));
         cosThetaStar = abs(v_boosted_p.Pz()/v_boosted_p.P());
-
-	hist01pa->Fill(ph_pt->at(index_p));
-	hist02pa->Fill(ph_eta->at(index_p));
-	hist03pa->Fill(ph_phi->at(index_p));
-	hist04pa->Fill(ph_E->at(index_p));
-	hist05pa->Fill(cosThetaStar);
-	hist06pa->Fill(ph_hOverE->at(index_p));
-	hist07pa->Fill(ptoverM);
-	hist08pa->Fill(ph_passLooseId->at(index_p));
-	hist09pa->Fill(ph_passMediumId->at(index_p));
-	hist10pa->Fill(ph_passTightId->at(index_p));
-	hist11pa->Fill(ph_mvaVal->at(index_p));
-	hist12pa->Fill(ph_mvaCat->at(index_p));
-	hist13pa->Fill(ph_isoGamma->at(index_p));
-	hist14pa->Fill(ph_isoCh->at(index_p));
-	hist15pa->Fill(ph_passEleVeto->at(index_p));
-
-	// HLT Trigger decision
-	bool passTrig = false;
-	for(map<string,bool>::iterator it = HLT_isFired->begin(); it != HLT_isFired->end(); ++it) {
-	  if (it->first.find("HLT_Photon200_v") != std::string::npos && it->second == 1){
-	    passTrig = true;
-	  }	  
+	
+	// Passing p1 and j1 selection
+	if(pass_p1 && pass_j1){
+	  hist01pa->Fill(ph_pt->at(index_p));
+	  hist02pa->Fill(ph_eta->at(index_p));
+	  hist03pa->Fill(ph_phi->at(index_p));
+	  hist04pa->Fill(ph_E->at(index_p));
+	  hist05pa->Fill(cosThetaStar);
+	  hist06pa->Fill(ph_hOverE->at(index_p));
+	  hist07pa->Fill(ptoverM);
+	  hist08pa->Fill(ph_passLooseId->at(index_p));
+	  hist09pa->Fill(ph_passMediumId->at(index_p));
+	  hist10pa->Fill(ph_passTightId->at(index_p));
+	  hist11pa->Fill(ph_mvaVal->at(index_p));
+	  hist12pa->Fill(ph_mvaCat->at(index_p));
+	  hist13pa->Fill(ph_isoGamma->at(index_p));
+	  hist14pa->Fill(ph_isoCh->at(index_p));
+	  hist15pa->Fill(ph_passEleVeto->at(index_p));
+	  hist01ja->Fill(jetAK8_puppi_softdrop_pt->at(index_j));
+	  hist02ja->Fill(jetAK8_puppi_softdrop_eta->at(index_j));
+	  hist03ja->Fill(jetAK8_puppi_softdrop_phi->at(index_j));
+	  hist04ja->Fill(jetAK8_puppi_softdrop_E->at(index_j));
+	  hist05ja->Fill(jetAK8_puppi_softdrop_mass->at(index_j));
+	  hist06ja->Fill(jetAK8_puppi_tau1->at(index_j));
+	  hist07ja->Fill(jetAK8_puppi_tau2->at(index_j));
+	  hist08ja->Fill(tau21);
+	  hist09ja->Fill(jetAK8_puppi_IDTightLepVeto->at(index_j));
+	  hist10ja->Fill(jetAK8_puppi_IDTight->at(index_j));
 	}
-	if (!passTrig) continue;
-	count2++;
-
-	// Un-weighted Filling
-	hist01pb->Fill(ph_pt->at(index_p));
-	hist02pb->Fill(ph_eta->at(index_p));
-	hist03pb->Fill(ph_phi->at(index_p));
-	hist04pb->Fill(ph_E->at(index_p));
-	hist05pb->Fill(cosThetaStar);
-	hist06pb->Fill(ph_hOverE->at(index_p));
-	hist07pb->Fill(ptoverM);
-	hist08pb->Fill(ph_passLooseId->at(index_p));
-	hist09pb->Fill(ph_passMediumId->at(index_p));
-	hist10pb->Fill(ph_passTightId->at(index_p));
-	hist11pb->Fill(ph_mvaVal->at(index_p));
-	hist12pb->Fill(ph_mvaCat->at(index_p));
-	hist13pb->Fill(ph_isoGamma->at(index_p));
-	hist14pb->Fill(ph_isoCh->at(index_p));
-	hist15pb->Fill(ph_passEleVeto->at(index_p));
-	hist01ja->Fill(jetAK8_pt->at(0));
-	hist02ja->Fill(jetAK8_eta->at(0));
-	hist03ja->Fill(jetAK8_phi->at(0));
-	hist04ja->Fill(jetAK8_E->at(0));
-	hist05ja->Fill(jetAK8_mass->at(0));
-	hist06ja->Fill(jetAK8_softdrop_mass->at(0));
-	hist07ja->Fill(HT);
-	hist08ja->Fill(jetAK8_IDLoose->at(0));
-	hist09ja->Fill(jetAK8_IDTight->at(0));
+	if(pass_p2 && pass_j2){
+	  hist01pb->Fill(ph_pt->at(index_p));
+	  hist02pb->Fill(ph_eta->at(index_p));
+	  hist03pb->Fill(ph_phi->at(index_p));
+	  hist04pb->Fill(ph_E->at(index_p));
+	  hist05pb->Fill(cosThetaStar);
+	  hist06pb->Fill(ph_hOverE->at(index_p));
+	  hist07pb->Fill(ptoverM);
+	  hist08pb->Fill(ph_passLooseId->at(index_p));
+	  hist09pb->Fill(ph_passMediumId->at(index_p));
+	  hist10pb->Fill(ph_passTightId->at(index_p));
+	  hist11pb->Fill(ph_mvaVal->at(index_p));
+	  hist12pb->Fill(ph_mvaCat->at(index_p));
+	  hist13pb->Fill(ph_isoGamma->at(index_p));
+	  hist14pb->Fill(ph_isoCh->at(index_p));
+	  hist15pb->Fill(ph_passEleVeto->at(index_p));
+	  hist01jb->Fill(jetAK8_puppi_softdrop_pt->at(index_j));
+	  hist02jb->Fill(jetAK8_puppi_softdrop_eta->at(index_j));
+	  hist03jb->Fill(jetAK8_puppi_softdrop_phi->at(index_j));
+	  hist04jb->Fill(jetAK8_puppi_softdrop_E->at(index_j));
+	  hist05jb->Fill(jetAK8_puppi_softdrop_mass->at(index_j));
+	  hist06jb->Fill(jetAK8_puppi_tau1->at(index_j));
+	  hist07jb->Fill(jetAK8_puppi_tau2->at(index_j));
+	  hist08jb->Fill(tau21);
+	  hist09jb->Fill(jetAK8_puppi_IDTightLepVeto->at(index_j));
+	  hist10jb->Fill(jetAK8_puppi_IDTight->at(index_j));
+	}
       }//end of event loop
       cout<<"Number of events in this file: "<<eventTree->GetEntries()<<endl;
-      cout<<"Events passed trigger: "<<count1<<endl;
-      cout<<"Events with tight photon: "<<count2<<endl;
+      cout<<"Events passed photon selection: "<<count1<<endl;
+      cout<<"Events passed jet selection: "<<count2<<endl;
       cout<<double(ifile)/double(nfiles)*100<<" % done with this dataset"<<endl;
       Double_t elapsed_t_file = stopwatch.RealTime() / (ifile+1);
       stopwatch.Start(kFALSE);
@@ -1209,21 +1330,32 @@ SetLineStyle(2); histMC06a->Scale(scale);
   hist13pb->SetLineWidth(2); hist13pb->SetLineColor(2);
   hist14pb->SetLineWidth(2); hist14pb->SetLineColor(2);
   hist15pb->SetLineWidth(2); hist15pb->SetLineColor(2);
-  hist01ja->SetLineWidth(2);
-  hist02ja->SetLineWidth(2);
-  hist03ja->SetLineWidth(2);
-  hist04ja->SetLineWidth(2);
-  hist05ja->SetLineWidth(2);
-  hist06ja->SetLineWidth(2);
-  hist07ja->SetLineWidth(2);
-  hist08ja->SetLineWidth(2);
-  hist09ja->SetLineWidth(2);
   
-  TLegend *legend = new TLegend(0.7,0.85,0.9,0.9);
+  hist01ja->SetLineWidth(2); hist01ja->SetLineColor(4);
+  hist02ja->SetLineWidth(2); hist02ja->SetLineColor(4);
+  hist03ja->SetLineWidth(2); hist03ja->SetLineColor(4);
+  hist04ja->SetLineWidth(2); hist04ja->SetLineColor(4);
+  hist05ja->SetLineWidth(2); hist05ja->SetLineColor(4);
+  hist06ja->SetLineWidth(2); hist06ja->SetLineColor(4);
+  hist07ja->SetLineWidth(2); hist07ja->SetLineColor(4);
+  hist08ja->SetLineWidth(2); hist08ja->SetLineColor(4);
+  hist09ja->SetLineWidth(2); hist09ja->SetLineColor(4);
+  hist01jb->SetLineWidth(2); hist01jb->SetLineColor(2);
+  hist02jb->SetLineWidth(2); hist02jb->SetLineColor(2);
+  hist03jb->SetLineWidth(2); hist03jb->SetLineColor(2);
+  hist04jb->SetLineWidth(2); hist04jb->SetLineColor(2);
+  hist05jb->SetLineWidth(2); hist05jb->SetLineColor(2);
+  hist06jb->SetLineWidth(2); hist06jb->SetLineColor(2);
+  hist07jb->SetLineWidth(2); hist07jb->SetLineColor(2);
+  hist08jb->SetLineWidth(2); hist08jb->SetLineColor(2);
+  hist09jb->SetLineWidth(2); hist09jb->SetLineColor(2);
   
+  TLegend *legend = new TLegend(0.6,0.75,0.85,0.85);
+  TAxis *xaxis = NULL;
+  TAxis *yaxis = NULL;
   TCanvas *c01p = new TCanvas("c01p","pt_{#gamma}",1200,900);
-  TAxis *xaxis = hist01pa->GetXaxis();
-  TAxis *yaxis = hist01pa->GetYaxis();
+  xaxis = hist01pa->GetXaxis();
+  yaxis = hist01pa->GetYaxis();
   xaxis->SetTitle("pt_{#gamma} (GeV)");
   yaxis->SetTitle("Entries / 50 GeV");
   yaxis->SetTitleOffset(1.3);
@@ -1234,8 +1366,8 @@ SetLineStyle(2); histMC06a->Scale(scale);
   hist01pa->Draw("HIST");
   hist01pb->Draw("SAME");
   legend->Clear();
-  legend->AddEntry(hist01pa,histotitle+" mvaID","f");
-  legend->AddEntry(hist01pb,histotitle+" HLT_Photon200","f");
+  legend->AddEntry(hist01pa,histotitle,"f");
+  legend->AddEntry(hist01pb,histotitle+" Pass Selection","f");
   legend->Draw();
   c01p->Print("p_pt.png");
 
@@ -1252,8 +1384,8 @@ SetLineStyle(2); histMC06a->Scale(scale);
   hist02pa->Draw("HIST");
   hist02pb->Draw("SAME");
   legend->Clear();
-  legend->AddEntry(hist02pa,histotitle+" mvaID","f");
-  legend->AddEntry(hist02pb,histotitle+" HLT_Photon200","f");
+  legend->AddEntry(hist02pa,histotitle ,"f");
+  legend->AddEntry(hist02pb,histotitle+" Pass Selection","f");
   legend->Draw();
   c02p->Print("p_eta.png");
 
@@ -1270,8 +1402,8 @@ SetLineStyle(2); histMC06a->Scale(scale);
   hist03pa->Draw("HIST");
   hist03pb->Draw("SAME");
   legend->Clear();
-  legend->AddEntry(hist03pa,histotitle+" mvaID","f");
-  legend->AddEntry(hist03pb,histotitle+" HLT_Photon200","f");
+  legend->AddEntry(hist03pa,histotitle ,"f");
+  legend->AddEntry(hist03pb,histotitle+" Pass Selection","f");
   legend->Draw();
   c03p->Print("p_phi.png");
 
@@ -1288,8 +1420,8 @@ SetLineStyle(2); histMC06a->Scale(scale);
   hist04pa->Draw("HIST");
   hist04pb->Draw("SAME");
   legend->Clear();
-  legend->AddEntry(hist04pa,histotitle+" mvaID","f");
-  legend->AddEntry(hist04pb,histotitle+" HLT_Photon200","f");
+  legend->AddEntry(hist04pa,histotitle ,"f");
+  legend->AddEntry(hist04pb,histotitle+" Pass Selection","f");
   legend->Draw();
   c04p->Print("p_e.png");
 
@@ -1306,8 +1438,8 @@ SetLineStyle(2); histMC06a->Scale(scale);
   hist05pa->Draw("HIST");
   hist05pb->Draw("SAME");
   legend->Clear();
-  legend->AddEntry(hist05pa,histotitle+" mvaID","f");
-  legend->AddEntry(hist05pb,histotitle+" HLT_Photon200","f");
+  legend->AddEntry(hist05pa,histotitle ,"f");
+  legend->AddEntry(hist05pb,histotitle+" Pass Selection","f");
   legend->Draw();
   c05p->Print("p_costhetastar.png");
 
@@ -1324,8 +1456,8 @@ SetLineStyle(2); histMC06a->Scale(scale);
   hist06pa->Draw("HIST");
   hist06pb->Draw("SAME");
   legend->Clear();
-  legend->AddEntry(hist06pa,histotitle+" mvaID","f");
-  legend->AddEntry(hist06pb,histotitle+" HLT_Photon200","f");
+  legend->AddEntry(hist06pa,histotitle ,"f");
+  legend->AddEntry(hist06pb,histotitle+" Pass Selection","f");
   legend->Draw();
   c06p->Print("p_hovere.png");
 
@@ -1342,8 +1474,8 @@ SetLineStyle(2); histMC06a->Scale(scale);
   hist07pa->Draw("HIST");
   hist07pb->Draw("SAME");
   legend->Clear();
-  legend->AddEntry(hist07pa,histotitle+" mvaID","f");
-  legend->AddEntry(hist07pb,histotitle+" HLT_Photon200","f");
+  legend->AddEntry(hist07pa,histotitle ,"f");
+  legend->AddEntry(hist07pb,histotitle+" Pass Selection","f");
   legend->Draw();
   c07p->Print("p_PtoverM.png");
 
@@ -1360,8 +1492,8 @@ SetLineStyle(2); histMC06a->Scale(scale);
   hist08pa->Draw("HIST");
   hist08pb->Draw("SAME");
   legend->Clear();
-  legend->AddEntry(hist08pa,histotitle+" mvaID","f");
-  legend->AddEntry(hist08pb,histotitle+" HLT_Photon200","f");
+  legend->AddEntry(hist08pa,histotitle ,"f");
+  legend->AddEntry(hist08pb,histotitle+" Pass Selection","f");
   legend->Draw();
   c08p->Print("p_looseID.png");
 
@@ -1378,8 +1510,8 @@ SetLineStyle(2); histMC06a->Scale(scale);
   hist09pa->Draw("HIST");
   hist09pb->Draw("SAME");
   legend->Clear();
-  legend->AddEntry(hist09pa,histotitle+" mvaID","f");
-  legend->AddEntry(hist09pb,histotitle+" HLT_Photon200","f");
+  legend->AddEntry(hist09pa,histotitle ,"f");
+  legend->AddEntry(hist09pb,histotitle+" Pass Selection","f");
   legend->Draw();
   c09p->Print("p_mediumID.png");
 
@@ -1396,8 +1528,8 @@ SetLineStyle(2); histMC06a->Scale(scale);
   hist10pa->Draw("HIST");
   hist10pb->Draw("SAME");
   legend->Clear();
-  legend->AddEntry(hist10pa,histotitle+" mvaID","f");
-  legend->AddEntry(hist10pb,histotitle+" HLT_Photon200","f");
+  legend->AddEntry(hist10pa,histotitle ,"f");
+  legend->AddEntry(hist10pb,histotitle+" Pass Selection","f");
   legend->Draw();
   c10p->Print("p_tightID.png");
 
@@ -1414,8 +1546,8 @@ SetLineStyle(2); histMC06a->Scale(scale);
   hist11pa->Draw("HIST");
   hist11pb->Draw("SAME");
   legend->Clear();
-  legend->AddEntry(hist11pa,histotitle+" mvaID","f");
-  legend->AddEntry(hist11pb,histotitle+" HLT_Photon200","f");
+  legend->AddEntry(hist11pa,histotitle ,"f");
+  legend->AddEntry(hist11pb,histotitle+" Pass Selection","f");
   legend->Draw();
   c11p->Print("p_mvaVal.png");
 
@@ -1432,8 +1564,8 @@ SetLineStyle(2); histMC06a->Scale(scale);
   hist12pa->Draw("HIST");
   hist12pb->Draw("SAME");
   legend->Clear();
-  legend->AddEntry(hist12pa,histotitle+" mvaID","f");
-  legend->AddEntry(hist12pb,histotitle+" HLT_Photon200","f");
+  legend->AddEntry(hist12pa,histotitle ,"f");
+  legend->AddEntry(hist12pb,histotitle+" Pass Selection","f");
   legend->Draw();
   c12p->Print("p_mvaCat.png");
 
@@ -1450,8 +1582,8 @@ SetLineStyle(2); histMC06a->Scale(scale);
   hist13pa->Draw("HIST");
   hist13pb->Draw("SAME");
   legend->Clear();
-  legend->AddEntry(hist13pa,histotitle+" mvaID","f");
-  legend->AddEntry(hist13pb,histotitle+" HLT_Photon200","f");
+  legend->AddEntry(hist13pa,histotitle ,"f");
+  legend->AddEntry(hist13pb,histotitle+" Pass Selection","f");
   legend->Draw();
   c13p->Print("p_isoGamma.png");
 
@@ -1468,8 +1600,8 @@ SetLineStyle(2); histMC06a->Scale(scale);
   hist14pa->Draw("HIST");
   hist14pb->Draw("SAME");
   legend->Clear();
-  legend->AddEntry(hist14pa,histotitle+" mvaID","f");
-  legend->AddEntry(hist14pb,histotitle+" HLT_Photon200","f");
+  legend->AddEntry(hist14pa,histotitle ,"f");
+  legend->AddEntry(hist14pb,histotitle+" Pass Selection","f");
   legend->Draw();
   c14p->Print("p_isoCh.png");
 
@@ -1485,8 +1617,8 @@ SetLineStyle(2); histMC06a->Scale(scale);
   c15p->cd();
   hist15pa->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist15pa,histotitle+" mvaID","f");
-  legend->AddEntry(hist15pb,histotitle+" HLT_Photon200","f");
+  legend->AddEntry(hist15pa,histotitle ,"f");
+  legend->AddEntry(hist15pb,histotitle+" Pass Selection","f");
   legend->Draw();
   c15p->Print("p_EleVeto.png");
 
@@ -1501,8 +1633,10 @@ SetLineStyle(2); histMC06a->Scale(scale);
   c01j->SetLogy();
   c01j->cd();
   hist01ja->Draw("HIST");
+  hist01jb->Draw("SAME");
   legend->Clear();
   legend->AddEntry(hist01ja,histotitle,"f");
+  legend->AddEntry(hist01jb,histotitle+" Pass Selection","f");
   legend->Draw();
   c01j->Print("j_pt.png");
 
@@ -1516,8 +1650,10 @@ SetLineStyle(2); histMC06a->Scale(scale);
   c02j->SetLogy();
   c02j->cd();
   hist02ja->Draw("HIST");
+  hist02jb->Draw("SAME");
   legend->Clear();
   legend->AddEntry(hist02ja,histotitle,"f");
+  legend->AddEntry(hist02jb,histotitle+" Pass Selection","f");
   legend->Draw();
   c02j->Print("j_eta.png");
 
@@ -1531,8 +1667,10 @@ SetLineStyle(2); histMC06a->Scale(scale);
   c03j->SetLogy();
   c03j->cd();
   hist03ja->Draw("HIST");
+  hist03jb->Draw("SAME");
   legend->Clear();
   legend->AddEntry(hist03ja,histotitle,"f");
+  legend->AddEntry(hist03jb,histotitle+" Pass Selection","f");
   legend->Draw();
   c03j->Print("j_phi.png");
 
@@ -1546,8 +1684,10 @@ SetLineStyle(2); histMC06a->Scale(scale);
   c04j->SetLogy();
   c04j->cd();
   hist04ja->Draw("HIST");
+  hist04jb->Draw("SAME");
   legend->Clear();
   legend->AddEntry(hist04ja,histotitle,"f");
+  legend->AddEntry(hist04jb,histotitle+" Pass Selection","f");
   legend->Draw();
   c04j->Print("j_e.png");
 
@@ -1555,76 +1695,103 @@ SetLineStyle(2); histMC06a->Scale(scale);
   xaxis = hist05ja->GetXaxis();
   yaxis = hist05ja->GetYaxis();
   xaxis->SetTitle("m_{j}");
-  yaxis->SetTitle("Entries / 5 GeV");
+  yaxis->SetTitle("Entries / 10 GeV");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,10000000);
-  c05j->SetLogy();
+  yaxis->SetRangeUser(0,600);
+  //c05j->SetLogy();
   c05j->cd();
   hist05ja->Draw("HIST");
+  hist05jb->Draw("SAME");
   legend->Clear();
   legend->AddEntry(hist05ja,histotitle,"f");
+  legend->AddEntry(hist05jb,histotitle+" Pass Selection","f");
   legend->Draw();
   c05j->Print("j_m.png");
-
-  TCanvas *c06j = new TCanvas("c06j","m_softdrop_{j}",1200,900);
+  
+  TCanvas *c06j = new TCanvas("c06j","#tau1_{j}",1200,900);
   xaxis = hist06ja->GetXaxis();
   yaxis = hist06ja->GetYaxis();
-  xaxis->SetTitle("m_softdrop_{j}");
-  yaxis->SetTitle("Entries / 5 GeV");
+  xaxis->SetTitle("#tau1_{j}");
+  yaxis->SetTitle("Entries / 0.02");
   yaxis->SetTitleOffset(1.3);
   yaxis->SetRangeUser(0.1,10000000);
   c06j->SetLogy();
   c06j->cd();
   hist06ja->Draw("HIST");
+  hist06jb->Draw("SAME");
   legend->Clear();
   legend->AddEntry(hist06ja,histotitle,"f");
+  legend->AddEntry(hist06jb,histotitle+" Pass Selection","f");
   legend->Draw();
-  c06j->Print("j_m_softdrop.png");
+  c06j->Print("j_tau1.png");
 
-  TCanvas *c07j = new TCanvas("c07j","HT",1200,900);
+  TCanvas *c07j = new TCanvas("c07j","#tau2_{j}",1200,900);
   xaxis = hist07ja->GetXaxis();
   yaxis = hist07ja->GetYaxis();
-  xaxis->SetTitle("HT (GeV)");
-  yaxis->SetTitle("Entries / 50 GeV");
+  xaxis->SetTitle("#tau2_{j}");
+  yaxis->SetTitle("Entries / 0.02");
   yaxis->SetTitleOffset(1.3);
   yaxis->SetRangeUser(0.1,10000000);
   c07j->SetLogy();
   c07j->cd();
   hist07ja->Draw("HIST");
+  hist07jb->Draw("SAME");
   legend->Clear();
   legend->AddEntry(hist07ja,histotitle,"f");
+  legend->AddEntry(hist07jb,histotitle+" Pass Selection","f");
   legend->Draw();
-  c07j->Print("HT.png");
+  c07j->Print("j_tau2.png");
 
-  TCanvas *c08j = new TCanvas("c08j","Loose jet ID",1200,900);
+  TCanvas *c08j = new TCanvas("c08j","#tau21_{j}",1200,900);
   xaxis = hist08ja->GetXaxis();
   yaxis = hist08ja->GetYaxis();
-  xaxis->SetTitle("Loose jet ID");
-  yaxis->SetTitle("Entries");
+  xaxis->SetTitle("#tau21_{j}");
+  yaxis->SetTitle("Entries / 0.02");
   yaxis->SetTitleOffset(1.3);
   yaxis->SetRangeUser(0.1,10000000);
   c08j->SetLogy();
   c08j->cd();
   hist08ja->Draw("HIST");
+  hist08jb->Draw("SAME");
   legend->Clear();
   legend->AddEntry(hist08ja,histotitle,"f");
+  legend->AddEntry(hist08jb,histotitle+" Pass Selection","f");
   legend->Draw();
-  c08j->Print("j_looseID.png");
+  c08j->Print("j_tau21.png");
 
-  TCanvas *c09j = new TCanvas("c09j","Tight jet ID",1200,900);
+  TCanvas *c09j = new TCanvas("c09j","TightLepVeto",1200,900);
   xaxis = hist09ja->GetXaxis();
   yaxis = hist09ja->GetYaxis();
-  xaxis->SetTitle("Tight jet ID");
+  xaxis->SetTitle("Tight Lepton Veto");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
   yaxis->SetRangeUser(0.1,10000000);
   c09j->SetLogy();
   c09j->cd();
   hist09ja->Draw("HIST");
+  hist09jb->Draw("SAME");
   legend->Clear();
   legend->AddEntry(hist09ja,histotitle,"f");
+  legend->AddEntry(hist09jb,histotitle+" Pass Selection","f");
   legend->Draw();
-  c09j->Print("j_tightID.png");
+  c09j->Print("j_LepVeto.png");
+
+  TCanvas *c10j = new TCanvas("c10j","Tight jet ID",1200,900);
+  xaxis = hist09ja->GetXaxis();
+  yaxis = hist09ja->GetYaxis();
+  xaxis->SetTitle("Tight jet ID");
+  yaxis->SetTitle("Entries");
+  yaxis->SetTitleOffset(1.3);
+  yaxis->SetRangeUser(0.1,10000000);
+  c10j->SetLogy();
+  c10j->cd();
+  hist10ja->Draw("HIST");
+  hist10jb->Draw("SAME");
+  legend->Clear();
+  legend->AddEntry(hist10ja,histotitle,"f");
+  legend->AddEntry(hist10jb,histotitle+" Pass Selection","f");
+  legend->Draw();
+  c10j->Print("j_tightID.png");
   //Non stacked hist END-------------------------------------------------------------------
 
   gBenchmark->Show("selectWG");

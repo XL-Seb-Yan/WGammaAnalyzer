@@ -60,7 +60,7 @@ void select_trigger(const TString conf="samples.conf", // input file
     cout<<"Wrong data type"<<endl;
 
   //Photons
-  TH1F* hist01pa = new TH1F("WGamma01pa",histotitle+", pt_{#gamma}",60,0,1200); //Pass: Loose ID and EleVeto
+  TH1F* hist01pa = new TH1F("WGamma01pa",histotitle+", pt_{#gamma}",60,0,1200); //Pass: tight ID and EleVeto
   TH1F* hist02pa = new TH1F("WGamma02pa",histotitle+", #eta_{#gamma}",50,-5,5);
   TH1F* hist03pa = new TH1F("WGamma03pa",histotitle+", E_{#gamma}",48,0,2400);
   TH1F* hist04pa = new TH1F("WGamma04pa",histotitle+", Et_{#gamma}",48,0,2400);
@@ -72,7 +72,7 @@ void select_trigger(const TString conf="samples.conf", // input file
   TH1F *hist10pa = new TH1F("WGamma10pa",histotitle+", Photon mvaID Value",10,-1,3);
   TH1F *hist11pa = new TH1F("WGamma11pa",histotitle+", Photon mvaID Category",10,-1,3);
 
-  TH1F* hist01pb = new TH1F("WGamma01pb",histotitle+", pt_{#gamma}",60,0,1200); //Fired trigger 175
+  TH1F* hist01pb = new TH1F("WGamma01pb",histotitle+", pt_{#gamma}",60,0,1200); //Fired trigger 300
   TH1F* hist02pb = new TH1F("WGamma02pb",histotitle+", #eta_{#gamma}",50,-5,5);
   TH1F* hist03pb = new TH1F("WGamma03pb",histotitle+", E_{#gamma}",48,0,2400);
   TH1F* hist04pb = new TH1F("WGamma04pb",histotitle+", Et_{#gamma}",48,0,2400);
@@ -174,6 +174,7 @@ void select_trigger(const TString conf="samples.conf", // input file
     cout<<"begin loop over files"<<endl;
     TStopwatch stopwatch;
 
+    /*
     // Lumi-section
     vector<RunLumiRangeMap*> Lumi_Photon175;
     Int_t nprescales = samp->prescaleJSONv.size();
@@ -183,6 +184,7 @@ void select_trigger(const TString conf="samples.conf", // input file
       Lumi_Photon175.back()->addJSONFile(samp->prescaleJSONv[iprescale]);
       cout<<samp->prescaleJSONv[iprescale]<<endl;
     }
+    */
 
     // loop through files
     const UInt_t nfiles = samp->fnamev.size();
@@ -258,6 +260,7 @@ void select_trigger(const TString conf="samples.conf", // input file
 	if(index_p == -99) continue;
 	count1++;
 
+	/*
 	//Trigger pre-scale
 	Int_t tri_prescale = -99;
 	RunLumiRangeMap::RunLumiPairType rl(runnum, lumiBlock);
@@ -285,11 +288,24 @@ void select_trigger(const TString conf="samples.conf", // input file
 	hist09pa->Fill(ph_passEleVeto->at(index_p),weight);
 	hist10pa->Fill(ph_mvaVal->at(index_p),weight);
 	hist11pa->Fill(ph_mvaCat->at(index_p),weight);
+	*/
+
+	hist01pa->Fill(ph_pt->at(index_p));
+	hist02pa->Fill(ph_eta->at(index_p));
+	hist03pa->Fill(ph_E->at(index_p));
+	hist04pa->Fill(ph_Et->at(index_p));
+	hist05pa->Fill(ph_hOverE->at(index_p));
+	hist06pa->Fill(ph_isoGamma->at(index_p));
+	hist07pa->Fill(ph_isoCh->at(index_p));
+	hist08pa->Fill(ph_passTightId->at(index_p));
+	hist09pa->Fill(ph_passEleVeto->at(index_p));
+	hist10pa->Fill(ph_mvaVal->at(index_p));
+	hist11pa->Fill(ph_mvaCat->at(index_p));
 
 	//Trigger decision
 	bool passTrig = false;
 	for(map<string,bool>::iterator it = HLT_isFired->begin(); it != HLT_isFired->end(); ++it) {
-	  if (it->first.find("HLT_Photon175") != std::string::npos && it->second == 1){
+	  if (it->first.find("HLT_Photon300") != std::string::npos && it->second == 1){
 	    hist01pb->Fill(ph_pt->at(index_p));
 	    hist02pb->Fill(ph_eta->at(index_p));
 	    hist03pb->Fill(ph_E->at(index_p));
@@ -303,7 +319,6 @@ void select_trigger(const TString conf="samples.conf", // input file
 	    hist11pb->Fill(ph_mvaCat->at(index_p));
 	    passTrig = true;
 	  }
-	  /*
 	  if (it->first.find("HLT_Photon200") != std::string::npos && it->second == 1){
 	    hist01pc->Fill(ph_pt->at(index_p));
 	    hist02pc->Fill(ph_eta->at(index_p));
@@ -318,7 +333,6 @@ void select_trigger(const TString conf="samples.conf", // input file
 	    hist11pc->Fill(ph_mvaCat->at(index_p));
 	    passTrig = true;
 	  }
-	  */
 	  /*
 	  if (it->first.find("HLT_Photon150") != std::string::npos && it->second == 1){
 	    hist01pd->Fill(ph_pt->at(index_p));
@@ -353,9 +367,6 @@ void select_trigger(const TString conf="samples.conf", // input file
 	if (!passTrig) continue;
 	count2++;
       }//end of event loop
-      cout<<"Number of events in this file: "<<eventTree->GetEntries()<<endl;
-      cout<<"Events with more than 1 photons: "<<count1<<endl;
-      cout<<"Events passed trigger: "<<count2<<endl;
       cout<<double(ifile)/double(nfiles)*100<<" % done with this dataset"<<endl;
       Double_t elapsed_t_file = stopwatch.RealTime() / (ifile+1);
       stopwatch.Start(kFALSE);
@@ -383,16 +394,14 @@ void select_trigger(const TString conf="samples.conf", // input file
   }//end of sample loop
 
   //Tirgger Efficiency
-  /*
   TEfficiency *Eff1 = new TEfficiency(*hist01pb, *hist01pa);
   TEfficiency *Eff2 = new TEfficiency(*hist01pc, *hist01pa);
-  TEfficiency *Eff3 = new TEfficiency(*hist01pd, *hist01pa);
-  TEfficiency *Eff4 = new TEfficiency(*hist01pe, *hist01pa);
-  */
+  //TEfficiency *Eff3 = new TEfficiency(*hist01pd, *hist01pa);
+  //TEfficiency *Eff4 = new TEfficiency(*hist01pe, *hist01pa);
 
   //Non stacked plots
   TLegend *legend1 = new TLegend(0.6,0.75,0.85,0.85);
-  TLegend *legend2 = new TLegend(0.6,0.7,0.85,0.8);
+  TLegend *legend2 = new TLegend(0.6,0.68,0.85,0.78);
   TAxis *xaxis = NULL;
   TAxis *yaxis = NULL;
 
@@ -403,7 +412,7 @@ void select_trigger(const TString conf="samples.conf", // input file
   yaxis->SetTitle("Entries / 20 GeV");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
-  //yaxis->SetRangeUser(0,0.14);
+  yaxis->SetRangeUser(0.5,10000000);
   c01->SetLogy();
   c01->cd();
   hist01pa->SetLineWidth(2);
@@ -415,18 +424,20 @@ void select_trigger(const TString conf="samples.conf", // input file
   hist01pc->SetLineWidth(2);
   hist01pc->SetLineColor(4);
   hist01pc->Draw("SAMEHIST");
+  /*
   hist01pd->SetLineWidth(2);
   hist01pd->SetLineColor(6);
   hist01pd->Draw("SAMEHIST");
   hist01pe->SetLineWidth(2);
   hist01pe->SetLineColor(8);
   hist01pe->Draw("SAMEHIST");
+  */
   legend1->Clear();
   legend1->AddEntry(hist01pa, histotitle+", Photon TightID and EleVeto","f");
-  legend1->AddEntry(hist01pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist01pb,histotitle+", HLT_Photon300_NoHE","f");
   legend1->AddEntry(hist01pc,histotitle+", HLT_Photon200","f");
-  legend1->AddEntry(hist01pd,histotitle+", HLT_Photon150","f");
-  legend1->AddEntry(hist01pe,histotitle+", HLT_Photon165","f");
+  //legend1->AddEntry(hist01pd,histotitle+", HLT_Photon150 (Not in use)","f");
+  //legend1->AddEntry(hist01pe,histotitle+", HLT_Photon165 (Not in use)","f");
   legend1->Draw();
   c01->Print("p_pt.png");
 
@@ -437,7 +448,7 @@ void select_trigger(const TString conf="samples.conf", // input file
   yaxis->SetTitle("Entries / 0.2");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,100000);
+  yaxis->SetRangeUser(0.5,10000000);
   c02->SetLogy();
   c02->cd();
   hist02pa->SetLineWidth(2);
@@ -449,18 +460,20 @@ void select_trigger(const TString conf="samples.conf", // input file
   hist02pc->SetLineWidth(2);
   hist02pc->SetLineColor(4);
   hist02pc->Draw("SAMEHIST");
+  /*
   hist02pd->SetLineWidth(2);
   hist02pd->SetLineColor(6);
   hist02pd->Draw("SAMEHIST");
   hist02pe->SetLineWidth(2);
   hist02pe->SetLineColor(8);
   hist02pe->Draw("SAMEHIST");
+  */
   legend1->Clear();
   legend1->AddEntry(hist02pa,histotitle+", Photon TightID and EleVeto","f");
-  legend1->AddEntry(hist02pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist02pb,histotitle+", HLT_Photon300_NoHE","f");
   legend1->AddEntry(hist02pc,histotitle+", HLT_Photon200","f");
-  legend1->AddEntry(hist02pd,histotitle+", HLT_Photon150","f");
-  legend1->AddEntry(hist02pe,histotitle+", HLT_Photon165","f");
+  //legend1->AddEntry(hist02pd,histotitle+", HLT_Photon150 (Not in use)","f");
+  //legend1->AddEntry(hist02pe,histotitle+", HLT_Photon165 (Not in use)","f");
   legend1->Draw();
   c02->Print("p_eta.png");
 
@@ -471,7 +484,7 @@ void select_trigger(const TString conf="samples.conf", // input file
   yaxis->SetTitle("Entries / 50 GeV");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
-  //yaxis->SetRangeUser(0,0.14);
+  yaxis->SetRangeUser(0.5,10000000);
   c03->SetLogy();
   c03->cd();
   hist03pa->SetLineWidth(2);
@@ -483,18 +496,20 @@ void select_trigger(const TString conf="samples.conf", // input file
   hist03pc->SetLineWidth(2);
   hist03pc->SetLineColor(4);
   hist03pc->Draw("SAMEHIST");
+  /*
   hist03pd->SetLineWidth(2);
   hist03pd->SetLineColor(6);
   hist03pd->Draw("SAMEHIST");
   hist03pe->SetLineWidth(2);
   hist03pe->SetLineColor(8);
   hist03pe->Draw("SAMEHIST");
+  */
   legend1->Clear();
   legend1->AddEntry(hist03pa,histotitle+", Photon TightID and EleVeto","f");
-  legend1->AddEntry(hist03pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist03pb,histotitle+", HLT_Photon300_NoHE","f");
   legend1->AddEntry(hist03pc,histotitle+", HLT_Photon200","f");
-  legend1->AddEntry(hist03pd,histotitle+", HLT_Photon150","f");
-  legend1->AddEntry(hist03pe,histotitle+", HLT_Photon165","f");
+  //legend1->AddEntry(hist03pd,histotitle+", HLT_Photon150 (Not in use)","f");
+  //legend1->AddEntry(hist03pe,histotitle+", HLT_Photon165 (Not in use)","f");
   legend1->Draw();
   c03->Print("p_e.png");
 
@@ -505,7 +520,7 @@ void select_trigger(const TString conf="samples.conf", // input file
   yaxis->SetTitle("Entries / 50 GeV");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
-  //yaxis->SetRangeUser(0,0.14);
+  yaxis->SetRangeUser(0.5,10000000);
   c04->SetLogy();
   c04->cd();
   hist04pa->SetLineWidth(2);
@@ -517,18 +532,20 @@ void select_trigger(const TString conf="samples.conf", // input file
   hist04pc->SetLineWidth(2);
   hist04pc->SetLineColor(4);
   hist04pc->Draw("SAMEHIST");
+  /*
   hist04pd->SetLineWidth(2);
   hist04pd->SetLineColor(6);
   hist04pd->Draw("SAMEHIST");
   hist04pe->SetLineWidth(2);
   hist04pe->SetLineColor(8);
   hist04pe->Draw("SAMEHIST");
+  */
   legend1->Clear();
   legend1->AddEntry(hist04pa,histotitle+", Photon TightID and EleVeto","f");
-  legend1->AddEntry(hist04pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist04pb,histotitle+", HLT_Photon300_NoHE","f");
   legend1->AddEntry(hist04pc,histotitle+", HLT_Photon200","f");
-  legend1->AddEntry(hist04pd,histotitle+", HLT_Photon150","f");
-  legend1->AddEntry(hist04pe,histotitle+", HLT_Photon165","f");
+  //legend1->AddEntry(hist04pd,histotitle+", HLT_Photon150 (Not in use)","f");
+  //legend1->AddEntry(hist04pe,histotitle+", HLT_Photon165 (Not in use)","f");
   legend1->Draw();
   c04->Print("p_et.png");
 
@@ -539,7 +556,7 @@ void select_trigger(const TString conf="samples.conf", // input file
   yaxis->SetTitle("Entries / 0.02");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
-  //yaxis->SetRangeUser(0,0.14);
+  yaxis->SetRangeUser(0.5,10000000);
   c05->SetLogy();
   c05->cd();
   hist05pa->SetLineWidth(2);
@@ -551,18 +568,20 @@ void select_trigger(const TString conf="samples.conf", // input file
   hist05pc->SetLineWidth(2);
   hist05pc->SetLineColor(4);
   hist05pc->Draw("SAMEHIST");
+  /*
   hist05pd->SetLineWidth(2);
   hist05pd->SetLineColor(6);
   hist05pd->Draw("SAMEHIST");
   hist05pe->SetLineWidth(2);
   hist05pe->SetLineColor(8);
   hist05pe->Draw("SAMEHIST");
+  */
   legend1->Clear();
   legend1->AddEntry(hist05pa,histotitle+", Photon TightID and EleVeto","f");
-  legend1->AddEntry(hist05pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist05pb,histotitle+", HLT_Photon300_NoHE","f");
   legend1->AddEntry(hist05pc,histotitle+", HLT_Photon200","f");
-  legend1->AddEntry(hist05pd,histotitle+", HLT_Photon150","f");
-  legend1->AddEntry(hist05pe,histotitle+", HLT_Photon165","f");
+  //legend1->AddEntry(hist05pd,histotitle+", HLT_Photon150 (Not in use)","f");
+  //legend1->AddEntry(hist05pe,histotitle+", HLT_Photon165 (Not in use)","f");
   legend1->Draw();
   c05->Print("p_hOverE.png");
 
@@ -573,7 +592,7 @@ void select_trigger(const TString conf="samples.conf", // input file
   yaxis->SetTitle("Entries / 0.4");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
-  //yaxis->SetRangeUser(0,0.14);
+  yaxis->SetRangeUser(0.5,10000000);
   c06->SetLogy();
   c06->cd();
   hist06pa->SetLineWidth(2);
@@ -585,18 +604,20 @@ void select_trigger(const TString conf="samples.conf", // input file
   hist06pc->SetLineWidth(2);
   hist06pc->SetLineColor(4);
   hist06pc->Draw("SAMEHIST");
+  /*
   hist06pd->SetLineWidth(2);
   hist06pd->SetLineColor(6);
   hist06pd->Draw("SAMEHIST");
   hist06pe->SetLineWidth(2);
   hist06pe->SetLineColor(8);
   hist06pe->Draw("SAMEHIST");
+  */
   legend1->Clear();
   legend1->AddEntry(hist06pa,histotitle+", Photon TightID and EleVeto","f");
-  legend1->AddEntry(hist06pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist06pb,histotitle+", HLT_Photon300_NoHE","f");
   legend1->AddEntry(hist06pc,histotitle+", HLT_Photon200","f");
-  legend1->AddEntry(hist06pd,histotitle+", HLT_Photon150","f");
-  legend1->AddEntry(hist06pe,histotitle+", HLT_Photon165","f");
+  //legend1->AddEntry(hist06pd,histotitle+", HLT_Photon150 (Not in use)","f");
+  //legend1->AddEntry(hist06pe,histotitle+", HLT_Photon165 (Not in use)","f");
   legend1->Draw();
   c06->Print("p_isoGamma.png");
 
@@ -607,7 +628,7 @@ void select_trigger(const TString conf="samples.conf", // input file
   yaxis->SetTitle("Entries / 1");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
-  //yaxis->SetRangeUser(0,0.14);
+  yaxis->SetRangeUser(0.5,10000000);
   c07->SetLogy();
   c07->cd();
   hist07pa->SetLineWidth(2);
@@ -619,18 +640,20 @@ void select_trigger(const TString conf="samples.conf", // input file
   hist07pc->SetLineWidth(2);
   hist07pc->SetLineColor(4);
   hist07pc->Draw("SAMEHIST");
+  /*
   hist07pd->SetLineWidth(2);
   hist07pd->SetLineColor(6);
   hist07pd->Draw("SAMEHIST");
   hist07pe->SetLineWidth(2);
   hist07pe->SetLineColor(8);
   hist07pe->Draw("SAMEHIST");
+  */
   legend1->Clear();
   legend1->AddEntry(hist07pa,histotitle+", Photon TightID and EleVeto","f");
-  legend1->AddEntry(hist07pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist07pb,histotitle+", HLT_Photon300_NoHE","f");
   legend1->AddEntry(hist07pc,histotitle+", HLT_Photon200","f");
-  legend1->AddEntry(hist07pd,histotitle+", HLT_Photon150","f");
-  legend1->AddEntry(hist07pe,histotitle+", HLT_Photon165","f");
+  //legend1->AddEntry(hist07pd,histotitle+", HLT_Photon150 (Not in use)","f");
+  //legend1->AddEntry(hist07pe,histotitle+", HLT_Photon165 (Not in use)","f");
   legend1->Draw();
   c07->Print("p_isoCh.png");
 
@@ -641,7 +664,7 @@ void select_trigger(const TString conf="samples.conf", // input file
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,1000000);
+  yaxis->SetRangeUser(0.5,10000000);
   c08->SetLogy();
   c08->cd();
   hist08pa->SetLineWidth(2);
@@ -653,18 +676,20 @@ void select_trigger(const TString conf="samples.conf", // input file
   hist08pc->SetLineWidth(2);
   hist08pc->SetLineColor(4);
   hist08pc->Draw("SAMEHIST");
+  /*
   hist08pd->SetLineWidth(2);
   hist08pd->SetLineColor(6);
   hist08pd->Draw("SAMEHIST");
   hist08pe->SetLineWidth(2);
   hist08pe->SetLineColor(8);
   hist08pe->Draw("SAMEHIST");
+  */
   legend1->Clear();
   legend1->AddEntry(hist08pa,histotitle+", Photon TightID and EleVeto","f");
-  legend1->AddEntry(hist08pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist08pb,histotitle+", HLT_Photon300_NoHE","f");
   legend1->AddEntry(hist08pc,histotitle+", HLT_Photon200","f");
-  legend1->AddEntry(hist08pd,histotitle+", HLT_Photon150","f");
-  legend1->AddEntry(hist08pe,histotitle+", HLT_Photon165","f");
+  //legend1->AddEntry(hist08pd,histotitle+", HLT_Photon150 (Not in use)","f");
+  //legend1->AddEntry(hist08pe,histotitle+", HLT_Photon165 (Not in use)","f");
   legend1->Draw();
   c08->Print("p_TightID.png");
 
@@ -675,7 +700,7 @@ void select_trigger(const TString conf="samples.conf", // input file
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,1000000);
+  yaxis->SetRangeUser(0.5,10000000);
   c09->SetLogy();
   c09->cd();
   hist09pa->SetLineWidth(2);
@@ -687,18 +712,20 @@ void select_trigger(const TString conf="samples.conf", // input file
   hist09pc->SetLineWidth(2);
   hist09pc->SetLineColor(4);
   hist09pc->Draw("SAMEHIST");
+  /*
   hist09pd->SetLineWidth(2);
   hist09pd->SetLineColor(6);
   hist09pd->Draw("SAMEHIST");
   hist09pe->SetLineWidth(2);
   hist09pe->SetLineColor(8);
   hist09pe->Draw("SAMEHIST");
+  */
   legend1->Clear();
   legend1->AddEntry(hist09pa,histotitle+", Photon TightID and EleVeto","f");
-  legend1->AddEntry(hist09pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist09pb,histotitle+", HLT_Photon300_NoHE","f");
   legend1->AddEntry(hist09pc,histotitle+", HLT_Photon200","f");
-  legend1->AddEntry(hist09pd,histotitle+", HLT_Photon150","f");
-  legend1->AddEntry(hist09pe,histotitle+", HLT_Photon165","f");
+  //legend1->AddEntry(hist09pd,histotitle+", HLT_Photon150 (Not in use)","f");
+  //legend1->AddEntry(hist09pe,histotitle+", HLT_Photon165 (Not in use)","f");
   legend1->Draw();
   c09->Print("p_EleVeto.png");
 
@@ -709,7 +736,7 @@ void select_trigger(const TString conf="samples.conf", // input file
   yaxis->SetTitle("Entries / 0.06");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,1000000);
+  yaxis->SetRangeUser(0.5,10000000);
   c10->SetLogy();
   c10->cd();
   hist10pa->SetLineWidth(2);
@@ -721,18 +748,20 @@ void select_trigger(const TString conf="samples.conf", // input file
   hist10pc->SetLineWidth(2);
   hist10pc->SetLineColor(4);
   hist10pc->Draw("SAMEHIST");
+  /*
   hist10pd->SetLineWidth(2);
   hist10pd->SetLineColor(6);
   hist10pd->Draw("SAMEHIST");
   hist10pe->SetLineWidth(2);
   hist10pe->SetLineColor(8);
   hist10pe->Draw("SAMEHIST");
+  */
   legend1->Clear();
   legend1->AddEntry(hist10pa,histotitle+", Photon TightID and EleVeto","f");
-  legend1->AddEntry(hist10pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist10pb,histotitle+", HLT_Photon300_NoHE","f");
   legend1->AddEntry(hist10pc,histotitle+", HLT_Photon200","f");
-  legend1->AddEntry(hist10pd,histotitle+", HLT_Photon150","f");
-  legend1->AddEntry(hist10pe,histotitle+", HLT_Photon165","f");
+  //legend1->AddEntry(hist10pd,histotitle+", HLT_Photon150 (Not in use)","f");
+  //legend1->AddEntry(hist10pe,histotitle+", HLT_Photon165 (Not in use)","f");
   legend1->Draw();
   c10->Print("p_mvaVal.png");
 
@@ -743,7 +772,7 @@ void select_trigger(const TString conf="samples.conf", // input file
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,1000000);
+  yaxis->SetRangeUser(0.5,10000000);
   c11->SetLogy();
   c11->cd();
   hist11pa->SetLineWidth(2);
@@ -755,22 +784,23 @@ void select_trigger(const TString conf="samples.conf", // input file
   hist11pc->SetLineWidth(2);
   hist11pc->SetLineColor(4);
   hist11pc->Draw("SAMEHIST");
+  /*
   hist11pd->SetLineWidth(2);
   hist11pd->SetLineColor(6);
   hist11pd->Draw("SAMEHIST");
   hist11pe->SetLineWidth(2);
   hist11pe->SetLineColor(8);
   hist11pe->Draw("SAMEHIST");
+  */
   legend1->Clear();
   legend1->AddEntry(hist11pa,histotitle+", Photon TightID and EleVeto","f");
-  legend1->AddEntry(hist11pb,histotitle+", HLT_Photon175","f");
+  legend1->AddEntry(hist11pb,histotitle+", HLT_Photon300_NoHE","f");
   legend1->AddEntry(hist11pc,histotitle+", HLT_Photon200","f");
-  legend1->AddEntry(hist11pd,histotitle+", HLT_Photon150","f");
-  legend1->AddEntry(hist11pe,histotitle+", HLT_Photon165","f");
+  //legend1->AddEntry(hist11pd,histotitle+", HLT_Photon150 (Not in use)","f");
+  //legend1->AddEntry(hist11pe,histotitle+", HLT_Photon165 (Not in use)","f");
   legend1->Draw();
   c11->Print("p_mvaCat.png");
 
-  /*
   TCanvas *ceff = new TCanvas("ceff","Trigger Efficiency",1200,900);
   ceff->cd();
   Eff1->SetTitle("Trigger Efficiency");
@@ -786,20 +816,21 @@ void select_trigger(const TString conf="samples.conf", // input file
   Eff2->SetLineWidth(2);
   Eff2->SetLineColor(4);
   Eff2->Draw("SAME");
+  /*
   Eff3->SetLineWidth(2);
   Eff3->SetLineColor(6);
   Eff3->Draw("SAME");
   Eff4->SetLineWidth(2);
   Eff4->SetLineColor(8);
   Eff4->Draw("SAME");
+  */
   legend2->Clear();
-  legend2->AddEntry(Eff1,"HLT_Photon175_","f");
-  legend2->AddEntry(Eff2,"HLT_Photon200_","f");
-  legend2->AddEntry(Eff3,"HLT_Photon150_","f");
-  legend2->AddEntry(Eff4,"HLT_Photon165_","f");
+  legend2->AddEntry(Eff1,"HLT_Photon300_NoHE","f");
+  legend2->AddEntry(Eff2,"HLT_Photon200","f");
+  //legend2->AddEntry(Eff3,"HLT_Photon150 (Not in use)","f");
+  //legend2->AddEntry(Eff4,"HLT_Photon165 (Not in use)","f");
   legend2->Draw();
   ceff->Print("eff.png");
-  */
 
   gBenchmark->Show("selectWG");
 
