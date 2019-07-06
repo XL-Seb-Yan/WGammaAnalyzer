@@ -41,7 +41,7 @@ TH1 *hist3 = new TH1F("3","mvaID_{#gamma}",50,-1,1);
 TH1 *hist4 = new TH1F("4","mvaIDv1_{#gamma}",50,-1,1);
 TH1 *hist5 = new TH1F("5","pt_{j}",50,0,2400);
 TH1 *hist6 = new TH1F("6","eta_{j}",50,-5,5);
-TH1 *hist7 = new TH1F("7","mass_{j}",50,0,500);
+TH1 *hist7 = new TH1F("7","mass_{j}",60,50,110);
 TH1 *hist8 = new TH1F("8","masssoftdrop_{j}",60,50,110);
 TH1 *hist9 = new TH1F("9","tau1_{j}",50,0,1);
 TH1 *hist10 = new TH1F("10","tau2_{j}",50,0,1);
@@ -91,6 +91,8 @@ Bool_t Selector::Process(Long64_t entry)
      cout<<"Processing "<<entry<<endl;
    
 
+   cout<<"OK"<<endl;
+   cout<<ph_pt.GetSize()<<endl;
    for(int i=0; i<ph_pt.GetSize(); i++){
      cout<<ph_passEleVeto->at(i)<<endl;
      if(ph_passEleVeto->at(i) == true && ph_pt[i] > 200 ){
@@ -100,14 +102,14 @@ Bool_t Selector::Process(Long64_t entry)
        cout<<ph_pt[i]<<endl;
      }
    }
-   for(int i=0; i<jetAK8_pt.GetSize(); i++){
-     if(jetAK8_pt[i] > 250 && abs(jetAK8_eta[i]) < 2.4 && jetAK8_IDTight->at(i) == true){
-       hist5->Fill(jetAK8_pt[i]);
-       hist6->Fill(jetAK8_eta[i]);
-       hist7->Fill(jetAK8_mass[i]);
-       hist8->Fill(jetAK8_softdrop_massCorr[i]);
-       hist9->Fill(jetAK8_tau1[i]);
-       hist10->Fill(jetAK8_tau2[i]);
+   for(int i=0; i<jetAK8_puppi_softdrop_pt.GetSize(); i++){
+     if(jetAK8_puppi_softdrop_pt[i] > 200 ){
+       hist5->Fill(jetAK8_puppi_softdrop_pt[i]);
+       hist6->Fill(jetAK8_puppi_softdrop_eta[i]);
+       hist7->Fill(jetAK8_puppi_softdrop_mass[i]);
+       hist8->Fill(jetAK8_puppi_softdrop_massCorr[i]);
+       hist9->Fill(jetAK8_puppi_tau1[i]);
+       hist10->Fill(jetAK8_puppi_tau2[i]);
      }
    }
    
@@ -129,16 +131,16 @@ void Selector::Terminate()
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
 
-  hist1->SetLineColor(8);
-  hist2->SetLineColor(8);
-  hist3->SetLineColor(8);
-  hist4->SetLineColor(8);
-  hist5->SetLineColor(8);
-  hist6->SetLineColor(8);
-  hist7->SetLineColor(8);
-  hist8->SetLineColor(8);
-  hist9->SetLineColor(8);
-  hist10->SetLineColor(8);
+  hist1->SetLineColor(46);
+  hist2->SetLineColor(46);
+  hist3->SetLineColor(46);
+  hist4->SetLineColor(46);
+  hist5->SetLineColor(46);
+  hist6->SetLineColor(46);
+  hist7->SetLineColor(46);
+  hist8->SetLineColor(46);
+  hist9->SetLineColor(46);
+  hist10->SetLineColor(46);
   
 
   gStyle->SetOptStat(0);
@@ -219,9 +221,8 @@ void Selector::Terminate()
   xaxis->SetTitle("pt AK8Jet (GeV)");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  //yaxis->SetRangeUser(0.1,100000);
-  yaxis->SetRangeUser(0,2000);
-  //c05->SetLogy();
+  yaxis->SetRangeUser(0.1,100000);
+  c05->SetLogy();
   c05->cd();
   hist5->SetLineWidth(2);
   hist5->Draw("HIST");
@@ -262,14 +263,6 @@ void Selector::Terminate()
   legend->Draw();
   c07->Print("j_mass.png");
 
- // Post processing - fitting
-  TF1 *g1 = new TF1 ("m1", "gaus", 65, 105);
-  g1->SetLineColor(kRed);
-  gStyle->SetOptFit(1); 
-  Double_t par1[3]= {70,78,7};
-  g1->SetParameters(par1);
-  hist8->Fit(g1, "R+");
-
   TCanvas *c08 = new TCanvas("c08","mass softdrop AK8Jet",1200,900);
   xaxis = hist8->GetXaxis();
   yaxis = hist8->GetYaxis();
@@ -282,7 +275,6 @@ void Selector::Terminate()
   c08->cd();
   hist8->SetLineWidth(2);
   hist8->Draw("HIST");
-  g1->Draw("SAME");
   legend->Clear();
   legend->AddEntry(hist8,"2018 signal MC ","f");
   legend->Draw();

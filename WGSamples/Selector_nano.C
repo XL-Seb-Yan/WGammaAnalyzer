@@ -32,6 +32,7 @@
 #include <TEfficiency.h>
 #include <TLegend.h>
 #include <TAxis.h>
+#include <TMath.h>
 
 Int_t count1 = 0;
 Int_t count2 = 0;
@@ -89,25 +90,24 @@ Bool_t Selector::Process(Long64_t entry)
 
    if(entry%100000==0)
      cout<<"Processing "<<entry<<endl;
-   
+  
 
-   for(int i=0; i<ph_pt.GetSize(); i++){
-     cout<<ph_passEleVeto->at(i)<<endl;
-     if(ph_passEleVeto->at(i) == true && ph_pt[i] > 200 ){
-       hist1->Fill(ph_pt[i]);
-       hist2->Fill(ph_eta[i]);
-       hist3->Fill(ph_mvaVal[i]);
-       cout<<ph_pt[i]<<endl;
+   for(int i=0; i<Photon_eta.GetSize(); i++){
+     if(Photon_electronVeto[i] == true && Photon_pt[i] >= 200){
+       hist1->Fill(Photon_pt[i]);
+       hist2->Fill(Photon_eta[i]);
+       hist3->Fill(Photon_mvaID[i]);
+       hist4->Fill(Photon_mvaIDV1[i]);
      }
    }
-   for(int i=0; i<jetAK8_pt.GetSize(); i++){
-     if(jetAK8_pt[i] > 250 && abs(jetAK8_eta[i]) < 2.4 && jetAK8_IDTight->at(i) == true){
-       hist5->Fill(jetAK8_pt[i]);
-       hist6->Fill(jetAK8_eta[i]);
-       hist7->Fill(jetAK8_mass[i]);
-       hist8->Fill(jetAK8_softdrop_massCorr[i]);
-       hist9->Fill(jetAK8_tau1[i]);
-       hist10->Fill(jetAK8_tau2[i]);
+   for(int i=0; i<FatJet_eta.GetSize(); i++){
+     if(FatJet_pt[i] >= 200 && (FatJet_eta[i] < 2.4 && FatJet_eta[i] > -2.4)){
+       hist5->Fill(FatJet_pt[i]);
+       hist6->Fill(FatJet_eta[i]);
+       hist7->Fill(FatJet_mass[i]);
+       hist8->Fill(FatJet_msoftdrop[i]);
+       hist9->Fill(FatJet_tau1[i]);
+       hist10->Fill(FatJet_tau2[i]);
      }
    }
    
@@ -129,18 +129,6 @@ void Selector::Terminate()
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
 
-  hist1->SetLineColor(8);
-  hist2->SetLineColor(8);
-  hist3->SetLineColor(8);
-  hist4->SetLineColor(8);
-  hist5->SetLineColor(8);
-  hist6->SetLineColor(8);
-  hist7->SetLineColor(8);
-  hist8->SetLineColor(8);
-  hist9->SetLineColor(8);
-  hist10->SetLineColor(8);
-  
-
   gStyle->SetOptStat(0);
     //Tirgger Efficiency
   TEfficiency *Eff = new TEfficiency(*hist2, *hist3);
@@ -149,7 +137,7 @@ void Selector::Terminate()
 
   TLegend *legend = new TLegend(0.65,0.8,0.9,0.9);
 
-  TCanvas *c01 = new TCanvas("c01","pt_{#gamma}",1200,900);
+   TCanvas *c01 = new TCanvas("c01","pt_{#gamma}",1200,900);
   TAxis *xaxis = hist1->GetXaxis();
   TAxis *yaxis = hist1->GetYaxis();
   xaxis->SetTitle("pt_{#gamma} (GeV)");
@@ -262,14 +250,6 @@ void Selector::Terminate()
   legend->Draw();
   c07->Print("j_mass.png");
 
- // Post processing - fitting
-  TF1 *g1 = new TF1 ("m1", "gaus", 65, 105);
-  g1->SetLineColor(kRed);
-  gStyle->SetOptFit(1); 
-  Double_t par1[3]= {70,78,7};
-  g1->SetParameters(par1);
-  hist8->Fit(g1, "R+");
-
   TCanvas *c08 = new TCanvas("c08","mass softdrop AK8Jet",1200,900);
   xaxis = hist8->GetXaxis();
   yaxis = hist8->GetYaxis();
@@ -282,7 +262,6 @@ void Selector::Terminate()
   c08->cd();
   hist8->SetLineWidth(2);
   hist8->Draw("HIST");
-  g1->Draw("SAME");
   legend->Clear();
   legend->AddEntry(hist8,"2018 signal MC ","f");
   legend->Draw();

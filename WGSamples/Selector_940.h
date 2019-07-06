@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Thu Jul  4 23:46:41 2019 by ROOT version 6.10/09
+// Wed Jul  3 09:47:24 2019 by ROOT version 6.10/09
 // from TTree tree/tree
-// found on file: flatTuple_MC1600_949_final.root
+// found on file: flatTupleMC1600940.root
 //////////////////////////////////////////////////////////
 
 #ifndef Selector_h
@@ -92,6 +92,65 @@ public :
    TTreeReaderArray<float> ph_mvaVal = {fReader, "ph_mvaVal"};
    TTreeReaderArray<float> ph_mvaCat = {fReader, "ph_mvaCat"};
    TTreeReaderValue<Float_t> rho = {fReader, "rho"};
+   TTreeReaderValue<Int_t> jetAK4_N = {fReader, "jetAK4_N"};
+   TTreeReaderArray<float> jetAK4_pt = {fReader, "jetAK4_pt"};
+   TTreeReaderArray<float> jetAK4_eta = {fReader, "jetAK4_eta"};
+   TTreeReaderArray<float> jetAK4_mass = {fReader, "jetAK4_mass"};
+   TTreeReaderArray<float> jetAK4_phi = {fReader, "jetAK4_phi"};
+   TTreeReaderArray<float> jetAK4_e = {fReader, "jetAK4_e"};
+   TTreeReaderArray<float> jetAK4_jec = {fReader, "jetAK4_jec"};
+   TTreeReaderArray<float> jetAK4_jecUp = {fReader, "jetAK4_jecUp"};
+   TTreeReaderArray<float> jetAK4_jecDown = {fReader, "jetAK4_jecDown"};
+   TTreeReaderValue<vector<bool>> jetAK4_IDLoose = {fReader, "jetAK4_IDLoose"};
+   TTreeReaderValue<vector<bool>> jetAK4_IDTight = {fReader, "jetAK4_IDTight"};
+   TTreeReaderValue<vector<bool>> jetAK4_IDTightLepVeto = {fReader, "jetAK4_IDTightLepVeto"};
+   TTreeReaderArray<float> jetAK4_PUIDdiscriminat = {fReader, "jetAK4_PUIDdiscriminat"};
+   TTreeReaderValue<vector<bool>> jetAK4_PUIDloose = {fReader, "jetAK4_PUIDloose"};
+   TTreeReaderValue<vector<bool>> jetAK4_PUIDmedium = {fReader, "jetAK4_PUIDmedium"};
+   TTreeReaderValue<vector<bool>> jetAK4_PUIDtight = {fReader, "jetAK4_PUIDtight"};
+   TTreeReaderArray<float> jetAK4_muf = {fReader, "jetAK4_muf"};
+   TTreeReaderArray<float> jetAK4_phf = {fReader, "jetAK4_phf"};
+   TTreeReaderArray<float> jetAK4_emf = {fReader, "jetAK4_emf"};
+   TTreeReaderArray<float> jetAK4_nhf = {fReader, "jetAK4_nhf"};
+   TTreeReaderArray<float> jetAK4_chf = {fReader, "jetAK4_chf"};
+   TTreeReaderArray<float> jetAK4_area = {fReader, "jetAK4_area"};
+   TTreeReaderArray<int> jetAK4_cm = {fReader, "jetAK4_cm"};
+   TTreeReaderArray<int> jetAK4_nm = {fReader, "jetAK4_nm"};
+   TTreeReaderArray<float> jetAK4_che = {fReader, "jetAK4_che"};
+   TTreeReaderArray<float> jetAK4_ne = {fReader, "jetAK4_ne"};
+   TTreeReaderArray<float> jetAK4_hf_hf = {fReader, "jetAK4_hf_hf"};
+   TTreeReaderArray<float> jetAK4_hf_emf = {fReader, "jetAK4_hf_emf"};
+   TTreeReaderArray<float> jetAK4_hof = {fReader, "jetAK4_hof"};
+   TTreeReaderArray<int> jetAK4_chm = {fReader, "jetAK4_chm"};
+   TTreeReaderArray<int> jetAK4_neHadMult = {fReader, "jetAK4_neHadMult"};
+   TTreeReaderArray<int> jetAK4_phoMult = {fReader, "jetAK4_phoMult"};
+   TTreeReaderArray<float> jetAK4_nemf = {fReader, "jetAK4_nemf"};
+   TTreeReaderArray<float> jetAK4_cemf = {fReader, "jetAK4_cemf"};
+   TTreeReaderArray<int> jetAK4_charge = {fReader, "jetAK4_charge"};
+   TTreeReaderArray<float> jetAK4_csv = {fReader, "jetAK4_csv"};
+   TTreeReaderArray<float> jetAK4_deep_csv_b = {fReader, "jetAK4_deep_csv_b"};
+   TTreeReaderArray<float> jetAK4_deep_csv_bb = {fReader, "jetAK4_deep_csv_bb"};
+   TTreeReaderArray<float> jetAK4_vtxMass = {fReader, "jetAK4_vtxMass"};
+   TTreeReaderArray<float> jetAK4_vtxNtracks = {fReader, "jetAK4_vtxNtracks"};
+   TTreeReaderArray<float> jetAK4_vtx3DVal = {fReader, "jetAK4_vtx3DVal"};
+   TTreeReaderArray<float> jetAK4_vtx3DSig = {fReader, "jetAK4_vtx3DSig"};
+   TTreeReaderArray<float> jetAK4_etaAxis = {fReader, "jetAK4_etaAxis"};
+   TTreeReaderArray<float> jetAK4_phiAxis = {fReader, "jetAK4_phiAxis"};
+   TTreeReaderArray<float> jetAK4_phiT = {fReader, "jetAK4_phiT"};
+   TTreeReaderArray<float> jetAK4_qg_axis1 = {fReader, "jetAK4_qg_axis1"};
+   TTreeReaderArray<float> jetAK4_qg_axis2 = {fReader, "jetAK4_qg_axis2"};
+   TTreeReaderArray<int> jetAK4_qg_charged = {fReader, "jetAK4_qg_charged"};
+   TTreeReaderArray<float> jetAK4_qg_ptD = {fReader, "jetAK4_qg_ptD"};
+   TTreeReaderArray<float> jetAK4_qg_pt_dr = {fReader, "jetAK4_qg_pt_dr"};
+   TTreeReaderArray<int> jetAK4_partonFlavour = {fReader, "jetAK4_partonFlavour"};
+   TTreeReaderArray<int> jetAK4_hadronFlavour = {fReader, "jetAK4_hadronFlavour"};
+   TTreeReaderArray<int> jetAK4_genParton_pdgID = {fReader, "jetAK4_genParton_pdgID"};
+   TTreeReaderArray<int> jetAK4_nbHadrons = {fReader, "jetAK4_nbHadrons"};
+   TTreeReaderArray<int> jetAK4_ncHadrons = {fReader, "jetAK4_ncHadrons"};
+   TTreeReaderArray<float> jetAK4_jer_sf = {fReader, "jetAK4_jer_sf"};
+   TTreeReaderArray<float> jetAK4_jer_sf_up = {fReader, "jetAK4_jer_sf_up"};
+   TTreeReaderArray<float> jetAK4_jer_sf_down = {fReader, "jetAK4_jer_sf_down"};
+   TTreeReaderArray<float> jetAK4_jer_sigma_pt = {fReader, "jetAK4_jer_sigma_pt"};
    TTreeReaderValue<Int_t> jetAK8_N = {fReader, "jetAK8_N"};
    TTreeReaderArray<float> jetAK8_pt = {fReader, "jetAK8_pt"};
    TTreeReaderArray<float> jetAK8_eta = {fReader, "jetAK8_eta"};
@@ -103,6 +162,7 @@ public :
    TTreeReaderArray<float> jetAK8_jecDown = {fReader, "jetAK8_jecDown"};
    TTreeReaderValue<vector<bool>> jetAK8_IDLoose = {fReader, "jetAK8_IDLoose"};
    TTreeReaderValue<vector<bool>> jetAK8_IDTight = {fReader, "jetAK8_IDTight"};
+   TTreeReaderValue<vector<bool>> jetAK8_IDTightLepVeto = {fReader, "jetAK8_IDTightLepVeto"};
    TTreeReaderArray<float> jetAK8_muf = {fReader, "jetAK8_muf"};
    TTreeReaderArray<float> jetAK8_phf = {fReader, "jetAK8_phf"};
    TTreeReaderArray<float> jetAK8_emf = {fReader, "jetAK8_emf"};
@@ -134,9 +194,6 @@ public :
    TTreeReaderArray<float> jetAK8_csv = {fReader, "jetAK8_csv"};
    TTreeReaderArray<float> jetAK8_deep_csv_b = {fReader, "jetAK8_deep_csv_b"};
    TTreeReaderArray<float> jetAK8_deep_csv_bb = {fReader, "jetAK8_deep_csv_bb"};
-   TTreeReaderArray<float> jetAK8_tau1 = {fReader, "jetAK8_tau1"};
-   TTreeReaderArray<float> jetAK8_tau2 = {fReader, "jetAK8_tau2"};
-   TTreeReaderArray<float> jetAK8_tau3 = {fReader, "jetAK8_tau3"};
    TTreeReaderArray<float> jetAK8_pull1 = {fReader, "jetAK8_pull1"};
    TTreeReaderArray<float> jetAK8_pull2 = {fReader, "jetAK8_pull2"};
    TTreeReaderArray<float> jetAK8_chs_pruned_mass = {fReader, "jetAK8_chs_pruned_mass"};
@@ -153,6 +210,27 @@ public :
    TTreeReaderArray<float> jetAK8_softdrop_jec = {fReader, "jetAK8_softdrop_jec"};
    TTreeReaderArray<float> jetAK8_softdrop_jecUp = {fReader, "jetAK8_softdrop_jecUp"};
    TTreeReaderArray<float> jetAK8_softdrop_jecDown = {fReader, "jetAK8_softdrop_jecDown"};
+   TTreeReaderValue<Int_t> jetAK8_puppi_N = {fReader, "jetAK8_puppi_N"};
+   TTreeReaderArray<float> jetAK8_puppi_pt = {fReader, "jetAK8_puppi_pt"};
+   TTreeReaderArray<float> jetAK8_puppi_eta = {fReader, "jetAK8_puppi_eta"};
+   TTreeReaderArray<float> jetAK8_puppi_mass = {fReader, "jetAK8_puppi_mass"};
+   TTreeReaderArray<float> jetAK8_puppi_phi = {fReader, "jetAK8_puppi_phi"};
+   TTreeReaderArray<float> jetAK8_puppi_e = {fReader, "jetAK8_puppi_e"};
+   TTreeReaderArray<float> jetAK8_puppi_jec = {fReader, "jetAK8_puppi_jec"};
+   TTreeReaderArray<float> jetAK8_puppi_jecUp = {fReader, "jetAK8_puppi_jecUp"};
+   TTreeReaderArray<float> jetAK8_puppi_jecDown = {fReader, "jetAK8_puppi_jecDown"};
+   TTreeReaderArray<float> jetAK8_puppi_tau1 = {fReader, "jetAK8_puppi_tau1"};
+   TTreeReaderArray<float> jetAK8_puppi_tau2 = {fReader, "jetAK8_puppi_tau2"};
+   TTreeReaderArray<float> jetAK8_puppi_tau3 = {fReader, "jetAK8_puppi_tau3"};
+   TTreeReaderValue<vector<bool>> jetAK8_puppi_IDTight = {fReader, "jetAK8_puppi_IDTight"};
+   TTreeReaderValue<vector<bool>> jetAK8_puppi_IDTightLepVeto = {fReader, "jetAK8_puppi_IDTightLepVeto"};
+   TTreeReaderArray<float> jetAK8_puppi_softdrop_mass = {fReader, "jetAK8_puppi_softdrop_mass"};
+   TTreeReaderArray<float> jetAK8_puppi_softdrop_massCorr = {fReader, "jetAK8_puppi_softdrop_massCorr"};
+   TTreeReaderArray<float> jetAK8_puppi_softdrop_pt = {fReader, "jetAK8_puppi_softdrop_pt"};
+   TTreeReaderArray<float> jetAK8_puppi_softdrop_eta = {fReader, "jetAK8_puppi_softdrop_eta"};
+   TTreeReaderArray<float> jetAK8_puppi_softdrop_phi = {fReader, "jetAK8_puppi_softdrop_phi"};
+   TTreeReaderArray<float> jetAK8_puppi_softdrop_e = {fReader, "jetAK8_puppi_softdrop_e"};
+   TTreeReaderArray<float> jetAK8_puppi_softdrop_jec = {fReader, "jetAK8_puppi_softdrop_jec"};
    TTreeReaderArray<int> jetAK8_subjet_puppi_softdrop_N = {fReader, "jetAK8_subjet_puppi_softdrop_N"};
    TTreeReaderArray<vector<float>> jetAK8_subjet_puppi_softdrop_pt = {fReader, "jetAK8_subjet_puppi_softdrop_pt"};
    TTreeReaderArray<vector<float>> jetAK8_subjet_puppi_softdrop_eta = {fReader, "jetAK8_subjet_puppi_softdrop_eta"};
@@ -185,10 +263,6 @@ public :
    TTreeReaderArray<float> genJetAK8_e = {fReader, "genJetAK8_e"};
    TTreeReaderArray<float> genJetAK8_prunedmass = {fReader, "genJetAK8_prunedmass"};
    TTreeReaderArray<float> genJetAK8_softdropmass = {fReader, "genJetAK8_softdropmass"};
-   TTreeReaderArray<pair<string,bool>> HLT_isFired = {fReader, "HLT_isFired"};
-   TTreeReaderValue<Int_t> EVENT_event = {fReader, "EVENT_event"};
-   TTreeReaderValue<Int_t> EVENT_run = {fReader, "EVENT_run"};
-   TTreeReaderValue<Int_t> EVENT_lumiBlock = {fReader, "EVENT_lumiBlock"};
    TTreeReaderArray<float> nPuVtxTrue = {fReader, "nPuVtxTrue"};
    TTreeReaderArray<int> nPuVtx = {fReader, "nPuVtx"};
    TTreeReaderArray<int> bX = {fReader, "bX"};

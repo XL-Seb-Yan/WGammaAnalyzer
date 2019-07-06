@@ -142,7 +142,7 @@ void select(const TString conf="samples.conf", // input file
   TH1F* hist02pa = new TH1F("WGamma02pa",histotitle+", #eta_{#gamma}",50,-5,5);
   TH1F* hist03pa = new TH1F("WGamma03pa",histotitle+", #varphi_{#gamma}",50,-3.14,3.14);
   TH1F* hist04pa = new TH1F("WGamma04pa",histotitle+", E_{#gamma}",48,0,2400);
-  TH1F* hist05pa = new TH1F("WGamma05pa",histotitle+", cos(#theta^{*})_{#gamma}",50,0,1);
+  TH1F* hist05pa = new TH1F("WGamma05pa",histotitle+", cos(#theta^{*})_{#gamma}",50,-1,1);
   TH1F* hist06pa = new TH1F("WGamma06pa",histotitle+", H/E_{#gamma}",50,0,1);
   TH1F *hist07pa = new TH1F("WGamma07pa",histotitle+", pt/M",50,0,5);
   TH1F *hist08pa = new TH1F("WGamma08pa",histotitle+", Loose Photon ID",10,-1,3);
@@ -158,7 +158,7 @@ void select(const TString conf="samples.conf", // input file
   TH1F* hist02pb = new TH1F("WGamma02pb",histotitle+", #eta_{#gamma}",50,-5,5);
   TH1F* hist03pb = new TH1F("WGamma03pb",histotitle+", #varphi_{#gamma}",50,-3.14,3.14);
   TH1F* hist04pb = new TH1F("WGamma04pb",histotitle+", E_{#gamma}",48,0,2400);
-  TH1F* hist05pb = new TH1F("WGamma05pb",histotitle+", cos(#theta^{*})_{#gamma}",50,0,1);
+  TH1F* hist05pb = new TH1F("WGamma05pb",histotitle+", cos(#theta^{*})_{#gamma}",50,-1,1);
   TH1F* hist06pb = new TH1F("WGamma06pb",histotitle+", H/E_{#gamma}",50,0,1);
   TH1F *hist07pb = new TH1F("WGamma07pb",histotitle+", pt/M",50,0,5);
   TH1F *hist08pb = new TH1F("WGamma08pb",histotitle+", Loose Photon ID",10,-1,3);
@@ -629,7 +629,7 @@ void select(const TString conf="samples.conf", // input file
 	TLorentzVector v_boosted_j, v_boosted_p;
 	v_boosted_p = v_p;
         v_boosted_p.Boost(-(v_sys.BoostVector()));
-        cosThetaStar = abs(v_boosted_p.Pz()/v_boosted_p.P());	
+        cosThetaStar = (v_boosted_p.Pz()/v_boosted_p.P());
 	
 	// Passing p1 and j1 selection
 	if(pass_p1 && pass_j1){
@@ -1483,7 +1483,7 @@ SetLineStyle(2); histMC06a->Scale(scale);
   legend->Draw();
   c04p->Print("p_e.png");
 
-  TCanvas *c05p = new TCanvas("c05p","cos(#theta^*)_{#gamma}",1200,900);
+  TCanvas *c05p = new TCanvas("c05p","cos(#theta^{*})_{#gamma}",1200,900);
   xaxis = hist05pa->GetXaxis();
   yaxis = hist05pa->GetYaxis();
   xaxis->SetTitle("cos(#theta^*)_{#gamma}");
