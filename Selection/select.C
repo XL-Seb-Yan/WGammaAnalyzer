@@ -41,7 +41,7 @@ void select(const TString conf="samples.conf", // input file
   //--------------------------------------------------------------------------------------------------------------
   // Settings 
   //=============================================================================================================
-  TString type = "SIGNAL"; //DATA, SIGNAL, BKG, CONTROL
+  TString type = "MC"; //DATA, SIGNAL, BKG, CONTROL
   TString formate = "DIVIDED"; //DIVIDED RANGE
   TString histotitle;
   if(type == "SIGNAL"){
@@ -142,9 +142,9 @@ void select(const TString conf="samples.conf", // input file
   TH1F* hist02pa = new TH1F("WGamma02pa",histotitle+", #eta_{#gamma}",50,-5,5);
   TH1F* hist03pa = new TH1F("WGamma03pa",histotitle+", #varphi_{#gamma}",50,-3.14,3.14);
   TH1F* hist04pa = new TH1F("WGamma04pa",histotitle+", E_{#gamma}",48,0,2400);
-  TH1F* hist05pa = new TH1F("WGamma05pa",histotitle+", cos(#theta^{*})_{#gamma}",50,-1,1);
+  TH1F* hist05pa = new TH1F("WGamma05pa",histotitle+", cos(#theta^{*})_{#gamma}",50,0,1);
   TH1F* hist06pa = new TH1F("WGamma06pa",histotitle+", H/E_{#gamma}",50,0,1);
-  TH1F *hist07pa = new TH1F("WGamma07pa",histotitle+", pt/M",50,0,5);
+  TH1F *hist07pa = new TH1F("WGamma07pa",histotitle+", pt/M",50,0,3);
   TH1F *hist08pa = new TH1F("WGamma08pa",histotitle+", Loose Photon ID",10,-1,3);
   TH1F *hist09pa = new TH1F("WGamma09pa",histotitle+", Medium Photon ID",10,-1,3);
   TH1F *hist10pa = new TH1F("WGamma10pa",histotitle+", Tight Photon ID",10,-1,3);
@@ -158,9 +158,9 @@ void select(const TString conf="samples.conf", // input file
   TH1F* hist02pb = new TH1F("WGamma02pb",histotitle+", #eta_{#gamma}",50,-5,5);
   TH1F* hist03pb = new TH1F("WGamma03pb",histotitle+", #varphi_{#gamma}",50,-3.14,3.14);
   TH1F* hist04pb = new TH1F("WGamma04pb",histotitle+", E_{#gamma}",48,0,2400);
-  TH1F* hist05pb = new TH1F("WGamma05pb",histotitle+", cos(#theta^{*})_{#gamma}",50,-1,1);
+  TH1F* hist05pb = new TH1F("WGamma05pb",histotitle+", cos(#theta^{*})_{#gamma}",50,0,1);
   TH1F* hist06pb = new TH1F("WGamma06pb",histotitle+", H/E_{#gamma}",50,0,1);
-  TH1F *hist07pb = new TH1F("WGamma07pb",histotitle+", pt/M",50,0,5);
+  TH1F *hist07pb = new TH1F("WGamma07pb",histotitle+", pt/M",50,0,3);
   TH1F *hist08pb = new TH1F("WGamma08pb",histotitle+", Loose Photon ID",10,-1,3);
   TH1F *hist09pb = new TH1F("WGamma09pb",histotitle+", Medium Photon ID",10,-1,3);
   TH1F *hist10pb = new TH1F("WGamma10pb",histotitle+", Tight Photon ID",10,-1,3);
@@ -200,17 +200,6 @@ void select(const TString conf="samples.conf", // input file
   UInt_t count1=0, count2=0, count3=0, count4=0, count5=0, count6=0;
   gStyle->SetOptStat(0);
 
-  
-  // load trigger menu
-  // const baconhep::TTrigger triggerMenu("../../BaconAna/DataFormats/data/HLT_50nsGRun");
-
-  // load pileup reweighting file
-  /*
-  TFile *f_rw = TFile::Open("../Utils/data/puWeights_76x.root", "read");
-  TH1D *h_rw = (TH1D*) f_rw->Get("puWeights");
-  TH1D *h_rw_up = (TH1D*) f_rw->Get("puWeightsUp");
-  TH1D *h_rw_down = (TH1D*) f_rw->Get("puWeightsDown");
-  */
 
 
   //--------------------------------------------------------------------------------------------------------------
@@ -226,6 +215,14 @@ void select(const TString conf="samples.conf", // input file
   gSystem->mkdir(outputDir,kTRUE);
   const TString ntupDir = outputDir + TString("/ntuples");
   gSystem->mkdir(ntupDir,kTRUE);
+
+  // Data Structure for output skimmed files
+  // Photon
+  float photon_pt, photon_eta, photon_phi, photon_e, photon_mvaval, photon_mvacat;
+  // Jet
+  float ak8puppijet_pt, ak8puppijet_eta, ak8puppijet_phi, ak8puppijet_e, ak8puppijet_masssoftdropcorr, ak8puppijet_tau21;
+  // System
+  float sys_costhetastar, sys_ptoverm, sys_invmass;
   
   // Data structures to store info from produced flat ntuples
   Int_t runnum = -999;
@@ -314,11 +311,34 @@ void select(const TString conf="samples.conf", // input file
   */
   //Trigger
   std::map<std::string,bool> *HLT_isFired = new std::map<std::string,bool>();
+
   
   // loop over samples
   TTree* eventTree = 0;
   for(UInt_t isam=0; isam<samplev.size(); isam++) {
     CSample* samp = samplev[isam];
+
+    // Set up output ntuple
+    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_WGamma_select.root");
+    TFile *outFile1 = new TFile(outfilename1,"RECREATE"); 
+    TTree *outTree1 = new TTree("Events","Events");
+    outTree1->Branch("photon_pt",       &photon_pt,      "photon_pt/F");
+    outTree1->Branch("photon_eta",      &photon_eta,      "photon_eta/F");
+    outTree1->Branch("photon_phi",      &photon_phi,      "photon_phi/F");
+    outTree1->Branch("photon_e",        &photon_e,      "photon_e/F");
+    outTree1->Branch("photon_mvaval",   &photon_mvaval,  "photon_mvaval/F");
+    outTree1->Branch("photon_mvacat",   &photon_mvacat,  "photon_mvacat/F");
+    outTree1->Branch("ak8puppijet_pt",       &ak8puppijet_pt,      "ak8puppijet_pt/F");
+    outTree1->Branch("ak8puppijet_eta",      &ak8puppijet_eta,      "ak8puppijet_eta/F");
+    outTree1->Branch("ak8puppijet_phi",      &ak8puppijet_phi,      "ak8puppijet_phi/F");
+    outTree1->Branch("ak8puppijet_e",        &ak8puppijet_e,      "ak8puppijet_e/F");
+    outTree1->Branch("ak8puppijet_masssoftdropcorr",   &ak8puppijet_masssoftdropcorr,  "ak8puppijet_masssoftdropcorr/F");
+    outTree1->Branch("ak8puppijet_tau21",              &ak8puppijet_tau21,             "ak8puppijet_tau21/F");
+    outTree1->Branch("sys_costhetastar",        &sys_costhetastar,      "sys_costhetastar/F");
+    outTree1->Branch("sys_ptoverm",             &sys_ptoverm,           "sys_ptoverm/F");
+    outTree1->Branch("sys_invmass",             &sys_invmass,           "sys_invmass/F");
+   
+
     cout<<"begin loop over files"<<endl;
     TStopwatch stopwatch;
 
@@ -608,8 +628,9 @@ void select(const TString conf="samples.conf", // input file
 
 	// Tight Selection
 	// Tau21: https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetWtagging
-	Bool_t tau21_cut = (tau21 < 0.45);
-	Bool_t mass_range = (jetAK8_puppi_softdrop_mass->at(index_j) > 65 && jetAK8_puppi_softdrop_mass->at(index_j) < 105);
+	// Bool_t tau21_cut = (tau21 < 0.45);
+	Bool_t tau21_cut = true; //apply this cut in final stage
+	Bool_t mass_range = (jetAK8_puppi_softdrop_mass->at(index_j) > 55 && jetAK8_puppi_softdrop_mass->at(index_j) < 105);
 	pass_j2 = (tau21_cut && mass_range);
 	if(pass_j2)
 	  count4++;
@@ -629,7 +650,7 @@ void select(const TString conf="samples.conf", // input file
 	TLorentzVector v_boosted_j, v_boosted_p;
 	v_boosted_p = v_p;
         v_boosted_p.Boost(-(v_sys.BoostVector()));
-        cosThetaStar = (v_boosted_p.Pz()/v_boosted_p.P());
+        cosThetaStar = abs(v_boosted_p.Pz()/v_boosted_p.P());	
 	
 	// Passing p1 and j1 selection
 	if(pass_p1 && pass_j1){
@@ -687,6 +708,22 @@ void select(const TString conf="samples.conf", // input file
 	  //hist09jb->Fill(jetAK8_puppi_IDTightLepVeto->at(index_j));
 	  hist10jb->Fill(jetAK8_puppi_IDTight->at(index_j));
 	  hist01sb->Fill(invmass);
+	  photon_pt = ph_pt->at(index_p);
+	  photon_eta = ph_eta->at(index_p);
+	  photon_phi = ph_phi->at(index_p);
+	  photon_e = ph_E->at(index_p);
+	  photon_mvaval = ph_mvaVal->at(index_p);
+	  photon_mvacat = ph_mvaCat->at(index_p);
+	  ak8puppijet_pt = jetAK8_puppi_softdrop_pt->at(index_j);
+	  ak8puppijet_eta = jetAK8_puppi_softdrop_eta->at(index_j);
+	  ak8puppijet_phi = jetAK8_puppi_softdrop_phi->at(index_j);
+	  ak8puppijet_e = jetAK8_puppi_softdrop_E->at(index_j);
+	  ak8puppijet_masssoftdropcorr = jetAK8_puppi_softdrop_mass->at(index_j);
+	  ak8puppijet_tau21 = tau21;
+	  sys_costhetastar = cosThetaStar;
+	  sys_ptoverm = ptoverM;
+	  sys_invmass = invmass;
+	  outTree1->Fill();
 	}
       }//end of event loop
       cout<<"Number of events in this file: "<<eventTree->GetEntries()<<endl;
@@ -863,6 +900,8 @@ SetLineStyle(2); histMC06a->Scale(scale);
       //-------------------------------MC STACK HIST SPECIFIC-------------------------------------------
       */
     }//end of file loop
+    outFile1->Write();
+    outFile1->Close();
   }//end of sample loop
 
   // Post processing - fitting
@@ -1483,15 +1522,15 @@ SetLineStyle(2); histMC06a->Scale(scale);
   legend->Draw();
   c04p->Print("p_e.png");
 
-  TCanvas *c05p = new TCanvas("c05p","cos(#theta^{*})_{#gamma}",1200,900);
+  TCanvas *c05p = new TCanvas("c05p","cos(#theta^*)_{#gamma}",1200,900);
   xaxis = hist05pa->GetXaxis();
   yaxis = hist05pa->GetYaxis();
   xaxis->SetTitle("cos(#theta^*)_{#gamma}");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.2);
-  yaxis->SetRangeUser(0.1,10000000);
-  c05p->SetLogy();
+  yaxis->SetRangeUser(0,1000);
+  //c05p->SetLogy();
   c05p->cd();
   hist05pa->Draw("HIST");
   hist05pb->Draw("SAME");
@@ -1522,7 +1561,7 @@ SetLineStyle(2); histMC06a->Scale(scale);
   TCanvas *c07p = new TCanvas("c07p","pt/M_{#gamma}",1200,900);
   xaxis = hist07pa->GetXaxis();
   yaxis = hist07pa->GetYaxis();
-  xaxis->SetTitle("pt/M_{#gamma}");
+  xaxis->SetTitle("pt_{#gamma}/M");
   yaxis->SetTitle("Entries / 0.1");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.2);
@@ -1755,8 +1794,8 @@ SetLineStyle(2); histMC06a->Scale(scale);
   xaxis->SetTitle("m_{j}");
   yaxis->SetTitle("Entries / 10 GeV");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0,300);
-  //c05j->SetLogy();
+  yaxis->SetRangeUser(0.1,10000000);
+  c05j->SetLogy();
   c05j->cd();
   hist05ja->Draw("HIST");
   hist05jb->Draw("SAME");
@@ -1863,8 +1902,8 @@ SetLineStyle(2); histMC06a->Scale(scale);
   yaxis->SetTitle("Entries / 40 GeV");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.2);
-  yaxis->SetRangeUser(0,1200);
-  //c01s->SetLogy();
+  yaxis->SetRangeUser(0.1,10000000);
+  c01s->SetLogy();
   c01s->cd();
   hist01sa->Draw("HIST");
   hist01sb->Draw("SAME");
