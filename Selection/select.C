@@ -41,7 +41,11 @@ void select(const TString conf="samples.conf", // input file
   //--------------------------------------------------------------------------------------------------------------
   // Settings 
   //=============================================================================================================
+<<<<<<< HEAD
+  TString type = "DATA"; //DATA, SIGNAL, BKG, CONTROL
+=======
   TString type = "MC"; //DATA, SIGNAL, BKG, CONTROL
+>>>>>>> c28e8d5fc0fb7ccba556d05f3cfca71aa920a72f
   TString formate = "DIVIDED"; //DIVIDED RANGE
   TString histotitle;
   if(type == "SIGNAL"){
@@ -58,6 +62,7 @@ void select(const TString conf="samples.conf", // input file
   }
   else
     cout<<"Wrong data type"<<endl;
+  bool isPlot = false;
 
   //-----------------------------------CODE MODIFICATION INSTRUCTION FOR BKG/SIGNAL/DATA PROCESS---------------------------
   /*
@@ -196,6 +201,8 @@ void select(const TString conf="samples.conf", // input file
   //WGamma system
   TH1F* hist01sa = new TH1F("WGamma01sa",histotitle+", invariant mass",50,200,2200);
   TH1F* hist01sb = new TH1F("WGamma01sb",histotitle+", invariant mass",50,200,2200);
+  TH1F* hist02sa = new TH1F("WGamma02sa",histotitle+", photon jet seperation",50,0,10);
+  TH1F* hist02sb = new TH1F("WGamma02sb",histotitle+", photon jet seperation",50,0,10);
   
   UInt_t count1=0, count2=0, count3=0, count4=0, count5=0, count6=0;
   gStyle->SetOptStat(0);
@@ -650,7 +657,10 @@ void select(const TString conf="samples.conf", // input file
 	TLorentzVector v_boosted_j, v_boosted_p;
 	v_boosted_p = v_p;
         v_boosted_p.Boost(-(v_sys.BoostVector()));
-        cosThetaStar = abs(v_boosted_p.Pz()/v_boosted_p.P());	
+        cosThetaStar = abs(v_boosted_p.Pz()/v_boosted_p.P());
+
+	// Calculate seperation
+	Double_t seperation = v_j.DeltaR(v_p);
 	
 	// Passing p1 and j1 selection
 	if(pass_p1 && pass_j1){
@@ -680,6 +690,7 @@ void select(const TString conf="samples.conf", // input file
 	  //hist09ja->Fill(jetAK8_puppi_IDTightLepVeto->at(index_j));
 	  hist10ja->Fill(jetAK8_puppi_IDTight->at(index_j));
 	  hist01sa->Fill(invmass);
+	  hist02sa->Fill(seperation);
 	}
 	if(pass_p2 && pass_j2){
 	  hist01pb->Fill(ph_pt->at(index_p));
@@ -708,6 +719,10 @@ void select(const TString conf="samples.conf", // input file
 	  //hist09jb->Fill(jetAK8_puppi_IDTightLepVeto->at(index_j));
 	  hist10jb->Fill(jetAK8_puppi_IDTight->at(index_j));
 	  hist01sb->Fill(invmass);
+<<<<<<< HEAD
+	  hist02sb->Fill(seperation);
+=======
+>>>>>>> c28e8d5fc0fb7ccba556d05f3cfca71aa920a72f
 	  photon_pt = ph_pt->at(index_p);
 	  photon_eta = ph_eta->at(index_p);
 	  photon_phi = ph_phi->at(index_p);
@@ -1391,62 +1406,425 @@ SetLineStyle(2); histMC06a->Scale(scale);
   c17->Print("HT.png");
   */
 
-  //Non stacked plots
-  hist01pa->SetLineWidth(2); hist01pa->SetLineColor(4);
-  hist02pa->SetLineWidth(2); hist02pa->SetLineColor(4);
-  hist03pa->SetLineWidth(2); hist03pa->SetLineColor(4);
-  hist04pa->SetLineWidth(2); hist04pa->SetLineColor(4);
-  hist05pa->SetLineWidth(2); hist05pa->SetLineColor(4);
-  hist06pa->SetLineWidth(2); hist06pa->SetLineColor(4);
-  hist07pa->SetLineWidth(2); hist07pa->SetLineColor(4);
-  hist08pa->SetLineWidth(2); hist08pa->SetLineColor(4);
-  hist09pa->SetLineWidth(2); hist09pa->SetLineColor(4);
-  hist10pa->SetLineWidth(2); hist10pa->SetLineColor(4);
-  hist11pa->SetLineWidth(2); hist11pa->SetLineColor(4);
-  hist12pa->SetLineWidth(2); hist12pa->SetLineColor(4);
-  hist13pa->SetLineWidth(2); hist13pa->SetLineColor(4);
-  hist14pa->SetLineWidth(2); hist14pa->SetLineColor(4);
-  hist15pa->SetLineWidth(2); hist15pa->SetLineColor(4);
-  hist01pb->SetLineWidth(2); hist01pb->SetLineColor(2);
-  hist02pb->SetLineWidth(2); hist02pb->SetLineColor(2);
-  hist03pb->SetLineWidth(2); hist03pb->SetLineColor(2);
-  hist04pb->SetLineWidth(2); hist04pb->SetLineColor(2);
-  hist05pb->SetLineWidth(2); hist05pb->SetLineColor(2);
-  hist06pb->SetLineWidth(2); hist06pb->SetLineColor(2);
-  hist07pb->SetLineWidth(2); hist07pb->SetLineColor(2);
-  hist08pb->SetLineWidth(2); hist08pb->SetLineColor(2);
-  hist09pb->SetLineWidth(2); hist09pb->SetLineColor(2);
-  hist10pb->SetLineWidth(2); hist10pb->SetLineColor(2);
-  hist11pb->SetLineWidth(2); hist11pb->SetLineColor(2);
-  hist12pb->SetLineWidth(2); hist12pb->SetLineColor(2);
-  hist13pb->SetLineWidth(2); hist13pb->SetLineColor(2);
-  hist14pb->SetLineWidth(2); hist14pb->SetLineColor(2);
-  hist15pb->SetLineWidth(2); hist15pb->SetLineColor(2);
+  if(isPlot){
+    //Non stacked plots
+    hist01pa->SetLineWidth(2); hist01pa->SetLineColor(4);
+    hist02pa->SetLineWidth(2); hist02pa->SetLineColor(4);
+    hist03pa->SetLineWidth(2); hist03pa->SetLineColor(4);
+    hist04pa->SetLineWidth(2); hist04pa->SetLineColor(4);
+    hist05pa->SetLineWidth(2); hist05pa->SetLineColor(4);
+    hist06pa->SetLineWidth(2); hist06pa->SetLineColor(4);
+    hist07pa->SetLineWidth(2); hist07pa->SetLineColor(4);
+    hist08pa->SetLineWidth(2); hist08pa->SetLineColor(4);
+    hist09pa->SetLineWidth(2); hist09pa->SetLineColor(4);
+    hist10pa->SetLineWidth(2); hist10pa->SetLineColor(4);
+    hist11pa->SetLineWidth(2); hist11pa->SetLineColor(4);
+    hist12pa->SetLineWidth(2); hist12pa->SetLineColor(4);
+    hist13pa->SetLineWidth(2); hist13pa->SetLineColor(4);
+    hist14pa->SetLineWidth(2); hist14pa->SetLineColor(4);
+    hist15pa->SetLineWidth(2); hist15pa->SetLineColor(4);
+    hist01pb->SetLineWidth(2); hist01pb->SetLineColor(2);
+    hist02pb->SetLineWidth(2); hist02pb->SetLineColor(2);
+    hist03pb->SetLineWidth(2); hist03pb->SetLineColor(2);
+    hist04pb->SetLineWidth(2); hist04pb->SetLineColor(2);
+    hist05pb->SetLineWidth(2); hist05pb->SetLineColor(2);
+    hist06pb->SetLineWidth(2); hist06pb->SetLineColor(2);
+    hist07pb->SetLineWidth(2); hist07pb->SetLineColor(2);
+    hist08pb->SetLineWidth(2); hist08pb->SetLineColor(2);
+    hist09pb->SetLineWidth(2); hist09pb->SetLineColor(2);
+    hist10pb->SetLineWidth(2); hist10pb->SetLineColor(2);
+    hist11pb->SetLineWidth(2); hist11pb->SetLineColor(2);
+    hist12pb->SetLineWidth(2); hist12pb->SetLineColor(2);
+    hist13pb->SetLineWidth(2); hist13pb->SetLineColor(2);
+    hist14pb->SetLineWidth(2); hist14pb->SetLineColor(2);
+    hist15pb->SetLineWidth(2); hist15pb->SetLineColor(2);
   
-  hist01ja->SetLineWidth(2); hist01ja->SetLineColor(4);
-  hist02ja->SetLineWidth(2); hist02ja->SetLineColor(4);
-  hist03ja->SetLineWidth(2); hist03ja->SetLineColor(4);
-  hist04ja->SetLineWidth(2); hist04ja->SetLineColor(4);
-  hist05ja->SetLineWidth(2); hist05ja->SetLineColor(4);
-  hist06ja->SetLineWidth(2); hist06ja->SetLineColor(4);
-  hist07ja->SetLineWidth(2); hist07ja->SetLineColor(4);
-  hist08ja->SetLineWidth(2); hist08ja->SetLineColor(4);
-  //hist09ja->SetLineWidth(2); hist09ja->SetLineColor(4);
-  hist10ja->SetLineWidth(2); hist10ja->SetLineColor(4);
-  hist01jb->SetLineWidth(2); hist01jb->SetLineColor(2);
-  hist02jb->SetLineWidth(2); hist02jb->SetLineColor(2);
-  hist03jb->SetLineWidth(2); hist03jb->SetLineColor(2);
-  hist04jb->SetLineWidth(2); hist04jb->SetLineColor(2);
-  hist05jb->SetLineWidth(2); hist05jb->SetLineColor(2);
-  hist06jb->SetLineWidth(2); hist06jb->SetLineColor(2);
-  hist07jb->SetLineWidth(2); hist07jb->SetLineColor(2);
-  hist08jb->SetLineWidth(2); hist08jb->SetLineColor(2);
-  //hist09jb->SetLineWidth(2); hist09jb->SetLineColor(2);
-  hist10jb->SetLineWidth(2); hist10jb->SetLineColor(2);
+    hist01ja->SetLineWidth(2); hist01ja->SetLineColor(4);
+    hist02ja->SetLineWidth(2); hist02ja->SetLineColor(4);
+    hist03ja->SetLineWidth(2); hist03ja->SetLineColor(4);
+    hist04ja->SetLineWidth(2); hist04ja->SetLineColor(4);
+    hist05ja->SetLineWidth(2); hist05ja->SetLineColor(4);
+    hist06ja->SetLineWidth(2); hist06ja->SetLineColor(4);
+    hist07ja->SetLineWidth(2); hist07ja->SetLineColor(4);
+    hist08ja->SetLineWidth(2); hist08ja->SetLineColor(4);
+    //hist09ja->SetLineWidth(2); hist09ja->SetLineColor(4);
+    hist10ja->SetLineWidth(2); hist10ja->SetLineColor(4);
+    hist01jb->SetLineWidth(2); hist01jb->SetLineColor(2);
+    hist02jb->SetLineWidth(2); hist02jb->SetLineColor(2);
+    hist03jb->SetLineWidth(2); hist03jb->SetLineColor(2);
+    hist04jb->SetLineWidth(2); hist04jb->SetLineColor(2);
+    hist05jb->SetLineWidth(2); hist05jb->SetLineColor(2);
+    hist06jb->SetLineWidth(2); hist06jb->SetLineColor(2);
+    hist07jb->SetLineWidth(2); hist07jb->SetLineColor(2);
+    hist08jb->SetLineWidth(2); hist08jb->SetLineColor(2);
+    //hist09jb->SetLineWidth(2); hist09jb->SetLineColor(2);
+    hist10jb->SetLineWidth(2); hist10jb->SetLineColor(2);
 
-  hist01sa->SetLineWidth(2); hist01sa->SetLineColor(4);
-  hist01sb->SetLineWidth(2); hist01sb->SetLineColor(2);
+    hist01sa->SetLineWidth(2); hist01sa->SetLineColor(4);
+    hist01sb->SetLineWidth(2); hist01sb->SetLineColor(2);
   
+<<<<<<< HEAD
+    TLegend *legend = new TLegend(0.6,0.75,0.85,0.85);
+    TAxis *xaxis = NULL;
+    TAxis *yaxis = NULL;
+    TCanvas *c01p = new TCanvas("c01p","pt_{#gamma}",1200,900);
+    xaxis = hist01pa->GetXaxis();
+    yaxis = hist01pa->GetYaxis();
+    xaxis->SetTitle("pt_{#gamma} (GeV)");
+    yaxis->SetTitle("Entries / 50 GeV");
+    yaxis->SetTitleOffset(1.3);
+    xaxis->SetTitleOffset(1.2);
+    yaxis->SetRangeUser(0.1,10000000);
+    c01p->SetLogy();
+    c01p->cd();
+    hist01pa->Draw("HIST");
+    hist01pb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist01pa,histotitle+" Fired trigger","f");
+    legend->AddEntry(hist01pb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c01p->Print("p_pt.png");
+
+    TCanvas *c02p = new TCanvas("c02p","#eta_{#gamma}",1200,900);
+    xaxis = hist02pa->GetXaxis();
+    yaxis = hist02pa->GetYaxis();
+    xaxis->SetTitle("#eta_{#gamma}");
+    yaxis->SetTitle("Entries / 0.2");
+    yaxis->SetTitleOffset(1.3);
+    xaxis->SetTitleOffset(1.2);
+    yaxis->SetRangeUser(0.1,10000000);
+    c02p->SetLogy();
+    c02p->cd();
+    hist02pa->Draw("HIST");
+    hist02pb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist02pa,histotitle+" Fired trigger" ,"f");
+    legend->AddEntry(hist02pb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c02p->Print("p_eta.png");
+
+    TCanvas *c03p = new TCanvas("c03p","#varphi_{#gamma}",1200,900);
+    xaxis = hist03pa->GetXaxis();
+    yaxis = hist03pa->GetYaxis();
+    xaxis->SetTitle("#varphi_{#gamma} (rad)");
+    yaxis->SetTitle("Entries / #pi/25");
+    yaxis->SetTitleOffset(1.3);
+    xaxis->SetTitleOffset(1.2);
+    yaxis->SetRangeUser(0.1,10000000);
+    c03p->SetLogy();
+    c03p->cd();
+    hist03pa->Draw("HIST");
+    hist03pb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist03pa,histotitle+" Fired trigger" ,"f");
+    legend->AddEntry(hist03pb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c03p->Print("p_phi.png");
+
+    TCanvas *c04p = new TCanvas("c04p","E_{#gamma}",1200,900);
+    xaxis = hist04pa->GetXaxis();
+    yaxis = hist04pa->GetYaxis();
+    xaxis->SetTitle("E_{#gamma} (GeV)");
+    yaxis->SetTitle("Entries / 50 GeV");
+    yaxis->SetTitleOffset(1.3);
+    xaxis->SetTitleOffset(1.2);
+    yaxis->SetRangeUser(0.1,10000000);
+    c04p->SetLogy();
+    c04p->cd();
+    hist04pa->Draw("HIST");
+    hist04pb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist04pa,histotitle+" Fired trigger" ,"f");
+    legend->AddEntry(hist04pb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c04p->Print("p_e.png");
+
+    TCanvas *c05p = new TCanvas("c05p","cos(#theta^*)_{#gamma}",1200,900);
+    xaxis = hist05pa->GetXaxis();
+    yaxis = hist05pa->GetYaxis();
+    xaxis->SetTitle("cos(#theta^*)_{#gamma}");
+    yaxis->SetTitle("Entries");
+    yaxis->SetTitleOffset(1.3);
+    xaxis->SetTitleOffset(1.2);
+    yaxis->SetRangeUser(0,1000);
+    //c05p->SetLogy();
+    c05p->cd();
+    hist05pa->Draw("HIST");
+    hist05pb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist05pa,histotitle+" Fired trigger" ,"f");
+    legend->AddEntry(hist05pb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c05p->Print("p_costhetastar.png");
+
+    TCanvas *c06p = new TCanvas("c06p","hovere_{#gamma}",1200,900);
+    xaxis = hist06pa->GetXaxis();
+    yaxis = hist06pa->GetYaxis();
+    xaxis->SetTitle("H/E_{#gamma}");
+    yaxis->SetTitle("Entries / 0.02");
+    yaxis->SetTitleOffset(1.3);
+    xaxis->SetTitleOffset(1.2);
+    yaxis->SetRangeUser(0.1,10000000);
+    c06p->SetLogy();
+    c06p->cd();
+    hist06pa->Draw("HIST");
+    hist06pb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist06pa,histotitle+" Fired trigger" ,"f");
+    legend->AddEntry(hist06pb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c06p->Print("p_hovere.png");
+
+    TCanvas *c07p = new TCanvas("c07p","pt/M_{#gamma}",1200,900);
+    xaxis = hist07pa->GetXaxis();
+    yaxis = hist07pa->GetYaxis();
+    xaxis->SetTitle("pt_{#gamma}/M");
+    yaxis->SetTitle("Entries / 0.1");
+    yaxis->SetTitleOffset(1.3);
+    xaxis->SetTitleOffset(1.2);
+    yaxis->SetRangeUser(0.1,10000000);
+    c07p->SetLogy();
+    c07p->cd();
+    hist07pa->Draw("HIST");
+    hist07pb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist07pa,histotitle+" Fired trigger" ,"f");
+    legend->AddEntry(hist07pb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c07p->Print("p_PtoverM.png");
+
+    TCanvas *c08p = new TCanvas("c08p","Loose Photon ID",1200,900);
+    xaxis = hist08pa->GetXaxis();
+    yaxis = hist08pa->GetYaxis();
+    xaxis->SetTitle("Loose Photon ID");
+    yaxis->SetTitle("Entries");
+    yaxis->SetTitleOffset(1.3);
+    xaxis->SetTitleOffset(1.2);
+    yaxis->SetRangeUser(0.1,10000000);
+    c08p->SetLogy();
+    c08p->cd();
+    hist08pa->Draw("HIST");
+    hist08pb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist08pa,histotitle+" Fired trigger" ,"f");
+    legend->AddEntry(hist08pb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c08p->Print("p_looseID.png");
+
+    TCanvas *c09p = new TCanvas("c09p","Medium Photon ID",1200,900);
+    xaxis = hist09pa->GetXaxis();
+    yaxis = hist09pa->GetYaxis();
+    xaxis->SetTitle("Medium Photon ID");
+    yaxis->SetTitle("Entries");
+    yaxis->SetTitleOffset(1.3);
+    xaxis->SetTitleOffset(1.2);
+    yaxis->SetRangeUser(0.1,10000000);
+    c09p->SetLogy();
+    c09p->cd();
+    hist09pa->Draw("HIST");
+    hist09pb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist09pa,histotitle+" Fired trigger" ,"f");
+    legend->AddEntry(hist09pb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c09p->Print("p_mediumID.png");
+
+    TCanvas *c10p = new TCanvas("c10p","Tight Photon ID",1200,900);
+    xaxis = hist10pa->GetXaxis();
+    yaxis = hist10pa->GetYaxis();
+    xaxis->SetTitle("Tight Photon ID");
+    yaxis->SetTitle("Entries");
+    yaxis->SetTitleOffset(1.3);
+    xaxis->SetTitleOffset(1.2);
+    yaxis->SetRangeUser(0.1,10000000);
+    c10p->SetLogy();
+    c10p->cd();
+    hist10pa->Draw("HIST");
+    hist10pb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist10pa,histotitle+" Fired trigger" ,"f");
+    legend->AddEntry(hist10pb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c10p->Print("p_tightID.png");
+
+    TCanvas *c11p = new TCanvas("c11p","Photon mvaID Value",1200,900);
+    xaxis = hist11pa->GetXaxis();
+    yaxis = hist11pa->GetYaxis();
+    xaxis->SetTitle("Photon mvaID Value");
+    yaxis->SetTitle("Entries");
+    yaxis->SetTitleOffset(1.3);
+    xaxis->SetTitleOffset(1.2);
+    yaxis->SetRangeUser(0.1,10000000);
+    c11p->SetLogy();
+    c11p->cd();
+    hist11pa->Draw("HIST");
+    hist11pb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist11pa,histotitle+" Fired trigger" ,"f");
+    legend->AddEntry(hist11pb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c11p->Print("p_mvaVal.png");
+
+    TCanvas *c12p = new TCanvas("c12p","Photon mvaID Category",1200,900);
+    xaxis = hist12pa->GetXaxis();
+    yaxis = hist12pa->GetYaxis();
+    xaxis->SetTitle("Photon mvaID Category");
+    yaxis->SetTitle("Entries");
+    yaxis->SetTitleOffset(1.3);
+    xaxis->SetTitleOffset(1.2);
+    yaxis->SetRangeUser(0.1,10000000);
+    c12p->SetLogy();
+    c12p->cd();
+    hist12pa->Draw("HIST");
+    hist12pb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist12pa,histotitle+" Fired trigger" ,"f");
+    legend->AddEntry(hist12pb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c12p->Print("p_mvaCat.png");
+
+    TCanvas *c13p = new TCanvas("c13p","isoGamma_{#gamma}",1200,900);
+    xaxis = hist13pa->GetXaxis();
+    yaxis = hist13pa->GetYaxis();
+    xaxis->SetTitle("Photon mvaID Value");
+    yaxis->SetTitle("Entries");
+    yaxis->SetTitleOffset(1.3);
+    xaxis->SetTitleOffset(1.2);
+    yaxis->SetRangeUser(0.1,10000000);
+    c13p->SetLogy();
+    c13p->cd();
+    hist13pa->Draw("HIST");
+    hist13pb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist13pa,histotitle+" Fired trigger" ,"f");
+    legend->AddEntry(hist13pb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c13p->Print("p_isoGamma.png");
+
+    TCanvas *c14p = new TCanvas("c14p","isoCh_{#gamma}",1200,900);
+    xaxis = hist14pa->GetXaxis();
+    yaxis = hist14pa->GetYaxis();
+    xaxis->SetTitle("Photon mvaID Category");
+    yaxis->SetTitle("Entries");
+    yaxis->SetTitleOffset(1.3);
+    xaxis->SetTitleOffset(1.2);
+    yaxis->SetRangeUser(0.1,10000000);
+    c14p->SetLogy();
+    c14p->cd();
+    hist14pa->Draw("HIST");
+    hist14pb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist14pa,histotitle+" Fired trigger" ,"f");
+    legend->AddEntry(hist14pb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c14p->Print("p_isoCh.png");
+
+    TCanvas *c15p = new TCanvas("c15p","ElectronVeto_{#gamma}",1200,900);
+    xaxis = hist15pa->GetXaxis();
+    yaxis = hist15pa->GetYaxis();
+    xaxis->SetTitle("ElectronVeto");
+    yaxis->SetTitle("Entries");
+    yaxis->SetTitleOffset(1.3);
+    xaxis->SetTitleOffset(1.2);
+    yaxis->SetRangeUser(0.1,10000000);
+    c15p->SetLogy();
+    c15p->cd();
+    hist15pa->Draw("HIST");
+    legend->Clear();
+    legend->AddEntry(hist15pa,histotitle+" Fired trigger" ,"f");
+    legend->AddEntry(hist15pb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c15p->Print("p_EleVeto.png");
+
+
+    TCanvas *c01j = new TCanvas("c01j","pt_{j}",1200,900);
+    xaxis = hist01ja->GetXaxis();
+    yaxis = hist01ja->GetYaxis();
+    xaxis->SetTitle("pt_{j}");
+    yaxis->SetTitle("Entries / 50 GeV");
+    yaxis->SetTitleOffset(1.3);
+    yaxis->SetRangeUser(0.1,10000000);
+    c01j->SetLogy();
+    c01j->cd();
+    hist01ja->Draw("HIST");
+    hist01jb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist01ja,histotitle+" Fired trigger","f");
+    legend->AddEntry(hist01jb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c01j->Print("j_pt.png");
+
+    TCanvas *c02j = new TCanvas("c02j","#eta_{j}",1200,900);
+    xaxis = hist02ja->GetXaxis();
+    yaxis = hist02ja->GetYaxis();
+    xaxis->SetTitle("#eta_{j}");
+    yaxis->SetTitle("Entries / 0.2");
+    yaxis->SetTitleOffset(1.3);
+    yaxis->SetRangeUser(0.1,10000000);
+    c02j->SetLogy();
+    c02j->cd();
+    hist02ja->Draw("HIST");
+    hist02jb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist02ja,histotitle+" Fired trigger","f");
+    legend->AddEntry(hist02jb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c02j->Print("j_eta.png");
+
+    TCanvas *c03j = new TCanvas("c03j","#varphi_{j}",1200,900);
+    xaxis = hist03ja->GetXaxis();
+    yaxis = hist03ja->GetYaxis();
+    xaxis->SetTitle("#varphi_{j}");
+    yaxis->SetTitle("Entries / #pi/25");
+    yaxis->SetTitleOffset(1.3);
+    yaxis->SetRangeUser(0.1,10000000);
+    c03j->SetLogy();
+    c03j->cd();
+    hist03ja->Draw("HIST");
+    hist03jb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist03ja,histotitle+" Fired trigger","f");
+    legend->AddEntry(hist03jb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c03j->Print("j_phi.png");
+
+    TCanvas *c04j = new TCanvas("c04j","E_{j}",1200,900);
+    xaxis = hist04ja->GetXaxis();
+    yaxis = hist04ja->GetYaxis();
+    xaxis->SetTitle("E_{j}");
+    yaxis->SetTitle("Entries / 50 GeV");
+    yaxis->SetTitleOffset(1.3);
+    yaxis->SetRangeUser(0.1,10000000);
+    c04j->SetLogy();
+    c04j->cd();
+    hist04ja->Draw("HIST");
+    hist04jb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist04ja,histotitle+" Fired trigger","f");
+    legend->AddEntry(hist04jb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c04j->Print("j_e.png");
+
+    TCanvas *c05j = new TCanvas("c05j","m_{j}",1200,900);
+    xaxis = hist05ja->GetXaxis();
+    yaxis = hist05ja->GetYaxis();
+    xaxis->SetTitle("m_{j}");
+    yaxis->SetTitle("Entries / 10 GeV");
+    yaxis->SetTitleOffset(1.3);
+    yaxis->SetRangeUser(0.1,10000000);
+    c05j->SetLogy();
+    c05j->cd();
+    hist05ja->Draw("HIST");
+    hist05jb->Draw("SAME");
+    //g1->Draw("SAME");
+    //g2->Draw("SAME");
+    //f1->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist05ja,histotitle+" Fired trigger","f");
+    legend->AddEntry(hist05jb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c05j->Print("j_m.png");
+=======
   TLegend *legend = new TLegend(0.6,0.75,0.85,0.85);
   TAxis *xaxis = NULL;
   TAxis *yaxis = NULL;
@@ -1807,94 +2185,134 @@ SetLineStyle(2); histMC06a->Scale(scale);
   legend->AddEntry(hist05jb,histotitle+" Pass Selection","f");
   legend->Draw();
   c05j->Print("j_m.png");
+>>>>>>> c28e8d5fc0fb7ccba556d05f3cfca71aa920a72f
   
-  TCanvas *c06j = new TCanvas("c06j","#tau1_{j}",1200,900);
-  xaxis = hist06ja->GetXaxis();
-  yaxis = hist06ja->GetYaxis();
-  xaxis->SetTitle("#tau1_{j}");
-  yaxis->SetTitle("Entries / 0.02");
-  yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,10000000);
-  c06j->SetLogy();
-  c06j->cd();
-  hist06ja->Draw("HIST");
-  hist06jb->Draw("SAME");
-  legend->Clear();
-  legend->AddEntry(hist06ja,histotitle+" Fired trigger","f");
-  legend->AddEntry(hist06jb,histotitle+" Pass Selection","f");
-  legend->Draw();
-  c06j->Print("j_tau1.png");
+    TCanvas *c06j = new TCanvas("c06j","#tau1_{j}",1200,900);
+    xaxis = hist06ja->GetXaxis();
+    yaxis = hist06ja->GetYaxis();
+    xaxis->SetTitle("#tau1_{j}");
+    yaxis->SetTitle("Entries / 0.02");
+    yaxis->SetTitleOffset(1.3);
+    yaxis->SetRangeUser(0.1,10000000);
+    c06j->SetLogy();
+    c06j->cd();
+    hist06ja->Draw("HIST");
+    hist06jb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist06ja,histotitle+" Fired trigger","f");
+    legend->AddEntry(hist06jb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c06j->Print("j_tau1.png");
 
-  TCanvas *c07j = new TCanvas("c07j","#tau2_{j}",1200,900);
-  xaxis = hist07ja->GetXaxis();
-  yaxis = hist07ja->GetYaxis();
-  xaxis->SetTitle("#tau2_{j}");
-  yaxis->SetTitle("Entries / 0.02");
-  yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,10000000);
-  c07j->SetLogy();
-  c07j->cd();
-  hist07ja->Draw("HIST");
-  hist07jb->Draw("SAME");
-  legend->Clear();
-  legend->AddEntry(hist07ja,histotitle+" Fired trigger","f");
-  legend->AddEntry(hist07jb,histotitle+" Pass Selection","f");
-  legend->Draw();
-  c07j->Print("j_tau2.png");
+    TCanvas *c07j = new TCanvas("c07j","#tau2_{j}",1200,900);
+    xaxis = hist07ja->GetXaxis();
+    yaxis = hist07ja->GetYaxis();
+    xaxis->SetTitle("#tau2_{j}");
+    yaxis->SetTitle("Entries / 0.02");
+    yaxis->SetTitleOffset(1.3);
+    yaxis->SetRangeUser(0.1,10000000);
+    c07j->SetLogy();
+    c07j->cd();
+    hist07ja->Draw("HIST");
+    hist07jb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist07ja,histotitle+" Fired trigger","f");
+    legend->AddEntry(hist07jb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c07j->Print("j_tau2.png");
 
-  TCanvas *c08j = new TCanvas("c08j","#tau21_{j}",1200,900);
-  xaxis = hist08ja->GetXaxis();
-  yaxis = hist08ja->GetYaxis();
-  xaxis->SetTitle("#tau21_{j}");
-  yaxis->SetTitle("Entries / 0.02");
-  yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,10000000);
-  c08j->SetLogy();
-  c08j->cd();
-  hist08ja->Draw("HIST");
-  hist08jb->Draw("SAME");
-  legend->Clear();
-  legend->AddEntry(hist08ja,histotitle+" Fired trigger","f");
-  legend->AddEntry(hist08jb,histotitle+" Pass Selection","f");
-  legend->Draw();
-  c08j->Print("j_tau21.png");
+    TCanvas *c08j = new TCanvas("c08j","#tau21_{j}",1200,900);
+    xaxis = hist08ja->GetXaxis();
+    yaxis = hist08ja->GetYaxis();
+    xaxis->SetTitle("#tau21_{j}");
+    yaxis->SetTitle("Entries / 0.02");
+    yaxis->SetTitleOffset(1.3);
+    yaxis->SetRangeUser(0.1,10000000);
+    c08j->SetLogy();
+    c08j->cd();
+    hist08ja->Draw("HIST");
+    hist08jb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist08ja,histotitle+" Fired trigger","f");
+    legend->AddEntry(hist08jb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c08j->Print("j_tau21.png");
 
-  /*
-  TCanvas *c09j = new TCanvas("c09j","TightLepVeto",1200,900);
-  xaxis = hist09ja->GetXaxis();
-  yaxis = hist09ja->GetYaxis();
-  xaxis->SetTitle("Tight Lepton Veto");
-  yaxis->SetTitle("Entries");
-  yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,10000000);
-  c09j->SetLogy();
-  c09j->cd();
-  hist09ja->Draw("HIST");
-  hist09jb->Draw("SAME");
-  legend->Clear();
-  legend->AddEntry(hist09ja,histotitle+" Fired trigger","f");
-  legend->AddEntry(hist09jb,histotitle+" Pass Selection","f");
-  legend->Draw();
-  c09j->Print("j_LepVeto.png");
-  */
+    /*
+      TCanvas *c09j = new TCanvas("c09j","TightLepVeto",1200,900);
+      xaxis = hist09ja->GetXaxis();
+      yaxis = hist09ja->GetYaxis();
+      xaxis->SetTitle("Tight Lepton Veto");
+      yaxis->SetTitle("Entries");
+      yaxis->SetTitleOffset(1.3);
+      yaxis->SetRangeUser(0.1,10000000);
+      c09j->SetLogy();
+      c09j->cd();
+      hist09ja->Draw("HIST");
+      hist09jb->Draw("SAME");
+      legend->Clear();
+      legend->AddEntry(hist09ja,histotitle+" Fired trigger","f");
+      legend->AddEntry(hist09jb,histotitle+" Pass Selection","f");
+      legend->Draw();
+      c09j->Print("j_LepVeto.png");
+    */
 
-  TCanvas *c10j = new TCanvas("c10j","Tight jet ID",1200,900);
-  xaxis = hist10ja->GetXaxis();
-  yaxis = hist10ja->GetYaxis();
-  xaxis->SetTitle("Tight jet ID");
-  yaxis->SetTitle("Entries");
-  yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,10000000);
-  c10j->SetLogy();
-  c10j->cd();
-  hist10ja->Draw("HIST");
-  hist10jb->Draw("SAME");
-  legend->Clear();
-  legend->AddEntry(hist10ja,histotitle+" Fired trigger","f");
-  legend->AddEntry(hist10jb,histotitle+" Pass Selection","f");
-  legend->Draw();
-  c10j->Print("j_tightID.png");
+<<<<<<< HEAD
+    TCanvas *c10j = new TCanvas("c10j","Tight jet ID",1200,900);
+    xaxis = hist10ja->GetXaxis();
+    yaxis = hist10ja->GetYaxis();
+    xaxis->SetTitle("Tight jet ID");
+    yaxis->SetTitle("Entries");
+    yaxis->SetTitleOffset(1.3);
+    yaxis->SetRangeUser(0.1,10000000);
+    c10j->SetLogy();
+    c10j->cd();
+    hist10ja->Draw("HIST");
+    hist10jb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist10ja,histotitle+" Fired trigger","f");
+    legend->AddEntry(hist10jb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c10j->Print("j_tightID.png");
 
+    TCanvas *c01s = new TCanvas("c01s","invmass",1200,900);
+    xaxis = hist01sa->GetXaxis();
+    yaxis = hist01sa->GetYaxis();
+    xaxis->SetTitle("invariant mass (GeV)");
+    yaxis->SetTitle("Entries / 40 GeV");
+    yaxis->SetTitleOffset(1.3);
+    xaxis->SetTitleOffset(1.2);
+    yaxis->SetRangeUser(0.1,10000000);
+    c01s->SetLogy();
+    c01s->cd();
+    hist01sa->Draw("HIST");
+    hist01sb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist01sa,histotitle+" Fired trigger","f");
+    legend->AddEntry(hist01sb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c01s->Print("mass.png");
+
+    TCanvas *c02s = new TCanvas("c02s","seperation",1200,900);
+    xaxis = hist02sa->GetXaxis();
+    yaxis = hist02sa->GetYaxis();
+    xaxis->SetTitle("deltaR");
+    yaxis->SetTitle("Entries");
+    yaxis->SetTitleOffset(1.3);
+    xaxis->SetTitleOffset(1.2);
+    yaxis->SetRangeUser(0.1,10000000);
+    c02s->SetLogy();
+    c02s->cd();
+    hist02sa->Draw("HIST");
+    hist02sb->Draw("SAME");
+    legend->Clear();
+    legend->AddEntry(hist02sa,histotitle+" Fired trigger","f");
+    legend->AddEntry(hist02sb,histotitle+" Pass Selection","f");
+    legend->Draw();
+    c02s->Print("deltaR.png");
+    //Non stacked hist END-------------------------------------------------------------------
+  }
+=======
   TCanvas *c01s = new TCanvas("c01s","invmass",1200,900);
   xaxis = hist01sa->GetXaxis();
   yaxis = hist01sa->GetYaxis();
@@ -1913,6 +2331,7 @@ SetLineStyle(2); histMC06a->Scale(scale);
   legend->Draw();
   c01s->Print("mass.png");
   //Non stacked hist END-------------------------------------------------------------------
+>>>>>>> c28e8d5fc0fb7ccba556d05f3cfca71aa920a72f
 
   gBenchmark->Show("selectWG");
 

@@ -27,30 +27,13 @@
 #include "../Utils/interface/CSample.hh"      // helper class to handle samples
 #include <algorithm>
 #include <map>
-<<<<<<< HEAD
-//RooFit
-#include "RooGlobalFunc.h"
-#include "RooRealVar.h"
-#include "RooDataSet.h"
-#include "RooDataHist.h"
-#include "RooGaussian.h"
-#include "RooAddPdf.h"
-//#include "RooDataHist.h"
-#include "RooExponential.h"
-#include "RooPlot.h"
 #endif
 
-using namespace RooFit;
-
-void analyzer1D(const TString conf="samples.conf"){
-=======
-#endif
-
-void analyzer(const TString conf="samples.conf"){
->>>>>>> c28e8d5fc0fb7ccba556d05f3cfca71aa920a72f
+void significance_count1D(const TString conf="samples.conf"){
 
   gBenchmark->Start("analyzerWG");
   gSystem->Load("lib/libMylib.so");
+  gROOT->SetBatch(1);
   //--------------------------------------------------------------------------------------------------------------
   // Settings 
   //=============================================================================================================
@@ -170,11 +153,7 @@ void analyzer(const TString conf="samples.conf"){
 
 
   // S/sqrt(B) data
-<<<<<<< HEAD
-  std::vector<float> sig_N, bkg_N;
-=======
   std::vector<int> sig_N, bkg_N;
->>>>>>> c28e8d5fc0fb7ccba556d05f3cfca71aa920a72f
   std::vector<float> recordarr;
   
   // loop over samples
@@ -214,16 +193,10 @@ void analyzer(const TString conf="samples.conf"){
 
 
       if(isam == 0){
-<<<<<<< HEAD
-	for(float cut2 = 0; cut2 < 2000; cut2+=20){
-	  TH1F *h = new TH1F("1",histotitle+", invmass",60,1400,2600);
-	  recordarr.push_back(cut2);
-=======
 	//TH1F* histS01 = new TH1F("histS01",histotitle+", invmass",60,0,1200);
-	for(float cut2 = 0; cut2 < 1; cut2+=0.05){
+	for(float cut2 = 0; cut2 < 30; cut2+=0.5){
 	  int N = 0;
 	  float record = cut2;
->>>>>>> c28e8d5fc0fb7ccba556d05f3cfca71aa920a72f
 	  for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
 	    // Get Events
 	    photonPtBr->GetEntry(ientry);
@@ -242,63 +215,32 @@ void analyzer(const TString conf="samples.conf"){
 	    sysPtovermEtaBr->GetEntry(ientry);
 	    sysInvmassBr->GetEntry(ientry);
 
-<<<<<<< HEAD
-	    if(photon_pt > cut2){
-	      h->Fill(sys_invmass);
-	    }
-	  }
-	  //create roofit variable
-	  RooRealVar mass("mass","mass",1400,2600);
-	  //create roofit gaussian
-	  RooRealVar mean("mean","mean",2000,1900,2100) ;
-	  RooRealVar sigma("sigma","sigma",100,0,200) ;
-	  RooRealVar sig_yield("sig_yield","signal yield",1000,0,10000);
-	  RooGaussian gauss("gauss","signal p.d.f.",mass,mean,sigma) ;
-	  //create roofit quadratic
-	  RooRealVar a1("a1","a1 coefficient of polynomial",-0.004,-0.01,-0.0001) ;
-	  RooRealVar bkg_yield("bkg_yield","background yield",1000,0,10000);
-	  RooExponential bkg("bkg","background", mass, a1) ;
-	  //create composite model model(x) = sig_yield*gauss(x) + bkg_yield*bkg(x)
-	  RooAddPdf model("model","model",RooArgList(gauss,bkg),RooArgList(sig_yield,bkg_yield));
-	  RooDataHist data("data",histotitle+", invmass",mass,h) ;
-	  model.fitTo(data,PrintEvalErrors(-1));
-	  mass.setRange("window",1700,2300);
-	  RooAbsReal* sig_n = gauss.createIntegral(mass,RooFit::NormSet(mass),Range("window"));
-	  sig_N.push_back(sig_n->getValV()*sig_yield.getValV());
-	  delete h;
-	}
-      }
+	    if(abs(photon_eta) > 1.44) continue;
+	    if(abs(ak8puppijet_eta) > 2.0) continue;
+	    if(sys_costhetastar > 0.65) continue;
+	    if(ak8puppijet_tau21 > 0.28) continue;
+	    if(sys_ptoverm < 0.37) continue;
+	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) < cut2 && (sys_invmass > 510 && sys_invmass < 690))
 
-      if(isam == 1){	
-	for(float cut2 = 0; cut2 < 2000; cut2+=20){
-	  TH1F *h = new TH1F("1",histotitle+", invmass",60,1400,2600);
-	  recordarr.push_back(cut2);
-=======
-	    if(sys_ptoverm > cut2 && (sys_invmass > 1360 && sys_invmass < 1840)){
+	    //if(abs(photon_eta) < cut2 && (sys_invmass > 510 && sys_invmass < 690)){
+	    //if(abs(ak8puppijet_eta) < cut2 && (sys_invmass > 510 && sys_invmass < 690)){
+	    //if(sys_costhetastar < cut2 && (sys_invmass > 510 && sys_invmass < 690)){
+	    //if(ak8puppijet_tau21 < cut2 && (sys_invmass > 510 && sys_invmass < 690)){
+	    //if(sys_ptoverm > cut2 && (sys_invmass > 510 && sys_invmass < 690)){
+	    if(abs(ak8puppijet_masssoftdropcorr - 80.38) < cut2 && (sys_invmass > 510 && sys_invmass < 690)){
 	      N++;
 	    }
 	  }
 	  sig_N.push_back(N);
 	  recordarr.push_back(record);
 	}
-	
-	// Post processing - fitting
-	/*
-	TF1 *fS01 = new TF1 ("fS01", "gaus", 65, 105);
-	fS01->SetParNames("Constant 1", "Mean 1", "Sigma 1"); 
-	gStyle->SetOptFit(1); 
-	Double_t parS01[3]= {70,78,7};
-	fS01->SetParameters(parS01);
-	histS01->Fit(fs01);
-	*/
       }
 
       if(isam == 1){
 	//TH1F* histS01 = new TH1F("histS01",histotitle+", invmass",60,0,1200);
-	for(float cut2 = 0; cut2 < 1; cut2+=0.05){
+	for(float cut2 = 0; cut2 < 30; cut2+=0.5){
 	  int N = 0;
 	  float record = cut2;
->>>>>>> c28e8d5fc0fb7ccba556d05f3cfca71aa920a72f
 	  for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
 	    // Get Events
 	    photonPtBr->GetEntry(ientry);
@@ -317,46 +259,25 @@ void analyzer(const TString conf="samples.conf"){
 	    sysPtovermEtaBr->GetEntry(ientry);
 	    sysInvmassBr->GetEntry(ientry);
 
-<<<<<<< HEAD
-	    if(photon_pt > cut2){
-	      h->Fill(sys_invmass);
-	    }
-	  }
-	  //create roofit variable
-	  RooRealVar mass("mass","mass",1400,2600);
-	  //create bkg function
-	  RooRealVar a1("a1","a1 coefficient of polynomial",-0.004,-0.01,-0.001) ;
-	  RooRealVar bkg_yield("bkg_yield","background yield",10000,0,500000);
-	  RooExponential bkg("bkg","background", mass, a1) ;
-	  RooAddPdf model("model","model",RooArgList(bkg),RooArgList(bkg_yield)) ;
-	  RooDataHist data("data",histotitle+", invmass",mass,h) ;
-	  mass.setRange("LowerSideband",1400,1700);
-	  model.fitTo(data,Range("LowerSideband"),PrintEvalErrors(-1));
-	  mass.setRange("window",1700,2300);
-	  RooAbsReal* bkg_n = model.createIntegral(mass,RooFit::NormSet(mass),Range("window"));
-	  bkg_N.push_back(bkg_n->getValV()*bkg_yield.getValV());
-	  cout<<bkg_n->getValV()*bkg_yield.getValV()<<endl;
-	  delete h;
-	}
-=======
-	    if(sys_ptoverm > cut2 && (sys_invmass > 1360 && sys_invmass < 1840)){
+	    if(abs(photon_eta) > 1.44) continue;
+	    if(abs(ak8puppijet_eta) > 2.0) continue;
+	    if(sys_costhetastar > 0.65) continue;
+	    if(ak8puppijet_tau21 > 0.28) continue;
+	    if(sys_ptoverm < 0.37) continue;
+	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) < cut2 && (sys_invmass > 510 && sys_invmass < 690))
+
+	    //if(abs(photon_eta) < cut2 && (sys_invmass > 510 && sys_invmass < 690)){
+	    //if(abs(ak8puppijet_eta) < cut2 && (sys_invmass > 510 && sys_invmass < 690)){
+	    //if(sys_costhetastar < cut2 && (sys_invmass > 510 && sys_invmass < 690)){
+	    //if(ak8puppijet_tau21 < cut2 && (sys_invmass > 510 && sys_invmass < 690)){
+	    //if(sys_ptoverm > cut2 && (sys_invmass > 510 && sys_invmass < 690)){
+	    if(abs(ak8puppijet_masssoftdropcorr - 80.38) < cut2 && (sys_invmass > 510 && sys_invmass < 690)){
 	      N++;
 	    }
 	  }
 	  bkg_N.push_back(N);
 	  recordarr.push_back(record);
 	}
-	
-	// Post processing - fitting
-	/*
-	TF1 *fS01 = new TF1 ("fS01", "gaus", 65, 105);
-	fS01->SetParNames("Constant 1", "Mean 1", "Sigma 1"); 
-	gStyle->SetOptFit(1); 
-	Double_t parS01[3]= {70,78,7};
-	fS01->SetParameters(parS01);
-	histS01->Fit(fs01);
-	*/
->>>>>>> c28e8d5fc0fb7ccba556d05f3cfca71aa920a72f
       }
       cout<<double(ifile)/double(nfiles)*100<<" % done with this dataset"<<endl;
       Double_t elapsed_t_file = stopwatch.RealTime() / (ifile+1);
@@ -384,7 +305,12 @@ void analyzer(const TString conf="samples.conf"){
     }
   }
 
-  TString Graphname ="pt/M cut on photon";
+  //TString Graphname ="|#eta| cut on jet";
+  //TString Graphname ="|#eta| cut on photon";
+  //TString Graphname ="cos(#theta*) cut on photon";
+  //TString Graphname ="tau21 cut on jet";
+  //TString Graphname ="pt/M cut on photon";
+  TString Graphname ="mass window cut on jet";
 
   //Non stacked plots
   TLegend *legend1 = new TLegend(0.6,0.75,0.85,0.85);
@@ -394,13 +320,7 @@ void analyzer(const TString conf="samples.conf"){
   std::vector<float> SBratio;
   for(int i=0; i<sig_N.size(); i++){
     cout<<sig_N[i]<<" "<<bkg_N[i]<<endl;
-<<<<<<< HEAD
-    if(sig_N[i] < 0.000000001)
-      sig_N[i] = 0;
-    if(bkg_N[i] < 0.000000001)
-=======
     if(bkg_N[i] == 0)
->>>>>>> c28e8d5fc0fb7ccba556d05f3cfca71aa920a72f
       SBratio.push_back(0);
     else
       SBratio.push_back(float(sig_N[i])/sqrt(float(bkg_N[i])));
@@ -421,6 +341,8 @@ void analyzer(const TString conf="samples.conf"){
   yaxis->SetTitle("S/#sqrt{B} (to a factor)");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
+  xaxis->SetRangeUser(0,30);
+  yaxis->SetRangeUser(0,70);
   //yaxis->SetRangeUser(0.5,10000000);
   //c01->SetLogy();
   c01->cd();
@@ -429,7 +351,7 @@ void analyzer(const TString conf="samples.conf"){
   gr->Draw("AC");
   legend1->Clear();
   //legend1->Draw();
-  c01->Print("p_ptm_SB.png");
+  c01->Print("600_ptm.png");
 
   gBenchmark->Show("analyzerWG");
 
