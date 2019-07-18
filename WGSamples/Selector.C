@@ -45,6 +45,7 @@ TH1 *hist7 = new TH1F("7","mass_{j}",50,0,500);
 TH1 *hist8 = new TH1F("8","masssoftdrop_{j}",60,50,110);
 TH1 *hist9 = new TH1F("9","tau1_{j}",50,0,1);
 TH1 *hist10 = new TH1F("10","tau2_{j}",50,0,1);
+TH1 *hist11 = new TH1F("11","E_{j}",50,0,2400);
 
 
 void Selector::Begin(TTree * /*tree*/)
@@ -108,6 +109,7 @@ Bool_t Selector::Process(Long64_t entry)
        hist8->Fill(jetAK8_softdrop_massCorr[i]);
        hist9->Fill(jetAK8_tau1[i]);
        hist10->Fill(jetAK8_tau2[i]);
+       hist11->Fill(jetAK8_e[i]);
      }
    }
    
@@ -139,6 +141,7 @@ void Selector::Terminate()
   hist8->SetLineColor(8);
   hist9->SetLineColor(8);
   hist10->SetLineColor(8);
+  hist11->SetLineColor(8);
   
 
   gStyle->SetOptStat(0);
@@ -319,4 +322,20 @@ void Selector::Terminate()
   legend->AddEntry(hist9,"2018 signal MC ","f");
   legend->Draw();
   c10->Print("j_tau2.png");
+
+  TCanvas *c11 = new TCanvas("c11","e AK8Jet",1200,900);
+  xaxis = hist11->GetXaxis();
+  yaxis = hist11->GetYaxis();
+  xaxis->SetTitle("E AK8Jet (GeV)");
+  yaxis->SetTitle("Entries");
+  yaxis->SetTitleOffset(1.3);
+  yaxis->SetRangeUser(0.1,100000);
+  c11->SetLogy();
+  c11->cd();
+  hist11->SetLineWidth(2);
+  hist11->Draw("HIST");
+  legend->Clear();
+  legend->AddEntry(hist9,"2018 signal MC ","f");
+  legend->Draw();
+  c11->Print("j_e.png");
 }

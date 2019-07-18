@@ -27,7 +27,6 @@
 #include "../Utils/interface/CSample.hh"      // helper class to handle samples
 #include <algorithm>
 #include <map>
-<<<<<<< HEAD
 //RooFit
 #include "RooGlobalFunc.h"
 #include "RooRealVar.h"
@@ -43,11 +42,6 @@
 using namespace RooFit;
 
 void analyzer1D(const TString conf="samples.conf"){
-=======
-#endif
-
-void analyzer(const TString conf="samples.conf"){
->>>>>>> c28e8d5fc0fb7ccba556d05f3cfca71aa920a72f
 
   gBenchmark->Start("analyzerWG");
   gSystem->Load("lib/libMylib.so");
@@ -170,11 +164,8 @@ void analyzer(const TString conf="samples.conf"){
 
 
   // S/sqrt(B) data
-<<<<<<< HEAD
   std::vector<float> sig_N, bkg_N;
-=======
-  std::vector<int> sig_N, bkg_N;
->>>>>>> c28e8d5fc0fb7ccba556d05f3cfca71aa920a72f
+
   std::vector<float> recordarr;
   
   // loop over samples
@@ -214,16 +205,10 @@ void analyzer(const TString conf="samples.conf"){
 
 
       if(isam == 0){
-<<<<<<< HEAD
 	for(float cut2 = 0; cut2 < 2000; cut2+=20){
 	  TH1F *h = new TH1F("1",histotitle+", invmass",60,1400,2600);
 	  recordarr.push_back(cut2);
-=======
-	//TH1F* histS01 = new TH1F("histS01",histotitle+", invmass",60,0,1200);
-	for(float cut2 = 0; cut2 < 1; cut2+=0.05){
-	  int N = 0;
-	  float record = cut2;
->>>>>>> c28e8d5fc0fb7ccba556d05f3cfca71aa920a72f
+
 	  for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
 	    // Get Events
 	    photonPtBr->GetEntry(ientry);
@@ -242,7 +227,6 @@ void analyzer(const TString conf="samples.conf"){
 	    sysPtovermEtaBr->GetEntry(ientry);
 	    sysInvmassBr->GetEntry(ientry);
 
-<<<<<<< HEAD
 	    if(photon_pt > cut2){
 	      h->Fill(sys_invmass);
 	    }
@@ -273,32 +257,7 @@ void analyzer(const TString conf="samples.conf"){
 	for(float cut2 = 0; cut2 < 2000; cut2+=20){
 	  TH1F *h = new TH1F("1",histotitle+", invmass",60,1400,2600);
 	  recordarr.push_back(cut2);
-=======
-	    if(sys_ptoverm > cut2 && (sys_invmass > 1360 && sys_invmass < 1840)){
-	      N++;
-	    }
-	  }
-	  sig_N.push_back(N);
-	  recordarr.push_back(record);
-	}
-	
-	// Post processing - fitting
-	/*
-	TF1 *fS01 = new TF1 ("fS01", "gaus", 65, 105);
-	fS01->SetParNames("Constant 1", "Mean 1", "Sigma 1"); 
-	gStyle->SetOptFit(1); 
-	Double_t parS01[3]= {70,78,7};
-	fS01->SetParameters(parS01);
-	histS01->Fit(fs01);
-	*/
-      }
 
-      if(isam == 1){
-	//TH1F* histS01 = new TH1F("histS01",histotitle+", invmass",60,0,1200);
-	for(float cut2 = 0; cut2 < 1; cut2+=0.05){
-	  int N = 0;
-	  float record = cut2;
->>>>>>> c28e8d5fc0fb7ccba556d05f3cfca71aa920a72f
 	  for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
 	    // Get Events
 	    photonPtBr->GetEntry(ientry);
@@ -317,7 +276,6 @@ void analyzer(const TString conf="samples.conf"){
 	    sysPtovermEtaBr->GetEntry(ientry);
 	    sysInvmassBr->GetEntry(ientry);
 
-<<<<<<< HEAD
 	    if(photon_pt > cut2){
 	      h->Fill(sys_invmass);
 	    }
@@ -338,25 +296,6 @@ void analyzer(const TString conf="samples.conf"){
 	  cout<<bkg_n->getValV()*bkg_yield.getValV()<<endl;
 	  delete h;
 	}
-=======
-	    if(sys_ptoverm > cut2 && (sys_invmass > 1360 && sys_invmass < 1840)){
-	      N++;
-	    }
-	  }
-	  bkg_N.push_back(N);
-	  recordarr.push_back(record);
-	}
-	
-	// Post processing - fitting
-	/*
-	TF1 *fS01 = new TF1 ("fS01", "gaus", 65, 105);
-	fS01->SetParNames("Constant 1", "Mean 1", "Sigma 1"); 
-	gStyle->SetOptFit(1); 
-	Double_t parS01[3]= {70,78,7};
-	fS01->SetParameters(parS01);
-	histS01->Fit(fs01);
-	*/
->>>>>>> c28e8d5fc0fb7ccba556d05f3cfca71aa920a72f
       }
       cout<<double(ifile)/double(nfiles)*100<<" % done with this dataset"<<endl;
       Double_t elapsed_t_file = stopwatch.RealTime() / (ifile+1);
@@ -394,13 +333,9 @@ void analyzer(const TString conf="samples.conf"){
   std::vector<float> SBratio;
   for(int i=0; i<sig_N.size(); i++){
     cout<<sig_N[i]<<" "<<bkg_N[i]<<endl;
-<<<<<<< HEAD
     if(sig_N[i] < 0.000000001)
       sig_N[i] = 0;
     if(bkg_N[i] < 0.000000001)
-=======
-    if(bkg_N[i] == 0)
->>>>>>> c28e8d5fc0fb7ccba556d05f3cfca71aa920a72f
       SBratio.push_back(0);
     else
       SBratio.push_back(float(sig_N[i])/sqrt(float(bkg_N[i])));
