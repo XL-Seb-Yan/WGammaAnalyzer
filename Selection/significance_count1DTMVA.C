@@ -29,7 +29,7 @@
 #include <map>
 #endif
 
-void significance_count1D(const TString conf="samples.conf"){
+void significance_count1DTMVA(const TString conf="samples.conf"){
 
   gBenchmark->Start("analyzerWG");
   gSystem->Load("lib/libMylib.so");
@@ -57,70 +57,10 @@ void significance_count1D(const TString conf="samples.conf"){
 
 
   TH1F* hist01 = new TH1F("WGamma01",histotitle+", S/sqrt(B)",50,0,1); //Pass: tight ID and EleVeto
-  //Photons
-  /*
-  TH1F* hist01pa = new TH1F("WGamma01pa",histotitle+", pt_{#gamma}",60,0,1200); //Pass: tight ID and EleVeto
-  TH1F* hist02pa = new TH1F("WGamma02pa",histotitle+", #eta_{#gamma}",50,-5,5);
-  TH1F* hist03pa = new TH1F("WGamma03pa",histotitle+", E_{#gamma}",48,0,2400);
-  TH1F* hist04pa = new TH1F("WGamma04pa",histotitle+", Et_{#gamma}",48,0,2400);
-  TH1F* hist05pa = new TH1F("WGamma05pa",histotitle+", H/E_{#gamma}",50,0,1);
-  TH1F *hist06pa = new TH1F("WGamma06pa",histotitle+", isoGamma_{#gamma}",50,0,20);
-  TH1F *hist07pa = new TH1F("WGamma07pa",histotitle+", isoCh_{#gamma}",50,0,50);
-  TH1F *hist08pa = new TH1F("WGamma08pa",histotitle+", Loose Photon ID",10,-1,3);
-  TH1F *hist09pa = new TH1F("WGamma09pa",histotitle+", Pass EleVeto",10,-1,3);
-  TH1F *hist10pa = new TH1F("WGamma10pa",histotitle+", Photon mvaID Value",10,-1,3);
-  TH1F *hist11pa = new TH1F("WGamma11pa",histotitle+", Photon mvaID Category",10,-1,3);
-
-  TH1F* hist01pb = new TH1F("WGamma01pb",histotitle+", pt_{#gamma}",60,0,1200); //Fired trigger 300
-  TH1F* hist02pb = new TH1F("WGamma02pb",histotitle+", #eta_{#gamma}",50,-5,5);
-  TH1F* hist03pb = new TH1F("WGamma03pb",histotitle+", E_{#gamma}",48,0,2400);
-  TH1F* hist04pb = new TH1F("WGamma04pb",histotitle+", Et_{#gamma}",48,0,2400);
-  TH1F* hist05pb = new TH1F("WGamma05pb",histotitle+", H/E_{#gamma}",50,0,1);
-  TH1F *hist06pb = new TH1F("WGamma06pb",histotitle+", isoGamma_{#gamma}",50,0,20);
-  TH1F *hist07pb = new TH1F("WGamma07pb",histotitle+", isoCh_{#gamma}",50,0,50);
-  TH1F *hist08pb = new TH1F("WGamma08pb",histotitle+", Loose Photon ID",10,-1,3);
-  TH1F *hist09pb = new TH1F("WGamma09pb",histotitle+", Pass EleVeto",10,-1,3);
-  TH1F *hist10pb = new TH1F("WGamma10pb",histotitle+", Photon mvaID Value",10,-1,3);
-  TH1F *hist11pb = new TH1F("WGamma11pb",histotitle+", Photon mvaID Category",10,-1,3);
-
-  TH1F* hist01pc = new TH1F("WGamma01pc",histotitle+", pt_{#gamma}",60,0,1200); //Fired trigger 200
-  TH1F* hist02pc = new TH1F("WGamma02pc",histotitle+", #eta_{#gamma}",50,-5,5);
-  TH1F* hist03pc = new TH1F("WGamma03pc",histotitle+", E_{#gamma}",48,0,2400);
-  TH1F* hist04pc = new TH1F("WGamma04pc",histotitle+", Et_{#gamma}",48,0,2400);
-  TH1F* hist05pc = new TH1F("WGamma05pc",histotitle+", H/E_{#gamma}",50,0,1);
-  TH1F *hist06pc = new TH1F("WGamma06pc",histotitle+", isoGamma_{#gamma}",50,0,20);
-  TH1F *hist07pc = new TH1F("WGamma07pc",histotitle+", isoCh_{#gamma}",50,0,50);
-  TH1F *hist08pc = new TH1F("WGamma08pc",histotitle+", Loose Photon ID",10,-1,3);
-  TH1F *hist09pc = new TH1F("WGamma09pc",histotitle+", Pass EleVeto",10,-1,3);
-  TH1F *hist10pc = new TH1F("WGamma10pc",histotitle+", Photon mvaID Value",10,-1,3);
-  TH1F *hist11pc = new TH1F("WGamma11pc",histotitle+", Photon mvaID Category",10,-1,3);
-
-  TH1F* hist01pd = new TH1F("WGamma01pd",histotitle+", pt_{#gamma}",60,0,1200); //Fired trigger 150
-  TH1F* hist02pd = new TH1F("WGamma02pd",histotitle+", #eta_{#gamma}",50,-5,5);
-  TH1F* hist03pd = new TH1F("WGamma03pd",histotitle+", E_{#gamma}",48,0,2400);
-  TH1F* hist04pd = new TH1F("WGamma04pd",histotitle+", Et_{#gamma}",48,0,2400);
-  TH1F* hist05pd = new TH1F("WGamma05pd",histotitle+", H/E_{#gamma}",50,0,1);
-  TH1F *hist06pd = new TH1F("WGamma06pd",histotitle+", isoGamma_{#gamma}",50,0,20);
-  TH1F *hist07pd = new TH1F("WGamma07pd",histotitle+", isoCh_{#gamma}",50,0,50);
-  TH1F *hist08pd = new TH1F("WGamma08pd",histotitle+", Loose Photon ID",10,-1,3);
-  TH1F *hist09pd = new TH1F("WGamma09pd",histotitle+", Pass EleVeto",10,-1,3);
-  TH1F *hist10pd = new TH1F("WGamma10pd",histotitle+", Photon mvaID Value",10,-1,3);
-  TH1F *hist11pd = new TH1F("WGamma11pd",histotitle+", Photon mvaID Category",10,-1,3);
-
-  TH1F* hist01pe = new TH1F("WGamma01pe",histotitle+", pt_{#gamma}",60,0,1200); //Fired trigger 165
-  TH1F* hist02pe = new TH1F("WGamma02pe",histotitle+", #eta_{#gamma}",50,-5,5);
-  TH1F* hist03pe = new TH1F("WGamma03pe",histotitle+", E_{#gamma}",48,0,2400);
-  TH1F* hist04pe = new TH1F("WGamma04pe",histotitle+", Et_{#gamma}",48,0,2400);
-  TH1F* hist05pe = new TH1F("WGamma05pe",histotitle+", H/E_{#gamma}",50,0,1);
-  TH1F *hist06pe = new TH1F("WGamma06pe",histotitle+", isoGamma_{#gamma}",50,0,20);
-  TH1F *hist07pe = new TH1F("WGamma07pe",histotitle+", isoCh_{#gamma}",50,0,50);
-  TH1F *hist08pe = new TH1F("WGamma08pe",histotitle+", Loose Photon ID",10,-1,3);
-  TH1F *hist09pe = new TH1F("WGamma09pe",histotitle+", Pass EleVeto",10,-1,3);
-  TH1F *hist10pe = new TH1F("WGamma10pe",histotitle+", Photon mvaID Value",10,-1,3);
-  TH1F *hist11pe = new TH1F("WGamma11pe",histotitle+", Photon mvaID Category",10,-1,3);
-  */
-  
+ 
   UInt_t count1=0, count2=0, count3=0, count4=0, count5=0, count6=0;
+
+  Int_t Nbkg = 0, Nsig = 0;
   gStyle->SetOptStat(0);
 
 
@@ -150,6 +90,7 @@ void significance_count1D(const TString conf="samples.conf"){
   float sys_costhetastar;
   float sys_ptoverm;
   float sys_invmass;
+  float sys_BDT;
 
 
   // S/sqrt(B) data
@@ -178,9 +119,7 @@ void significance_count1D(const TString conf="samples.conf"){
       eventTree->SetBranchAddress("photon_pt", &photon_pt);                       
       eventTree->SetBranchAddress("photon_eta", &photon_eta);                       
       eventTree->SetBranchAddress("photon_phi", &photon_phi);                         
-      eventTree->SetBranchAddress("photon_e", &photon_e);                             
-      eventTree->SetBranchAddress("photon_mvaval", &photon_mvaval);                    
-      eventTree->SetBranchAddress("photon_mvacat", &photon_mvacat);                 
+      eventTree->SetBranchAddress("photon_e", &photon_e);                                             
       eventTree->SetBranchAddress("ak8puppijet_pt", &ak8puppijet_pt);                           
       eventTree->SetBranchAddress("ak8puppijet_eta", &ak8puppijet_eta);                         
       eventTree->SetBranchAddress("ak8puppijet_phi", &ak8puppijet_phi);                          
@@ -189,10 +128,12 @@ void significance_count1D(const TString conf="samples.conf"){
       eventTree->SetBranchAddress("ak8puppijet_tau21", &ak8puppijet_tau21);                     
       eventTree->SetBranchAddress("sys_costhetastar", &sys_costhetastar);                       
       eventTree->SetBranchAddress("sys_ptoverm", &sys_ptoverm);                                
-      eventTree->SetBranchAddress("sys_invmass", &sys_invmass);                                   
+      eventTree->SetBranchAddress("sys_invmass", &sys_invmass);
+      eventTree->SetBranchAddress("sys_BDT", &sys_BDT);   
 
 
       if(isam == 0){
+	Nsig = eventTree->GetEntries();
 	//TH1F* histS01 = new TH1F("histS01",histotitle+", invmass",60,0,1200);
 	for(float cut2 = 0; cut2 < 1; cut2+=0.01){
 	  int N = 0;
@@ -204,16 +145,18 @@ void significance_count1D(const TString conf="samples.conf"){
 	    if(abs(photon_eta) > 1.44) continue;
 	    if(abs(ak8puppijet_eta) > 2.0) continue;
 	    //if(sys_costhetastar > 0.65) continue;
-	    // if(ak8puppijet_tau21 > 0.28) continue;
-	    //if(sys_ptoverm < 0.37) continue;
-	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) < cut2 && (sys_invmass > 680 && sys_invmass < 920))
+	    //if(ak8puppijet_tau21 > 0.23) continue;
+	    //if(sys_ptoverm < 0.38) continue;
+	    if(sys_BDT < 0.1) continue;
+	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) > 15) continue;
 
-	    //if(abs(photon_eta) < cut2 && (sys_invmass > 680 && sys_invmass < 920)){
-	    //if(abs(ak8puppijet_eta) < cut2 && (sys_invmass > 680 && sys_invmass < 920)){
-	    //if(sys_costhetastar < cut2 && (sys_invmass > 680 && sys_invmass < 920)){
-	    //if(ak8puppijet_tau21 < cut2 && (sys_invmass > 680 && sys_invmass < 920)){
-	    if(sys_ptoverm > cut2 && (sys_invmass > 680 && sys_invmass < 920)){
-	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) < cut2 && (sys_invmass > 680 && sys_invmass < 920)){
+	    //if(abs(photon_eta) < cut2){
+	    //if(abs(ak8puppijet_eta) < cut2){
+	    //if(sys_costhetastar < cut2){
+	    if(ak8puppijet_tau21 < cut2){
+	    //if(sys_ptoverm > cut2){
+	    //if(sys_BDT > cut2){
+	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) < cut2){
 	      N++;
 	    }
 	  }
@@ -223,6 +166,7 @@ void significance_count1D(const TString conf="samples.conf"){
       }
 
       if(isam == 1){
+	Nbkg = eventTree->GetEntries();
 	//TH1F* histS01 = new TH1F("histS01",histotitle+", invmass",60,0,1200);
 	for(float cut2 = 0; cut2 < 1; cut2+=0.01){
 	  int N = 0;
@@ -234,16 +178,18 @@ void significance_count1D(const TString conf="samples.conf"){
 	    if(abs(photon_eta) > 1.44) continue;
 	    if(abs(ak8puppijet_eta) > 2.0) continue;
 	    //if(sys_costhetastar > 0.65) continue;
-	    // if(ak8puppijet_tau21 > 0.28) continue;
-	    //if(sys_ptoverm < 0.37) continue;
-	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) < cut2 && (sys_invmass > 680 && sys_invmass < 920))
+	    //if(ak8puppijet_tau21 > 0.23) continue;
+	    //if(sys_ptoverm < 0.38) continue;
+	    if(sys_BDT < 0.1) continue;
+	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) > 15) continue;
 
-	    //if(abs(photon_eta) < cut2 && (sys_invmass > 680 && sys_invmass < 920)){
-	    //if(abs(ak8puppijet_eta) < cut2 && (sys_invmass > 680 && sys_invmass < 920)){
-	    //if(sys_costhetastar < cut2 && (sys_invmass > 680 && sys_invmass < 920)){
-	    //if(ak8puppijet_tau21 < cut2 && (sys_invmass > 680 && sys_invmass < 920)){
-	    if(sys_ptoverm > cut2 && (sys_invmass > 680 && sys_invmass < 920)){
-	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) < cut2 && (sys_invmass > 680 && sys_invmass < 920)){
+	    //if(abs(photon_eta) < cut2){
+	    //if(abs(ak8puppijet_eta) < cut2){
+	    //if(sys_costhetastar < cut2){
+	    if(ak8puppijet_tau21 < cut2){
+	    //if(sys_ptoverm > cut2){
+	    //if(sys_BDT > cut2){
+	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) < cut2){
 	      N++;
 	    }
 	  }
@@ -280,18 +226,24 @@ void significance_count1D(const TString conf="samples.conf"){
   //TString Graphname ="|#eta| cut on jet";
   //TString Graphname ="|#eta| cut on photon";
   //TString Graphname ="cos(#theta*) cut on photon";
-  //TString Graphname ="tau21 cut on jet";
-  TString Graphname ="pt/M cut on photon";
+  //TString Graphname ="tau21 cut on jet (with other cuts)";
+  TString Graphname ="tau21 cut on jet (with BDT)";
+  //TString Graphname ="pt/M cut on photon";
   //TString Graphname ="mass window cut on jet";
+  //TString Graphname ="BDT response cut";
 
   //Non stacked plots
-  TLegend *legend1 = new TLegend(0.6,0.75,0.85,0.85);
+  TLegend *legend1 = new TLegend(0.15,0.75,0.3,0.85);
   TAxis *xaxis = NULL;
   TAxis *yaxis = NULL;
 
   std::vector<float> SBratio;
+  std::vector<float> Sigeff;
+  std::vector<float> Bkgeff;
   for(int i=0; i<sig_N.size(); i++){
-    cout<<sig_N[i]<<" "<<bkg_N[i]<<endl;
+    cout<<sig_N[i]<<" "<<bkg_N[i]<<" "<<float(sig_N[i]) / float(Nsig)<<" "<<float(bkg_N[i]) / float(Nbkg)<<endl;
+    Sigeff.push_back(float(sig_N[i]) / float(Nsig));
+    Bkgeff.push_back(float(bkg_N[i]) / float(Nbkg));
     if(bkg_N[i] == 0)
       SBratio.push_back(0);
     else
@@ -305,6 +257,20 @@ void significance_count1D(const TString conf="samples.conf"){
   gr->SetMarkerColor(4);
   gr->SetMarkerSize(1.5);
 
+  TGraph* gr1 = new TGraph(dim,&recordarr[0],&Sigeff[0]);
+  gr1->SetTitle(Graphname+" efficiency");
+  gr1->SetLineColor(6);
+  gr1->SetLineWidth(4);
+  //gr1->SetMarkerColor(4);
+  //gr1->SetMarkerSize(1.5);
+
+  TGraph* gr2 = new TGraph(dim,&recordarr[0],&Bkgeff[0]);
+  //gr1->SetTitle(Graphname+" efficiency");
+  gr2->SetLineColor(4);
+  gr2->SetLineWidth(4);
+  //gr2->SetMarkerColor(4);
+  //gr2->SetMarkerSize(1.5);
+
 
   TCanvas *c01 = new TCanvas("c01",Graphname,1200,900);
   xaxis = gr->GetXaxis();
@@ -314,16 +280,38 @@ void significance_count1D(const TString conf="samples.conf"){
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
   xaxis->SetRangeUser(0,1);
-  yaxis->SetRangeUser(0,100);
+  yaxis->SetRangeUser(0,200);
   //yaxis->SetRangeUser(0.5,10000000);
   //c01->SetLogy();
   c01->cd();
   c01->SetGrid();
   cout<<"OK"<<endl;
   gr->Draw("AC");
+  //legend1->Clear();
+  //legend1->Draw();  
+  c01->Print("800_bdt_tau.png");
+
+  TCanvas *c02 = new TCanvas("c02",Graphname+" Efficiency",1200,900);
+  xaxis = gr1->GetXaxis();
+  yaxis = gr1->GetYaxis();
+  xaxis->SetTitle(Graphname);
+  yaxis->SetTitle("Eff");
+  yaxis->SetTitleOffset(1.1);
+  xaxis->SetTitleOffset(1.3);
+  xaxis->SetRangeUser(0,1);
+  yaxis->SetRangeUser(0,1);
+  //yaxis->SetRangeUser(0.5,10000000);
+  //c01->SetLogy();
+  c02->cd();
+  c02->SetGrid();
+  cout<<"OK"<<endl;
+  gr1->Draw("ACY+");
+  gr2->Draw("SAME");
   legend1->Clear();
+  legend1->AddEntry(gr1,"signal efficiency");
+  legend1->AddEntry(gr2,"background efficiency");
   //legend1->Draw();
-  c01->Print("800_ptm.png");
+  c02->Print("800_bdt_tau_eff.png");
 
   gBenchmark->Show("analyzerWG");
 

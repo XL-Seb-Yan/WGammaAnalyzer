@@ -217,6 +217,7 @@ void select_TMVA(const TString conf="samples.conf", // input file
     outTree1->Branch("sys_costhetastar",        &sys_costhetastar,      "sys_costhetastar/F");
     outTree1->Branch("sys_ptoverm",             &sys_ptoverm,           "sys_ptoverm/F");
     outTree1->Branch("sys_invmass",             &sys_invmass,           "sys_invmass/F");
+    outTree1->Branch("sys_seperation",          &sys_seperation,        "sys_seperation/F");
    
 
     cout<<"begin loop over files"<<endl;
@@ -242,66 +243,61 @@ void select_TMVA(const TString conf="samples.conf", // input file
       folder = (TDirectory*)infile->Get("ntuplizer");
       eventTree = (TTree*)folder->Get("tree");
       assert(eventTree);
-      eventTree->SetBranchAddress("EVENT_run", &runnum);                        TBranch *runNumBr = eventTree->GetBranch("EVENT_run");
-      eventTree->SetBranchAddress("EVENT_event", &evtnum);                      TBranch *evtNumBr = eventTree->GetBranch("EVENT_event");
-      eventTree->SetBranchAddress("EVENT_lumiBlock", &lumiBlock);               TBranch *lumiBlockBr = eventTree->GetBranch("EVENT_lumiBlock");
+      eventTree->SetBranchAddress("EVENT_run", &runnum);                      
+      eventTree->SetBranchAddress("EVENT_event", &evtnum);                    
+      eventTree->SetBranchAddress("EVENT_lumiBlock", &lumiBlock);               
       //--Photons--
-      eventTree->SetBranchAddress("ph_N", &ph_N);                               TBranch *photonNBr = eventTree->GetBranch("ph_N");
-      eventTree->SetBranchAddress("ph_pt", &ph_pt);                             TBranch *photonPtBr = eventTree->GetBranch("ph_pt");
-      eventTree->SetBranchAddress("ph_eta", &ph_eta);                           TBranch *photonEtaBr = eventTree->GetBranch("ph_eta");
-      eventTree->SetBranchAddress("ph_phi", &ph_phi);                           TBranch *photonPhiBr = eventTree->GetBranch("ph_phi");
-      eventTree->SetBranchAddress("ph_e", &ph_E);                               TBranch *photonEBr = eventTree->GetBranch("ph_e");
-      eventTree->SetBranchAddress("ph_hOverE", &ph_hOverE);                     TBranch *photonHoverEBr = eventTree->GetBranch("ph_hOverE");
-      eventTree->SetBranchAddress("ph_isoGamma", &ph_isoGamma);                 TBranch *photonIsoGammaBr = eventTree->GetBranch("ph_isoGamma");
-      eventTree->SetBranchAddress("ph_isoCh", &ph_isoCh);                       TBranch *photonIsoChBr = eventTree->GetBranch("ph_isoCh");
-      eventTree->SetBranchAddress("ph_passEleVeto", &ph_passEleVeto);           TBranch *photonPassEleVetoBr = eventTree->GetBranch("ph_passEleVeto");
-      eventTree->SetBranchAddress("ph_passLooseId", &ph_passLooseId);           TBranch *photonPassLooseIdBr = eventTree->GetBranch("ph_passLooseId");
-      eventTree->SetBranchAddress("ph_passMediumId", &ph_passMediumId);         TBranch *photonPassMediumIdBr = eventTree->GetBranch("ph_passMediumId");
-      eventTree->SetBranchAddress("ph_passTightId", &ph_passTightId);           TBranch *photonPassTightIdBr = eventTree->GetBranch("ph_passTightId");
-      eventTree->SetBranchAddress("ph_mvaVal", &ph_mvaVal);                     TBranch *photonMvaValBr = eventTree->GetBranch("ph_mvaVal");
-      eventTree->SetBranchAddress("ph_mvaCat", &ph_mvaCat);                     TBranch *photonMvaCatBr = eventTree->GetBranch("ph_mvaCat");
+      eventTree->SetBranchAddress("ph_N", &ph_N);                              
+      eventTree->SetBranchAddress("ph_pt", &ph_pt);                            
+      eventTree->SetBranchAddress("ph_eta", &ph_eta);                           
+      eventTree->SetBranchAddress("ph_phi", &ph_phi);                          
+      eventTree->SetBranchAddress("ph_e", &ph_E);                             
+      eventTree->SetBranchAddress("ph_hOverE", &ph_hOverE);                   
+      eventTree->SetBranchAddress("ph_isoGamma", &ph_isoGamma);                
+      eventTree->SetBranchAddress("ph_isoCh", &ph_isoCh);                       
+      eventTree->SetBranchAddress("ph_passEleVeto", &ph_passEleVeto);          
+      eventTree->SetBranchAddress("ph_passLooseId", &ph_passLooseId);           
+      eventTree->SetBranchAddress("ph_passMediumId", &ph_passMediumId);         
+      eventTree->SetBranchAddress("ph_passTightId", &ph_passTightId);           
+      eventTree->SetBranchAddress("ph_mvaVal", &ph_mvaVal);                    
+      eventTree->SetBranchAddress("ph_mvaCat", &ph_mvaCat);                    
       //--Jets (AK8 PUPPI)
-      eventTree->SetBranchAddress("jetAK8_N", &jetAK8_puppi_N);                                   TBranch *jetAK8PuppiNBr = eventTree->GetBranch("jetAK8_N");
-      eventTree->SetBranchAddress("jetAK8_pt", &jetAK8_puppi_softdrop_pt);               TBranch *jetAK8PuppiSoftdropPtBr = eventTree->GetBranch("jetAK8_pt");
-      eventTree->SetBranchAddress("jetAK8_eta", &jetAK8_puppi_softdrop_eta);             TBranch *jetAK8PuppiSoftdropEtaBr = eventTree->GetBranch("jetAK8_eta");
-      eventTree->SetBranchAddress("jetAK8_phi", &jetAK8_puppi_softdrop_phi);             TBranch *jetAK8PuppiSoftdropPhiBr = eventTree->GetBranch("jetAK8_phi");
-      eventTree->SetBranchAddress("jetAK8_e", &jetAK8_puppi_softdrop_E);                 TBranch *jetAK8PuppiSoftdropEBr = eventTree->GetBranch("jetAK8_e");
-      eventTree->SetBranchAddress("jetAK8_softdrop_massCorr", &jetAK8_puppi_softdrop_mass);       TBranch *jetAK8PuppiSoftdropMBr = eventTree->GetBranch("jetAK8_softdrop_massCorr");
-      eventTree->SetBranchAddress("jetAK8_tau1", &jetAK8_puppi_tau1);                             TBranch *jetAK8PuppiTau1Br = eventTree->GetBranch("jetAK8_tau1");
-      eventTree->SetBranchAddress("jetAK8_tau2", &jetAK8_puppi_tau2);                             TBranch *jetAK8PuppiTau2Br = eventTree->GetBranch("jetAK8_tau2");
-      eventTree->SetBranchAddress("jetAK8_IDTight", &jetAK8_puppi_IDTight);                       TBranch *jetAK8PuppiIDTightBr = eventTree->GetBranch("jetAK8_IDTight");
-      eventTree->SetBranchAddress("HLT_isFired", &HLT_isFired);                           TBranch *HLTisFiredBr = eventTree->GetBranch("HLT_isFired");
+      eventTree->SetBranchAddress("jetAK8_N", &jetAK8_puppi_N);                                  
+      eventTree->SetBranchAddress("jetAK8_pt", &jetAK8_puppi_softdrop_pt);             
+      eventTree->SetBranchAddress("jetAK8_eta", &jetAK8_puppi_softdrop_eta);            
+      eventTree->SetBranchAddress("jetAK8_phi", &jetAK8_puppi_softdrop_phi);           
+      eventTree->SetBranchAddress("jetAK8_e", &jetAK8_puppi_softdrop_E);               
+      eventTree->SetBranchAddress("jetAK8_softdrop_massCorr", &jetAK8_puppi_softdrop_mass);      
+      eventTree->SetBranchAddress("jetAK8_tau1", &jetAK8_puppi_tau1);                           
+      eventTree->SetBranchAddress("jetAK8_tau2", &jetAK8_puppi_tau2);                           
+      eventTree->SetBranchAddress("jetAK8_IDTight", &jetAK8_puppi_IDTight);                      
+      eventTree->SetBranchAddress("HLT_isFired", &HLT_isFired);                         
 
       for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
 
 	// Get Events
-	runNumBr->GetEntry(ientry);
-	evtNumBr->GetEntry(ientry);
-	lumiBlockBr->GetEntry(ientry);
-	photonNBr->GetEntry(ientry);
-	ph_pt->clear();                photonPtBr->GetEntry(ientry);
-	ph_eta->clear();               photonEtaBr->GetEntry(ientry);
-	ph_phi->clear();               photonPhiBr->GetEntry(ientry);
-	ph_E->clear();                 photonEBr->GetEntry(ientry);
-	ph_hOverE->clear();            photonHoverEBr->GetEntry(ientry);
-	ph_isoGamma->clear();          photonIsoGammaBr->GetEntry(ientry);
-	ph_isoCh->clear();             photonIsoChBr->GetEntry(ientry);
-	ph_passEleVeto->clear();       photonPassEleVetoBr->GetEntry(ientry);
-	ph_passLooseId->clear();       photonPassLooseIdBr->GetEntry(ientry);
-	ph_passMediumId->clear();      photonPassMediumIdBr->GetEntry(ientry);
-	ph_passTightId->clear();       photonPassTightIdBr->GetEntry(ientry);
-	ph_mvaVal->clear();            photonMvaValBr->GetEntry(ientry);
-	ph_mvaCat->clear();            photonMvaCatBr->GetEntry(ientry);
-	jetAK8PuppiNBr->GetEntry(ientry);
-	jetAK8_puppi_softdrop_pt->clear();               jetAK8PuppiSoftdropPtBr->GetEntry(ientry);
-	jetAK8_puppi_softdrop_eta->clear();              jetAK8PuppiSoftdropEtaBr->GetEntry(ientry);
-	jetAK8_puppi_softdrop_phi->clear();              jetAK8PuppiSoftdropPhiBr->GetEntry(ientry);
-	jetAK8_puppi_softdrop_mass->clear();             jetAK8PuppiSoftdropMBr->GetEntry(ientry);
-	jetAK8_puppi_softdrop_E->clear();                jetAK8PuppiSoftdropEBr->GetEntry(ientry);
-	jetAK8_puppi_tau1->clear();             jetAK8PuppiTau1Br->GetEntry(ientry);
-	jetAK8_puppi_tau2->clear();             jetAK8PuppiTau2Br->GetEntry(ientry);
-	jetAK8_puppi_IDTight->clear();          jetAK8PuppiIDTightBr->GetEntry(ientry);
-	HLTisFiredBr->GetEntry(ientry);
+	ph_pt->clear();               
+	ph_eta->clear();            
+	ph_phi->clear();              
+	ph_E->clear();                
+	ph_hOverE->clear();            
+	ph_isoGamma->clear();          
+	ph_isoCh->clear();             
+	ph_passEleVeto->clear();       
+	ph_passLooseId->clear();       
+	ph_passMediumId->clear();     
+	ph_passTightId->clear();      
+	ph_mvaVal->clear();           
+	ph_mvaCat->clear(); 
+	jetAK8_puppi_softdrop_pt->clear();               
+	jetAK8_puppi_softdrop_eta->clear();             
+	jetAK8_puppi_softdrop_phi->clear();             
+	jetAK8_puppi_softdrop_mass->clear();            
+	jetAK8_puppi_softdrop_E->clear();               
+	jetAK8_puppi_tau1->clear();             
+	jetAK8_puppi_tau2->clear();            
+	jetAK8_puppi_IDTight->clear();
+	eventTree->GetEntry(ientry);
 
 	//Only study events contain photons (EM objects here) and jets -- DATA -- 1st skimming
 	if(ph_N < 1 || jetAK8_puppi_N <1) continue;
@@ -392,10 +388,9 @@ void select_TMVA(const TString conf="samples.conf", // input file
 	// Tight Selection
 	// Tau21: https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetWtagging
 	// Bool_t tau21_cut = (tau21 < 0.45);
-	Bool_t tau21_cut = true; //apply this cut in final stage
 	//Bool_t mass_range = (jetAK8_puppi_softdrop_mass->at(index_j) > 55 && jetAK8_puppi_softdrop_mass->at(index_j) < 105);
-	Bool_t mass_range = (jetAK8_puppi_softdrop_mass->at(index_j) > 50 && jetAK8_puppi_softdrop_mass->at(index_j) < 65); //for sig samples derived from data for TMVA
-	pass_j2 = (tau21_cut && mass_range);
+	Bool_t mass_range = (jetAK8_puppi_softdrop_mass->at(index_j) > 50 && jetAK8_puppi_softdrop_mass->at(index_j) < 105); //for sig samples derived from data for TMVA
+	pass_j2 = mass_range;
 	if(pass_j2)
 	  count4++;
 
@@ -410,8 +405,7 @@ void select_TMVA(const TString conf="samples.conf", // input file
 	invmass = (v_sys).M();
 	ptoverM = ph_pt->at(index_p)/invmass;
 
-	if (invmass > 680 && invmass < 920) //for sig samples derived from data for TMVA
-	  pass_s1 = true;
+	pass_s1 = true;
 
 	// Calculate cos(theta*)
 	Double_t cosThetaStar = -999;

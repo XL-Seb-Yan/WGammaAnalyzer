@@ -640,7 +640,7 @@ void select(const TString conf="samples.conf", // input file
 	// Bool_t tau21_cut = (tau21 < 0.45);
 	Bool_t tau21_cut = true; //apply this cut in final stage
 	//Bool_t mass_range = (jetAK8_puppi_softdrop_mass->at(index_j) > 55 && jetAK8_puppi_softdrop_mass->at(index_j) < 105);
-	Bool_t mass_range = (jetAK8_puppi_softdrop_mass->at(index_j) > 65 && jetAK8_puppi_softdrop_mass->at(index_j) < 95); //for sig samples derived from data for TMVA
+	Bool_t mass_range = (jetAK8_puppi_softdrop_mass->at(index_j) > 95 && jetAK8_puppi_softdrop_mass->at(index_j) < 110); //for sig samples derived from data for TMVA
 	pass_j2 = (tau21_cut && mass_range);
 	if(pass_j2)
 	  count4++;
