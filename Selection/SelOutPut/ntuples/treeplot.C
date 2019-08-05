@@ -26,7 +26,8 @@
 
 
 #include "treeplot.h"
-#include <TROOT.h> 
+#include <TROOT.h>
+#include <TString.h>
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
@@ -37,16 +38,16 @@
 
 Int_t count1 = 0;
 Int_t count2 = 0;
-TH1 *hist1 = new TH1F("1","pt_{#gamma}",50,0,2400);
-TH1 *hist2 = new TH1F("2","eta_{#gamma}",50,-5,5);
-TH1 *hist3 = new TH1F("3","pt_{j}",50,0,2400);
-TH1 *hist4 = new TH1F("4","eta_{j}",50,-5,5);
-TH1 *hist5 = new TH1F("5","E_{j}",50,0,2400);
+TH1 *hist1 = new TH1F("1","pt_{#gamma} / M",50,0,2);
+TH1 *hist2 = new TH1F("2","eta_{#gamma}",50,-2,2);
+TH1 *hist3 = new TH1F("3","pt_{j} / M",50,0,2);
+TH1 *hist4 = new TH1F("4","eta_{j}",50,-2,2);
+TH1 *hist5 = new TH1F("5","E_{j} / M",50,0,5);
 TH1 *hist6 = new TH1F("6","masssoftdrop_{j}",60,50,110);
 TH1 *hist7 = new TH1F("7","tau21_{j}",50,0,1);
 TH1 *hist8 = new TH1F("8","cos(#theta*)_{p}",50,0,1);
-TH1 *hist9 = new TH1F("9","pt/M",50,0,1);
-TH1 *hist10 = new TH1F("10","invariant mass",50,600,1000);
+TH1 *hist9 = new TH1F("9","pt/M",50,0,2);
+TH1 *hist10 = new TH1F("10","invariant mass",100,0,2400);
 TH1 *hist11 = new TH1F("11","seperation",50,0,8);
 
 void treeplot::Begin(TTree * /*tree*/)
@@ -91,13 +92,14 @@ Bool_t treeplot::Process(Long64_t entry)
 
    if(entry%1000==0)
      cout<<"Processing "<<entry<<endl;
-   
-   if((*sys_invmass > 600 && *sys_invmass < 1000) && (*ak8puppijet_masssoftdropcorr > 90 && *ak8puppijet_masssoftdropcorr < 105)){
-     hist1->Fill(*photon_pt);
+
+   double signalmass = 800;
+   if((*ak8puppijet_masssoftdropcorr > 50 && *ak8puppijet_masssoftdropcorr < 65) && abs(*sys_invmass - signalmass) < signalmass*0.05*5 && *ak8puppijet_tau21 < 0.4 && abs(*photon_eta) < 1.44 && abs(*ak8puppijet_eta) < 2){
+     hist1->Fill(*photon_pt / *sys_invmass);
      hist2->Fill(*photon_eta);
-     hist3->Fill(*ak8puppijet_pt);
+     hist3->Fill(*ak8puppijet_pt / *sys_invmass);
      hist4->Fill(*ak8puppijet_eta);
-     hist5->Fill(*ak8puppijet_e);
+     hist5->Fill(*ak8puppijet_e / *sys_invmass);
      hist6->Fill(*ak8puppijet_masssoftdropcorr);
      hist7->Fill(*ak8puppijet_tau21);
      hist8->Fill(*sys_costhetastar);
@@ -124,17 +126,30 @@ void treeplot::Terminate()
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
 
-  hist1->SetLineColor(8);
-  hist2->SetLineColor(8);
-  hist3->SetLineColor(8);
-  hist4->SetLineColor(8);
-  hist5->SetLineColor(8);
-  hist6->SetLineColor(8);
-  hist7->SetLineColor(8);
-  hist8->SetLineColor(8);
-  hist9->SetLineColor(8);
-  hist10->SetLineColor(8);
-  hist11->SetLineColor(8);
+  hist1->SetLineColor(4);
+  hist2->SetLineColor(4);
+  hist3->SetLineColor(4);
+  hist4->SetLineColor(4);
+  hist5->SetLineColor(4);
+  hist6->SetLineColor(4);
+  hist7->SetLineColor(4);
+  hist8->SetLineColor(4);
+  hist9->SetLineColor(4);
+  hist10->SetLineColor(4);
+  hist11->SetLineColor(4);
+
+  double norm = (double) hist1->GetEntries();
+  hist1->Scale(1/norm);
+  hist2->Scale(1/norm);
+  hist3->Scale(1/norm);
+  hist4->Scale(1/norm);
+  hist5->Scale(1/norm);
+  hist6->Scale(1/norm);
+  hist7->Scale(1/norm);
+  hist8->Scale(1/norm);
+  hist9->Scale(1/norm);
+  hist10->Scale(1/norm);
+  hist11->Scale(1/norm);
   
 
   gStyle->SetOptStat(0);
@@ -146,16 +161,16 @@ void treeplot::Terminate()
   TCanvas *c01 = new TCanvas("c01","pt_{#gamma}",1200,900);
   TAxis *xaxis = hist1->GetXaxis();
   TAxis *yaxis = hist1->GetYaxis();
-  xaxis->SetTitle("pt_{#gamma} (GeV)");
+  xaxis->SetTitle("pt_{#gamma} / M(j#gamma)");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,100000);
+  yaxis->SetRangeUser(0.00001, 1);
   c01->SetLogy();
   c01->cd();
   hist1->SetLineWidth(2);
   hist1->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist1,"2017 SinglePhoton C","f");
+  //legend->AddEntry(hist1,"2017 SinglePhoton C","f");
   //legend->Draw();
   c01->Print("p_pt.png");
 
@@ -165,30 +180,30 @@ void treeplot::Terminate()
   xaxis->SetTitle("eta_{#gamma}");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,100000);
+  yaxis->SetRangeUser(0.00001, 1);
   c02->SetLogy();
   c02->cd();
   hist2->SetLineWidth(2);
   hist2->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist2,"2017 signal MC , pass EleVeto","f");
+  //legend->AddEntry(hist2,"2017 signal MC , pass EleVeto","f");
   //legend->Draw();
   c02->Print("p_eta.png");
 
   TCanvas *c03 = new TCanvas("c03","pt AK8Jet",1200,900);
   xaxis = hist3->GetXaxis();
   yaxis = hist3->GetYaxis();
-  xaxis->SetTitle("pt AK8Jet (GeV)");
+  xaxis->SetTitle("pt AK8Jet / M(j#gamma)");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,100000);
+  yaxis->SetRangeUser(0.00001, 1);
   //yaxis->SetRangeUser(0,2000);
   c03->SetLogy();
   c03->cd();
   hist3->SetLineWidth(2);
   hist3->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist5,"2017 signal MC ","f");
+  //legend->AddEntry(hist5,"2017 signal MC ","f");
   //legend->Draw();
   c03->Print("j_pt.png");
 
@@ -198,29 +213,29 @@ void treeplot::Terminate()
   xaxis->SetTitle("eta AK8Jet");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,100000);
+  yaxis->SetRangeUser(0.00001, 1);
   c04->SetLogy();
   c04->cd();
   hist4->SetLineWidth(2);
   hist4->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist4,"2017 signal MC ","f");
+  //legend->AddEntry(hist4,"2017 signal MC ","f");
   //legend->Draw();
   c04->Print("j_eta.png");
 
   TCanvas *c05 = new TCanvas("c05","E AK8Jet",1200,900);
   xaxis = hist5->GetXaxis();
   yaxis = hist5->GetYaxis();
-  xaxis->SetTitle("E AK8Jet (GeV)");
+  xaxis->SetTitle("E AK8Jet / M(j#gamma)");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,100000);
+  yaxis->SetRangeUser(0.00001, 1);
   c05->SetLogy();
   c05->cd();
   hist5->SetLineWidth(2);
   hist5->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist5,"2017 signal MC ","f");
+  //legend->AddEntry(hist5,"2017 signal MC ","f");
   //legend->Draw();
   c05->Print("j_e.png");
 
@@ -230,14 +245,14 @@ void treeplot::Terminate()
   xaxis->SetTitle("mass softdrop AK8Jet (GeV)");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,100000);
+  yaxis->SetRangeUser(0.00001, 1);
   //yaxis->SetRangeUser(0,400);
   c06->SetLogy();
   c06->cd();
   hist6->SetLineWidth(2);
   hist6->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist6,"2017 signal MC ","f");
+  //legend->AddEntry(hist6,"2017 signal MC ","f");
   //legend->Draw();
   c06->Print("j_masssd.png");
 
@@ -247,13 +262,13 @@ void treeplot::Terminate()
   xaxis->SetTitle("tau21 AK8Jet");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,100000);
+  yaxis->SetRangeUser(0.00001, 1);
   c07->SetLogy();
   c07->cd();
   hist7->SetLineWidth(2);
   hist7->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist7,"2017 signal MC ","f");
+  //legend->AddEntry(hist7,"2017 signal MC ","f");
   //legend->Draw();
   c07->Print("j_tau21.png");
 
@@ -263,13 +278,13 @@ void treeplot::Terminate()
   xaxis->SetTitle("cos(#theta*)");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,100000);
+  yaxis->SetRangeUser(0.00001, 1);
   c08->SetLogy();
   c08->cd();
   hist8->SetLineWidth(2);
   hist8->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist8,"2017 signal MC ","f");
+  //legend->AddEntry(hist8,"2017 signal MC ","f");
   //legend->Draw();
   c08->Print("s_cos.png");
 
@@ -279,13 +294,13 @@ void treeplot::Terminate()
   xaxis->SetTitle("pt/M");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,100000);
+  yaxis->SetRangeUser(0.00001, 1);
   c09->SetLogy();
   c09->cd();
   hist9->SetLineWidth(2);
   hist9->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist9,"2017 signal MC ","f");
+  //legend->AddEntry(hist9,"2017 signal MC ","f");
   //legend->Draw();
   c09->Print("s_ptm.png");
 
@@ -295,13 +310,13 @@ void treeplot::Terminate()
   xaxis->SetTitle("pt/M");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,100000);
+  yaxis->SetRangeUser(0.00001, 1);
   c10->SetLogy();
   c10->cd();
   hist10->SetLineWidth(2);
   hist10->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist10,"2017 signal MC ","f");
+  //legend->AddEntry(hist10,"2017 signal MC ","f");
   //legend->Draw();
   c10->Print("s_invmass.png");
 
@@ -311,13 +326,13 @@ void treeplot::Terminate()
   xaxis->SetTitle("#Delta R");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.1,100000);
+  yaxis->SetRangeUser(0.00001, 1);
   c11->SetLogy();
   c11->cd();
   hist11->SetLineWidth(2);
   hist11->Draw("HIST");
   legend->Clear();
-  legend->AddEntry(hist11,"2017 signal MC ","f");
+  //legend->AddEntry(hist11,"2017 signal MC ","f");
   //legend->Draw();
   c11->Print("s_seperation.png");
 

@@ -56,8 +56,9 @@ void significance_count1DTMVA(const TString conf="samples.conf"){
     cout<<"Wrong data type"<<endl;
 
 
-  TH1F* hist01 = new TH1F("WGamma01",histotitle+", S/sqrt(B)",50,0,1); //Pass: tight ID and EleVeto
- 
+  TH1F* hist01 = new TH1F("WGamma01","BDT response, signal MC (M-800)",50,-0.5,0.5);
+  TH1F* hist02 = new TH1F("WGamma02","BDT response, data sideband",50,-0.5,0.5);
+  
   UInt_t count1=0, count2=0, count3=0, count4=0, count5=0, count6=0;
 
   Int_t Nbkg = 0, Nsig = 0;
@@ -135,29 +136,35 @@ void significance_count1DTMVA(const TString conf="samples.conf"){
       if(isam == 0){
 	Nsig = eventTree->GetEntries();
 	//TH1F* histS01 = new TH1F("histS01",histotitle+", invmass",60,0,1200);
+	//for(float cut2 = 0.48; cut2 < 0.5; cut2+=0.02){
+	//for(float cut2 = -0.5; cut2 < 0.5; cut2+=0.02){
 	for(float cut2 = 0; cut2 < 1; cut2+=0.01){
 	  int N = 0;
 	  float record = cut2;
 	  for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
+	  //for(UInt_t ientry=0; ientry<1400; ientry++) {
 	    // Get Events
 	   eventTree->GetEntry(ientry);
 
 	    if(abs(photon_eta) > 1.44) continue;
 	    if(abs(ak8puppijet_eta) > 2.0) continue;
 	    //if(sys_costhetastar > 0.65) continue;
-	    //if(ak8puppijet_tau21 > 0.23) continue;
-	    //if(sys_ptoverm < 0.38) continue;
-	    if(sys_BDT < 0.1) continue;
+	    if(ak8puppijet_tau21 > 0.4) continue;
+	    if(sys_ptoverm < 0.37) continue;
+	    //if(sys_BDT < 0.1) continue;
 	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) > 15) continue;
 
 	    //if(abs(photon_eta) < cut2){
 	    //if(abs(ak8puppijet_eta) < cut2){
-	    //if(sys_costhetastar < cut2){
-	    if(ak8puppijet_tau21 < cut2){
+	    if(sys_costhetastar < cut2){
+	    //if(ak8puppijet_tau21 < cut2){
 	    //if(sys_ptoverm > cut2){
 	    //if(sys_BDT > cut2){
+	    //if(sys_BDT > -5){
 	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) < cut2){
 	      N++;
+	      if(cut2 == -0.5)
+		hist01->Fill(sys_BDT);
 	    }
 	  }
 	  sig_N.push_back(N);
@@ -168,29 +175,35 @@ void significance_count1DTMVA(const TString conf="samples.conf"){
       if(isam == 1){
 	Nbkg = eventTree->GetEntries();
 	//TH1F* histS01 = new TH1F("histS01",histotitle+", invmass",60,0,1200);
+	//for(float cut2 = 0.48; cut2 < 0.5; cut2+=0.02){
+	//for(float cut2 = -0.5; cut2 < 0.5; cut2+=0.02){
 	for(float cut2 = 0; cut2 < 1; cut2+=0.01){
 	  int N = 0;
 	  float record = cut2;
 	  for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
+	  //for(UInt_t ientry=0; ientry<1000; ientry++) {
 	    // Get Events
 	    eventTree->GetEntry(ientry);
 	    
 	    if(abs(photon_eta) > 1.44) continue;
 	    if(abs(ak8puppijet_eta) > 2.0) continue;
 	    //if(sys_costhetastar > 0.65) continue;
-	    //if(ak8puppijet_tau21 > 0.23) continue;
-	    //if(sys_ptoverm < 0.38) continue;
-	    if(sys_BDT < 0.1) continue;
+	    if(ak8puppijet_tau21 > 0.4) continue;
+	    if(sys_ptoverm < 0.37) continue;
+	    //if(sys_BDT < 0.1) continue;
 	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) > 15) continue;
 
 	    //if(abs(photon_eta) < cut2){
 	    //if(abs(ak8puppijet_eta) < cut2){
-	    //if(sys_costhetastar < cut2){
-	    if(ak8puppijet_tau21 < cut2){
+	    if(sys_costhetastar < cut2){
+	    //if(ak8puppijet_tau21 < cut2){
 	    //if(sys_ptoverm > cut2){
 	    //if(sys_BDT > cut2){
+	    //if(sys_BDT > -5){
 	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) < cut2){
 	      N++;
+	      if(cut2 == -0.5)
+		hist02->Fill(sys_BDT);
 	    }
 	  }
 	  bkg_N.push_back(N);
@@ -225,9 +238,10 @@ void significance_count1DTMVA(const TString conf="samples.conf"){
 
   //TString Graphname ="|#eta| cut on jet";
   //TString Graphname ="|#eta| cut on photon";
-  //TString Graphname ="cos(#theta*) cut on photon";
+  TString Graphname ="cos(#theta*) cut on photon";
   //TString Graphname ="tau21 cut on jet (with other cuts)";
-  TString Graphname ="tau21 cut on jet (with BDT)";
+  //TString Graphname ="tau21 cut on jet (with BDT)";
+  //TString Graphname ="tau21 cut on jet";
   //TString Graphname ="pt/M cut on photon";
   //TString Graphname ="mass window cut on jet";
   //TString Graphname ="BDT response cut";
@@ -244,6 +258,8 @@ void significance_count1DTMVA(const TString conf="samples.conf"){
     cout<<sig_N[i]<<" "<<bkg_N[i]<<" "<<float(sig_N[i]) / float(Nsig)<<" "<<float(bkg_N[i]) / float(Nbkg)<<endl;
     Sigeff.push_back(float(sig_N[i]) / float(Nsig));
     Bkgeff.push_back(float(bkg_N[i]) / float(Nbkg));
+    //Sigeff.push_back(float(sig_N[i]) / 1000);
+    //Bkgeff.push_back(float(bkg_N[i]) / 1000);
     if(bkg_N[i] == 0)
       SBratio.push_back(0);
     else
@@ -276,9 +292,10 @@ void significance_count1DTMVA(const TString conf="samples.conf"){
   xaxis = gr->GetXaxis();
   yaxis = gr->GetYaxis();
   xaxis->SetTitle(Graphname);
-  yaxis->SetTitle("S/#sqrt{B} (to a factor)");
+  yaxis->SetTitle("S/#sqrt{B} a.u.");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
+  //xaxis->SetRangeUser(-0.5,0.5);
   xaxis->SetRangeUser(0,1);
   yaxis->SetRangeUser(0,200);
   //yaxis->SetRangeUser(0.5,10000000);
@@ -289,7 +306,7 @@ void significance_count1DTMVA(const TString conf="samples.conf"){
   gr->Draw("AC");
   //legend1->Clear();
   //legend1->Draw();  
-  c01->Print("800_bdt_tau.png");
+  c01->Print("1400_tau_ptmcos.png");
 
   TCanvas *c02 = new TCanvas("c02",Graphname+" Efficiency",1200,900);
   xaxis = gr1->GetXaxis();
@@ -298,6 +315,7 @@ void significance_count1DTMVA(const TString conf="samples.conf"){
   yaxis->SetTitle("Eff");
   yaxis->SetTitleOffset(1.1);
   xaxis->SetTitleOffset(1.3);
+  //xaxis->SetRangeUser(-0.5,0.5);
   xaxis->SetRangeUser(0,1);
   yaxis->SetRangeUser(0,1);
   //yaxis->SetRangeUser(0.5,10000000);
@@ -311,7 +329,37 @@ void significance_count1DTMVA(const TString conf="samples.conf"){
   legend1->AddEntry(gr1,"signal efficiency");
   legend1->AddEntry(gr2,"background efficiency");
   //legend1->Draw();
-  c02->Print("800_bdt_tau_eff.png");
+  c02->Print("1400_tau_ptmcos_eff.png");
+
+
+  hist01->Scale(1/hist01->GetEntries());
+  hist02->Scale(1/hist02->GetEntries());
+  TCanvas *c03 = new TCanvas("c03","tau21",1200,900);
+  xaxis = hist01->GetXaxis();
+  yaxis = hist01->GetYaxis();
+  xaxis->SetTitle("BDT response");
+  yaxis->SetTitle("a.u.");
+  yaxis->SetTitleOffset(1.1);
+  xaxis->SetTitleOffset(1.3);
+  //xaxis->SetRangeUser(-0.5,0.5);
+  //xaxis->SetRangeUser(0,1);
+  //yaxis->SetRangeUser(0,1);
+  //yaxis->SetRangeUser(0,0.2);
+  //c03->SetLogy();
+  c03->cd();
+  c03->SetGrid();
+  cout<<"OK"<<endl;
+  hist01->SetLineColor(6);
+  hist01->SetLineWidth(3);
+  hist01->Draw("HIST");
+  hist02->SetLineColor(4);
+  hist02->SetLineWidth(3);
+  hist02->Draw("SAMEHIST");
+  legend1->Clear();
+  legend1->AddEntry(hist01,"signal MC");
+  legend1->AddEntry(hist02,"data sideband");
+  legend1->Draw();
+  c03->Print("1400BDT.png");
 
   gBenchmark->Show("analyzerWG");
 

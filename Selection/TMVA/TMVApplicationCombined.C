@@ -1,4 +1,4 @@
-void TMVApplication( )
+void TMVApplicationCombined( )
 {
 
   //gROOT->SetBatch(1);
@@ -18,8 +18,8 @@ void TMVApplication( )
   float sys_costhetastar, sys_ptoverm, sys_invmass, sys_seperation, sys_BDT;
 
   // Create output file
-  //TFile *outFile = TFile::Open("SinglePhoton2017_WGamma_BDT1400_SwindowWsideband.root", "RECREATE");
-  TFile *outFile = TFile::Open("Signal1400_WGamma_BDT1400_SwindowWwindow.root", "RECREATE");
+  TFile *outFile = TFile::Open("SinglePhoton2017_WGamma_BDTNeutral_1400windowWsideband.root", "RECREATE");
+  //TFile *outFile = TFile::Open("Signal1400_WGamma_BDTNeutral_SwindowWwindow.root", "RECREATE");
   TTree *outTree = new TTree("Events","Events"); 
   outTree->Branch("photon_pt",       &photon_pt,      "photon_pt/F");
   outTree->Branch("photon_eta",      &photon_eta,      "photon_eta/F");
@@ -39,20 +39,21 @@ void TMVApplication( )
   
   TMVA::Reader *reader = new TMVA::Reader("Color");
   // Link local values and weight file values
-  Float_t p_pt, p_eta, p_phi, p_e, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, s_seperation; 
+  Float_t p_pt, p_eta, p_phi, p_e, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, s_seperation;
+  Float_t j_norm_pt, j_norm_e;
   reader->AddVariable( "sys_costhetastar", &s_cos );
   reader->AddVariable( "sys_ptoverm", &s_ptm );
   reader->AddVariable( "sys_seperation", &s_seperation );
-  reader->AddVariable( "photon_pt", &p_pt );
+  //reader->AddVariable( "photon_pt", &p_pt );
   reader->AddVariable( "photon_eta", &p_eta );
-  reader->AddVariable( "ak8puppijet_pt", &j_pt );
   reader->AddVariable( "ak8puppijet_eta", &j_eta );
-  reader->AddVariable( "ak8puppijet_e", &j_e );
+  reader->AddVariable( "ak8puppijet_pt / sys_invmass", &j_norm_pt );  
+  reader->AddVariable( "ak8puppijet_e / sys_invmass", &j_norm_e );
 
   
-  reader->BookMVA( "BDT classifier", "MC1400/weights/MVAnalysis_BDT.weights.xml" );
-  //TFile *input = TFile::Open("/home/xyan13/WGProj/CMSSW_9_4_9/src/WGammaAnalyzer/Selection/SelOutPut/ntuples/SinglePhoton2017_WGamma_50105_full.root");
-  TFile *input = TFile::Open("/home/xyan13/WGProj/CMSSW_9_4_9/src/WGammaAnalyzer/Selection/SelOutPut/ntuples/SignalMC1400_WGamma_50105_full.root");
+  reader->BookMVA( "BDT classifier", "MC8001600/weights/MVAnalysis_BDT.weights.xml" );
+  TFile *input = TFile::Open("/home/xyan13/WGProj/CMSSW_9_4_9/src/WGammaAnalyzer/Selection/SelOutPut/ntuples/SinglePhoton2017_WGamma_50105_full.root");
+  //TFile *input = TFile::Open("/home/xyan13/WGProj/CMSSW_9_4_9/src/WGammaAnalyzer/Selection/SelOutPut/ntuples/SignalMC1400_WGamma_50105_full.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for BDT evaluation
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -71,10 +72,11 @@ void TMVApplication( )
   theTree->SetBranchAddress("sys_invmass", &s_mass);
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
-    theTree->GetEntry(ievt);
+    theTree->GetEntry(ievt); 
+    j_norm_pt = j_pt / s_mass;
+    j_norm_e = j_e / s_mass;
 
-    if(s_mass > 1050 && s_mass < 1750 && j_mass > 65 && j_mass < 95) {
-    //if(s_mass > 600 && s_mass < 1000) {
+    if(s_mass > 1050 && s_mass < 1750 && j_mass > 50 && j_mass < 65) {
       // BDT evaluation
       Float_t response = reader->EvaluateMVA( "BDT classifier" );
 
@@ -100,32 +102,4 @@ void TMVApplication( )
   outFile->Write();
   outFile->Close();
   delete reader;
-
-  /*
-  hist1->SetLineColor(2);
-  hist2->SetLineColor(4);
-  hist1->SetLineWidth(3);
-  hist2->SetLineWidth(3);
-  hist1->Scale(1/double(hist1->GetEntries()));
-  hist2->Scale(1/double(hist2->GetEntries()));
-
-  TLegend *legend = new TLegend(0.7,0.75,0.85,0.85);
-  TCanvas *c01 = new TCanvas("c01","",1200,900);
-  TAxis *xaxis = hist2->GetXaxis();
-  TAxis *yaxis = hist2->GetYaxis();
-  xaxis->SetTitle("pt_{#gamma}/M");
-  yaxis->SetTitle("Entries / 0.1");
-  yaxis->SetTitleOffset(1.3);
-  xaxis->SetTitleOffset(1.2);
-  //yaxis->SetRangeUser(0.0001,1);
-  //c01->SetLogy();
-  c01->cd();
-  hist2->Draw("HIST");
-  hist1->Draw("SAMEHIST");
-  legend->Clear();
-  legend->AddEntry(hist1,"65-70 GeV" ,"f");
-  legend->AddEntry(hist2,"70-100 GeV","f");
-  legend->Draw();
-  c01->Print("BDT.png");
-  */
 }

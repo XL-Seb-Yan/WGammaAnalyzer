@@ -388,8 +388,8 @@ void select_TMVA(const TString conf="samples.conf", // input file
 	// Tight Selection
 	// Tau21: https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetWtagging
 	// Bool_t tau21_cut = (tau21 < 0.45);
-	//Bool_t mass_range = (jetAK8_puppi_softdrop_mass->at(index_j) > 55 && jetAK8_puppi_softdrop_mass->at(index_j) < 105);
-	Bool_t mass_range = (jetAK8_puppi_softdrop_mass->at(index_j) > 50 && jetAK8_puppi_softdrop_mass->at(index_j) < 105); //for sig samples derived from data for TMVA
+	Bool_t mass_range = (jetAK8_puppi_softdrop_mass->at(index_j) > 65 && jetAK8_puppi_softdrop_mass->at(index_j) < 95);
+	//Bool_t mass_range = (jetAK8_puppi_softdrop_mass->at(index_j) > 65 && jetAK8_puppi_softdrop_mass->at(index_j) < 95); //for sig samples derived from data for TMVA
 	pass_j2 = mass_range;
 	if(pass_j2)
 	  count4++;
@@ -405,7 +405,8 @@ void select_TMVA(const TString conf="samples.conf", // input file
 	invmass = (v_sys).M();
 	ptoverM = ph_pt->at(index_p)/invmass;
 
-	pass_s1 = true;
+	if(invmass > 1200 && invmass < 2000)
+	  pass_s1 = true;
 
 	// Calculate cos(theta*)
 	Double_t cosThetaStar = -999;

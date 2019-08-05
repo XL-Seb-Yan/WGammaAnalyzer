@@ -6,7 +6,7 @@ void TMVAnalysis( )
   TMVA::DataLoader *dataloader = new TMVA::DataLoader("MC1400");
 
   TFile *infile_s = TFile::Open("/home/xyan13/WGProj/CMSSW_9_4_9/src/WGammaAnalyzer/Selection/SelOutPut/ntuples/SignalMC1400_WGamma_50105_full.root");
-  TFile *infile_b = TFile::Open("/home/xyan13/WGProj/CMSSW_9_4_9/src/WGammaAnalyzer/Selection/SelOutPut/ntuples/SinglePhoton2017_WGamma_50105_full.root");
+  TFile *infile_b = TFile::Open("/home/xyan13/WGProj/CMSSW_9_4_9/src/WGammaAnalyzer/Selection/SelOutPut/ntuples/SinglePhoton2017BCD_WGamma_50105_full.root");
 
   dataloader->AddSignalTree((TTree*)infile_s->Get("Events"));
   dataloader->AddBackgroundTree((TTree*)infile_b->Get("Events"));
@@ -41,3 +41,5 @@ void TMVAnalysis( )
 }
 
 // Use TMVA::TMVAGui(¡°TMVA.root¡±) in ROOT prompt to launch GUI
+
+// BCD 1.8 times enhancement

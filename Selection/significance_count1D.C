@@ -191,29 +191,31 @@ void significance_count1D(const TString conf="samples.conf"){
       eventTree->SetBranchAddress("sys_ptoverm", &sys_ptoverm);                                
       eventTree->SetBranchAddress("sys_invmass", &sys_invmass);                                   
 
-
+      double sigmass = 800;
+      
       if(isam == 0){
 	//TH1F* histS01 = new TH1F("histS01",histotitle+", invmass",60,0,1200);
-	for(float cut2 = 0; cut2 < 1; cut2+=0.01){
+	for(float cut2 = 0; cut2 < 20; cut2+=0.5){
 	  int N = 0;
 	  float record = cut2;
 	  for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
 	    // Get Events
-	   eventTree->GetEntry(ientry);
+	    eventTree->GetEntry(ientry);
 
+	    if(abs(sys_invmass - sigmass) > sigmass*0.05*5) continue;
 	    if(abs(photon_eta) > 1.44) continue;
 	    if(abs(ak8puppijet_eta) > 2.0) continue;
 	    //if(sys_costhetastar > 0.65) continue;
-	    // if(ak8puppijet_tau21 > 0.28) continue;
+	    if(ak8puppijet_tau21 > 0.4) continue;
 	    //if(sys_ptoverm < 0.37) continue;
-	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) < cut2 && (sys_invmass > 680 && sys_invmass < 920))
+	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) < 15) continue;
 
-	    //if(abs(photon_eta) < cut2 && (sys_invmass > 680 && sys_invmass < 920)){
-	    //if(abs(ak8puppijet_eta) < cut2 && (sys_invmass > 680 && sys_invmass < 920)){
-	    //if(sys_costhetastar < cut2 && (sys_invmass > 680 && sys_invmass < 920)){
-	    //if(ak8puppijet_tau21 < cut2 && (sys_invmass > 680 && sys_invmass < 920)){
-	    if(sys_ptoverm > cut2 && (sys_invmass > 680 && sys_invmass < 920)){
-	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) < cut2 && (sys_invmass > 680 && sys_invmass < 920)){
+	    //if(abs(photon_eta) < cut2){
+	    //if(abs(ak8puppijet_eta) < cut2){
+	    //if(sys_costhetastar < cut2){
+	    //if(ak8puppijet_tau21 < cut2){
+	    //if(sys_ptoverm > cut2){
+	    if(abs(ak8puppijet_masssoftdropcorr - 80.38) < cut2){
 	      N++;
 	    }
 	  }
@@ -224,26 +226,27 @@ void significance_count1D(const TString conf="samples.conf"){
 
       if(isam == 1){
 	//TH1F* histS01 = new TH1F("histS01",histotitle+", invmass",60,0,1200);
-	for(float cut2 = 0; cut2 < 1; cut2+=0.01){
+	for(float cut2 = 0; cut2 < 20; cut2+=0.5){
 	  int N = 0;
 	  float record = cut2;
 	  for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
 	    // Get Events
 	    eventTree->GetEntry(ientry);
-	    
+
+	   if(abs(sys_invmass - sigmass) > sigmass*0.05*5) continue;
 	    if(abs(photon_eta) > 1.44) continue;
 	    if(abs(ak8puppijet_eta) > 2.0) continue;
 	    //if(sys_costhetastar > 0.65) continue;
-	    // if(ak8puppijet_tau21 > 0.28) continue;
+	    if(ak8puppijet_tau21 > 0.4) continue;
 	    //if(sys_ptoverm < 0.37) continue;
-	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) < cut2 && (sys_invmass > 680 && sys_invmass < 920))
+	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) < 15) continue;
 
-	    //if(abs(photon_eta) < cut2 && (sys_invmass > 680 && sys_invmass < 920)){
-	    //if(abs(ak8puppijet_eta) < cut2 && (sys_invmass > 680 && sys_invmass < 920)){
-	    //if(sys_costhetastar < cut2 && (sys_invmass > 680 && sys_invmass < 920)){
-	    //if(ak8puppijet_tau21 < cut2 && (sys_invmass > 680 && sys_invmass < 920)){
-	    if(sys_ptoverm > cut2 && (sys_invmass > 680 && sys_invmass < 920)){
-	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) < cut2 && (sys_invmass > 680 && sys_invmass < 920)){
+	    //if(abs(photon_eta) < cut2){
+	    //if(abs(ak8puppijet_eta) < cut2){
+	    //if(sys_costhetastar < cut2){
+	    //if(ak8puppijet_tau21 < cut2){
+	    //if(sys_ptoverm > cut2){
+	    if(abs(ak8puppijet_masssoftdropcorr - 80.38) < cut2){
 	      N++;
 	    }
 	  }
@@ -281,8 +284,8 @@ void significance_count1D(const TString conf="samples.conf"){
   //TString Graphname ="|#eta| cut on photon";
   //TString Graphname ="cos(#theta*) cut on photon";
   //TString Graphname ="tau21 cut on jet";
-  TString Graphname ="pt/M cut on photon";
-  //TString Graphname ="mass window cut on jet";
+  //TString Graphname ="pt/M cut on photon";
+  TString Graphname ="mass window cut on jet";
 
   //Non stacked plots
   TLegend *legend1 = new TLegend(0.6,0.75,0.85,0.85);
@@ -310,11 +313,11 @@ void significance_count1D(const TString conf="samples.conf"){
   xaxis = gr->GetXaxis();
   yaxis = gr->GetYaxis();
   xaxis->SetTitle(Graphname);
-  yaxis->SetTitle("S/#sqrt{B} (to a factor)");
+  yaxis->SetTitle("S/#sqrt{B} (a.u.)");
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
-  xaxis->SetRangeUser(0,1);
-  yaxis->SetRangeUser(0,100);
+  xaxis->SetRangeUser(0,20);
+  yaxis->SetRangeUser(0,70);
   //yaxis->SetRangeUser(0.5,10000000);
   //c01->SetLogy();
   c01->cd();
@@ -323,7 +326,7 @@ void significance_count1D(const TString conf="samples.conf"){
   gr->Draw("AC");
   legend1->Clear();
   //legend1->Draw();
-  c01->Print("800_ptm.png");
+  c01->Print("800_mass.png");
 
   gBenchmark->Show("analyzerWG");
 
