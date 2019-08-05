@@ -198,7 +198,7 @@ void select_TMVA(const TString conf="samples.conf", // input file
     CSample* samp = samplev[isam];
 
     // Set up output ntuple
-    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_WGamma_select.root");
+    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_WGamma_full_full.root");
     TFile *outFile1 = new TFile(outfilename1,"RECREATE"); 
     TTree *outTree1 = new TTree("Events","Events");
     outTree1->Branch("photon_pt",       &photon_pt,      "photon_pt/F");
@@ -367,6 +367,7 @@ void select_TMVA(const TString conf="samples.conf", // input file
 	  //if(jetAK8_puppi_IDTightLepVeto->at(i) != true) continue;
 	  if(jetAK8_puppi_IDTight->at(i) != true) continue;
 	  if(jetAK8_puppi_softdrop_pt->at(i) < 225) continue;
+	  if(jetAK8_puppi_softdrop_mass->at(i) < 0) continue;
 	  TLorentzVector v_temp1;
 	  v_temp1.SetPtEtaPhiE(jetAK8_puppi_softdrop_pt->at(i),jetAK8_puppi_softdrop_eta->at(i),jetAK8_puppi_softdrop_phi->at(i),jetAK8_puppi_softdrop_E->at(i));
 	  if(v_temp1.DeltaR(v_p) < 0.8) continue;
@@ -388,9 +389,9 @@ void select_TMVA(const TString conf="samples.conf", // input file
 	// Tight Selection
 	// Tau21: https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetWtagging
 	// Bool_t tau21_cut = (tau21 < 0.45);
-	Bool_t mass_range = (jetAK8_puppi_softdrop_mass->at(index_j) > 50 && jetAK8_puppi_softdrop_mass->at(index_j) < 105);
+	//Bool_t mass_range = (jetAK8_puppi_softdrop_mass->at(index_j) > 50 && jetAK8_puppi_softdrop_mass->at(index_j) < 105);
 	//Bool_t mass_range = (jetAK8_puppi_softdrop_mass->at(index_j) > 65 && jetAK8_puppi_softdrop_mass->at(index_j) < 95); //for sig samples derived from data for TMVA
-	pass_j2 = mass_range;
+	pass_j2 = true;
 	if(pass_j2)
 	  count4++;
 
@@ -405,8 +406,8 @@ void select_TMVA(const TString conf="samples.conf", // input file
 	invmass = (v_sys).M();
 	ptoverM = ph_pt->at(index_p)/invmass;
 
-	if(invmass > 675 && invmass < 1125)
-	  pass_s1 = true;
+	//if(invmass > 675 && invmass < 1125)
+	pass_s1 = true;
 
 	// Calculate cos(theta*)
 	Double_t cosThetaStar = -999;
