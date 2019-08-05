@@ -5,7 +5,7 @@ void TMVApplication( )
   gStyle->SetOptStat(0);
   // Plots
 
-  TH1F *hist1 = new TH1F("1","BDT response",50,-1,1);
+  TH1F *hist1 = new TH1F("1","BDT response",50,-0.5,0.5);
   TH1F *hist2 = new TH1F("2","BDT response",50,-1,1);
   TH1F *hist3 = new TH1F("3","BDT response",50,-1,1);
   
@@ -18,8 +18,8 @@ void TMVApplication( )
   float sys_costhetastar, sys_ptoverm, sys_invmass, sys_seperation, sys_BDT;
 
   // Create output file
-  //TFile *outFile = TFile::Open("SinglePhoton2017_WGamma_BDT1400_SwindowWsideband.root", "RECREATE");
-  TFile *outFile = TFile::Open("Signal1400_WGamma_BDT1400_SwindowWwindow.root", "RECREATE");
+  TFile *outFile = TFile::Open("SinglePhoton2017_WGamma_BDT1000_SwindowWsideband.root", "RECREATE");
+  //TFile *outFile = TFile::Open("Signal1000_WGamma_BDT1000_SwindowWwindow.root", "RECREATE");
   TTree *outTree = new TTree("Events","Events"); 
   outTree->Branch("photon_pt",       &photon_pt,      "photon_pt/F");
   outTree->Branch("photon_eta",      &photon_eta,      "photon_eta/F");
@@ -50,9 +50,9 @@ void TMVApplication( )
   reader->AddVariable( "ak8puppijet_e", &j_e );
 
   
-  reader->BookMVA( "BDT classifier", "MC1400/weights/MVAnalysis_BDT.weights.xml" );
-  //TFile *input = TFile::Open("/home/xyan13/WGProj/CMSSW_9_4_9/src/WGammaAnalyzer/Selection/SelOutPut/ntuples/SinglePhoton2017_WGamma_50105_full.root");
-  TFile *input = TFile::Open("/home/xyan13/WGProj/CMSSW_9_4_9/src/WGammaAnalyzer/Selection/SelOutPut/ntuples/SignalMC1400_WGamma_50105_full.root");
+  reader->BookMVA( "BDT classifier", "for_81_study/MC800/weights/MVAnalysis_BDT.weights.xml" );
+  TFile *input = TFile::Open("/home/xyan13/WGProj/CMSSW_9_4_9/src/WGammaAnalyzer/Selection/SelOutPut/ntuples/SinglePhoton2017_WGamma_50105_full.root");
+  //TFile *input = TFile::Open("/home/xyan13/WGProj/CMSSW_9_4_9/src/WGammaAnalyzer/Selection/SelOutPut/ntuples/SignalMC1000_WGamma_50105_full.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for BDT evaluation
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -73,7 +73,7 @@ void TMVApplication( )
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
 
-    if(s_mass > 1050 && s_mass < 1750 && j_mass > 65 && j_mass < 95) {
+    if(s_mass > 750 && s_mass < 1250 && j_mass > 50 && j_mass < 65) {
     //if(s_mass > 600 && s_mass < 1000) {
       // BDT evaluation
       Float_t response = reader->EvaluateMVA( "BDT classifier" );
@@ -93,6 +93,7 @@ void TMVApplication( )
       sys_seperation = s_seperation;
       sys_invmass = s_mass;
       sys_BDT = response;
+      hist1->Fill(response);
   
       outTree->Fill();
     }
@@ -101,6 +102,24 @@ void TMVApplication( )
   outFile->Close();
   delete reader;
 
+  hist1->SetLineColor(2);
+  hist1->SetLineWidth(3);
+  hist1->Scale(1/double(hist1->GetEntries()));
+
+  TLegend *legend = new TLegend(0.7,0.75,0.85,0.85);
+  TCanvas *c01 = new TCanvas("c01","",1200,900);
+  TAxis *xaxis = hist1->GetXaxis();
+  TAxis *yaxis = hist1->GetYaxis();
+  xaxis->SetTitle("BDT");
+  yaxis->SetTitle("Entries / 0.1");
+  yaxis->SetTitleOffset(1.3);
+  xaxis->SetTitleOffset(1.2);
+  yaxis->SetRangeUser(0.0001,1);
+  c01->SetLogy();
+  c01->cd();
+  hist1->Draw("HIST");
+  c01->Print("BDT.png");
+  
   /*
   hist1->SetLineColor(2);
   hist2->SetLineColor(4);
