@@ -5,32 +5,30 @@ void make_signal_shapes(int seed=37)
   using namespace RooFit;
   RooRandom::randomGenerator()->SetSeed(37); 
   TCanvas *c1 = new TCanvas("c1","c1",1200,900);
+  c1->SetLogy();
 
   // --- Create workspace --- 
   RooWorkspace w("w","w");
-  RooRealVar sys_invmass("sys_invmass","invmass",400,2000,""); //the name "sysinvmass" will be used by RooDataSet to import data
-  sys_invmass.setBins(25);
+  Double_t signalmass = 800;
+  RooRealVar sys_invmass("sys_invmass","invmass",600,1000,""); //the name "sys_invmass" will be used by RooDataSet to import data
+  sys_invmass.setBins(40);
 
   //--- signal PDF ---
-  RooRealVar* mu1 = new RooRealVar("Gaus_mu1","#mu1",1600,1500,1700,"");
-  //RooRealVar* mu2 = new RooRealVar("DG_mu2","#mu2",1.96847,1.9,2.1,"");
-  RooRealVar* sigma1 = new RooRealVar("Gaus_sigma1","#sigma_{1}",80,0,150,"");
-  //RooRealVar* sigma2 = new RooRealVar("DG_sigma2","#sigma_{2}",0.03,0.02,0.08,"");
-  mu1->setConstant(kFALSE);
-  //mu2->setConstant(kFALSE);
-  sigma1->setConstant(kFALSE);
-  //sigma2->setConstant(kFALSE);
-  RooRealVar* frac = new RooRealVar("Gaus_frac","frac",0.7,0,1); 
-  RooRealVar* Ns = new RooRealVar("Gaus_Ns","N_{s}",1000,0,10000,"events");
-  Ns->setConstant(kFALSE);
-  RooGaussian* gauss1 = new RooGaussian("Gaus1","",sys_invmass,*mu1,*sigma1);
-  //RooGaussian* gauss2 = new RooGaussian("G2","",sysinvmass,*mu2,*sigma2);
-  //RooAddPdf* doublegauss = new RooAddPdf("SummedG1G2","",RooArgList(*gauss1,*gauss2),*frac);
-  //RooAddPdf* ex_doublegauss = new RooAddPdf("DG_ex","extDgauss",RooArgList(*doublegauss),RooArgList(*Ns));
-  RooAddPdf* ex_gauss = new RooAddPdf("Gaus_ex","",RooArgList(*gauss1),RooArgList(*Ns));
-  w.import(*ex_gauss);
+  RooRealVar* mean = new RooRealVar("CB_mean","mean",signalmass,signalmass-50,signalmass+50,"");
+  RooRealVar* CBsigma = new RooRealVar("CB_sigma","CBsigma",30,0,60,"");
+  RooRealVar* Gaussigma = new RooRealVar("Gaus_sigma","Gaussigma",50,0,100,"");
+  RooRealVar* alpha = new RooRealVar("CB_alpha","alpha",1,0,3,"");
+  RooRealVar* n = new RooRealVar("CB_n","n",125,50,200,"");
+  //RooRealVar* frac = new RooRealVar("Gaus_frac","frac",0.7,0,1); 
+  RooRealVar* CBNs = new RooRealVar("CB_Ns","CBN_{s}",3500,2000,6000,"events");
+  RooRealVar* GausNs = new RooRealVar("Gaus_Ns","GausN_{s}",50,0,1000,"events");
+  RooGaussian* Gaus = new RooGaussian("Gaus","Gaus",sys_invmass,*mean,*Gaussigma);
+  RooCBShape* CBShape = new RooCBShape("CBShape","Cystal Ball Function",sys_invmass,*mean,*CBsigma,*alpha,*n);
+  RooAddPdf* ex_Sum = new RooAddPdf("Sum_ex","",RooArgList(*CBShape),RooArgList(*CBNs));
+  w.import(*ex_Sum);
 
   //--- background PDF ---
+  /*
   RooRealVar *pC = new RooRealVar("pol2_pC","C",1,0,100,"");
   pC->setConstant(kFALSE);
   RooRealVar *p0 = new RooRealVar("pol2_p0","p_0",-0.1,-1,0,"");
@@ -40,13 +38,16 @@ void make_signal_shapes(int seed=37)
   RooExponential* expo = new RooExponential("expo","",sys_invmass,*p0);
   RooAddPdf* ex_expo = new RooAddPdf("expo_ex","",RooArgList(*expo),RooArgList(*Nbkg));
   w.import(*ex_expo);
+  */
 
   //--- combine PDF ---
+  /*
   RooAddPdf* ex_sum = new RooAddPdf("SUM_ex","",RooArgList(*expo,*gauss1),RooArgList(*Nbkg,*Ns));
   w.import(*ex_sum);
+  */
   
   // --- Import unbinned dataset ---
-  TFile file("/home/xyan13/WGProj/CMSSW_9_4_9/src/WGammaAnalyzer/Selection/SelOutPut/ntuples/MC_WGamma_select.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/Signal800N_Wwindow.root");
   TTree* tree = (TTree*)file.Get("Events");
   RooArgList imarglist(sys_invmass);
   RooArgSet imargset(imarglist);
@@ -57,24 +58,20 @@ void make_signal_shapes(int seed=37)
   //sys_invmass.setRange("SB1",1.47682,1.67682);
   //sysinvmass.setRange("SB2",1.87682,2.07682);
   //RooFitResult *r = ex_bern->fitTo(data,Range("SB1,SB2"),Save());
-  //RooFitResult *r = ex_doublegauss->fitTo(data,Save());
-  //RooFitResult *r = gauss1->fitTo(data,Save());
-  RooFitResult *r = ex_sum->fitTo(data,Save());
+  RooFitResult *r = ex_Sum->fitTo(data,Save());
 
   // --- Plot ---
   gStyle->SetOptStat(111111);
   RooPlot *frame = sys_invmass.frame();
   data.plotOn(frame);
-  frame->SetTitle("WGamma M1600 MC");
-  //ex_sum->plotOn(frame,LineColor(kRed));
-  ex_sum->plotOn(frame,LineColor(kRed),RooFit::Name("sigfun"));
-  //gauss1->plotOn(frame,LineColor(kRed),RooFit::Name("sigfun"));
-  ex_sum->plotOn(frame,Components("expo"),LineStyle(kDashed),RooFit::Name("bkgfun"));
-  ex_sum->plotOn(frame,VisualizeError(*r,1),FillColor(kOrange),RooFit::Name("err"));
-  //gauss1->plotOn(frame,VisualizeError(*r,1),FillColor(kOrange),RooFit::Name("err"));
-  ex_sum->plotOn(frame,LineColor(kRed),RooFit::Name("sigfun"));
+  frame->SetTitle("WGamma M-800 MC");
+  ex_Sum->plotOn(frame,LineColor(kBlack),RooFit::Name("sigfun"));
+  ex_Sum->plotOn(frame,VisualizeError(*r,1),FillColor(kOrange),RooFit::Name("err"));
+  ex_Sum->plotOn(frame,LineColor(kBlack),RooFit::Name("sigfun"));
+  //ex_Sum->plotOn(frame,Components("CBShape"),LineColor(kRed),RooFit::Name("CBfun"));
+  //ex_Sum->plotOn(frame,Components("Gaus"),LineColor(kBlue),RooFit::Name("Gausfun"));
   //ex_bern->plotOn(frame,LineColor(kRed),RooFit::Name("sigfun"));
-  ex_sum->plotOn(frame,Components("expo"),LineStyle(kDashed),RooFit::Name("bkgfun"));
+  //ex_CB->plotOn(frame,Components("expo"),LineStyle(kDashed),RooFit::Name("bkgfun"));
   data.plotOn(frame);
   //w.pdf("model_s")->plotOn(frame,Components("Bern"),LineStyle(kDashed));
 
@@ -85,9 +82,8 @@ void make_signal_shapes(int seed=37)
   xaxis->SetTitleOffset(1.2);
   yaxis->SetTitle("Events");
   yaxis->SetTitleOffset(1.2);
-  //frame->SetMaximum(600);
-  //frame->SetMinimum(0);
-  //c1->SetLogy();
+  frame->SetMaximum(1000);
+  frame->SetMinimum(0.1);
   frame->Draw();
   TLegend *l =  new TLegend(0.6,0.7,0.8,0.78);
   l->AddEntry(frame->findObject("sigfun"),"Signal Fit","l");
@@ -97,10 +93,12 @@ void make_signal_shapes(int seed=37)
   c1->Print("data.png");
   
   // --- Output root file ---
+  /*
   RooWorkspace *wUP = new RooWorkspace("wUP","wUP");
   wUP->var("sys_invmass[400,2000]");
   wUP->import(data,Rename("MC"));
   wUP->import(*gauss1);
   wUP->import(*expo);
   wUP->writeToFile("SignalMC1600-shapes-UnbinnedParam.root");
+  */
 }

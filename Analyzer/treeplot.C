@@ -43,7 +43,7 @@ TH1 *hist2 = new TH1F("2","eta_{#gamma}",50,-2,2);
 TH1 *hist3 = new TH1F("3","pt_{j} / M",50,0,2);
 TH1 *hist4 = new TH1F("4","eta_{j}",50,-2,2);
 TH1 *hist5 = new TH1F("5","E_{j} / M",50,0,5);
-TH1 *hist6 = new TH1F("6","masssoftdrop_{j}",60,50,110);
+TH1 *hist6 = new TH1F("6","masssoftdrop_{j}",25,40,65);
 TH1 *hist7 = new TH1F("7","tau21_{j}",50,0,1);
 TH1 *hist8 = new TH1F("8","cos(#theta*)_{p}",50,0,1);
 TH1 *hist9 = new TH1F("9","pt/M",50,0,2);
@@ -95,22 +95,21 @@ Bool_t treeplot::Process(Long64_t entry)
    if(entry%1000==0)
      cout<<"Processing "<<entry<<endl;
 
-   double signalmass = 1000;
-   if((*ak8puppijet_masssoftdropcorr > 40 && *ak8puppijet_masssoftdropcorr < 65) && abs(*sys_invmass - signalmass) < signalmass*0.05 && *ak8puppijet_tau21 < 0.45 && abs(*photon_eta) < 1.44 && abs(*ak8puppijet_eta) < 2){
-     hist1->Fill(*photon_pt / *sys_invmass);
-     hist2->Fill(*photon_eta);
-     hist3->Fill(*ak8puppijet_pt / *sys_invmass);
-     hist4->Fill(*ak8puppijet_eta);
-     hist5->Fill(*ak8puppijet_e / *sys_invmass);
-     hist6->Fill(*ak8puppijet_masssoftdropcorr);
-     hist7->Fill(*ak8puppijet_tau21);
-     hist8->Fill(*sys_costhetastar);
-     hist9->Fill(*sys_ptoverm);
-     hist10->Fill(*sys_invmass);
-     hist11->Fill(*sys_seperation);
-     hist12->Fill(abs(abs(*photon_eta) - abs(*ak8puppijet_eta)));
-     hist13->Fill(abs(*photon_phi - *ak8puppijet_phi));
-   }
+   //double signalmass = 1000;
+   //if((*ak8puppijet_masssoftdropcorr > 40 && *ak8puppijet_masssoftdropcorr < 65) && abs(*sys_invmass - signalmass) < signalmass*0.05 && *ak8puppijet_tau21 < 0.45 && abs(*photon_eta) < 1.44 && abs(*ak8puppijet_eta) < 2){
+   hist1->Fill(*photon_pt / *sys_invmass);
+   hist2->Fill(*photon_eta);
+   hist3->Fill(*ak8puppijet_pt / *sys_invmass);
+   hist4->Fill(*ak8puppijet_eta);
+   hist5->Fill(*ak8puppijet_e / *sys_invmass);
+   hist6->Fill(*ak8puppijet_masssoftdropcorr);
+   hist7->Fill(*ak8puppijet_tau21);
+   hist8->Fill(*sys_costhetastar);
+   hist9->Fill(*sys_ptoverm);
+   hist10->Fill(*sys_invmass);
+   hist12->Fill(abs(abs(*photon_eta) - abs(*ak8puppijet_eta)));
+   hist13->Fill(abs(*photon_phi - *ak8puppijet_phi));
+     //}
    
 
    return kTRUE;
@@ -130,7 +129,7 @@ void treeplot::Terminate()
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
 
-  int color = 4;
+  int color = 2;
   hist1->SetLineColor(color);
   hist2->SetLineColor(color);
   hist3->SetLineColor(color);
@@ -159,7 +158,6 @@ void treeplot::Terminate()
   hist11->Scale(1/norm);
   hist12->Scale(1/norm);
   hist13->Scale(1/norm);
-  
 
   gStyle->SetOptStat(0);
   
@@ -173,7 +171,7 @@ void treeplot::Terminate()
   xaxis->SetTitle("pt_{#gamma} / M(j#gamma)");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.00001, 1);
+  yaxis->SetRangeUser(0.0001,1);
   c01->SetLogy();
   c01->cd();
   hist1->SetLineWidth(2);
@@ -189,7 +187,7 @@ void treeplot::Terminate()
   xaxis->SetTitle("eta_{#gamma}");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.00001, 1);
+  yaxis->SetRangeUser(0.0001,1);
   c02->SetLogy();
   c02->cd();
   hist2->SetLineWidth(2);
@@ -205,7 +203,7 @@ void treeplot::Terminate()
   xaxis->SetTitle("pt AK8Jet / M(j#gamma)");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.00001, 1);
+  yaxis->SetRangeUser(0.0001,1);
   //yaxis->SetRangeUser(0,2000);
   c03->SetLogy();
   c03->cd();
@@ -222,7 +220,7 @@ void treeplot::Terminate()
   xaxis->SetTitle("eta AK8Jet");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.00001, 1);
+  yaxis->SetRangeUser(0.0001,1);
   c04->SetLogy();
   c04->cd();
   hist4->SetLineWidth(2);
@@ -238,7 +236,7 @@ void treeplot::Terminate()
   xaxis->SetTitle("E AK8Jet / M(j#gamma)");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.00001, 1);
+  yaxis->SetRangeUser(0.0001,1);
   c05->SetLogy();
   c05->cd();
   hist5->SetLineWidth(2);
@@ -252,10 +250,10 @@ void treeplot::Terminate()
   xaxis = hist6->GetXaxis();
   yaxis = hist6->GetYaxis();
   xaxis->SetTitle("mass softdrop AK8Jet (GeV)");
-  yaxis->SetTitle("Entries");
+  yaxis->SetTitle("a.u.");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.00001, 1);
-  //yaxis->SetRangeUser(0,400);
+  //yaxis->SetRangeUser(0,0.08);
+  yaxis->SetRangeUser(0.0001,1);
   c06->SetLogy();
   c06->cd();
   hist6->SetLineWidth(2);
@@ -271,7 +269,7 @@ void treeplot::Terminate()
   xaxis->SetTitle("tau21 AK8Jet");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.00001, 1);
+  yaxis->SetRangeUser(0.0001,1);
   c07->SetLogy();
   c07->cd();
   hist7->SetLineWidth(2);
@@ -287,7 +285,7 @@ void treeplot::Terminate()
   xaxis->SetTitle("cos(#theta*)");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.00001, 1);
+  yaxis->SetRangeUser(0.0001,1);
   c08->SetLogy();
   c08->cd();
   hist8->SetLineWidth(2);
@@ -303,7 +301,7 @@ void treeplot::Terminate()
   xaxis->SetTitle("pt/M");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.00001, 1);
+  yaxis->SetRangeUser(0.0001,1);
   c09->SetLogy();
   c09->cd();
   hist9->SetLineWidth(2);
@@ -319,7 +317,7 @@ void treeplot::Terminate()
   xaxis->SetTitle("pt/M");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.00001, 1);
+  yaxis->SetRangeUser(0.0001,1);
   c10->SetLogy();
   c10->cd();
   hist10->SetLineWidth(2);
@@ -335,7 +333,7 @@ void treeplot::Terminate()
   xaxis->SetTitle("#Delta R");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.00001, 1);
+  yaxis->SetRangeUser(0.0001,1);
   c11->SetLogy();
   c11->cd();
   hist11->SetLineWidth(2);
@@ -351,7 +349,7 @@ void treeplot::Terminate()
   xaxis->SetTitle("#eta diff");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.00001, 1);
+  yaxis->SetRangeUser(0.0001,1);
   c12->SetLogy();
   c12->cd();
   hist12->SetLineWidth(2);
@@ -367,7 +365,7 @@ void treeplot::Terminate()
   xaxis->SetTitle("#phi diff");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.00001, 1);
+  yaxis->SetRangeUser(0.0001,1);
   c13->SetLogy();
   c13->cd();
   hist13->SetLineWidth(2);
