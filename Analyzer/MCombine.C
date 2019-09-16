@@ -1,19 +1,19 @@
 void MCombine()
 {
 
-  //gROOT->SetBatch(1);
+  gROOT->SetBatch(1);
   gStyle->SetOptStat(0);
   // Plots
-  TH1 *hist1 = new TH1F("1","pt_{#gamma} / M",50,0,2);
+  TH1 *hist1 = new TH1F("1","pt_{#gamma}",50,0,2000);
   TH1 *hist2 = new TH1F("2","eta_{#gamma}",50,-2,2);
-  TH1 *hist3 = new TH1F("3","pt_{j} / M",50,0,2);
+  TH1 *hist3 = new TH1F("3","pt_{j}",50,0,2000);
   TH1 *hist4 = new TH1F("4","eta_{j}",50,-2,2);
-  TH1 *hist5 = new TH1F("5","E_{j} / M",50,0,5);
+  TH1 *hist5 = new TH1F("5","E_{j}",50,0,3000);
   TH1 *hist6 = new TH1F("6","masssoftdrop_{j}",40,40,120);
   TH1 *hist7 = new TH1F("7","tau21_{j}",50,0,1);
   TH1 *hist8 = new TH1F("8","cos(#theta*)_{p}",50,0,1);
   TH1 *hist9 = new TH1F("9","pt/M",50,0,2);
-  TH1 *hist10 = new TH1F("10","invariant mass",100,0,2400);
+  TH1 *hist10 = new TH1F("10","invariant mass",50,0,3000);
   TH1 *hist11 = new TH1F("11","seperation",50,0,8);
   
   // Local variables to store to outfile
@@ -27,17 +27,37 @@ void MCombine()
   // Open input file
   Float_t p_pt, p_eta, p_phi, p_e, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass;
   std::vector<TFile*> file_v;
-  file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/GJets40To100_full.root"));
-  file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/GJets100To200_full.root"));
-  file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/GJets200To400_full.root"));
-  file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/GJets400To600_full.root"));
-  file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/GJets600ToInf_full.root"));
+  // Data
+  //file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/SinglePhoton2017_full_presel.root"));
+  // GJets
+  file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/GJets100To200_full_presel.root"));
+  file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/GJets200To400_full_presel.root"));
+  file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/GJets400To600_full_presel.root"));
+  file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/GJets600ToInf_full_presel.root"));
+  //QCD
+  /*
+  file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/QCD300To500_full_presel.root"));
+  file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/QCD500To700_full_presel.root"));
+  file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/QCD700To1000_full_presel.root"));
+  file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/QCD1000To1500_full_presel.root"));
+  file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/QCD1500To2000_full_presel.root"));
+  file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/QCD2000ToInf_full_presel.root"));
+  */
   std::vector<double> scale_v;
-  scale_v.push_back((double)18700/(double)5570866*41.54*1000);
-  scale_v.push_back((double)8640/(double)9959190*41.54*1000);
-  scale_v.push_back((double)2185/(double)18536907*41.54*1000);
+  //scale_v.push_back(1);
+  scale_v.push_back((double)8300/(double)9959190*41.54*1000);
+  scale_v.push_back((double)2200/(double)18536907*41.54*1000);
   scale_v.push_back((double)260/(double)5088564*41.54*1000);
-  scale_v.push_back((double)85.31/(double)3289629*41.54*1000);
+  scale_v.push_back((double)84/(double)3289629*41.54*1000);
+  /*
+  scale_v.push_back((double)311900/(double)60316577*41.54*1000);
+  scale_v.push_back((double)29070/(double)56207744*41.54*1000);
+  scale_v.push_back((double)5962/(double)47724800*41.54*1000);
+  scale_v.push_back((double)1005/(double)16595628*41.54*1000);
+  scale_v.push_back((double)101.8/(double)11634434*41.54*1000);
+  scale_v.push_back((double)20.54/(double)5941306*41.54*1000);
+  */
+  
 
   for(int i = 0; i<file_v.size(); i++){
     TTree* theTree = (TTree*)file_v.at(i)->Get("Events");
@@ -58,20 +78,43 @@ void MCombine()
   
     for (int ievt = 0; ievt<theTree->GetEntries();ievt++){
       theTree->GetEntry(ievt);
+
+      double kfac = 1;
+      // !!!! k factor only applied to GJets !!!!!
+      // Comment following if processing Data and QCD
+      if(p_pt >= 100 && p_pt < 400)
+	kfac = 1.8;
+      else if(p_pt >= 400 && p_pt < 600)
+	kfac = 1.4;
       
-      hist1->Fill(p_pt, scale_v.at(i));
-      hist2->Fill(p_eta, scale_v.at(i));
-      hist3->Fill(j_pt, scale_v.at(i));
-      hist4->Fill(j_eta, scale_v.at(i));
-      hist5->Fill(j_e, scale_v.at(i));
-      hist6->Fill(j_mass, scale_v.at(i));
-      hist7->Fill(j_tau21, scale_v.at(i));
-      hist8->Fill(s_cos, scale_v.at(i));
-      hist9->Fill(s_ptm, scale_v.at(i));
-      hist10->Fill(s_mass, scale_v.at(i));
+      hist1->Fill(p_pt, scale_v.at(i)*kfac);
+      hist2->Fill(p_eta, scale_v.at(i)*kfac);
+      hist3->Fill(j_pt, scale_v.at(i)*kfac);
+      hist4->Fill(j_eta, scale_v.at(i)*kfac);
+      hist5->Fill(j_e, scale_v.at(i)*kfac);
+      hist6->Fill(j_mass, scale_v.at(i)*kfac);
+      hist7->Fill(j_tau21, scale_v.at(i)*kfac);
+      hist8->Fill(s_cos, scale_v.at(i)*kfac);
+      hist9->Fill(s_ptm, scale_v.at(i)*kfac);
+      hist10->Fill(s_mass, scale_v.at(i)*kfac);
     }
   }
-  int color = 4;
+
+  // Write histos to root file
+  TFile *outFile = TFile::Open("Histogram_GJets_kfac.root","RECREATE");
+  hist1->Write();
+  hist2->Write();
+  hist3->Write();
+  hist4->Write();
+  hist5->Write();
+  hist6->Write();
+  hist7->Write();
+  hist8->Write();
+  hist9->Write();
+  hist10->Write();
+  outFile->Close();
+  
+  int color = 2;
   hist1->SetLineColor(color);
   hist2->SetLineColor(color);
   hist3->SetLineColor(color);
