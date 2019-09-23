@@ -4,16 +4,16 @@ void MCombine()
   gROOT->SetBatch(1);
   gStyle->SetOptStat(0);
   // Plots
-  TH1 *hist1 = new TH1F("1","pt_{#gamma}",50,0,2000);
+  TH1 *hist1 = new TH1F("1","pt_{#gamma}",50,0,3000);
   TH1 *hist2 = new TH1F("2","eta_{#gamma}",50,-2,2);
-  TH1 *hist3 = new TH1F("3","pt_{j}",50,0,2000);
+  TH1 *hist3 = new TH1F("3","pt_{j}",50,0,3000);
   TH1 *hist4 = new TH1F("4","eta_{j}",50,-2,2);
   TH1 *hist5 = new TH1F("5","E_{j}",50,0,3000);
   TH1 *hist6 = new TH1F("6","masssoftdrop_{j}",40,40,120);
   TH1 *hist7 = new TH1F("7","tau21_{j}",50,0,1);
   TH1 *hist8 = new TH1F("8","cos(#theta*)_{p}",50,0,1);
   TH1 *hist9 = new TH1F("9","pt/M",50,0,2);
-  TH1 *hist10 = new TH1F("10","invariant mass",50,0,3000);
+  TH1 *hist10 = new TH1F("10","invariant mass",50,0,4000);
   TH1 *hist11 = new TH1F("11","seperation",50,0,8);
   
   // Local variables to store to outfile
@@ -30,35 +30,34 @@ void MCombine()
   // Data
   //file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/SinglePhoton2017_full_presel.root"));
   // GJets
+  /*
   file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/GJets100To200_full_presel.root"));
   file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/GJets200To400_full_presel.root"));
   file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/GJets400To600_full_presel.root"));
   file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/GJets600ToInf_full_presel.root"));
+  */
   //QCD
-  /*
   file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/QCD300To500_full_presel.root"));
   file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/QCD500To700_full_presel.root"));
   file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/QCD700To1000_full_presel.root"));
   file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/QCD1000To1500_full_presel.root"));
   file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/QCD1500To2000_full_presel.root"));
   file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/QCD2000ToInf_full_presel.root"));
-  */
   std::vector<double> scale_v;
   //scale_v.push_back(1);
+  /*
   scale_v.push_back((double)8300/(double)9959190*41.54*1000);
   scale_v.push_back((double)2200/(double)18536907*41.54*1000);
   scale_v.push_back((double)260/(double)5088564*41.54*1000);
   scale_v.push_back((double)84/(double)3289629*41.54*1000);
-  /*
+  */
   scale_v.push_back((double)311900/(double)60316577*41.54*1000);
   scale_v.push_back((double)29070/(double)56207744*41.54*1000);
   scale_v.push_back((double)5962/(double)47724800*41.54*1000);
   scale_v.push_back((double)1005/(double)16595628*41.54*1000);
   scale_v.push_back((double)101.8/(double)11634434*41.54*1000);
   scale_v.push_back((double)20.54/(double)5941306*41.54*1000);
-  */
   
-
   for(int i = 0; i<file_v.size(); i++){
     TTree* theTree = (TTree*)file_v.at(i)->Get("Events");
     // Improt variables for cutting
@@ -82,10 +81,12 @@ void MCombine()
       double kfac = 1;
       // !!!! k factor only applied to GJets !!!!!
       // Comment following if processing Data and QCD
+      /*
       if(p_pt >= 100 && p_pt < 400)
 	kfac = 1.8;
       else if(p_pt >= 400 && p_pt < 600)
 	kfac = 1.4;
+      */
       
       hist1->Fill(p_pt, scale_v.at(i)*kfac);
       hist2->Fill(p_eta, scale_v.at(i)*kfac);
@@ -101,7 +102,7 @@ void MCombine()
   }
 
   // Write histos to root file
-  TFile *outFile = TFile::Open("Histogram_GJets_kfac.root","RECREATE");
+  TFile *outFile = TFile::Open("Histogram_QCD.root","RECREATE");
   hist1->Write();
   hist2->Write();
   hist3->Write();

@@ -34,7 +34,7 @@
 
 void select(const TString conf="samples.conf", // input file
 	      const TString outputDir=".",  // output directory
-	      const Bool_t  doScaleCorr=0   // apply energy scale corrections?
+	      const Float_t weight=1   // MC weight?
 	       ) {
   gBenchmark->Start("selectWG");
   gSystem->Load("lib/libMylib.so");
@@ -151,6 +151,8 @@ void select(const TString conf="samples.conf", // input file
   float ak8puppijet_pt, ak8puppijet_eta, ak8puppijet_phi, ak8puppijet_e, ak8puppijet_masssoftdropcorr, ak8puppijet_tau21, ak8puppijet_massdiff;
   // System
   float sys_costhetastar, sys_ptoverm, sys_invmass, sys_seperation;
+  // MC xsec weight
+  float xsec_weight;
   
   // Data structures to store info from produced flat ntuples
   Int_t runnum = -999;
@@ -215,7 +217,7 @@ void select(const TString conf="samples.conf", // input file
     CSample* samp = samplev[isam];
 
     // Set up output ntuple
-    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_WGamma_full_full.root");
+    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_WGamma_full_full_weightedTo41p54.root");
     TFile *outFile1 = new TFile(outfilename1,"RECREATE"); 
     TTree *outTree1 = new TTree("Events","Events");
     outTree1->Branch("photon_pt",       &photon_pt,      "photon_pt/F");
@@ -235,6 +237,8 @@ void select(const TString conf="samples.conf", // input file
     outTree1->Branch("sys_ptoverm",             &sys_ptoverm,           "sys_ptoverm/F");
     outTree1->Branch("sys_invmass",             &sys_invmass,           "sys_invmass/F");
     outTree1->Branch("sys_seperation",          &sys_seperation,        "sys_seperation/F");
+    outTree1->Branch("xsec_weight",             &xsec_weight,           "xsec_weight/F");
+    
    
 
     cout<<"begin loop over files"<<endl;
@@ -532,6 +536,7 @@ void select(const TString conf="samples.conf", // input file
 	  sys_ptoverm = ptoverM;
 	  sys_invmass = invmass;
 	  sys_seperation = seperation;
+	  xsec_weight = weight;
 	  outTree1->Fill();
 	}
 	if(pass_p2) count5++;
