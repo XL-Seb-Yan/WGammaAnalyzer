@@ -1,0 +1,17 @@
+Work flow:
+
+1. miniAOD -> /Selection/select.C -> MC ntuples normalized to integrated luminosity of data (ntuple1)
+
+2. ntuple1 -> /Analyzer/cutselection.C (without weight) -> ntuples with _presel (ntuple2)
+
+3. ntuple2 -> /Analyzer/Histomake.C -> histograms
+
+4. histograms -> /Analyzer/Histofit.C -> determin fit factor f
+
+5. ntuple1 -> /Analyzer/cutselection.C (with weight f) -> ntuples with _weightedTo41p54_fitData (ntuple3)
+
+6. ntuple3 -> /Analyzer/Histomake.C -> histograms_fullyweighted -> /Analyzer/Histoplot.C
+
+or
+
+ntuple3 -> hadd -> cut optimization

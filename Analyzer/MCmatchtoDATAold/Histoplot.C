@@ -6,9 +6,9 @@ void Histoplot()
   gStyle->SetOptStat(0);
 
   // Write histos to root file
-  TFile *file1 = TFile::Open("Histogram_Data_fullyweighted.root");
-  TFile *file2 = TFile::Open("Histogram_GJets_fullyweighted.root");
-  TFile *file3 = TFile::Open("Histogram_QCD_fullyweighted.root");
+  TFile *file1 = TFile::Open("Histogram_Data.root");
+  TFile *file2 = TFile::Open("Histogram_GJets.root");
+  TFile *file3 = TFile::Open("Histogram_QCD.root");
   TH1* hist1_1 = (TH1*)file1->Get("1"); //p_pt
   TH1* hist1_2 = (TH1*)file1->Get("2"); //p_eta
   TH1* hist1_3 = (TH1*)file1->Get("3"); //j_pt
@@ -39,6 +39,27 @@ void Histoplot()
   TH1* hist3_8 = (TH1*)file3->Get("8");
   TH1* hist3_9 = (TH1*)file3->Get("9");
   TH1* hist3_10 = (TH1*)file3->Get("10");
+
+  hist2_1->Scale(1.45);
+  hist2_2->Scale(1.45);
+  hist2_3->Scale(1.45);
+  hist2_4->Scale(1.45);
+  hist2_5->Scale(1.45);
+  hist2_6->Scale(1.45);
+  hist2_7->Scale(1.45);
+  hist2_8->Scale(1.45);
+  hist2_9->Scale(1.45);
+  hist2_10->Scale(1.45);
+  hist3_1->Scale(0.01);
+  hist3_2->Scale(0.01);
+  hist3_3->Scale(0.01);
+  hist3_4->Scale(0.01);
+  hist3_5->Scale(0.01);
+  hist3_6->Scale(0.01);
+  hist3_7->Scale(0.01);
+  hist3_8->Scale(0.01);
+  hist3_9->Scale(0.01);
+  hist3_10->Scale(0.01);
 
   int color1 = 2;
   int color2 = 8;
@@ -180,8 +201,8 @@ void Histoplot()
   hist1_1->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist1_1,"2017 Data, SinglePhoton","lep");
-  legend->AddEntry(hist2_1,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_1,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(hist2_1,"2017 MC, GJets(w. k factor)","f");
+  legend->AddEntry(hist3_1,"2017 MC, QCD(w. k factor)","f");
   legend->Draw();
   c01->Print("p_pt.png");
 
@@ -200,8 +221,8 @@ void Histoplot()
   hist1_2->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist1_2,"2017 Data, SinglePhoton","lep");
-  legend->AddEntry(hist2_2,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_2,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(hist2_2,"2017 MC, GJets(w. k factor)","f");
+  legend->AddEntry(hist3_2,"2017 MC, QCD(w. k factor)","f");
   legend->Draw();
   c02->Print("p_eta.png");
 
@@ -221,8 +242,8 @@ void Histoplot()
   hist1_3->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist1_3,"2017 Data, SinglePhoton","lep");
-  legend->AddEntry(hist2_3,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_3,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(hist2_3,"2017 MC, GJets(w. k factor)","f");
+  legend->AddEntry(hist3_3,"2017 MC, QCD(w. k factor)","f");
   legend->Draw();
   c03->Print("j_pt.png");
 
@@ -241,8 +262,8 @@ void Histoplot()
   hist1_4->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist1_4,"2017 Data, SinglePhoton","lep");
-  legend->AddEntry(hist2_4,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_4,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(hist2_4,"2017 MC, GJets(w. k factor)","f");
+  legend->AddEntry(hist3_4,"2017 MC, QCD(w. k factor)","f");
   legend->Draw();
   c04->Print("j_eta.png");
 
@@ -261,8 +282,8 @@ void Histoplot()
   hist1_5->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist1_5,"2017 Data, SinglePhoton","lep");
-  legend->AddEntry(hist2_5,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_5,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(hist2_5,"2017 MC, GJets(w. k factor)","f");
+  legend->AddEntry(hist3_5,"2017 MC, QCD(w. k factor)","f");
   legend->Draw();
   c05->Print("j_e.png");
 
@@ -282,8 +303,8 @@ void Histoplot()
   hist1_6->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist1_6,"2017 Data, SinglePhoton","lep");
-  legend->AddEntry(hist2_6,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_6,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(hist2_6,"2017 MC, GJets(w. k factor)","f");
+  legend->AddEntry(hist3_6,"2017 MC, QCD(w. k factor)","f");
   legend->Draw();
   c06->Print("j_masssd.png");
 
@@ -302,8 +323,8 @@ void Histoplot()
   hist1_7->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist1_7,"2017 Data, SinglePhoton","lep");
-  legend->AddEntry(hist2_7,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_7,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(hist2_7,"2017 MC, GJets(w. k factor)","f");
+  legend->AddEntry(hist3_7,"2017 MC, QCD(w. k factor)","f");
   legend->Draw();
   c07->Print("j_tau21.png");
 
@@ -322,8 +343,8 @@ void Histoplot()
   hist1_8->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist1_8,"2017 Data, SinglePhoton","lep");
-  legend->AddEntry(hist2_8,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_8,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(hist2_8,"2017 MC, GJets(w. k factor)","f");
+  legend->AddEntry(hist3_8,"2017 MC, QCD(w. k factor)","f");
   legend->Draw();
   c08->Print("s_cos.png");
 
@@ -342,8 +363,8 @@ void Histoplot()
   hist1_9->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist1_9,"2017 Data, SinglePhoton","lep");
-  legend->AddEntry(hist2_9,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_9,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(hist2_9,"2017 MC, GJets(w. k factor)","f");
+  legend->AddEntry(hist3_9,"2017 MC, QCD(w. k factor)","f");
   legend->Draw();
   c09->Print("s_ptm.png");
 
@@ -362,8 +383,8 @@ void Histoplot()
   hist1_10->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist1_10,"2017 Data, SinglePhoton","lep");
-  legend->AddEntry(hist2_10,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_10,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(hist2_10,"2017 MC, GJets(w. k factor)","f");
+  legend->AddEntry(hist3_10,"2017 MC, QCD(w. k factor)","f");
   legend->Draw();
   c10->Print("s_invmass.png");
 

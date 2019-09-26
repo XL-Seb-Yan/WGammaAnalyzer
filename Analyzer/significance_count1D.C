@@ -56,7 +56,7 @@ void significance_count1D(const TString conf="samples.conf"){
     cout<<"Wrong data type"<<endl;
 
 
-  TH1F* hist01 = new TH1F("WGamma01","BDT response, signal MC (M-800)",50,-0.5,0.5);
+  TH1F* hist01 = new TH1F("WGamma01","BDT response, signal MC (M-2000)",50,-0.5,0.5);
   TH1F* hist02 = new TH1F("WGamma02","BDT response, data sideband",50,-0.5,0.5);
   
   UInt_t count1=0, count2=0, count3=0, count4=0, count5=0, count6=0;
@@ -135,29 +135,30 @@ void significance_count1D(const TString conf="samples.conf"){
 
       if(isam == 0){
 	Nsig = eventTree->GetEntries();
-	//for(float cut2 = 0; cut2 < 0.1; cut2+=0.005){
-	for(float cut2 = 0; cut2 < 3; cut2+=0.1){
+	//for(float cut2 = 0; cut2 < 3; cut2+=0.05){
+	for(float cut2 = 0; cut2 < 1; cut2+=0.01){
 	  int N = 0;
 	  float record = cut2;
 	  for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
 	    // Get Events
 	    eventTree->GetEntry(ientry);
 	    if(ak8puppijet_masssoftdropcorr < 65 || ak8puppijet_masssoftdropcorr > 105) continue;
-	    if(abs(sys_invmass - 1600)  >  0.05 * 1600) continue;
+	    if(abs(sys_invmass - 2000)  >  0.05 * 2000) continue;
 
-	    if(abs(photon_eta) > 1.44) continue;
-	    if(abs(ak8puppijet_eta) > 2.0) continue;
-	    if(sys_costhetastar > 0.60) continue;
+	    if(abs(photon_eta) > 0.95) continue;
+	    if(abs(ak8puppijet_eta) > 1.3) continue;
+	    //if(sys_costhetastar > 0.65) continue;
 	    //if(ak8puppijet_tau21 > 0.4) continue;
-	    if(sys_ptoverm < 0.37) continue;
+	    if(sys_ptoverm < 0.35) continue;
 	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) > 15) continue;
 
-	    //if(abs(sys_invmass - 1600) < cut2 * 1600){
+	    //if(abs(sys_invmass - 2000) < cut2 * 2000){
 	    //if(sys_costhetastar < cut2){
 	    //if(ak8puppijet_tau21 < cut2){
 	    //if(sys_ptoverm > cut2){
-	    if(abs(abs(photon_phi - ak8puppijet_phi) - 3.14) < cut2){
-	    //if(ak8puppijet_masssoftdropcorr > (65+cut2) && ak8puppijet_masssoftdropcorr < (105-cut2)){
+	    if(sys_costhetastar < cut2){
+	    //if(abs(ak8puppijet_eta) < cut2){
+	    //if(abs(photon_eta) < cut2){
 	      N++;
 	    }
 	  }
@@ -168,29 +169,30 @@ void significance_count1D(const TString conf="samples.conf"){
 
       if(isam == 1){
 	Nbkg = eventTree->GetEntries();
-	//for(float cut2 = 0; cut2 < 0.1; cut2+=0.005){
-	for(float cut2 = 0; cut2 < 3; cut2+=0.1){
+	//for(float cut2 = 0; cut2 < 3; cut2+=0.05){
+	for(float cut2 = 0; cut2 < 1; cut2+=0.01){
 	  int N = 0;
 	  float record = cut2;
 	  for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
 	    // Get Events
 	    eventTree->GetEntry(ientry);
 	    if(ak8puppijet_masssoftdropcorr < 40 || ak8puppijet_masssoftdropcorr > 65) continue;
-	    if(abs(sys_invmass - 1600)  >  0.05 * 1600) continue;
+	    if(abs(sys_invmass - 2000)  >  0.05 * 2000) continue;
 
-	    if(abs(photon_eta) > 1.44) continue;
-	    if(abs(ak8puppijet_eta) > 2.0) continue;
-	    if(sys_costhetastar > 0.60) continue;
+	    if(abs(photon_eta) > 0.95) continue;
+	    if(abs(ak8puppijet_eta) > 1.3) continue;
+	    //if(sys_costhetastar > 0.65) continue;
 	    //if(ak8puppijet_tau21 > 0.4) continue;
-	    if(sys_ptoverm < 0.37) continue;
+	    if(sys_ptoverm < 0.35) continue;
 	    //if(abs(ak8puppijet_masssoftdropcorr - 80.38) > 15) continue;
 
-	    //if(abs(sys_invmass - 1600) < cut2 * 1600){
+	    //if(abs(sys_invmass - 2000) < cut2 * 2000){
 	    //if(sys_costhetastar < cut2){
 	    //if(ak8puppijet_tau21 < cut2){
 	    //if(sys_ptoverm > cut2){
-	    if(abs(abs(photon_phi - ak8puppijet_phi) - 3.14) < cut2){
-	    //if(ak8puppijet_masssoftdropcorr > (65+cut2) && ak8puppijet_masssoftdropcorr < (105-cut2)){
+	    if(sys_costhetastar < cut2){
+	    //if(abs(ak8puppijet_eta) < cut2){
+	    //if(abs(photon_eta) < cut2){
 	      N++;
 	    }
 	  }
@@ -226,12 +228,12 @@ void significance_count1D(const TString conf="samples.conf"){
 
   //TString Graphname ="|#eta| cut on jet";
   //TString Graphname ="|#eta| cut on photon";
-  //TString Graphname ="cos(#theta*) cut on photon";
+  TString Graphname ="cos(#theta*) cut on photon";
   //TString Graphname ="tau21 cut on jet";
   //TString Graphname ="pt/M cut on photon";
   //TString Graphname ="mass window cut on jet";
   //TString Graphname ="invariant mass window cut (%)";
-  TString Graphname ="#Delta #varphi cut";
+  //TString Graphname ="#Delta #varphi cut";
 
   //Non stacked plots
   TLegend *legend1 = new TLegend(0.15,0.75,0.3,0.85);
@@ -281,7 +283,7 @@ void significance_count1D(const TString conf="samples.conf"){
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
   xaxis->SetRangeUser(0,3);
-  yaxis->SetRangeUser(0,1400);
+  yaxis->SetRangeUser(0,1200);
   //yaxis->SetRangeUser(0.5,14000000);
   //c01->SetLogy();
   c01->cd();
@@ -290,9 +292,10 @@ void significance_count1D(const TString conf="samples.conf"){
   gr->Draw("AC");
   //legend1->Clear();
   //legend1->Draw();  
-  c01->Print("1600_invptmcosphi.png");
+  c01->Print("2000_petajetaptmcos.png");
 
-  TCanvas *c02 = new TCanvas("c02",Graphname+" Efficiency",1200,900);
+  /*
+  TCanvas *c02 = new TCanvas("c02",Graphname+" Efficiency",1600,900);
   xaxis = gr1->GetXaxis();
   yaxis = gr1->GetYaxis();
   xaxis->SetTitle(Graphname);
@@ -313,6 +316,7 @@ void significance_count1D(const TString conf="samples.conf"){
   legend1->AddEntry(gr2,"background efficiency");
   //legend1->Draw();
   c02->Print("1600_invptmcosphi_eff.png");
+  */
 
   gBenchmark->Show("analyzerWG");
 

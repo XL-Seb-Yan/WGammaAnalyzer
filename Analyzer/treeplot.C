@@ -108,7 +108,7 @@ Bool_t treeplot::Process(Long64_t entry)
      hist8->Fill(*sys_costhetastar);
      hist9->Fill(*sys_ptoverm);
      hist10->Fill(*sys_invmass);
-     hist11->Fill(*sys_seperation);
+     //hist11->Fill(*sys_seperation);
      hist12->Fill(abs(abs(*photon_eta) - abs(*ak8puppijet_eta)));
      hist13->Fill(abs(*photon_phi - *ak8puppijet_phi));
    }
@@ -131,7 +131,7 @@ void treeplot::Terminate()
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
 
-  int color = 2;
+  int color = 4;
   hist1->SetLineColor(color);
   hist2->SetLineColor(color);
   hist3->SetLineColor(color);
