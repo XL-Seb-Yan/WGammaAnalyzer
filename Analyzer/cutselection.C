@@ -15,8 +15,8 @@ void cutselection( )
   float xsec_weight;
 
   // Create output file
-  //TFile *outFile = TFile::Open("Singlephoton2017_Wsideband_full.root", "RECREATE");
-  TFile *outFile = TFile::Open("Signal800N_Wwindow_full.root", "RECREATE");
+  TFile *outFile = TFile::Open("Singlephoton2017_full_finalcut.root", "RECREATE");
+  //TFile *outFile = TFile::Open("Signal800N_Wwindow_full.root", "RECREATE");
   TTree *outTree = new TTree("Events","Events"); 
   outTree->Branch("photon_pt",       &photon_pt,      "photon_pt/F");
   outTree->Branch("photon_eta",      &photon_eta,      "photon_eta/F");
@@ -35,8 +35,8 @@ void cutselection( )
 
   // Open input file
   Float_t p_pt, p_eta, p_phi, p_e, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight; 
-  //TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Selection/SelOutPut/ntuples/SinglePhoton2017_WGamma_full_full.root");
-  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Selection/SelOutPut/ntuples/SignalMC800N_WGamma_full_full.root");
+  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Selection/SelOutPut/ntuples/SinglePhoton2017_WGamma_full_full.root");
+  //TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Selection/SelOutPut/ntuples/SignalMC800N_WGamma_full_full.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -57,7 +57,7 @@ void cutselection( )
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
 
-    if(j_mass < 65 || j_mass > 105) continue;
+    //if(j_mass < 65 || j_mass > 105) continue;
     if(abs(p_eta) > 1.44) continue;
     if(abs(j_eta) > 2) continue;
     if(j_tau21 > 0.3) continue;

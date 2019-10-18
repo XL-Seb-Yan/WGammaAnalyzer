@@ -4,7 +4,7 @@
 #include <string>
 #include <cstring>
 #include <TCanvas.h>
-void CHI2()
+void NLL()
 {
   gErrorIgnoreLevel = kInfo;
   gROOT->SetBatch(1);
@@ -18,11 +18,11 @@ void CHI2()
   RooRealVar *x = new RooRealVar("sys_invmass","invmass",600,3000,""); //the name "sys_invmass" will be used by RooDataSet to import data
 
   // --- Import toy dataset ---
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/RooFit/higgsCombineTest.GenerateOnly.dijet2fixed.123456.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/RooFit/higgsCombineTest.GenerateOnly.dijet2.123456.root");
   TDirectory *d = (TDirectory*)file.Get("toys");
 
   // --- Histogram to store chi2 test results
-  TH1F *chi2hist = new TH1F("chi2","",100,0,50);
+  TH1F *nllhist = new TH1F("NLL","",100,4000,9000);
   TCanvas *c1 = new TCanvas("data","data",1200,900);
   
   for(int itoy=1; itoy<501; itoy++){
@@ -154,14 +154,13 @@ void CHI2()
     RooPlot *frame = x->frame(Title("Data Sideband"));
     data->plotOn(frame,RooFit::Name("data"));
     model->plotOn(frame,LineStyle(kDashed),RooFit::Name(fun_name));
-    RooDataHist datah("dh","binned data",RooArgSet(*x),*data);
-    RooChi2Var chi2 ("chi2", "chi2", *model,datah,DataError(RooAbsData::Poisson));
     if(r->status() == 1 || r->status() == 0 || r->status() == 4 || r->status() == 3){
-      //chi2hist->Fill(frame->chiSquare(fun_name,"data",nParam));
-      chi2hist->Fill(chi2.getVal());
+      //nllhist->Fill(frame->chiSquare(fun_name,"data",nParam));
+      RooAbsReal* nll = model->createNLL(*data);
+      nllhist->Fill(nll->getVal());
     }
-    chi2hist->SetTitle("#chi^{2} "+fun_name);
-    
+    nllhist->SetTitle("NLL"+fun_name);
+    /*
       if(itoy%10 == 0){
       c1->Clear();
       c1->cd();
@@ -169,23 +168,23 @@ void CHI2()
       c1->SetLogy();
       c1->Print("data"+toyname+".png");
       }
-    
+    */
     funname = fun_name;
   }
   gStyle->SetOptStat(0);
   TCanvas *c0 = new TCanvas("01","01",1200,900);
   c0->cd();
-  chi2hist->SetLineWidth(2);
-  TAxis *xaxis = chi2hist->GetXaxis();
-  TAxis *yaxis = chi2hist->GetYaxis();
-  xaxis->SetTitle("#chi^{2}");
+  nllhist->SetLineWidth(2);
+  TAxis *xaxis = nllhist->GetXaxis();
+  TAxis *yaxis = nllhist->GetYaxis();
+  xaxis->SetTitle("nll");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.2);
   TLatex latex;  
-  TString Ntoystr = "# of valid toys: "+std::to_string((int)chi2hist->GetEntries());
-  chi2hist->Draw();
-  latex.SetTextSize(0.03);
+  TString Ntoystr = "# of valid toys: "+std::to_string((int)nllhist->GetEntries());
+  nllhist->Draw();
+  latex.SetTextSize(0.04);
   latex.DrawLatexNDC(.65,.75,Ntoystr);
-  c0->Print("chi2"+funname+".png");
-  cout<<"mean of chi2 is: "<<chi2hist->GetMean(1)<<" std is: "<<chi2hist->GetStdDev(1)<<endl;
+  c0->Print("nll"+funname+".png");
+  cout<<"mean of chi2 is: "<<nllhist->GetMean(1)<<" std is: "<<nllhist->GetStdDev(1)<<endl;
 }
