@@ -1,7 +1,7 @@
-#define fun_type 9
+#define fun_type 11
 #include <TMath.h>
 #include <TLegend.h>
-void make_sideband_shapes(int seed=37)
+void make_MC_shapes(int seed=37) //should be aligned with make_sideband_shapes
 {
   gErrorIgnoreLevel = kInfo;
   gROOT->SetBatch(1);
@@ -130,54 +130,37 @@ void make_sideband_shapes(int seed=37)
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #endif
 
-
-  // --- Import unBinned dataset ---
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/RooFit/Singlephoton2017_Wsideband_full_finalcut.root");
+  // --- Import Binned dataset ---
+  float s_mass, x_weight;
+  TH1F MChist("MC","MC",95,600,2500);
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/RooFit/BackgroundMCTotal_hadd_Wwindow_finalcut_weightedTo41p54_fitData.root");
   TTree* tree = (TTree*)file.Get("Events");
-  RooArgList imarglist(*x);
-  RooArgSet imargset(imarglist);
-  RooDataSet data("Data sideband","Data sideband",imargset,Import(*tree));//import branches with names match the "variable name" (not variable) listed in imargset
-  RooRealVar weight("weight","weight",double(5653)/double(1076));
-  RooDataSet data_norm("Data sideband norm.","Data sideband (nomalized to yield in W band)",&data,RooArgSet(*x,weight),"",weight.GetName());
-  cout<<"number of data: "<<data.numEntries()<<endl;
- 
-#define isNorm 2 //1: Norm 2: Orig
+  tree->SetBranchAddress("sys_invmass", &s_mass);
+  tree->SetBranchAddress("xsec_weight", &x_weight);
+  for (int ievt = 0; ievt<tree->GetEntries();ievt++) {
+    tree->GetEntry(ievt);
+    MChist.Fill(s_mass, x_weight);
+  }
+  RooDataHist datah("Background MC (W band)","Background MC (W band)",RooArgSet(*x),&MChist);
+  cout<<"number of weighted entries: "<<datah.sum(false)<<endl;
   
   // --- Perform extended ML fit of composite PDF to toy data ---
-#if isNorm == 1
-    RooFitResult *r = model->fitTo(data_norm,Range(600,2500),RooFit::Minimizer("Minuit2"),SumW2Error(false),Save()); //SumW2Error(false) for weighted data, see how to choose this with same calling without SumW2Error(false)
-#else
-    RooFitResult *r = model->fitTo(data,Range(600,2500),RooFit::Minimizer("Minuit2"),Save()); //SumW2Error(false) for weighted data, see how to choose this with same calling without SumW2Error(false)
-#endif
+  RooFitResult *r = model->fitTo(datah,Range(600,2500),RooFit::Minimizer("Minuit2"),SumW2Error(false),Save()); //SumW2Error(false) for weighted data, see how to choose this with same calling without SumW2Error(false)
+
   // --- plot for chi2 calculation and visualization ---
   x->setBins(95); //fit is unbinned but chi2 is calculated by binning data with this value
   RooPlot *frame = x->frame();
-#if isNorm == 1
-    frame->SetTitle("Data Sideband nomalized to W band");
-    RooDataHist datah("dh","binned data",RooArgSet(*x),data_norm);
-    datah.plotOn(frame,RooFit::Name("datah"),Binning(95,600,2500),DataError(RooAbsData::SumW2)); //for weighted data
-#else
-    frame->SetTitle("Data Sideband");
-    RooDataHist datah("dh","binned data",RooArgSet(*x),data);
-    datah.plotOn(frame,RooFit::Name("datah"),Binning(95,600,2500),DataError(RooAbsData::Poisson)); //for unweighted data
-#endif
+  frame->SetTitle("Background MC (W band)");
+  datah.plotOn(frame,RooFit::Name("datah"),Binning(95,600,2500),DataError(RooAbsData::SumW2)); //for weighted data
   model->plotOn(frame,LineStyle(kDashed),RooFit::Name(fun_name));
   model->plotOn(frame,VisualizeError(*r,2,kFALSE),FillColor(kYellow),LineColor(0),RooFit::Name("err2"));
   model->plotOn(frame,VisualizeError(*r,1,kFALSE),FillColor(kGreen),LineColor(0),RooFit::Name("err1"));
   model->plotOn(frame,LineStyle(kDashed),RooFit::Name(fun_name));
-#if isNorm == 1
-    datah.plotOn(frame,RooFit::Name("datah"),Binning(95,600,2500),DataError(RooAbsData::SumW2)); //for weighted data
-#else
-    datah.plotOn(frame,RooFit::Name("datah"),Binning(95,600,2500),DataError(RooAbsData::Poisson)); //for unweighted data
-#endif
+  datah.plotOn(frame,RooFit::Name("datah"),Binning(95,600,2500),DataError(RooAbsData::SumW2)); //for weighted data
 
-    frame->Print("V");
+  frame->Print("V");
   RooAbsReal* nll = NULL;
-#if isNorm == 1
-    nll = model->createNLL(data_norm);
-#else
-    nll = model->createNLL(data);
-#endif
+  nll = model->createNLL(datah);
   
   cout<<"NLL is: "<<nll->getVal()<<endl;
 
@@ -253,20 +236,13 @@ void make_sideband_shapes(int seed=37)
   c01->SetLogy();
   frame->Draw();
   TLegend *l =  new TLegend(0.6,0.7,0.8,0.78);
-#if isNorm == 1
-    l->AddEntry(frame->findObject(fun_name),"Data SB norm. fit "+fun_name,"l");
-#else
-    l->AddEntry(frame->findObject(fun_name),"Data SB fit "+fun_name,"l");
-#endif
+  l->AddEntry(frame->findObject(fun_name),"Background MC (W band) fit "+fun_name,"l");
   //l->AddEntry(frame->findObject("bkgfun"),"Background Fit","l");
   l->AddEntry(frame->findObject("err1"),"Fit Error 1 #sigma","f");
   l->AddEntry(frame->findObject("err2"),"Fit Error 2 #sigma","f");
   l->Draw("same");
-#if isNorm == 1
-    c01->Print(fun_name+"_norm.png");
-#else
-    c01->Print(fun_name+".png");
-#endif
+  c01->Print(fun_name+"_MCWband.png");
+  
   TCanvas *c02 = new TCanvas("c02","c02",1200,300);
   //axis,log scale and range setting functions must be called after all plotOn functions being called
   c02->cd();
@@ -277,7 +253,7 @@ void make_sideband_shapes(int seed=37)
   xaxis = pull_frame->GetXaxis();
   yaxis = pull_frame->GetYaxis();
   xaxis->SetTitle("M_{j#gamma}");
-  yaxis->SetTitle("#frac{data_norm-fit}{#sigma_{stat}}");
+  yaxis->SetTitle("#frac{MC-fit}{#sigma_{MCstat}}");
   yaxis->SetTitleOffset(0.5);
   yaxis->SetRangeUser(-5,5);
   xaxis->SetLabelSize(0.08);
@@ -290,37 +266,18 @@ void make_sideband_shapes(int seed=37)
   c02->SetGrid();
   pull_frame->Draw();
   c02->Update();
-#if isNorm == 1
-  c02->Print("pull"+fun_name+"_norm.png"); //pull hist would not be accurated for weighted data
-#else
-  c02->Print("pull"+fun_name+".png"); 
-#endif
-  /*
+  c02->Print("pull"+fun_name+"_MCWband.png"); //pull hist would not be accurated for weighted data
+  
   // --- Output root file ---
-  if(isNorm){
-    RooWorkspace *w = new RooWorkspace("w","w");
-    w->import(*x);
-    w->import(data_norm,Rename("data_norm_sideband"));
-    w->import(*model);
-    w->writeToFile("sideband_norm-shapes-Unbinned-"+fun_name+".root");
-  }
-  else{
-    RooWorkspace *w = new RooWorkspace("w","w");
-    w->import(*x);
-    w->import(data,Rename("data_sideband"));
-    w->import(*model);
-    w->writeToFile("sideband-shapes-Unbinned-"+fun_name+".root");
-  }
-  */
-
+  RooWorkspace *w = new RooWorkspace("w","w");
+  w->import(*x);
+  w->import(datah,Rename("MC_Wband"));
+  w->import(*model);
+  w->writeToFile("BackgroundMC-shapes-Unbinned-"+fun_name+".root");
   /*
   // --- Perform extended ML fit of composite PDF to toy data ---
   RooFitResult *ex_r = NULL;
-  if(isNorm)
-    ex_r = ex_model->fitTo(data_norm,Range(600,3000),RooFit::Minimizer("Minuit2"),Extended(true),SumW2Error(false),Save());
-  else
-    ex_r = ex_model->fitTo(data,Range(600,3000),RooFit::Minimizer("Minuit2"),Extended(true),Save());
+  ex_r = ex_model->fitTo(datah,Range(600,3000),RooFit::Minimizer("Minuit2"),Extended(true),SumW2Error(false),Save());
   cout<<"Normalization is: "<<bkg_norm->getVal()<<endl;
   */
-  
 }

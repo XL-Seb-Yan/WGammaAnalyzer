@@ -3,8 +3,8 @@
 void LikelihoodRatiotest()
 {
   gROOT->SetBatch(1);
-  double nnl1 = 2968.725;
-  double nnl2 = 2968.479;
+  double nnl1 = 6386.1933;
+  double nnl2 = 6385.0444;
   int p1=1;
   int p2=2;
   double LR = 2*(nnl1-nnl2);

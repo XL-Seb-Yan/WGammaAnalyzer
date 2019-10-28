@@ -1,7 +1,7 @@
 void chi2ana(){
   using namespace RooFit;
   gROOT->SetBatch(1);
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/RooFit/sideband-shapes-Unbinned-dijet2chi2test.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/RooFit/chi2check/sideband-shapes-Unbinned-dijet2chi2test.root");
   RooWorkspace *w = (RooWorkspace*)file.Get("w");
   w->Print();
   TString fun_name = "dijet2";
@@ -10,22 +10,31 @@ void chi2ana(){
   RooRealVar *x = w->var("sys_invmass");
   gStyle->SetOptStat(111111);
   RooPlot *frame = x->frame(Title("Data Sideband"));
-  data->plotOn(frame,RooFit::Name("data"),Binning(120,600,3000),DataError(RooAbsData::Poisson));
-  model->plotOn(frame,LineStyle(kDashed),RooFit::Name(fun_name));
-  data->plotOn(frame);
+  x->setBins(30);
   RooDataHist datah("dh","binned data",RooArgSet(*x),*data);
+  datah.plotOn(frame,RooFit::Name("datah"),Binning(30,600,3000),DataError(RooAbsData::Poisson));
+  model->plotOn(frame,LineStyle(kDashed),RooFit::Name(fun_name));
+  datah.plotOn(frame,RooFit::Name("datah"),Binning(30,600,3000),DataError(RooAbsData::Poisson));
+  
   cout<<"data bins: "<<datah.numEntries()<<endl;
+  int n_0 = 0;
+  for(int i=0; i<datah.numEntries(); i++){
+    datah.get(i) ;
+    if(datah.weight() == 0)
+      n_0++;
+  }
+  cout<<"Number of empty bins: "<<n_0<<endl;
   RooArgSet *flparams = model->getParameters(*x);
   int nfloparam = (flparams->selectByAttrib("Constant",kFALSE))->getSize();
   cout<<"# of floating params: "<<nfloparam<<endl;
   RooChi2Var chi2 ("chi2", "chi2", *model,datah,DataError(RooAbsData::Poisson));//Default: SumW2
-  TString chi2txt = "Chi2/Ndof: "+std::to_string(frame->chiSquare(fun_name,"data",nfloparam));
-  RooAbsReal *chi2Exp = model->createChi2(datah,DataError(RooAbsData::Expected));//Using RooChi2Var with default: Expected error
-  cout<<"chi2 with possion is: "<<chi2.getVal()<<endl;
-  cout<<"chi2 with expected is: "<<chi2Exp->getVal()<<endl;
-  cout<<"reduced chi2 is: "<<frame->chiSquare(fun_name,"data", nfloparam)<<endl;
-  cout<<"chi2 is: "<<frame->chiSquare(fun_name,"data")<<endl;
-  cout<<"compare: reduced: "<<frame->chiSquare(fun_name,"data", nfloparam)*(datah.numEntries()-nfloparam)<<" non-reduced: "<<frame->chiSquare(fun_name,"data")*datah.numEntries()<<endl;
+  cout<<"chi2 from RooRealVar with possion is: "<<chi2.getVal()<<endl;
+  cout<<"reduced chi2/ndof is: "<<frame->chiSquare(fun_name,"datah", nfloparam)<<endl;
+  cout<<"chi2/ndof is: "<<frame->chiSquare(fun_name,"datah")<<endl;
+  double n_non0 = frame->chiSquare(fun_name,"datah", nfloparam)*2/(frame->chiSquare(fun_name,"datah", nfloparam)-frame->chiSquare(fun_name,"datah"));
+  cout<<"Estimated number of bins from chi2/ndof: "<<n_non0<<endl;
+  cout<<"compare: reduced chi2: "<<frame->chiSquare(fun_name,"datah", nfloparam)*(n_non0-nfloparam)<<" non-reduced chi2: "<<frame->chiSquare(fun_name,"datah")*n_non0<<endl;
+  frame->Print("V");
 
   TCanvas *c01 = new TCanvas("c01","c01",1200,900);
   //axis,log scale and range setting functions must be called after all plotOn functions being called
