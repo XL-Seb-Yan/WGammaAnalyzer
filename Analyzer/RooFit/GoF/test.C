@@ -15,13 +15,13 @@ void test()  {
    c1->cd();
 
    //(alpha, n sigma, mu)
-   auto f1 = new TF1("pdf","ROOT::Math::crystalball_pdf(x, 1, 1.01, 1, 0)",-5,5);
+   auto f1 = new TF1("pdf","ROOT::Math::crystalball_pdf(x, 1, 1, 1.1, 0)",-5,5);
    f1->SetLineColor(kRed);
    f1->Draw();
-   auto f2 = new TF1("pdf","ROOT::Math::crystalball_pdf(x, 1, 1.21, 1, 0)",-5,5);
+   auto f2 = new TF1("pdf","ROOT::Math::crystalball_pdf(x, 1, 1, 1.5, 0)",-5,5);
    f2->SetLineColor(kGreen);
    f2->Draw("same");
-   auto f3 = new TF1("pdf","ROOT::Math::crystalball_pdf(x, 1, 1.41, 1, 0)",-5,5);
+   auto f3 = new TF1("pdf","ROOT::Math::crystalball_pdf(x, 1, 1, 1.8, 0)",-5,5);
    f3->SetLineColor(kBlue);
    f3->Draw("same");
 
