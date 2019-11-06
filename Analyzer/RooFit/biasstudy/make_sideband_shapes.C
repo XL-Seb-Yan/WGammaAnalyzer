@@ -110,7 +110,14 @@ void make_sideband_shapes(int seed=37)
   RooArgSet *flparams = model->getParameters(*x);
   int nfloparam = (flparams->selectByAttrib("Constant",kFALSE))->getSize();
   cout<<"# of floating params: "<<nfloparam<<endl;
-  
+
+  // Chi2 problem solved:
+  // Unweighted data:
+  // RooChi2Var uses RooAbsData::Possion to obtain Possion interval (which can treat 0 entry bins), only skip bins with both PDF and data = 0
+  // chi2square() obtains chi2 by skipping 0 entry bins, divide by numbr of non-0 entry bins
+  // Weighted data:
+  // RooChi2Var uses RooAbsData::SumW2, fail when arrive 0-entry bins
+  // chi2square() obtains chi2 by skipping 0 entry bins, divide by numbr of non-0 entry bins
   RooChi2Var chi2 ("chi2", "chi2", *model,datah,DataError(RooAbsData::SumW2));//Default: SumW2
   TString chi2txt = "Chi2/Ndof: "+std::to_string(frame->chiSquare(fun_name,"datah",nfloparam));
   

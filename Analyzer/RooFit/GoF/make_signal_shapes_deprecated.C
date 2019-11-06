@@ -55,6 +55,7 @@ double CB_pdf(double x, double mean, double sigma, double alpha, double n){
 
 void make_signal_shapes(int signalmass = 1800)
 {
+  /*
   //gErrorIgnoreLevel = kInfo;
   gROOT->SetBatch(1);
   using namespace std;
@@ -205,12 +206,11 @@ void make_signal_shapes(int signalmass = 1800)
 
   
   // GOF test within ROOT
-  ROOT::Math::Functor1D f(&CB_pdf(CB_mean->getVal(),CB));
-  double minimum = 3*TMath::MinElement(nEvents3, sample3);
-  double maximum = 3*TMath::MaxElement(nEvents3, sample3);
-  ROOT::Math::GoFTest* goftest_3a = new ROOT::Math::GoFTest(nEvents3, sample3, f,  ROOT::Math::GoFTest::kPDF, minimum,maximum);  // need to specify am interval
+  auto pdf2 = new TF1("pdf","ROOT::Math::crystalball_pdf(x, 3, 1.01, 1, 0)",-5,5);
   for(int ievt=0; ievt<tree->GetEntries();ievt++){
     tree->GetEntry(ievt);
     
   }
+  */
+  
 }

@@ -183,7 +183,13 @@ void make_sideband_shapes(int seed=37)
 
   cout<<datah<<endl;
 
-   //chi2 calculation is problematic, waiting for anwser on Oct.18 2019
+  // Chi2 problem solved:
+  // Unweighted data:
+  // RooChi2Var uses RooAbsData::Possion to obtain Possion interval (which can treat 0 entry bins), only skip bins with both PDF and data = 0
+  // chi2square() obtains chi2 by skipping 0 entry bins, divide by numbr of non-0 entry bins
+  // Weighted data:
+  // RooChi2Var uses RooAbsData::SumW2, fail when arrive 0-entry bins
+  // chi2square() obtains chi2 by skipping 0 entry bins, divide by numbr of non-0 entry bins
   cout<<"data bins: "<<datah.numEntries()<<endl;
   int n_0 = 0;
   for(int i=0; i<datah.numEntries(); i++){

@@ -47,7 +47,7 @@ std::string to_str_trim(const float a_value, const int n = 2)
     return std::to_string(a_value).substr(0,std::to_string(a_value).find(".") + n + 1);
 }
 
-void make_signal_v2_shapes(int signalmass = 2000)
+void make_signal_v2_shapes(int signalmass = 1600)
 {
   //gErrorIgnoreLevel = kInfo;
   gROOT->SetBatch(1);
@@ -59,24 +59,26 @@ void make_signal_v2_shapes(int signalmass = 2000)
   TString signalmass_str = std::to_string(signalmass)+"N";
 
   // --- Create obervable --- 
-  RooRealVar *m = new RooRealVar("m","invmass",600,5000,""); //the name "m" will be used by RooDataSet to import data
-  m->setBins(440);
+  RooRealVar *m = new RooRealVar("m","invmass",600,3500,""); //the name "m" will be used by RooDataSet to import data
+  m->setBins(145);
 
-  /*
+  
   //--- signal PDF ---
   TString fun_name = "CB";
   RooRealVar* mean = new RooRealVar("mean","mean",signalmass,signalmass-100,signalmass+100,"");
   RooRealVar* sigma = new RooRealVar("sigma","sigma",30,0,80,"");
   RooRealVar* alpha = new RooRealVar("alpha","alpha",1,0,5,"");
-  RooRealVar* n = new RooRealVar("n","n",1,0,5,"");
+  RooRealVar* n = new RooRealVar("n","n",1,0,50,"");
   RooCBShape* model = new RooCBShape("CBShape","Cystal Ball Function",*m,*mean,*sigma,*alpha,*n);
-  */
+  
   
   //--- signal PDF ---
+  /*
   TString fun_name = "gaus";
   RooRealVar* mean = new RooRealVar("mean","mean",signalmass,signalmass-100,signalmass+100,"");
   RooRealVar* sigma = new RooRealVar("sigma","sigma",40,0,80,"");
   RooGaussian* model = new RooGaussian("Gaussian","Gaussian Function",*m,*mean,*sigma);
+  */
   
   
   // --- Import unBinned dataset ---
@@ -88,7 +90,7 @@ void make_signal_v2_shapes(int signalmass = 2000)
 
   
   // --- Perform ML fit of composite PDF to data ---
-  RooFitResult *r = model->fitTo(data,RooFit::Minimizer("Minuit2"),Save());
+  RooFitResult *r = model->fitTo(data,Range(600,3500),RooFit::Minimizer("Minuit2"),Save());
 
   cout<<"OK with fir"<<endl;
 
@@ -102,7 +104,7 @@ void make_signal_v2_shapes(int signalmass = 2000)
   model->plotOn(frame,VisualizeError(*r,1,kFALSE),FillColor(kGreen),LineColor(0),RooFit::Name("err1"));
   model->plotOn(frame,LineStyle(kDashed),RooFit::Name(fun_name));
   data.plotOn(frame);
-  /*
+  
   RooDataHist datah("dh","binned data",RooArgSet(*m),data);
   RooChi2Var chi2 ("chi2", "chi2", *model,datah,DataError(RooAbsData::Poisson));//Default: SumW2
   TString chi2txt = "Chi2: "+to_str_trim(chi2.getVal());
@@ -150,7 +152,7 @@ void make_signal_v2_shapes(int signalmass = 2000)
   frame->addObject(CBalphalax);
   frame->addObject(CBnlax);
   frame->addObject(sigNlax);
-  */
+  
 
   TCanvas *c01 = new TCanvas("c01","c01",1200,900);
   //axis,log scale and range setting functions must be called after all plotOn functions being called
@@ -160,7 +162,7 @@ void make_signal_v2_shapes(int signalmass = 2000)
   xaxis->SetTitleOffset(1.2);
   yaxis->SetTitle("Events / 10 GeV");
   yaxis->SetTitleOffset(1.2);
-  yaxis->SetRangeUser(0,150);
+  yaxis->SetRangeUser(0,900);
   xaxis->SetRangeUser(signalmass*0.7,signalmass*1.3);
   //frame->SetMaximum(600);
   //frame->SetMinimum(0);
@@ -199,11 +201,9 @@ void make_signal_v2_shapes(int signalmass = 2000)
   pull_frame->Draw();
   c02->Update();
   c02->Print("pull"+fun_name+signalmass_str+".png");
-  
-  
+
   
   // --- Output root file ---
-  
   RooWorkspace *w = new RooWorkspace("w","w");
   w->import(*m);
   w->import(data,Rename("signal_MC"));
