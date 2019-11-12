@@ -43,7 +43,7 @@
 #endif
 
 double CB_pdf(double x){
-  return ROOT::Math::crystalball_pdf(x,1.05,49.99,28.10,813.55);
+  return ROOT::Math::crystalball_pdf(x,1.24,49.99,26.94,711.62);
 }
 
 void KS_test()
@@ -55,7 +55,7 @@ void KS_test()
   //RooMsgService::instance().setGlobalKillBelow(RooFit::WARNING);
   RooMsgService::instance().setGlobalKillBelow(RooFit::WARNING);
 
-  int signalmass = 800;
+  int signalmass = 700;
   TString signalmass_str = std::to_string(signalmass)+"N";
 
   // --- Import unBinned dataset ---
@@ -78,10 +78,4 @@ void KS_test()
   double pvalueKS = -99;
   pvalueKS = goftest->KolmogorovSmirnovTest();
   cout<<"p-value of KS test is: "<<pvalueKS<<endl;
-
-  show->Scale((ROOT::Math::crystalball_cdf(3500,1.39,4.99,28.9,812.39)- ROOT::Math::crystalball_cdf(600,1.39,4.99,28.9,812.39) / tree->GetEntries()));
-  TCanvas *c3 = new TCanvas("","",1200,900);
-  c3->cd();
-  show->Draw();
-  c3->Print("KS.png");
 }

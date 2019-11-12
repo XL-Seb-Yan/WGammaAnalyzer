@@ -11,7 +11,7 @@ void make_sideband_shapes(int seed=37)
   RooRandom::randomGenerator()->SetSeed(37); 
 
   // --- Create obervable --- 
-  RooRealVar *x = new RooRealVar("m","m",600,5000,""); //the name "m" will be used by RooDataSet to import data, normalization range is 600-5000 but plot range can be defined to like 6000-3000
+  RooRealVar *x = new RooRealVar("m","m",600,3500,""); //the name "m" will be used by RooDataSet to import data, normalization range is 600-3500 but plot range can be defined to like 6000-3000
 
   //--- background PDF ---
 #if fun_type == 1
@@ -59,31 +59,31 @@ void make_sideband_shapes(int seed=37)
   
   // --- Perform extended ML fit of composite PDF to toy data ---
 #if isNorm == 1
-    RooFitResult *r = model->fitTo(data_norm,Range(600,5000),RooFit::Minimizer("Minuit2"),SumW2Error(false),Save()); //SumW2Error(false) for weighted data, see how to choose this with same calling without SumW2Error(false)
+    RooFitResult *r = model->fitTo(data_norm,Range(600,3500),RooFit::Minimizer("Minuit2"),SumW2Error(false),Save()); //SumW2Error(false) for weighted data, see how to choose this with same calling without SumW2Error(false)
 #else
-    RooFitResult *r = model->fitTo(data,Range(600,5000),RooFit::Minimizer("Minuit2"),Save()); //SumW2Error(false) for weighted data, see how to choose this with same calling without SumW2Error(false)
+    RooFitResult *r = model->fitTo(data,Range(600,3500),RooFit::Minimizer("Minuit2"),Save()); //SumW2Error(false) for weighted data, see how to choose this with same calling without SumW2Error(false)
 #endif
     
   // --- plot for chi2 calculation and visualization ---
-  x->setBins(220); //fit is unbinned but chi2 is calculated by binning data with this value
+  x->setBins(145); //fit is unbinned but chi2 is calculated by binning data with this value
   RooPlot *frame = x->frame();
 #if isNorm == 1
     frame->SetTitle("Data Sideband nomalized to W band");
     RooDataHist datah("dh","binned data",RooArgSet(*x),data_norm);
-    datah.plotOn(frame,RooFit::Name("datah"),Binning(220,600,5000),DataError(RooAbsData::SumW2)); //for weighted data
+    datah.plotOn(frame,RooFit::Name("datah"),Binning(145,600,3500),DataError(RooAbsData::SumW2)); //for weighted data
 #else
     frame->SetTitle("Data Sideband");
     RooDataHist datah("dh","binned data",RooArgSet(*x),data);
-    datah.plotOn(frame,RooFit::Name("datah"),Binning(220,600,5000),DataError(RooAbsData::Poisson)); //for unweighted data
+    datah.plotOn(frame,RooFit::Name("datah"),Binning(145,600,3500),DataError(RooAbsData::Poisson)); //for unweighted data
 #endif
   model->plotOn(frame,LineStyle(kDashed),RooFit::Name(fun_name));
   model->plotOn(frame,VisualizeError(*r,2,kFALSE),FillColor(kYellow),LineColor(0),RooFit::Name("err2"));
   model->plotOn(frame,VisualizeError(*r,1,kFALSE),FillColor(kGreen),LineColor(0),RooFit::Name("err1"));
   model->plotOn(frame,LineStyle(kDashed),RooFit::Name(fun_name));
 #if isNorm == 1
-    datah.plotOn(frame,RooFit::Name("datah"),Binning(220,600,5000),DataError(RooAbsData::SumW2)); //for weighted data
+    datah.plotOn(frame,RooFit::Name("datah"),Binning(145,600,3500),DataError(RooAbsData::SumW2)); //for weighted data
 #else
-    datah.plotOn(frame,RooFit::Name("datah"),Binning(220,600,5000),DataError(RooAbsData::Poisson)); //for unweighted data
+    datah.plotOn(frame,RooFit::Name("datah"),Binning(145,600,3500),DataError(RooAbsData::Poisson)); //for unweighted data
 #endif
 
     frame->Print("V");

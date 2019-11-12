@@ -47,7 +47,7 @@ std::string to_str_trim(const float a_value, const int n = 2)
     return std::to_string(a_value).substr(0,std::to_string(a_value).find(".") + n + 1);
 }
 
-void make_signal_v2_shapes(int signalmass = 1600)
+void make_signal_v2_shapes(int signalmass = 700)
 {
   //gErrorIgnoreLevel = kInfo;
   gROOT->SetBatch(1);
@@ -64,6 +64,7 @@ void make_signal_v2_shapes(int signalmass = 1600)
 
   
   //--- signal PDF ---
+  
   TString fun_name = "CB";
   RooRealVar* mean = new RooRealVar("mean","mean",signalmass,signalmass-100,signalmass+100,"");
   RooRealVar* sigma = new RooRealVar("sigma","sigma",30,0,80,"");
@@ -113,12 +114,12 @@ void make_signal_v2_shapes(int signalmass = 1600)
   TString CBsigma = "#sigma_{CB}: "+to_str_trim(sigma->getVal())+" #pm "+to_str_trim(sigma->getError())+" (GeV)";
   TString CBalpha = "#alpha_{CB}: "+to_str_trim(alpha->getVal())+" #pm "+to_str_trim(alpha->getError());
   TString CBn = "n_{CB}: "+to_str_trim(n->getVal())+" #pm "+to_str_trim(n->getError());
-  TLatex *chi2lax = new TLatex(0.2,0.6,chi2txt);
-  TLatex *NLLlax = new TLatex(0.2,0.57,NLLtxt);
-  TLatex *CBmeanlax = new TLatex(0.2,0.54,CBmean);
-  TLatex *CBsigmalax = new TLatex(0.2,0.51,CBsigma);
-  TLatex *CBalphalax = new TLatex(0.2,0.48,CBalpha);
-  TLatex *CBnlax = new TLatex(0.2,0.45,CBn);
+  TLatex *chi2lax = new TLatex(0.6,0.6,chi2txt);
+  TLatex *NLLlax = new TLatex(0.6,0.57,NLLtxt);
+  TLatex *CBmeanlax = new TLatex(0.6,0.54,CBmean);
+  TLatex *CBsigmalax = new TLatex(0.6,0.51,CBsigma);
+  TLatex *CBalphalax = new TLatex(0.6,0.48,CBalpha);
+  TLatex *CBnlax = new TLatex(0.6,0.45,CBn);
 
   // --- Perform extended ML fit ---
   RooRealVar *sig_norm = new RooRealVar("sig_norm","sig_norm",5000,0,100000,"");
@@ -127,7 +128,7 @@ void make_signal_v2_shapes(int signalmass = 1600)
   ex_r = ex_model->fitTo(data,RooFit::Minimizer("Minuit2"),Extended(true),Save());
   cout<<"Normalization is: "<<sig_norm->getVal()<<endl;
   TString sigN = "Ns: "+to_str_trim(sig_norm->getVal());
-  TLatex *sigNlax = new TLatex(0.2,0.42,sigN);
+  TLatex *sigNlax = new TLatex(0.6,0.42,sigN);
 
   chi2lax->SetNDC();
   NLLlax->SetNDC();
@@ -201,7 +202,6 @@ void make_signal_v2_shapes(int signalmass = 1600)
   pull_frame->Draw();
   c02->Update();
   c02->Print("pull"+fun_name+signalmass_str+".png");
-
   
   // --- Output root file ---
   RooWorkspace *w = new RooWorkspace("w","w");
