@@ -5,12 +5,12 @@ void treeplot()
   //gStyle->SetOptStat(0);
   // Plots
 
-  TH1F *h = new TH1F("","",100,0,4000);
+  TH1F *h = new TH1F("","",145,600,3500);
 
   // Open input file
   Float_t p_pt, p_eta, p_phi, p_e, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight; 
   //TFile *input = TFile::Open("BackgroundCombinedMC_WGamma_full_full_weightedTo41p54_fitData.root");
-  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Selection/SelOutPut/ntuples/SinglePhoton2017_WGamma_full_full.root");
+  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/SinglePhoton2017_WGamma_Wsideband_full_finalcut.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -31,16 +31,6 @@ void treeplot()
   double sumW = 0;
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++){
     theTree->GetEntry(ievt);
-    
-    if(j_mass < 40 || j_mass > 65) continue;
-    //if(abs(p_eta) > 1.44) continue;
-    //if(abs(j_eta) > 2) continue;
-    //if(j_tau21 > 0.3) continue;
-    //if(s_ptm < 0.37) continue;
-    //if(s_cos > 0.6) continue;
-    
-    //h->Fill(s_mass,x_weight);
-    //sumW += x_weight;
     h->Fill(s_mass);
   }
   cout<<sumW<<endl;

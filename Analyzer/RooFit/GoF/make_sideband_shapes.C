@@ -1,4 +1,5 @@
-#define fun_type 9
+#define fun_type 2
+#define isNorm 1 //1: Norm 2: Orig
 #include <TMath.h>
 #include <TLegend.h>
 void make_sideband_shapes(int seed=37)
@@ -10,14 +11,14 @@ void make_sideband_shapes(int seed=37)
   RooRandom::randomGenerator()->SetSeed(37); 
 
   // --- Create obervable --- 
-  RooRealVar *x = new RooRealVar("sys_invmass","invmass",600,2500,""); //the name "sys_invmass" will be used by RooDataSet to import data
+  RooRealVar *x = new RooRealVar("m","m",600,2500,""); //the name "m" will be used by RooDataSet to import data
 
   //--- background PDF ---
 #if fun_type == 1
   //-----------------------------dijet 1-----------------------------------
   TString fun_name = "dijet1";
   RooRealVar *p0 = new RooRealVar("p0","p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
-  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(sys_invmass/13000,p0))",RooArgList(*x,*p0));
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(m/13000,p0))",RooArgList(*x,*p0));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 2
@@ -25,7 +26,7 @@ void make_sideband_shapes(int seed=37)
   TString fun_name = "dijet2";
   RooRealVar *p0 = new RooRealVar("p0","p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
   RooRealVar *p1 = new RooRealVar("p1","p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
-  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(sys_invmass/13000,p0+p1*log(sys_invmass/13000)))",RooArgList(*x,*p0,*p1));
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(m/13000,p0+p1*log(m/13000)))",RooArgList(*x,*p0,*p1));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 3
@@ -34,7 +35,7 @@ void make_sideband_shapes(int seed=37)
   RooRealVar *p0 = new RooRealVar("p0","p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
   RooRealVar *p1 = new RooRealVar("p1","p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
   RooRealVar *p2 = new RooRealVar("p2","p_2",0,-1000,1000,""); //-0.799413 +- 0.560435
-  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(sys_invmass/13000,p0+p1*log(sys_invmass/13000)+p2*pow(log(sys_invmass/13000),2)))",RooArgList(*x,*p0,*p1,*p2));
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(m/13000,p0+p1*log(m/13000)+p2*pow(log(m/13000),2)))",RooArgList(*x,*p0,*p1,*p2));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
   #elif fun_type == 4
@@ -44,7 +45,7 @@ void make_sideband_shapes(int seed=37)
   RooRealVar *p1 = new RooRealVar("p1","p_1",0,-10,10,""); //-0.799413 +- 0.560435
   RooRealVar *p2 = new RooRealVar("p2","p_2",0,-10,10,""); //-0.799413 +- 0.560435
   RooRealVar *p3 = new RooRealVar("p3","p_3",0,-10,10,""); //-0.799413 +- 0.560435
-  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(sys_invmass/13000,p0+p1*log(sys_invmass/13000)+p2*pow(log(sys_invmass/13000),2)+p3*pow(log(sys_invmass/13000),3)))",RooArgList(*x,*p0,*p1,*p2,*p3));
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(m/13000,p0+p1*log(m/13000)+p2*pow(log(m/13000),2)+p3*pow(log(m/13000),3)))",RooArgList(*x,*p0,*p1,*p2,*p3));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 5
@@ -52,7 +53,7 @@ void make_sideband_shapes(int seed=37)
   TString fun_name = "ATLAS1";
   RooRealVar *p0 = new RooRealVar("p0","p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
   RooRealVar *p1 = new RooRealVar("p1","p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
-  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-pow(sys_invmass/13000,1/3),p0)/pow(sys_invmass/13000,p1))",RooArgList(*x,*p0,*p1));
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-pow(m/13000,1/3),p0)/pow(m/13000,p1))",RooArgList(*x,*p0,*p1));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 6 
@@ -61,7 +62,7 @@ void make_sideband_shapes(int seed=37)
   RooRealVar *p0 = new RooRealVar("p0","p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
   RooRealVar *p1 = new RooRealVar("p1","p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
   RooRealVar *p2 = new RooRealVar("p2","p_2",0,-1000,1000,""); //-0.799413 +- 0.560435
-  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-pow(sys_invmass/13000,1/3),p0)/pow(sys_invmass/13000,p1+p2*log(sys_invmass/13000)))",RooArgList(*x,*p0,*p1,*p2));
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-pow(m/13000,1/3),p0)/pow(m/13000,p1+p2*log(m/13000)))",RooArgList(*x,*p0,*p1,*p2));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 7
@@ -71,7 +72,7 @@ void make_sideband_shapes(int seed=37)
   RooRealVar *p1 = new RooRealVar("p1","p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
   RooRealVar *p2 = new RooRealVar("p2","p_2",0,-1000,1000,""); //-0.799413 +- 0.560435
   RooRealVar *p3 = new RooRealVar("p3","p_3",0,-1000,1000,""); //-0.799413 +- 0.560435
-  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-pow(sys_invmass/13000,1/3),p0)/pow(sys_invmass/13000,p1+p2*log(sys_invmass/13000)+p3*pow(log(sys_invmass/13000),2)))",RooArgList(*x,*p0,*p1,*p2,*p3));
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-pow(m/13000,1/3),p0)/pow(m/13000,p1+p2*log(m/13000)+p3*pow(log(m/13000),2)))",RooArgList(*x,*p0,*p1,*p2,*p3));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 8
@@ -79,7 +80,7 @@ void make_sideband_shapes(int seed=37)
   TString fun_name = "VVdijet1";
   RooRealVar *p0 = new RooRealVar("p0","p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
   RooRealVar *p1 = new RooRealVar("p1","p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
-  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-sys_invmass/13000,p0)/pow(sys_invmass/13000,p1))",RooArgList(*x,*p0,*p1));
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-m/13000,p0)/pow(m/13000,p1))",RooArgList(*x,*p0,*p1));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 9
@@ -88,7 +89,7 @@ void make_sideband_shapes(int seed=37)
   RooRealVar *p0 = new RooRealVar("p0","p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
   RooRealVar *p1 = new RooRealVar("p1","p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
   RooRealVar *p2 = new RooRealVar("p2","p_2",0,-1000,1000,""); //-0.799413 +- 0.560435
-  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-sys_invmass/13000,p0)/pow(sys_invmass/13000,p1+p2*log(sys_invmass/13000)))",RooArgList(*x,*p0,*p1,*p2));
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-m/13000,p0)/pow(m/13000,p1+p2*log(m/13000)))",RooArgList(*x,*p0,*p1,*p2));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 10
@@ -98,7 +99,7 @@ void make_sideband_shapes(int seed=37)
   RooRealVar *p1 = new RooRealVar("p1","p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
   RooRealVar *p2 = new RooRealVar("p2","p_2",0,-1000,1000,""); //-0.799413 +- 0.560435
   RooRealVar *p3 = new RooRealVar("p3","p_3",0,-1000,1000,""); //-0.799413 +- 0.560435
-  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-sys_invmass/13000,p0)/pow(sys_invmass/13000,p1+p2*log(sys_invmass/13000)+p3*pow(log(sys_invmass/13000),2)))",RooArgList(*x,*p0,*p1,*p2,*p3));
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-m/13000,p0)/pow(m/13000,p1+p2*log(m/13000)+p3*pow(log(m/13000),2)))",RooArgList(*x,*p0,*p1,*p2,*p3));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 11
@@ -106,7 +107,7 @@ void make_sideband_shapes(int seed=37)
   TString fun_name = "expow1";
   RooRealVar *p0 = new RooRealVar("p0","p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
   RooRealVar *p1 = new RooRealVar("p1","p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
-  RooGenericPdf *model = new RooGenericPdf(fun_name,"pow(sys_invmass/13000,p0)*exp(p1*pow(sys_invmass/13000,2))",RooArgList(*x,*p0,*p1));
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"pow(m/13000,p0)*exp(p1*pow(m/13000,2))",RooArgList(*x,*p0,*p1));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 12
@@ -115,7 +116,7 @@ void make_sideband_shapes(int seed=37)
   RooRealVar *p0 = new RooRealVar("p0","p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
   RooRealVar *p1 = new RooRealVar("p1","p_1",-60,-1000,1000,""); //-0.799413 +- 0.560435
   RooRealVar *p2 = new RooRealVar("p2","p_2",0,-1000,1000,""); //-0.799413 +- 0.560435
-  RooGenericPdf *model = new RooGenericPdf(fun_name,"pow(sys_invmass/13000,p0)*exp(p1*pow(sys_invmass/13000,2)+p2*pow(sys_invmass/13000,3))",RooArgList(*x,*p0,*p1,*p2));
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"pow(m/13000,p0)*exp(p1*pow(m/13000,2)+p2*pow(m/13000,3))",RooArgList(*x,*p0,*p1,*p2));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 13
@@ -125,14 +126,14 @@ void make_sideband_shapes(int seed=37)
   RooRealVar *p1 = new RooRealVar("p1","p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
   RooRealVar *p2 = new RooRealVar("p2","p_2",0,-1000,1000,""); //-0.799413 +- 0.560435
   RooRealVar *p3 = new RooRealVar("p3","p_3",0,-1000,1000,""); //-0.799413 +- 0.560435
-  RooGenericPdf *model = new RooGenericPdf(fun_name,"pow(sys_invmass/13000,p0)*exp(p1*pow(sys_invmass/13000,2)+p2*pow(sys_invmass/13000,3)+p3*pow(sys_invmass/13000,4))",RooArgList(*x,*p0,*p1,*p2,*p3));
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"pow(m/13000,p0)*exp(p1*pow(m/13000,2)+p2*pow(m/13000,3)+p3*pow(m/13000,4))",RooArgList(*x,*p0,*p1,*p2,*p3));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #endif
 
 
   // --- Import unBinned dataset ---
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/RooFit/Singlephoton2017_Wsideband_full_finalcut.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/fullcutdataset/SinglePhoton2017_WGamma_Wsideband_full_finalcut.root");
   TTree* tree = (TTree*)file.Get("Events");
   RooArgList imarglist(*x);
   RooArgSet imargset(imarglist);
@@ -140,8 +141,6 @@ void make_sideband_shapes(int seed=37)
   RooRealVar weight("weight","weight",double(5653)/double(1076));
   RooDataSet data_norm("Data sideband norm.","Data sideband (nomalized to yield in W band)",&data,RooArgSet(*x,weight),"",weight.GetName());
   cout<<"number of data: "<<data.numEntries()<<endl;
- 
-#define isNorm 2 //1: Norm 2: Orig
   
   // --- Perform extended ML fit of composite PDF to toy data ---
 #if isNorm == 1
@@ -213,12 +212,14 @@ void make_sideband_shapes(int seed=37)
   cout<<"Estimated number of bins from chi2/ndof: "<<n_non0<<endl;
   cout<<"compare: reduced chi2: "<<frame->chiSquare(fun_name,"datah", nfloparam)*(n_non0-nfloparam)<<" non-reduced chi2: "<<frame->chiSquare(fun_name,"datah")*n_non0<<endl;
   frame->Print("V");
+
   
   TString NLLtxt = "NLL: "+std::to_string(nll->getVal());
   TLatex *NLLlax = new TLatex(1830,80,NLLtxt);
   NLLlax->SetTextSize(0.025);
   NLLlax->SetTextColor(kBlack);
   frame->addObject(NLLlax);
+  
 
   // access residuals
   double SSR = 0;
@@ -253,7 +254,7 @@ void make_sideband_shapes(int seed=37)
   xaxis->SetTitleOffset(1.2);
   yaxis->SetTitle("Events / 20 GeV");
   yaxis->SetTitleOffset(1.2);
-  yaxis->SetRangeUser(0.2,10000);
+  yaxis->SetRangeUser(0.1,1000);
   //frame->SetMaximum(600);
   //frame->SetMinimum(0);
   c01->SetLogy();
@@ -301,23 +302,22 @@ void make_sideband_shapes(int seed=37)
 #else
   c02->Print("pull"+fun_name+".png"); 
 #endif
-  /*
+  
   // --- Output root file ---
-  if(isNorm){
+#if isNorm == 1
     RooWorkspace *w = new RooWorkspace("w","w");
     w->import(*x);
     w->import(data_norm,Rename("data_norm_sideband"));
     w->import(*model);
     w->writeToFile("sideband_norm-shapes-Unbinned-"+fun_name+".root");
-  }
-  else{
+ #else
     RooWorkspace *w = new RooWorkspace("w","w");
     w->import(*x);
     w->import(data,Rename("data_sideband"));
     w->import(*model);
     w->writeToFile("sideband-shapes-Unbinned-"+fun_name+".root");
-  }
-  */
+#endif
+  
 
   /*
   // --- Perform extended ML fit of composite PDF to toy data ---

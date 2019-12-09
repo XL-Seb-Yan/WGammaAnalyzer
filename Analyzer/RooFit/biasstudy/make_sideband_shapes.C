@@ -1,5 +1,5 @@
-#define fun_type 4
-#define isNorm 1 //1: Norm 2: Orig
+#define fun_type 7
+#define isNorm 2 //1: Norm 2: Orig
 #include <TMath.h>
 #include <TLegend.h>
 void make_sideband_shapes(int seed=37)
@@ -11,7 +11,7 @@ void make_sideband_shapes(int seed=37)
   RooRandom::randomGenerator()->SetSeed(37); 
 
   // --- Create obervable --- 
-  RooRealVar *x = new RooRealVar("m","m",600,3500,""); //the name "m" will be used by RooDataSet to import data, normalization range is 600-3500 but plot range can be defined to like 6000-3000
+  RooRealVar *x = new RooRealVar("m","m",600,3500,""); //the name "m" will be used by RooDataSet to import data, normalization range is 600-3500 but plot range can be defined to like 600-3000
 
   //--- background PDF ---
 #if fun_type == 1
@@ -33,24 +33,64 @@ void make_sideband_shapes(int seed=37)
 #elif fun_type == 3
   //-----------------------------VVdijet2-----------------------------------
   TString fun_name = "VVdijet2";
+  /*
+  //Normalized fit
   RooRealVar *VVdijet2_p0 = new RooRealVar("VVdijet2_p0","VVdijet2_p_0",-15,-20,20,""); //-10.5471 +- 3.06516
   RooRealVar *VVdijet2_p1 = new RooRealVar("VVdijet2_p1","VVdijet2_p_1",15,-20,20,""); //-0.799413 +- 0.560435
   RooRealVar *VVdijet2_p2 = new RooRealVar("VVdijet2_p2","VVdijet2_p_2",0,-20,20,""); //-0.799413 +- 0.560435
+  */
+  RooRealVar *VVdijet2_p0 = new RooRealVar("VVdijet2_p0","VVdijet2_p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
+  RooRealVar *VVdijet2_p1 = new RooRealVar("VVdijet2_p1","VVdijet2_p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
+  RooRealVar *VVdijet2_p2 = new RooRealVar("VVdijet2_p2","VVdijet2_p_2",0,-1000,1000,""); //-0.799413 +- 0.560435
   RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-m/13000,VVdijet2_p0)/pow(m/13000,VVdijet2_p1+VVdijet2_p2*log(m/13000)))",RooArgList(*x,*VVdijet2_p0,*VVdijet2_p1,*VVdijet2_p2));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 4
-  //-----------------------------VVdijet2-----------------------------------
+  //-----------------------------exp-----------------------------------
   TString fun_name = "exp";
   RooRealVar *exp_p0 = new RooRealVar("exp_p0","exp_p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
   RooRealVar *exp_p1 = new RooRealVar("exp_p1","exp_p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
   RooGenericPdf *model = new RooGenericPdf(fun_name,"exp(exp_p0*(m/13000)+exp_p1*pow(m/13000,2))",RooArgList(*x,*exp_p0,*exp_p1));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
+#elif fun_type == 5
+  //-----------------------------dijet 3-----------------------------------
+  TString fun_name = "dijet3";
+  RooRealVar *dijet3_p0 = new RooRealVar("dijet3_p0","dijet3_p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
+  RooRealVar *dijet3_p1 = new RooRealVar("dijet3_p1","dijet3_p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
+  RooRealVar *dijet3_p2 = new RooRealVar("dijet3_p2","dijet3_p_2",0,-1000,1000,""); //-0.799413 +- 0.560435
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(m/13000,dijet3_p0+dijet3_p1*log(m/13000)+dijet3_p2*pow(log(m/13000),2)))",RooArgList(*x,*dijet3_p0,*dijet3_p1,*dijet3_p2));
+  RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
+  RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
+#elif fun_type == 6
+  //-----------------------------ATLAS2-----------------------------------
+  TString fun_name = "ATLAS2";
+  RooRealVar *ATLAS2_p0 = new RooRealVar("ATLAS2_p0","ATLAS2_p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
+  RooRealVar *ATLAS2_p1 = new RooRealVar("ATLAS2_p1","ATLAS2_p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
+  RooRealVar *ATLAS2_p2 = new RooRealVar("ATLAS2_p2","ATLAS2_p_2",0,-1000,1000,""); //-0.799413 +- 0.560435
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-pow(m/13000,1/3),ATLAS2_p0)/pow(m/13000,ATLAS2_p1+ATLAS2_p2*log(m/13000)))",RooArgList(*x,*ATLAS2_p0,*ATLAS2_p1,*ATLAS2_p2));
+  RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
+  RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
+#elif fun_type == 7
+  //-----------------------------VVdijet3-----------------------------------
+  TString fun_name = "VVdijet3";
+  /*
+  //Normalized fit
+  RooRealVar *VVdijet3_p0 = new RooRealVar("VVdijet3_p0","VVdijet3_p_0",-15,-20,20,""); //-10.5471 +- 3.06516
+  RooRealVar *VVdijet3_p1 = new RooRealVar("VVdijet3_p1","VVdijet3_p_1",15,-20,20,""); //-0.799413 +- 0.560435
+  RooRealVar *VVdijet3_p2 = new RooRealVar("VVdijet3_p2","VVdijet3_p_2",0,-20,20,""); //-0.799413 +- 0.560435
+  */
+  RooRealVar *VVdijet3_p0 = new RooRealVar("VVdijet3_p0","VVdijet3_p_0",0,-100,100,""); //-10.5471 +- 3.06516
+  RooRealVar *VVdijet3_p1 = new RooRealVar("VVdijet3_p1","VVdijet3_p_1",0,-10,10,""); //-0.799413 +- 0.560435
+  RooRealVar *VVdijet3_p2 = new RooRealVar("VVdijet3_p2","VVdijet3_p_2",0,-1,1,""); //-0.799413 +- 0.560435
+  RooRealVar *VVdijet3_p3 = new RooRealVar("VVdijet3_p3","VVdijet3_p_3",0,-1,1,""); //-0.799413 +- 0.560435
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-m/13000,VVdijet3_p0)/pow(m/13000,VVdijet3_p1+VVdijet3_p2*log(m/13000)+VVdijet3_p3*pow(log(m/13000),2)))",RooArgList(*x,*VVdijet3_p0,*VVdijet3_p1,*VVdijet3_p2,*VVdijet3_p3));
+  RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
+  RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #endif
 
   // --- Import unBinned dataset ---
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/RooFit/biasstudy/dataset/SinglePhoton2017_sideband_full_finalcut.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/fullcutdataset/SinglePhoton2017_WGamma_Wsideband_full_finalcut.root");
   TTree* tree = (TTree*)file.Get("Events");
   RooDataSet data("Data sideband","Data sideband",RooArgSet(*x),Import(*tree));//import branches with names match the "variable name" (not variable) listed in imargset
   RooRealVar weight("weight","weight",double(5653)/double(1076));
@@ -220,20 +260,19 @@ void make_sideband_shapes(int seed=37)
 #endif
   
   // --- Output root file ---
-  if(isNorm){
+#if isNorm == 1
     RooWorkspace *w = new RooWorkspace("w","w");
     w->import(*x);
     w->import(data_norm,Rename("data_norm_sideband"));
     w->import(*model);
     w->writeToFile("sideband_norm-shapes-Unbinned-"+fun_name+".root");
-  }
-  else{
+#else
     RooWorkspace *w = new RooWorkspace("w","w");
     w->import(*x);
     w->import(data,Rename("data_sideband"));
     w->import(*model);
     w->writeToFile("sideband-shapes-Unbinned-"+fun_name+".root");
-  }
+#endif
     
   
 

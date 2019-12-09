@@ -1,5 +1,5 @@
 #define function 7 //
-#define data_type 3 //1:SB, 2:SBS(caled to)WB, 3:MCWB
+#define data_type 2 //1:SB, 2:SBS(caled to)WB, 3:MCWB
 #include <TMath.h>
 #include <TLegend.h>
 #include <iostream>
@@ -25,7 +25,7 @@ void CHI2NLL()
 #endif
 
   // --- Create obervable --- 
-  RooRealVar *x = new RooRealVar("sys_invmass","invmass",600,2500,""); //the name "sys_invmass" will be used by RooDataSet to import data
+  RooRealVar *x = new RooRealVar("m","m",600,2500,""); //the name "m" will be used by RooDataSet to import data
 
   // --- Import toy dataset ---
 #if function == 1 && data_type == 1
@@ -94,7 +94,7 @@ void CHI2NLL()
     TString fun_name = "dijet1";
     nParam = 1;
     RooRealVar *p0 = new RooRealVar("p0","p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
-    RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(sys_invmass/13000,p0))",RooArgList(*x,*p0));
+    RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(m/13000,p0))",RooArgList(*x,*p0));
     //RooRealVar *nbkg = new RooRealVar("nbkg","nbkg",5000,0,100000,""); 
     //RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*nbkg));
 #elif function == 2
@@ -103,7 +103,7 @@ void CHI2NLL()
     nParam = 2;
     RooRealVar *p0 = new RooRealVar("p0","p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
     RooRealVar *p1 = new RooRealVar("p1","p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
-    RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(sys_invmass/13000,p0+p1*log(sys_invmass/13000)))",RooArgList(*x,*p0,*p1));
+    RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(m/13000,p0+p1*log(m/13000)))",RooArgList(*x,*p0,*p1));
     //RooRealVar *nbkg = new RooRealVar("nbkg","nbkg",5000,0,100000,""); 
     //RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*nbkg));
 #elif function == 3
@@ -113,7 +113,7 @@ void CHI2NLL()
     RooRealVar *p0 = new RooRealVar("p0","p_0",1,-1000,1000,""); //-10.5471 +- 3.06516
     RooRealVar *p1 = new RooRealVar("p1","p_1",-1,-1000,1000,""); //-0.799413 +- 0.560435
     RooRealVar *p2 = new RooRealVar("p2","p_2",0.5,-30,30,""); //-0.799413 +- 0.560435
-    RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(sys_invmass/13000,p0+p1*log(sys_invmass/13000)+p2*pow(log(sys_invmass/13000),2)))",RooArgList(*x,*p0,*p1,*p2));
+    RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(m/13000,p0+p1*log(m/13000)+p2*pow(log(m/13000),2)))",RooArgList(*x,*p0,*p1,*p2));
 #elif function == 4
     //-----------------------------VVdijet1-----------------------------------
     
@@ -121,7 +121,7 @@ void CHI2NLL()
     nParam = 2;
     RooRealVar *p0 = new RooRealVar("p0","p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
     RooRealVar *p1 = new RooRealVar("p1","p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
-    RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-sys_invmass/13000,p0)/pow(sys_invmass/13000,p1))",RooArgList(*x,*p0,*p1));
+    RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-m/13000,p0)/pow(m/13000,p1))",RooArgList(*x,*p0,*p1));
 #elif function == 5
     //-----------------------------VVdijet2-----------------------------------
     
@@ -130,14 +130,14 @@ void CHI2NLL()
     RooRealVar *p0 = new RooRealVar("p0","p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
     RooRealVar *p1 = new RooRealVar("p1","p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
     RooRealVar *p2 = new RooRealVar("p2","p_2",0,-1000,1000,""); //-0.799413 +- 0.560435
-    RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-sys_invmass/13000,p0)/pow(sys_invmass/13000,p1+p2*log(sys_invmass/13000)))",RooArgList(*x,*p0,*p1,*p2));
+    RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-m/13000,p0)/pow(m/13000,p1+p2*log(m/13000)))",RooArgList(*x,*p0,*p1,*p2));
 #elif function == 6
     //-----------------------------ATLAS1-----------------------------------
     TString fun_name = "ATLAS1";
     nParam = 2;
     RooRealVar *p0 = new RooRealVar("p0","p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
     RooRealVar *p1 = new RooRealVar("p1","p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
-    RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-pow(sys_invmass/13000,1/3),p0)/pow(sys_invmass/13000,p1))",RooArgList(*x,*p0,*p1));
+    RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-pow(m/13000,1/3),p0)/pow(m/13000,p1))",RooArgList(*x,*p0,*p1));
 #elif function == 7
     //-----------------------------ATLAS2-----------------------------------
     TString fun_name = "ATLAS2";
@@ -145,7 +145,7 @@ void CHI2NLL()
     RooRealVar *p0 = new RooRealVar("p0","p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
     RooRealVar *p1 = new RooRealVar("p1","p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
     RooRealVar *p2 = new RooRealVar("p2","p_2",0,-1000,1000,""); //-0.799413 +- 0.560435
-    RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-pow(sys_invmass/13000,1/3),p0)/pow(sys_invmass/13000,p1+p2*log(sys_invmass/13000)))",RooArgList(*x,*p0,*p1,*p2));
+    RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-pow(m/13000,1/3),p0)/pow(m/13000,p1+p2*log(m/13000)))",RooArgList(*x,*p0,*p1,*p2));
 #endif
 
     // --- Perform extended ML fit of composite PDF to toy data ---

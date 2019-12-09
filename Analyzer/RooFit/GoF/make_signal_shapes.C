@@ -65,14 +65,14 @@ void make_signal_shapes(int signalmass = 1800)
   TString signalmass_str = std::to_string(signalmass)+"N";
 
   // --- Create obervable --- 
-  RooRealVar *x = new RooRealVar("sys_invmass","invmass",signalmass*0.7,signalmass*1.3,""); //the name "sys_invmass" will be used by RooDataSet to import data
+  RooRealVar *x = new RooRealVar("m","m",signalmass*0.7,signalmass*1.3,""); //the name "m" will be used by RooDataSet to import data
   x->setBins(int(signalmass*0.06));
 
   //--- signal PDF ---
   TString fun_name = "CB";
   RooRealVar* sqrtS = new RooRealVar("sqrtS","sqrtS",13000,"");
   sqrtS->setConstant(kTRUE);
-  RooFormulaVar* xx = new RooFormulaVar("invmass/sqrtS","sys_invmass / sqrtS",RooArgSet(*x,*sqrtS));
+  RooFormulaVar* xx = new RooFormulaVar("invmass/sqrtS","m / sqrtS",RooArgSet(*x,*sqrtS));
   RooRealVar* mean = new RooRealVar("mean","mean",signalmass,signalmass-100,signalmass+100,"");
   RooFormulaVar* xmean = new RooFormulaVar("CB_mean","mean / sqrtS",RooArgSet(*mean,*sqrtS));
   RooRealVar* sigma = new RooRealVar("sigma","sigma",30,0,80,"");
@@ -82,7 +82,7 @@ void make_signal_shapes(int signalmass = 1800)
   RooCBShape* model = new RooCBShape("CBShape","Cystal Ball Function",*xx,*xmean,*xsigma,*alpha,*n);
   
   // --- Import unBinned dataset ---
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/RooFit/fullcutdata/Signal"+signalmass_str+"_Wwindow_full_finalcut.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/fullcutdataset/Signal"+signalmass_str+"_Wwindow_full_finalcut.root");
   TTree* tree = (TTree*)file.Get("Events");
   RooArgList imarglist(*x);
   RooArgSet imargset(imarglist);
@@ -202,15 +202,4 @@ void make_signal_shapes(int signalmass = 1800)
   w->import(data,Rename("signal_MC"));
   w->import(*model);
   w->writeToFile(signalmass_str+"-shapes-Unbinned-unfitted"+fun_name+".root");
-
-  
-  // GOF test within ROOT
-  ROOT::Math::Functor1D f(&CB_pdf(CB_mean->getVal(),CB));
-  double minimum = 3*TMath::MinElement(nEvents3, sample3);
-  double maximum = 3*TMath::MaxElement(nEvents3, sample3);
-  ROOT::Math::GoFTest* goftest_3a = new ROOT::Math::GoFTest(nEvents3, sample3, f,  ROOT::Math::GoFTest::kPDF, minimum,maximum);  // need to specify am interval
-  for(int ievt=0; ievt<tree->GetEntries();ievt++){
-    tree->GetEntry(ievt);
-    
-  }
 }
