@@ -14,6 +14,6 @@ NTUPDIR=SelOutPut
 #QCD1000-1500: 2.5156
 #QCD1500-2000: 0.3635
 #QCD2000-Inf: 0.1436
-root -l -q select.C+\(\"GJets_HT100To200.conf\",\"${NTUPDIR}\",34.6195\)
+root -l -q select.C+\(\"sampleswide_temp.conf\",\"${NTUPDIR}\",1\)
 
 rm *.so *.d *.pcm
