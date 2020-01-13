@@ -4,16 +4,20 @@
 NTUPDIR=SelOutPut
 
 #weight:
-#GJets100-200: 34.6195
-#GJets200-400: 4.9300
-#GJets400-600: 2.1225
-#GJets600-Inf: 1.0607
-#QCD300-500: 214.8054
-#QCD500-700: 2.4840
-#QCD700-1000: 5.1894
-#QCD1000-1500: 2.5156
-#QCD1500-2000: 0.3635
-#QCD2000-Inf: 0.1436
-root -l -q select.C+\(\"sampleswide_temp.conf\",\"${NTUPDIR}\",1\)
+#GJets100-200: 36.03
+#GJets200-400: 4.89
+#GJets400-600: 2.32
+#GJets600-Inf: 1.08
+#QCD300-500: 222.10
+#QCD500-700: 22.15
+#QCD700-1000: 5.514
+#QCD1000-1500: 2.72
+#QCD1500-2000: 0.35
+#QCD2000-Inf: 0.14
+root -l -q select.C+\(\"QCD_HT1000To1500.conf\",\"${NTUPDIR}\",2.72\)
+
+root -l -q select.C+\(\"QCD_HT1500To2000.conf\",\"${NTUPDIR}\",0.35\)
+
+root -l -q select.C+\(\"QCD_HT2000ToInf.conf\",\"${NTUPDIR}\",0.14\)
 
 rm *.so *.d *.pcm

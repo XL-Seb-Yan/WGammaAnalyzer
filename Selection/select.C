@@ -375,9 +375,9 @@ void select(const TString conf="samples.conf", // input file
 	for(int i=0; i<ph_pt->size(); i++){
 	  if(ph_pt->at(i) < 225) continue;
 	  if(ph_passEleVeto->at(i) != true) continue;
-	  //if(abs(ph_eta->at(i)) > 2.4) continue;
+	  if(abs(ph_eta->at(i)) > 2.4) continue;
 	  //if(abs(ph_eta->at(i)) > 1.4442 && abs(ph_eta->at(i))< 1.566) continue;
-	  if(abs(ph_eta->at(i)) > 1.44) continue; //barrel photon
+	  //if(abs(ph_eta->at(i)) > 1.44) continue; //barrel photon
 	  // Photon mvaID
 	  // See https://twiki.cern.ch/twiki/bin/view/CMS/MultivariatePhotonIdentificationRun2
 	  if(ph_mvaVal->at(i) < -0.02) continue;
@@ -410,7 +410,7 @@ void select(const TString conf="samples.conf", // input file
 	  if(jetAK8_puppi_softdrop_mass->at(i) < 0) continue;
 	  TLorentzVector v_temp1;
 	  v_temp1.SetPtEtaPhiE(jetAK8_puppi_softdrop_pt->at(i),jetAK8_puppi_softdrop_eta->at(i),jetAK8_puppi_softdrop_phi->at(i),jetAK8_puppi_softdrop_E->at(i));
-	  if(v_temp1.DeltaR(v_p) < 0.8) continue;
+	  if(v_temp1.DeltaR(v_p) < 1.1) continue;
 	  if(abs(jetAK8_puppi_softdrop_mass->at(i) - 80.379) < mass_diff){
 	    mass_diff = abs(jetAK8_puppi_softdrop_mass->at(i) - 80.379);
 	    index_j = i;
