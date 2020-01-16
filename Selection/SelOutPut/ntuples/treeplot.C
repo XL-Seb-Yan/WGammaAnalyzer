@@ -38,19 +38,20 @@
 
 Int_t count1 = 0;
 Int_t count2 = 0;
-TH1 *hist1 = new TH1F("1","pt_{#gamma} / M",50,0,2);
+TH1 *hist1 = new TH1F("1","pt_{#gamma}",100,0,2000);
 TH1 *hist2 = new TH1F("2","eta_{#gamma}",50,-2,2);
-TH1 *hist3 = new TH1F("3","pt_{j} / M",50,0,2);
+TH1 *hist3 = new TH1F("3","pt_{j}",100,0,2000);
 TH1 *hist4 = new TH1F("4","eta_{j}",50,-2,2);
-TH1 *hist5 = new TH1F("5","E_{j} / M",50,0,5);
+TH1 *hist5 = new TH1F("5","E_{j}",100,0,2000);
 TH1 *hist6 = new TH1F("6","masssoftdrop_{j}",60,50,110);
 TH1 *hist7 = new TH1F("7","tau21_{j}",50,0,1);
 TH1 *hist8 = new TH1F("8","cos(#theta*)_{p}",50,0,1);
-TH1 *hist9 = new TH1F("9","pt/M",50,0,2);
-TH1 *hist10 = new TH1F("10","invariant mass",100,0,2400);
-TH1 *hist11 = new TH1F("11","seperation",50,0,8);
+TH1 *hist9 = new TH1F("9","pt/M",100,0,2);
+TH1 *hist10 = new TH1F("10","invariant mass",100,0,3500);
+TH1 *hist11 = new TH1F("11","seperation",50,0,2);
 TH1 *hist12 = new TH1F("12","eta_diff",50,0,8);
 TH1 *hist13 = new TH1F("13","phi_diff",50,0,8);
+TH1 *hist14 = new TH1F("14","mvaID val",50,-1,1);
 
 void treeplot::Begin(TTree * /*tree*/)
 {
@@ -95,23 +96,28 @@ Bool_t treeplot::Process(Long64_t entry)
 
    if(entry%1000==0)
      cout<<"Processing "<<entry<<endl;
+   if(entry > 20000)
+     return kTRUE;
 
-   double signalmass = 2000;
-   if((*ak8puppijet_masssoftdropcorr > 65 && *ak8puppijet_masssoftdropcorr < 105) && abs(*sys_invmass - signalmass) < signalmass*0.05 && *sys_ptoverm > 0.38 && *sys_costhetastar < 0.67 && abs(*photon_eta) < 0.9 && abs(*ak8puppijet_eta) < 1.32){
-     hist1->Fill(*photon_pt / *sys_invmass);
-     hist2->Fill(*photon_eta);
-     hist3->Fill(*ak8puppijet_pt / *sys_invmass);
-     hist4->Fill(*ak8puppijet_eta);
-     hist5->Fill(*ak8puppijet_e / *sys_invmass);
-     hist6->Fill(*ak8puppijet_masssoftdropcorr);
-     hist7->Fill(*ak8puppijet_tau21);
-     hist8->Fill(*sys_costhetastar);
-     hist9->Fill(*sys_ptoverm);
-     hist10->Fill(*sys_invmass);
-     hist11->Fill(*sys_seperation);
-     hist12->Fill(abs(abs(*photon_eta) - abs(*ak8puppijet_eta)));
-     hist13->Fill(abs(*photon_phi - *ak8puppijet_phi));
-   }
+   //double signalmass = 2000;
+   //if((*ak8puppijet_masssoftdropcorr > 65 && *ak8puppijet_masssoftdropcorr < 105) && abs(*sys_invmass - signalmass) < signalmass*0.05 && *sys_ptoverm > 0.38 && *sys_costhetastar < 0.67 && abs(*photon_eta) < 0.9 && abs(*ak8puppijet_eta) < 1.32){
+   if((*ak8puppijet_masssoftdropcorr > 40 && *ak8puppijet_masssoftdropcorr < 65))
+     {
+       hist1->Fill(*photon_pt);
+       hist2->Fill(*photon_eta);
+       hist3->Fill(*ak8puppijet_pt);
+       hist4->Fill(*ak8puppijet_eta);
+       hist5->Fill(*ak8puppijet_e);
+       hist6->Fill(*ak8puppijet_masssoftdropcorr);
+       hist7->Fill(*ak8puppijet_tau21);
+       hist8->Fill(*sys_costhetastar);
+       hist9->Fill(*sys_ptoverm);
+       hist10->Fill(*sys_invmass);
+       hist11->Fill(*sys_seperation);
+       hist12->Fill(abs(abs(*photon_eta) - abs(*ak8puppijet_eta)));
+       hist13->Fill(abs(*photon_phi - *ak8puppijet_phi));
+       hist14->Fill(*photon_mvaval);
+     }
    
 
    return kTRUE;
@@ -131,7 +137,7 @@ void treeplot::Terminate()
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
 
-  int color = 2;
+  int color = 4;
   hist1->SetLineColor(color);
   hist2->SetLineColor(color);
   hist3->SetLineColor(color);
@@ -145,6 +151,7 @@ void treeplot::Terminate()
   hist11->SetLineColor(color);
   hist12->SetLineColor(color);
   hist13->SetLineColor(color);
+  hist14->SetLineColor(color);
 
   double norm = (double) hist1->GetEntries();
   hist1->Scale(1/norm);
@@ -160,6 +167,7 @@ void treeplot::Terminate()
   hist11->Scale(1/norm);
   hist12->Scale(1/norm);
   hist13->Scale(1/norm);
+  hist14->Scale(1/norm);
   
 
   gStyle->SetOptStat(0);
@@ -171,7 +179,7 @@ void treeplot::Terminate()
   TCanvas *c01 = new TCanvas("c01","pt_{#gamma}",1200,900);
   TAxis *xaxis = hist1->GetXaxis();
   TAxis *yaxis = hist1->GetYaxis();
-  xaxis->SetTitle("pt_{#gamma} / M(j#gamma)");
+  xaxis->SetTitle("pt_{#gamma} (GeV)");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
   yaxis->SetRangeUser(0.00001, 1);
@@ -203,7 +211,7 @@ void treeplot::Terminate()
   TCanvas *c03 = new TCanvas("c03","pt AK8Jet",1200,900);
   xaxis = hist3->GetXaxis();
   yaxis = hist3->GetYaxis();
-  xaxis->SetTitle("pt AK8Jet / M(j#gamma)");
+  xaxis->SetTitle("pt AK8Jet (GeV)");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
   yaxis->SetRangeUser(0.00001, 1);
@@ -236,7 +244,7 @@ void treeplot::Terminate()
   TCanvas *c05 = new TCanvas("c05","E AK8Jet",1200,900);
   xaxis = hist5->GetXaxis();
   yaxis = hist5->GetYaxis();
-  xaxis->SetTitle("E AK8Jet / M(j#gamma)");
+  xaxis->SetTitle("E AK8Jet (GeV)");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
   yaxis->SetRangeUser(0.00001, 1);
@@ -317,7 +325,7 @@ void treeplot::Terminate()
   TCanvas *c10 = new TCanvas("c10","invmass",1200,900);
   xaxis = hist10->GetXaxis();
   yaxis = hist10->GetYaxis();
-  xaxis->SetTitle("pt/M");
+  xaxis->SetTitle("M_{j#gamma} (GeV)");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
   yaxis->SetRangeUser(0.00001, 1);
@@ -377,5 +385,21 @@ void treeplot::Terminate()
   //legend->AddEntry(hist13,"2017 signal MC ","f");
   //legend->Draw();
   c13->Print("s_phidiff.png");
+
+  TCanvas *c14 = new TCanvas("c14","mvaID val",1200,900);
+  xaxis = hist14->GetXaxis();
+  yaxis = hist14->GetYaxis();
+  xaxis->SetTitle("Photon mvaID val");
+  yaxis->SetTitle("Entries");
+  yaxis->SetTitleOffset(1.3);
+  yaxis->SetRangeUser(0.00001, 1);
+  c14->SetLogy();
+  c14->cd();
+  hist14->SetLineWidth(2);
+  hist14->Draw("HIST");
+  legend->Clear();
+  //legend->AddEntry(hist14,"2017 signal MC ","f");
+  //legend->Draw();
+  c14->Print("p_mvaID.png");
 
 }

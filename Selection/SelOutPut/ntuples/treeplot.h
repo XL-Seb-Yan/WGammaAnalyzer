@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Thu Jul 18 13:38:31 2019 by ROOT version 6.10/09
+// Wed Jan 15 06:43:19 2020 by ROOT version 6.10/09
 // from TTree Events/Events
-// found on file: SinglePhoton2017C_WGamma_sideband_select.root
+// found on file: SinglePhoton2017_WGamma_full_full_Jan12.root
 //////////////////////////////////////////////////////////
 
 #ifndef treeplot_h
@@ -42,6 +42,7 @@ public :
    TTreeReaderValue<Float_t> sys_ptoverm = {fReader, "sys_ptoverm"};
    TTreeReaderValue<Float_t> sys_invmass = {fReader, "sys_invmass"};
    TTreeReaderValue<Float_t> sys_seperation = {fReader, "sys_seperation"};
+   TTreeReaderValue<Float_t> xsec_weight = {fReader, "xsec_weight"};
 
 
    treeplot(TTree * /*tree*/ =0) { }

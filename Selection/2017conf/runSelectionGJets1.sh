@@ -14,6 +14,7 @@ NTUPDIR=SelOutPut
 #QCD1000-1500: 2.72
 #QCD1500-2000: 0.35
 #QCD2000-Inf: 0.14
-root -l -q select.C+\(\"EGamma2018A.conf\",\"${NTUPDIR}\",1\)
+root -l -q select.C+\(\"GJets_HT-100To200.conf\",\"${NTUPDIR}\",36.03\)
+root -l -q select.C+\(\"GJets_HT-200To400.conf\",\"${NTUPDIR}\",4.89\)
 
 rm *.so *.d *.pcm

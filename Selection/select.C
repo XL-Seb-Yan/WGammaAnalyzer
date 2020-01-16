@@ -218,7 +218,7 @@ void select(const TString conf="samples.conf", // input file
 
     // Set up output ntuple
     //TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_WGamma_full_full_weightedTo41p54.root");
-    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_WGamma_full_full.root");
+    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_WGamma_full_full_Jan12.root");
     TFile *outFile1 = new TFile(outfilename1,"RECREATE"); 
     TTree *outTree1 = new TTree("Events","Events");
     outTree1->Branch("photon_pt",       &photon_pt,      "photon_pt/F");
@@ -375,9 +375,9 @@ void select(const TString conf="samples.conf", // input file
 	for(int i=0; i<ph_pt->size(); i++){
 	  if(ph_pt->at(i) < 225) continue;
 	  if(ph_passEleVeto->at(i) != true) continue;
-	  if(abs(ph_eta->at(i)) > 2.4) continue;
+	  //if(abs(ph_eta->at(i)) > 2.4) continue;
 	  //if(abs(ph_eta->at(i)) > 1.4442 && abs(ph_eta->at(i))< 1.566) continue;
-	  //if(abs(ph_eta->at(i)) > 1.44) continue; //barrel photon
+	  if(abs(ph_eta->at(i)) > 1.44) continue; //barrel photon
 	  // Photon mvaID
 	  // See https://twiki.cern.ch/twiki/bin/view/CMS/MultivariatePhotonIdentificationRun2
 	  if(ph_mvaVal->at(i) < -0.02) continue;
