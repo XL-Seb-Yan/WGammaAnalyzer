@@ -31,6 +31,7 @@
 #include <RooArgSet.h>
 #include <RooArgList.h>
 #include <RooCBShape.h>
+#include <RooGaussian.h>
 #include <RooDataSet.h>
 #include <RooDataHist.h>
 #include <RooChi2Var.h>
@@ -47,11 +48,11 @@ std::string to_str_trim(const float a_value, const int n = 2)
     return std::to_string(a_value).substr(0,std::to_string(a_value).find(".") + n + 1);
 }
 
-void make_signal_wide_com_shapes(int signalmass = 3000)
+void make_signal_wide_gen_shapes(int signalmass = 700)
 {
   //int rlo = 1200;
   //int rhi = 2100;
-  int yhi = 30;
+  double yhi = 0.25;
   //gErrorIgnoreLevel = kInfo;
   gROOT->SetBatch(1);
   using namespace std;
@@ -59,7 +60,7 @@ void make_signal_wide_com_shapes(int signalmass = 3000)
   //RooMsgService::instance().setGlobalKillBelow(RooFit::WARNING);
   RooMsgService::instance().setGlobalKillBelow(RooFit::WARNING);
   RooRandom::randomGenerator()->SetSeed(37);
-  TString signalmass_str = std::to_string(signalmass)+"W";
+  TString signalmass_str = std::to_string(signalmass);
 
   // --- Create obervable --- 
   RooRealVar *m = new RooRealVar("m","m",signalmass*0.75,signalmass*1.25,""); //the name "m" will be used by RooDataSet to import data
@@ -70,16 +71,21 @@ void make_signal_wide_com_shapes(int signalmass = 3000)
   
   //--- signal PDF ---
   RooRealVar* CB_mean = new RooRealVar("CB_mean","CB_mean",signalmass,signalmass-100,signalmass+100,"");
-  RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",50,0,150,"");
-  RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",1.45,1,2,"");
-  RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",0.1,0,1,"");
+  RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",50,0,250,"");
+  RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",1,0.1,3,"");
+  RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",3,0.1,10,"");
+  /*
+  RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",85,80,86.85,"");
+  RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",1,0.75,1.21,"");
+  RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",0.8,0.5,1.14,"");
+  */
   RooCBShape* CB_model = new RooCBShape("CBShape","Cystal Ball Function",*m,*CB_mean,*CB_sigma,*CB_alpha,*CB_n);
   
   
   //--- signal PDF ---
   
   //RooRealVar* Gaus_mean = new RooRealVar("Gaus_mean","Gaus_mean",signalmass,signalmass-100,signalmass+100,"");
-  RooRealVar* Gaus_sigma = new RooRealVar("Gaus_sigma","Gaus_sigma",150,100,200,"");
+  RooRealVar* Gaus_sigma = new RooRealVar("Gaus_sigma","Gaus_sigma",150,0,500,"");
   RooGaussian* Gaus_model = new RooGaussian("Gaussian","Gaussian Function",*m,*CB_mean,*Gaus_sigma);
   
   /*
@@ -88,16 +94,29 @@ void make_signal_wide_com_shapes(int signalmass = 3000)
   RooGenericPdf* exp_model = new RooGenericPdf("tail","exp(exp_p0*m)",RooArgList(*m,*exp_p0));
   */
 
-  RooRealVar* frac = new RooRealVar("frac","frac",0.9,0.5,1);
+  RooRealVar* frac = new RooRealVar("frac","frac",0.7,0.5,1);
   RooAddPdf* com_model = new RooAddPdf("composite","composite",RooArgList(*CB_model,*Gaus_model),RooArgList(*frac));
-  
+
+  /*
   // --- Import unBinned dataset ---
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/fullcutdataset/Signal"+signalmass_str+"_Wwindow_sigrange_finalcut.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/fullcut/Signal"+signalmass_str+"_Wwindow_sigrange_finalcut.root");
   TTree* tree = (TTree*)file.Get("Events");
   RooArgList imarglist(*m);
   RooArgSet imargset(imarglist);
   RooDataSet data("Signal","Signal"+signalmass_str,imargset,Import(*tree));//import branches with names match the "variable name" (not variable) listed in imargset
+  */
+  /*
+  // --- Import unBinned dataset ---
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/RooFitWorkspace/GenSignalDataset/wide/roodataset_signal-"+signalmass_str+"-wide.root");
+  RooDataSet *input = (RooDataSet*)file.Get("lmorphData");
+  RooDataSet data("Signal","Signal"+signalmass_str,input,RooArgSet(*m));
+  */
 
+  // --- Import Binned dataset ---
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/RooFitWorkspace/GenSignalDataset/wide/roodataset_signal-"+signalmass_str+"-wide.root");
+  TH1D *MChist = (TH1D*)file.Get("distribs_5_10_0__m");
+  RooDataHist datah("Signal","Signal"+signalmass_str,RooArgSet(*m),MChist);
+  
   
   // --- Perform ML fit of composite PDF to data ---
   /*
@@ -109,7 +128,7 @@ void make_signal_wide_com_shapes(int signalmass = 3000)
   else if(signalmass*1.3 > 3500)
     r = com_model->fitTo(data,Range(signalmass*0.7,3500),RooFit::Minimizer("Minuit2"),Save());
   */
-  RooFitResult *r = com_model->fitTo(data,RooFit::Minimizer("Minuit2"),Save());
+  RooFitResult *r = com_model->fitTo(datah,RooFit::Minimizer("Minuit2"),SumW2Error(false),Save());
 
   cout<<"OK with fir"<<endl;
 
@@ -117,20 +136,18 @@ void make_signal_wide_com_shapes(int signalmass = 3000)
   // --- Plot ---
   gStyle->SetOptStat(111111);
   RooPlot *frame = m->frame(Title("Signal"+signalmass_str));
-  data.plotOn(frame,RooFit::Name("data"));
+  datah.plotOn(frame,RooFit::Name("datah"));
   com_model->plotOn(frame,LineColor(2),RooFit::Name("fit"));
   //com_model->plotOn(frame,VisualizeError(*r,2,kFALSE),FillColor(kYellow),LineColor(0),RooFit::Name("err2"));
   //com_model->plotOn(frame,VisualizeError(*r,1,kFALSE),FillColor(kGreen),LineColor(0),RooFit::Name("err1"));
   com_model->plotOn(frame,Components("CBShape"),LineStyle(kDashed),LineColor(1),RooFit::Name("CB"));
   com_model->plotOn(frame,Components("Gaussian"),LineStyle(kDashed),RooFit::Name("Gaus"));
   com_model->plotOn(frame,LineColor(2),RooFit::Name("fit"));
-  data.plotOn(frame);
+  datah.plotOn(frame);
 
-  
-  RooDataHist datah("dh","binned data",RooArgSet(*m),data);
   RooChi2Var chi2 ("chi2", "chi2", *com_model,datah,DataError(RooAbsData::Poisson));//Default: SumW2
   TString chi2txt = "Chi2/ndf: "+to_str_trim(chi2.getVal()/datah.numEntries());
-  TString NLLtxt = "NLL: "+to_str_trim(com_model->createNLL(data)->getVal());
+  TString NLLtxt = "NLL: "+to_str_trim(com_model->createNLL(datah)->getVal());
   TString CBmean = "#mu_{CB}: "+to_str_trim(CB_mean->getVal())+" #pm "+to_str_trim(CB_mean->getError())+" (GeV)";
   TString CBsigma = "#sigma_{CB}: "+to_str_trim(CB_sigma->getVal())+" #pm "+to_str_trim(CB_sigma->getError())+" (GeV)";
   TString CBalpha = "#alpha_{CB}: "+to_str_trim(CB_alpha->getVal())+" #pm "+to_str_trim(CB_alpha->getError());
@@ -248,7 +265,7 @@ void make_signal_wide_com_shapes(int signalmass = 3000)
   xaxis->SetTitleOffset(1.2);
   yaxis->SetTitle("Events / 20 GeV");
   yaxis->SetTitleOffset(1.2);
-  yaxis->SetRangeUser(0.5,10000);
+  yaxis->SetRangeUser(0.00001,0.01);
   xaxis->SetRangeUser(signalmass*0.75,signalmass*1.25);
   //xaxis->SetRangeUser(600,875);
   //xaxis->SetRangeUser(600,signalmass*1.3);
@@ -267,7 +284,7 @@ void make_signal_wide_com_shapes(int signalmass = 3000)
   // --- Output root file ---
   RooWorkspace *w = new RooWorkspace("w","w");
   w->import(*m);
-  w->import(data,Rename("signal_MC"));
+  w->import(datah,Rename("signal_MC"));
   w->import(*com_model);
   w->writeToFile(signalmass_str+"-shapes-Unbinned-"+".root");
   

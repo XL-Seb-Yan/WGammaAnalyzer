@@ -19,12 +19,12 @@ void SignalInterpolationW(){
 
   gROOT->SetBatch(1);
   // Observable
-  RooRealVar m("m","m",600,3500);
+  RooRealVar m("m","m",600,4000);
     
   const double step = 50;
-  const int nMCpoints = 13;  
+  const int nMCpoints = 14;  
   RooAbsPdf* gMass[nMCpoints];   
-  const double masses[nMCpoints] = {700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800};
+  const double masses[nMCpoints] = {700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,3000,3500};
   //const double masses[nMCpoints] = {3000,3500};
 
   TFile *f[nMCpoints];
@@ -32,10 +32,11 @@ void SignalInterpolationW(){
 
   for (int i = 0; i!=nMCpoints; ++i ){
     TString massname = std::to_string(int(masses[i]));
-    TString name = "/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/RooFit/biasstudy/workspace/"+massname+"W-shapes-Unbinned-.root";
+    TString name = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/RooFitWorkspace/anchorpdf/wide/"+massname+"W-shapes-Unbinned-.root";
     if (!gSystem->AccessPathName(name)){
       f[i] = new TFile(name);
       xf[i] = (RooWorkspace*)f[i]->Get("w");
+      xf[i]->var("m")->setRange(600,4000);
       gMass[i] = xf[i]->pdf("composite");
     } else {
       std::cout<<"File is not found: "<<name<<std::endl;
@@ -53,7 +54,7 @@ void SignalInterpolationW(){
     gMass[i] = w.pdf("composite_low"+name);    
   }
 
-  TF1* funcEff = new TF1("effFunc","landau(0)",600,3500);
+  TF1* funcEff = new TF1("effFunc","landau(0)",600,4000);
   //funcEff->SetParameters(0.7992,-15.5926,2450.04);
   funcEff->SetParameters(0.55203,803.672,337.859);
     
@@ -64,7 +65,7 @@ void SignalInterpolationW(){
   RooRealVar alpha("alpha","alpha",0,1.0) ;
     
   // Specify sampling density on observable and interpolation variable
-  m.setBins(2900,"cache") ;
+  m.setBins(3400,"cache") ;
   alpha.setBins(2000,"cache") ;
     
   RooPlot* frame1[nMCpoints];
@@ -94,14 +95,18 @@ void SignalInterpolationW(){
     int nPoints = int((masses[iPoint+1]-masses[iPoint])/step);
     for (int i=1; i!=nPoints; ++i) {
       cout<<"================================================================"<<endl;
-      cout<<"===================Processing "<<i<<" =========================="<<endl; 
+      cout<<"===================Processing "<<i<<" ====================="<<endl; 
       //alpha=double(i)/double(nPoints);
       alpha.setVal(double(i)/double(nPoints)) ;
       lmorph.plotOn(frame1[iPoint],LineColor(kRed));
             
-      RooDataSet* dataGen = lmorph.generate(m,30000);
-      TH1D* distribs0 = (TH1D*)lmorph.createHistogram("distribs_5_10_0",m,Binning(145,600,3500));
-      dataGen->fillHistogram(distribs0,m);
+      //RooDataHist* dataGen = lmorph.generateBinned(m,3000);
+      double xlow = (masses[iPoint+1]-i*step)*0.75;
+      double xhig = (masses[iPoint+1]-i*step)*1.25;
+      int bins = (int)((masses[iPoint+1]-i*step)*0.5)/(int)20;
+      TH1D* distribs0 = (TH1D*)lmorph.createHistogram("distribs_5_10_0",m,Binning(bins,xlow,xhig));
+      //TH1D* distribs0 = new TH1D("","",bins,xlow,xhig);
+      //dataGen->fillHistogram(distribs0,m);
       /*
       double effcy = funcEff->Eval(masses[iPoint+1]-i*step);
       //double weight = effcy/30000.;
@@ -115,76 +120,39 @@ void SignalInterpolationW(){
       
       //distribs0->Scale(weight/effcy2);
       */
-      //TFile* fileNew = new TFile(Form("GenSignal/roodataset_signal-%d-narrow.root",int(masses[iPoint+1]-i*step)),"RECREATE");
+      TFile* fileNew = new TFile(Form("GenSignal/roodataset_signal-%d-wide.root",int(masses[iPoint+1]-i*step)),"RECREATE");
+
+      /*
+      TCanvas *c111 = new TCanvas("","",1200,900);
+      c111->cd();
+      RooPlot *frame_test = m.frame();
+      dataGen->plotOn(frame_test);
+      frame_test->Draw();
+      c111->Write();
+
+      */
+      
       //dataGen->Write();
-      //distribs0->Write();
-      //fileNew->Close();
-            
-      delete dataGen;
+      distribs0->Write();
+      fileNew->Close();
+      
+      //delete dataGen;
       delete distribs0;
+      //delete c111;
     }
     TCanvas *c = new TCanvas("","",1200,900);
     c->cd();
     c->Clear();
-    frame1[iPoint]->SetTitle("Signal Interpolation (Wide)");
+    frame1[iPoint]->SetTitle("Signal Interpolation (Narrow)");
     TAxis *xaxis = frame1[iPoint]->GetXaxis();
     TAxis *yaxis = frame1[iPoint]->GetYaxis();
     xaxis->SetTitle("m_{W#gamma}");
     yaxis->SetTitle("Events (a.u.)");
-    xaxis->SetRangeUser(0,3500);
+    xaxis->SetRangeUser(0,4000);
     yaxis->SetRangeUser(0,0.35);
     frame1[iPoint]->Draw();
     TString pngname = std::to_string(int(masses[iPoint]));
     c->Print(pngname+"W.png");
-
-    /*
-    // S h o w   2 D   d i s t r i b u t i o n   o f   p d f ( m , a l p h a )
-    // -----------------------------------------------------------------------
-        
-    // Create 2D histogram
-    hh[iPoint] = lmorph.createHistogram("hh",m,Binning(40),YVar(alpha,Binning(40))) ;
-    hh[iPoint]->SetLineColor(kBlue) ;
-        
-        
-    // F i t   p d f   t o   d a t a s e t   w i t h   a l p h a = 0 . 8
-    // -----------------------------------------------------------------
-        
-    // Generate a toy dataset at alpha = 0.8
-    alpha=0.8 ;
-    RooDataSet* data = lmorph.generate(m,1000) ;
-        
-    // Fit pdf to toy data
-    lmorph.setCacheAlpha(kTRUE) ;
-    lmorph.fitTo(*data,Verbose(kTRUE)) ;
-        
-    // Plot fitted pdf and data overlaid
-    frame2[iPoint] = m.frame(Bins(1500)) ;
-    data->plotOn(frame2[iPoint]) ;
-    lmorph.plotOn(frame2[iPoint]) ;
-        
-        
-    // S c a n   - l o g ( L )   v s   a l p h a
-    // -----------------------------------------
-        
-    // Show scan -log(L) of dataset w.r.t alpha
-    frame3[iPoint] = alpha.frame(Bins(100),Range(0.1,0.9)) ;
-        
-    // Make 2D pdf of histogram
-    RooNLLVar nll("nll","nll",lmorph,*data) ;
-    nll.plotOn(frame3[iPoint],ShiftToZero()) ;
-        
-    lmorph.setCacheAlpha(kFALSE) ;
-        
-        
-        
-    c[iPoint] = new TCanvas(Form("linearmorph_%d",iPoint),Form("linearmorph_%d",iPoint),700,700) ;
-    c[iPoint]->Divide(2,2) ;
-    c[iPoint]->cd(1) ; gPad->SetLeftMargin(0.15) ; frame1[iPoint]->GetYaxis()->SetTitleOffset(1.6) ; frame1[iPoint]->Draw() ;
-    c[iPoint]->cd(2) ; gPad->SetLeftMargin(0.20) ; hh[iPoint]->GetZaxis()->SetTitleOffset(2.5) ; hh[iPoint]->Draw("surf") ;
-    c[iPoint]->cd(3) ; gPad->SetLeftMargin(0.15) ; frame3[iPoint]->GetYaxis()->SetTitleOffset(1.4) ; frame3[iPoint]->Draw() ;
-    c[iPoint]->cd(4) ; gPad->SetLeftMargin(0.15) ; frame2[iPoint]->GetYaxis()->SetTitleOffset(1.4) ; frame2[iPoint]->Draw() ;
-    c[iPoint]->Modified(); c[iPoint]->Update();
-    */
   }
     
   return; 

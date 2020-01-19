@@ -6,7 +6,7 @@ void Histoplot()
   gStyle->SetOptStat(0);
 
   // Write histos to root file
-  TFile *file1 = TFile::Open("Histogram_Data_fullyweighted.root");
+  TFile *file1 = TFile::Open("Histogram_2000_fullyweighted.root");
   TFile *file2 = TFile::Open("Histogram_GJets_fullyweighted.root");
   TFile *file3 = TFile::Open("Histogram_QCD_fullyweighted.root");
   TH1* hist1_1 = (TH1*)file1->Get("1"); //p_pt
@@ -141,6 +141,7 @@ void Histoplot()
   cout<<"OK";
 
   //Stacked plots
+  TFile *CanavsFile = TFile::Open("Canvas_file_Histoplot.root","RECREATE");
 
   THStack *stack1 = new THStack("stack1","pt_{p}");
   THStack *stack2 = new THStack("stack2","eta_{p}");
@@ -163,7 +164,7 @@ void Histoplot()
   stack9->Add(hist3_9); stack9->Add(hist2_9);
   stack10->Add(hist3_10); stack10->Add(hist2_10);
 
-  TLegend *legend = new TLegend(0.65,0.8,0.9,0.9);
+  TLegend *legend = new TLegend(0.63,0.78,0.9,0.9);
 
   TCanvas *c01 = new TCanvas("c01","pt_{#gamma}",1200,900);
   TAxis *xaxis = hist1_1->GetXaxis();
@@ -171,7 +172,7 @@ void Histoplot()
   xaxis->SetTitle("pt_{#gamma} (GeV)");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.01,10000000);
+  yaxis->SetRangeUser(0.01,1000000);
   c01->SetLogy();
   c01->cd();
   hist1_1->Draw("E");
@@ -179,11 +180,12 @@ void Histoplot()
   hist1_1->Draw("ESAME");
   hist1_1->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_1,"2017 Data, SinglePhoton","lep");
+  legend->AddEntry(hist1_1,"2017 Signal M-2000","lep");
   legend->AddEntry(hist2_1,"2017 MC, GJets(weighted)","f");
   legend->AddEntry(hist3_1,"2017 MC, QCD(weighted)","f");
   legend->Draw();
   c01->Print("p_pt.png");
+  c01->Print("p_pt.pdf");
 
   TCanvas *c02 = new TCanvas("c02","eta_{#gamma}",1200,900);
   xaxis = hist1_2->GetXaxis();
@@ -191,7 +193,7 @@ void Histoplot()
   xaxis->SetTitle("eta_{#gamma}");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.01,10000000);
+  yaxis->SetRangeUser(0.01,1000000);
   c02->SetLogy();
   c02->cd();
   hist1_2->Draw("E");
@@ -199,11 +201,12 @@ void Histoplot()
   hist1_2->Draw("ESAME");
   hist1_2->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_2,"2017 Data, SinglePhoton","lep");
+  legend->AddEntry(hist1_2,"2017 Signal M-2000","lep");
   legend->AddEntry(hist2_2,"2017 MC, GJets(weighted)","f");
   legend->AddEntry(hist3_2,"2017 MC, QCD(weighted)","f");
   legend->Draw();
   c02->Print("p_eta.png");
+  c02->Print("p_eta.pdf");
 
   TCanvas *c03 = new TCanvas("c03","pt AK8Jet",1200,900);
   xaxis = hist1_3->GetXaxis();
@@ -211,7 +214,7 @@ void Histoplot()
   xaxis->SetTitle("pt AK8Jet (GeV)");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.01,10000000);
+  yaxis->SetRangeUser(0.01,1000000);
   //yaxis->SetRangeUser(0,2000);
   c03->SetLogy();
   c03->cd();
@@ -220,11 +223,12 @@ void Histoplot()
   hist1_3->Draw("ESAME");
   hist1_3->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_3,"2017 Data, SinglePhoton","lep");
+  legend->AddEntry(hist1_3,"2017 Signal M-2000","lep");
   legend->AddEntry(hist2_3,"2017 MC, GJets(weighted)","f");
   legend->AddEntry(hist3_3,"2017 MC, QCD(weighted)","f");
   legend->Draw();
   c03->Print("j_pt.png");
+  c03->Print("j_pt.pdf");
 
   TCanvas *c04 = new TCanvas("c04","eta AK8Jet",1200,900);
   xaxis = hist1_4->GetXaxis();
@@ -232,7 +236,7 @@ void Histoplot()
   xaxis->SetTitle("eta AK8Jet");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.01,10000000);
+  yaxis->SetRangeUser(0.01,1000000);
   c04->SetLogy();
   c04->cd();
   hist1_4->Draw("E");
@@ -240,11 +244,12 @@ void Histoplot()
   hist1_4->Draw("ESAME");
   hist1_4->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_4,"2017 Data, SinglePhoton","lep");
+  legend->AddEntry(hist1_4,"2017 Signal M-2000","lep");
   legend->AddEntry(hist2_4,"2017 MC, GJets(weighted)","f");
   legend->AddEntry(hist3_4,"2017 MC, QCD(weighted)","f");
   legend->Draw();
   c04->Print("j_eta.png");
+  c04->Print("j_eta.pdf");
 
   TCanvas *c05 = new TCanvas("c05","E AK8Jet",1200,900);
   xaxis = hist1_5->GetXaxis();
@@ -252,7 +257,7 @@ void Histoplot()
   xaxis->SetTitle("E AK8Jet (GeV)");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.01,10000000);
+  yaxis->SetRangeUser(0.01,1000000);
   c05->SetLogy();
   c05->cd();
   hist1_5->Draw("E");
@@ -260,11 +265,12 @@ void Histoplot()
   hist1_5->Draw("ESAME");
   hist1_5->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_5,"2017 Data, SinglePhoton","lep");
+  legend->AddEntry(hist1_5,"2017 Signal M-2000","lep");
   legend->AddEntry(hist2_5,"2017 MC, GJets(weighted)","f");
   legend->AddEntry(hist3_5,"2017 MC, QCD(weighted)","f");
   legend->Draw();
   c05->Print("j_e.png");
+  c05->Print("j_e.pdf");
 
   TCanvas *c06 = new TCanvas("c06","mass softdrop AK8Jet",1200,900);
   xaxis = hist1_6->GetXaxis();
@@ -272,7 +278,7 @@ void Histoplot()
   xaxis->SetTitle("mass softdrop AK8Jet (GeV)");
   yaxis->SetTitle("a.u.");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.01,10000000);
+  yaxis->SetRangeUser(0.01,1000000);
   //yaxis->SetRangeUser(0,400);
   c06->SetLogy();
   c06->cd();
@@ -281,11 +287,12 @@ void Histoplot()
   hist1_6->Draw("ESAME");
   hist1_6->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_6,"2017 Data, SinglePhoton","lep");
+  legend->AddEntry(hist1_6,"2017 Signal M-2000","lep");
   legend->AddEntry(hist2_6,"2017 MC, GJets(weighted)","f");
   legend->AddEntry(hist3_6,"2017 MC, QCD(weighted)","f");
   legend->Draw();
   c06->Print("j_masssd.png");
+  c06->Print("j_masssd.pdf");
 
   TCanvas *c07 = new TCanvas("c07","tau21 AK8Jet",1200,900);
   xaxis = hist1_7->GetXaxis();
@@ -293,7 +300,7 @@ void Histoplot()
   xaxis->SetTitle("tau21 AK8Jet");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.01,10000000);
+  yaxis->SetRangeUser(0.01,1000000);
   c07->SetLogy();
   c07->cd();
   hist1_7->Draw("E");
@@ -301,11 +308,12 @@ void Histoplot()
   hist1_7->Draw("ESAME");
   hist1_7->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_7,"2017 Data, SinglePhoton","lep");
+  legend->AddEntry(hist1_7,"2017 Signal M-2000","lep");
   legend->AddEntry(hist2_7,"2017 MC, GJets(weighted)","f");
   legend->AddEntry(hist3_7,"2017 MC, QCD(weighted)","f");
   legend->Draw();
   c07->Print("j_tau21.png");
+  c07->Print("j_tau21.pdf");
 
   TCanvas *c08 = new TCanvas("c8","cos AK8Jet",1200,900);
   xaxis = hist1_8->GetXaxis();
@@ -313,7 +321,7 @@ void Histoplot()
   xaxis->SetTitle("cos(#theta*)");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.01,10000000);
+  yaxis->SetRangeUser(0.01,1000000);
   c08->SetLogy();
   c08->cd();
   hist1_8->Draw("E");
@@ -321,11 +329,12 @@ void Histoplot()
   hist1_8->Draw("ESAME");
   hist1_8->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_8,"2017 Data, SinglePhoton","lep");
+  legend->AddEntry(hist1_8,"2017 Signal M-2000","lep");
   legend->AddEntry(hist2_8,"2017 MC, GJets(weighted)","f");
   legend->AddEntry(hist3_8,"2017 MC, QCD(weighted)","f");
   legend->Draw();
   c08->Print("s_cos.png");
+  c08->Print("s_cos.pdf");
 
   TCanvas *c09 = new TCanvas("c9","ptm AK8Jet",1200,900);
   xaxis = hist1_9->GetXaxis();
@@ -333,7 +342,7 @@ void Histoplot()
   xaxis->SetTitle("pt/M");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.01,10000000);
+  yaxis->SetRangeUser(0.01,1000000);
   c09->SetLogy();
   c09->cd();
   hist1_9->Draw("E");
@@ -341,11 +350,12 @@ void Histoplot()
   hist1_9->Draw("ESAME");
   hist1_9->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_9,"2017 Data, SinglePhoton","lep");
+  legend->AddEntry(hist1_9,"2017 Signal M-2000","lep");
   legend->AddEntry(hist2_9,"2017 MC, GJets(weighted)","f");
   legend->AddEntry(hist3_9,"2017 MC, QCD(weighted)","f");
   legend->Draw();
   c09->Print("s_ptm.png");
+  c09->Print("s_ptm.pdf");
 
   TCanvas *c10 = new TCanvas("c10","invmass",1200,900);
   xaxis = hist1_10->GetXaxis();
@@ -353,7 +363,7 @@ void Histoplot()
   xaxis->SetTitle("Invariant mass (GeV)");
   yaxis->SetTitle("Entries");
   yaxis->SetTitleOffset(1.3);
-  yaxis->SetRangeUser(0.01,10000000);
+  yaxis->SetRangeUser(0.01,1000000);
   c10->SetLogy();
   c10->cd();
   hist1_10->Draw("E");
@@ -361,11 +371,12 @@ void Histoplot()
   hist1_10->Draw("ESAME");
   hist1_10->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_10,"2017 Data, SinglePhoton","lep");
+  legend->AddEntry(hist1_10,"2017 Signal M-2000","lep");
   legend->AddEntry(hist2_10,"2017 MC, GJets(weighted)","f");
   legend->AddEntry(hist3_10,"2017 MC, QCD(weighted)","f");
   legend->Draw();
   c10->Print("s_invmass.png");
+  c10->Print("s_invmass.pdf");
 
   // Residual plot
   TH1 *data = NULL;
@@ -395,6 +406,7 @@ void Histoplot()
   hist1_1->Draw("PE1");
   r1_1->Update();
   r1_1->Print("ppt_res.png");
+  r1_1->Print("ppt_res.pdf");
 
   data = (TH1*)hist1_2->Clone();
   bkg = hist2_2; bkg->Add(hist3_2);
@@ -420,6 +432,7 @@ void Histoplot()
   hist1_2->Draw("PE1");
   r1_2->Update();
   r1_2->Print("peta_res.png");
+  r1_2->Print("peta_res.pdf");
 
   data = (TH1*)hist1_3->Clone();
   bkg = hist2_3; bkg->Add(hist3_3);
@@ -445,6 +458,7 @@ void Histoplot()
   hist1_3->Draw("PE1");
   r1_3->Update();
   r1_3->Print("jpt_res.png");
+  r1_3->Print("jpt_res.pdf");
 
   data = (TH1*)hist1_4->Clone();
   bkg = hist2_4; bkg->Add(hist3_4);
@@ -470,6 +484,7 @@ void Histoplot()
   hist1_4->Draw("PE1");
   r1_4->Update();
   r1_4->Print("jeta_res.png");
+  r1_4->Print("jeta_res.pdf");
 
   data = (TH1*)hist1_5->Clone();
   bkg = hist2_5; bkg->Add(hist3_5);
@@ -495,6 +510,7 @@ void Histoplot()
   hist1_5->Draw("PE1");
   r1_5->Update();
   r1_5->Print("je_res.png");
+  r1_5->Print("je_res.pdf");
 
   data = (TH1*)hist1_6->Clone();
   bkg = hist2_6; bkg->Add(hist3_6);
@@ -520,6 +536,7 @@ void Histoplot()
   hist1_6->Draw("PE1");
   r1_6->Update();
   r1_6->Print("jmass_res.png");
+  r1_6->Print("jmass_res.pdf");
 
   data = (TH1*)hist1_7->Clone();
   bkg = hist2_7; bkg->Add(hist3_7);
@@ -545,6 +562,7 @@ void Histoplot()
   hist1_7->Draw("PE1");
   r1_7->Update();
   r1_7->Print("jtau21_res.png");
+  r1_7->Print("jtau21_res.pdf");
 
   data = (TH1*)hist1_8->Clone();
   bkg = hist2_8; bkg->Add(hist3_8);
@@ -570,6 +588,7 @@ void Histoplot()
   hist1_8->Draw("PE1");
   r1_8->Update();
   r1_8->Print("scos_res.png");
+  r1_8->Print("scos_res.pdf");
 
   data = (TH1*)hist1_9->Clone();
   bkg = hist2_9; bkg->Add(hist3_9);
@@ -595,6 +614,7 @@ void Histoplot()
   hist1_9->Draw("PE1");
   r1_9->Update();
   r1_9->Print("sptm_res.png");
+  r1_9->Print("sptm_res.pdf");
 
   data = (TH1*)hist1_10->Clone();
   bkg = hist2_10; bkg->Add(hist3_10);
@@ -620,4 +640,5 @@ void Histoplot()
   hist1_10->Draw("PE1");
   r1_10->Update();
   r1_10->Print("sinvmass_res.png");
+  r1_10->Print("sinvmass_res.pdf");
 }

@@ -29,7 +29,7 @@
 #include <map>
 #endif
 
-void cutselection(int sigm = 1600)
+void cutselection(int sigm = 2000)
 {
 
   gROOT->SetBatch(1);
@@ -47,9 +47,9 @@ void cutselection(int sigm = 1600)
 
   // Create output file
   TString signal = std::to_string(sigm);
-  //TFile *outFile = TFile::Open("SinglePhoton2017_WGamma_Wsidebandband_full_finalcut.root", "RECREATE");
-  // TFile *outFile = TFile::Open("BackgroundCombinedMC_WGamma_Wband_full_finalcut.root", "RECREATE");
-  TFile *outFile = TFile::Open("Signal"+signal+"N_Wwindow_sigrange_finalcut.root", "RECREATE");
+  //TFile *outFile = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/pre_sel_Jan12/QCD_WGamma_Wband_full_presel.root", "RECREATE");
+  TFile *outFile = TFile::Open("SignalM2000W_WGamma_Wband_sigrange_tau21left.root", "RECREATE");
+  //TFile *outFile = TFile::Open("Signal"+signal+"W_Wwindow_sigrange_finalcut_old.root", "RECREATE");
   TTree *outTree = new TTree("Events","Events"); 
   outTree->Branch("photon_pt",       &photon_pt,      "photon_pt/F");
   outTree->Branch("photon_eta",      &photon_eta,      "photon_eta/F");
@@ -68,9 +68,9 @@ void cutselection(int sigm = 1600)
 
   // Open input file
   Float_t p_pt, p_eta, p_phi, p_e, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight; 
-  //TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Selection/SelOutPut/ntuples/SinglePhoton2017_WGamma_full_full.root");
-  //TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Selection/SelOutPut/ntuples/BackgroundCombinedMC_WGamma_full_full_weightedTo41p54_fitData.root");
-  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Selection/SelOutPut/ntuples/SignalMC"+signal+"N_WGamma_full_full.root");
+  //TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/AnalysisNtuples_Jan12/QCD_WGamma_full_full_Jan12.root");
+  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/AnalysisNtuples/SignalMC2000W_WGamma_full_full.root");
+  //TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/AnalysisNtuples/SignalMC"+signal+"W_WGamma_full_full.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -91,16 +91,13 @@ void cutselection(int sigm = 1600)
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
 
-    //narrow signals
-    //if(s_mass < 0.75*sigm || s_mass > 1.25*sigm) continue;
-    
+    if(s_mass < 0.95*sigm || s_mass > 1.05*sigm) continue;
     if(j_mass < 65 || j_mass > 105) continue;
     if(abs(p_eta) > 1.44) continue;
     if(abs(j_eta) > 2) continue;
-    if(j_tau21 > 0.3) continue;
+    //if(j_tau21 > 0.3) continue;
     if(s_ptm < 0.37) continue;
     if(s_cos > 0.6) continue;
-    
     
     photon_pt = p_pt;
     photon_eta = p_eta;
@@ -115,8 +112,8 @@ void cutselection(int sigm = 1600)
     sys_costhetastar = s_cos;
     sys_ptoverm = s_ptm;
     m = s_mass;
-    //xsec_weight = x_weight;//*1.41; //Additional kfactor on top of xsec weight: QCD:0.57, GJets:1.41
-    xsec_weight = 1;
+    //xsec_weight = x_weight;//*1.41; //Additional kfactor on top of xsec weight: QCD:1.49, GJets:1.49
+    xsec_weight = x_weight*0.57;
     
     outTree->Fill();
   }

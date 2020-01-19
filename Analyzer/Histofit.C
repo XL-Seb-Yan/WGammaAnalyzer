@@ -73,17 +73,18 @@ void Histofit()
   }
   */
 
+  
   // Least Square fit result: GJets: 1.41, QCD: 0.57
   // Least Square fitting to invariant mass histograms
   TGraph2D *g = new TGraph2D();
   int NBins = hist1_10->GetNbinsX();
   cout<<"Number of bins: "<<NBins<<endl;
   int point = 0;
-  double minls = 99999999999999;
+  double minls = 99999999999;
   double sGJets = -99;
   double sQCD = -99;
-  for(int i=0; i<150; i++){
-    for(int j=0; j<150; j++){
+  for(int i=0; i<200; i++){
+    for(int j=0; j<200; j++){
       double ls = 0;
       double scaleGJets = i*0.01;
       double scaleQCD = j*0.01;
@@ -92,7 +93,7 @@ void Histofit()
 	double NGjets = hist2_10->GetBinContent(k);
 	double NQCD = hist3_10->GetBinContent(k);
 	if(NData == 0) continue;//exclude first several empty bins lower than trigger turn on
-	ls += pow(NData-(scaleGJets*NGjets + scaleQCD*NQCD),2);
+	ls += pow((NData-(scaleGJets*NGjets + scaleQCD*NQCD))/NData,2);
       }
       if(ls < minls){
 	minls = ls;
@@ -104,6 +105,7 @@ void Histofit()
       point++;
     }
   }
+  
 
   cout<<sGJets<<" "<<sQCD<<endl;
 

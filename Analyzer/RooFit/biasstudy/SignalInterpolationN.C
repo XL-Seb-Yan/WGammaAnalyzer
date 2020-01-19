@@ -22,9 +22,9 @@ void SignalInterpolationN(){
   RooRealVar m("m","m",600,4000);
     
   const double step = 50;
-  const int nMCpoints = 2;  
+  const int nMCpoints = 14;  
   RooAbsPdf* gMass[nMCpoints];   
-  const double masses[nMCpoints] = {3000,3500};
+  const double masses[nMCpoints] = {700,800,900,1000,1200,1400,1800,2000,2200,2400,2600,2800,3000,3500};
   //const double masses[nMCpoints] = {3000,3500};
 
   TFile *f[nMCpoints];
@@ -32,7 +32,7 @@ void SignalInterpolationN(){
 
   for (int i = 0; i!=nMCpoints; ++i ){
     TString massname = std::to_string(int(masses[i]));
-    TString name = "/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/RooFit/biasstudy/workspace/"+massname+"N-shapes-Unbinned-CB.root";
+    TString name = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/RooFitWorkspace/anchor/"+massname+"N-shapes-Unbinned-CB.root";
     if (!gSystem->AccessPathName(name)){
       f[i] = new TFile(name);
       xf[i] = (RooWorkspace*)f[i]->Get("w");

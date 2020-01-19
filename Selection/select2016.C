@@ -32,7 +32,7 @@
 #include <map>
 #endif
 
-void select(const TString conf="samples.conf", // input file
+void select2016(const TString conf="samples.conf", // input file
 	      const TString outputDir=".",  // output directory
 	      const Float_t weight=1   // MC weight?
 	       ) {
@@ -141,7 +141,7 @@ void select(const TString conf="samples.conf", // input file
 
   // Create output directory
   gSystem->mkdir(outputDir,kTRUE);
-  const TString ntupDir = outputDir + TString("/ntuples");
+  const TString ntupDir = outputDir;
   gSystem->mkdir(ntupDir,kTRUE);
 
   // Data Structure for output skimmed files
@@ -259,21 +259,24 @@ void select(const TString conf="samples.conf", // input file
       folder = (TDirectory*)infile->Get("ntuplizer");
       eventTree = (TTree*)folder->Get("tree");
       assert(eventTree);
+      /*
       eventTree->SetBranchAddress("EVENT_run", &runnum);                      
       eventTree->SetBranchAddress("EVENT_event", &evtnum);                    
-      eventTree->SetBranchAddress("EVENT_lumiBlock", &lumiBlock);               
+      eventTree->SetBranchAddress("EVENT_lumiBlock", &lumiBlock); 
+      */
+      
       //--Photons--
       eventTree->SetBranchAddress("ph_N", &ph_N);                              
       eventTree->SetBranchAddress("ph_pt", &ph_pt);                            
       eventTree->SetBranchAddress("ph_eta", &ph_eta);                           
       eventTree->SetBranchAddress("ph_phi", &ph_phi);                          
       eventTree->SetBranchAddress("ph_e", &ph_E);                             
-      eventTree->SetBranchAddress("ph_hOverE", &ph_hOverE);                   
-      eventTree->SetBranchAddress("ph_isoGamma", &ph_isoGamma);                
-      eventTree->SetBranchAddress("ph_isoCh", &ph_isoCh);                       
+      //eventTree->SetBranchAddress("ph_hOverE", &ph_hOverE);                   
+      //eventTree->SetBranchAddress("ph_isoGamma", &ph_isoGamma);                
+      //eventTree->SetBranchAddress("ph_isoCh", &ph_isoCh);                       
       eventTree->SetBranchAddress("ph_passEleVeto", &ph_passEleVeto);          
       eventTree->SetBranchAddress("ph_passLooseId", &ph_passLooseId);           
-      eventTree->SetBranchAddress("ph_passMediumId", &ph_passMediumId);         
+      //eventTree->SetBranchAddress("ph_passMediumId", &ph_passMediumId);         
       eventTree->SetBranchAddress("ph_passTightId", &ph_passTightId);           
       eventTree->SetBranchAddress("ph_mvaVal", &ph_mvaVal);                    
       eventTree->SetBranchAddress("ph_mvaCat", &ph_mvaCat);                    
@@ -289,6 +292,7 @@ void select(const TString conf="samples.conf", // input file
       eventTree->SetBranchAddress("jetAK8_IDTight", &jetAK8_puppi_IDTight);                      
       eventTree->SetBranchAddress("HLT_isFired", &HLT_isFired);
       //--GenPartticle
+      /*
       eventTree->SetBranchAddress("genParticle_pt", &genPart_pt);
       eventTree->SetBranchAddress("genParticle_eta", &genPart_eta);
       eventTree->SetBranchAddress("genParticle_phi", &genPart_phi);
@@ -305,19 +309,21 @@ void select(const TString conf="samples.conf", // input file
       eventTree->SetBranchAddress("genParticle_dau_eta", &genPart_daughter_eta);
       eventTree->SetBranchAddress("genParticle_dau_phi", &genPart_daughter_phi);
       eventTree->SetBranchAddress("genParticle_dau_e", &genPart_daughter_e);
+      */
 
       for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
+	count1++;
 
 	// Get Events
 	ph_pt->clear();               
 	ph_eta->clear();            
 	ph_phi->clear();              
 	ph_E->clear();                
-	ph_hOverE->clear();            
-	ph_isoGamma->clear();          
-	ph_isoCh->clear();             
+	//ph_hOverE->clear();            
+	//ph_isoGamma->clear();          
+	//ph_isoCh->clear();             
 	ph_passEleVeto->clear();       
-	ph_passLooseId->clear();       
+	//ph_passLooseId->clear();       
 	ph_passMediumId->clear();     
 	ph_passTightId->clear();      
 	ph_mvaVal->clear();           
@@ -331,6 +337,7 @@ void select(const TString conf="samples.conf", // input file
 	jetAK8_puppi_tau2->clear();            
 	jetAK8_puppi_IDTight->clear();
 	HLT_isFired->clear();
+	/*
 	genPart_pt->clear();
 	genPart_eta->clear();
 	genPart_phi->clear();
@@ -347,22 +354,28 @@ void select(const TString conf="samples.conf", // input file
 	genPart_daughter_eta->clear();
 	genPart_daughter_phi->clear();
 	genPart_daughter_e->clear();
-	eventTree->GetEntry(ientry);
+	*/
+	
+	//-------------------------------------Trigger----------------------------------------------
+	// HLT Trigger decision first, improve speed
+	TBranch *HLTBranch = (TBranch*)eventTree->GetBranch("HLT_isFired");
+	HLTBranch->GetEntry(ientry);
+	
+	bool passTrig = false;
+	for(map<string,bool>::iterator it = HLT_isFired->begin(); it != HLT_isFired->end(); ++it) {
+	  if (it->first.find("HLT_Photon165_HE10_v") != std::string::npos && it->second == 1)
+	    passTrig = true;
+	  if (it->first.find("HLT_Photon165_R9Id90_HE10_IsoM_v") != std::string::npos && it->second == 1)
+	    passTrig = true;
+	  if (it->first.find("HLT_Photon175_v") != std::string::npos && it->second == 1)
+	    passTrig = true;
+	}
+	if (!passTrig) continue;
 	count0++;
+	eventTree->GetEntry(ientry);
 
 	//Only study events contain photons (EM objects here) and jets -- DATA -- 1st skimming
 	if(ph_N  == 0 || jetAK8_puppi_N  == 0) continue;
-	count1++;
-
-	//-------------------------------------Trigger----------------------------------------------
-	// HLT Trigger decision
-	bool passTrig = false;
-	for(map<string,bool>::iterator it = HLT_isFired->begin(); it != HLT_isFired->end(); ++it) {
-	  if (it->first.find("HLT_Photon200_v") != std::string::npos && it->second == 1){
-	    passTrig = true;
-	  }
-	}
-	if (!passTrig) continue;
 	count2++;
 	
 	//-----------------------------------Photon-----------------------------------------------------
@@ -457,7 +470,8 @@ void select(const TString conf="samples.conf", // input file
 
 	// Calculate seperation
 	Double_t seperation = v_j.DeltaR(v_p);
-	
+
+	/*
 	// Passing p1 and j1 selection
 	if(pass_p1 && pass_j1){
 	  hist01pa->Fill(ph_pt->at(index_p));
@@ -519,6 +533,7 @@ void select(const TString conf="samples.conf", // input file
 	  hist01sb->Fill(invmass);
 	  hist02sb->Fill(seperation);
 	}
+	*/
 	if(pass_p2 && pass_j2 && pass_s1){
 	  photon_pt = ph_pt->at(index_p);
 	  photon_eta = ph_eta->at(index_p);
@@ -630,6 +645,7 @@ void select(const TString conf="samples.conf", // input file
   cout<<"Number of events pass jet pre-selection: "<<count4<<endl;
   cout<<"Number of events pass photon mvaID: "<<count5<<endl;
 
+  /*
   if(isPlot){
     //Non stacked plots
     hist01pa->SetLineWidth(2); hist01pa->SetLineColor(4);
@@ -1098,6 +1114,7 @@ void select(const TString conf="samples.conf", // input file
     legend->AddEntry(hist08jb,histotitle+" Pass Selection","f");
     legend->Draw();
     c08j->Print("j_tau21.png");
+  */
 
     /*
       TCanvas *c09j = new TCanvas("c09j","TightLepVeto",1200,900);
@@ -1117,7 +1134,7 @@ void select(const TString conf="samples.conf", // input file
       legend->Draw();
       c09j->Print("j_LepVeto.png");
     */
-
+  /*
     TCanvas *c10j = new TCanvas("c10j","Tight jet ID",1200,900);
     xaxis = hist10ja->GetXaxis();
     yaxis = hist10ja->GetYaxis();
@@ -1190,6 +1207,7 @@ void select(const TString conf="samples.conf", // input file
     //Non stacked hist END-------------------------------------------------------------------
 
   }
+*/
   
   gBenchmark->Show("selectWG");
 

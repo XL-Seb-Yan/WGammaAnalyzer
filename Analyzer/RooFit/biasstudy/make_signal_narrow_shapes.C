@@ -47,7 +47,7 @@ std::string to_str_trim(const float a_value, const int n = 2)
     return std::to_string(a_value).substr(0,std::to_string(a_value).find(".") + n + 1);
 }
 
-void make_signal_narrow_shapes(int signalmass = 1600)
+void make_signal_narrow_shapes(int signalmass = 3500)
 {
   //gErrorIgnoreLevel = kInfo;
   gROOT->SetBatch(1);
@@ -59,8 +59,8 @@ void make_signal_narrow_shapes(int signalmass = 1600)
   TString signalmass_str = std::to_string(signalmass);
 
   // --- Create obervable --- 
-  RooRealVar *m = new RooRealVar("m","invmass",600,3500,""); //the name "m" will be used by RooDataSet to import data
-  m->setBins(145);
+  RooRealVar *m = new RooRealVar("m","invmass",600,4000,""); //the name "m" will be used by RooDataSet to import data
+  m->setBins(170);
 
   
   //--- signal PDF ---
@@ -80,27 +80,28 @@ void make_signal_narrow_shapes(int signalmass = 1600)
   RooRealVar* sigma = new RooRealVar("sigma","sigma",40,0,80,"");
   RooGaussian* model = new RooGaussian("Gaussian","Gaussian Function",*m,*mean,*sigma);
   */
-  
   /*
   // --- Import unBinned dataset ---
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/fullcutdataset/Signal"+signalmass_str+"N_Wwindow_full_finalcut.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/fullcut/Signal"+signalmass_str+"N_Wwindow_full_finalcut.root");
   TTree* tree = (TTree*)file.Get("Events");
   RooArgList imarglist(*m);
   RooArgSet imargset(imarglist);
   RooDataSet data("Signal","Signal"+signalmass_str,imargset,Import(*tree));//import branches with names match the "variable name" (not variable) listed in imargset
-  */
 
+  */
   
   // --- Import unBinned dataset ---
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/RooFit/biasstudy/GenSignal/roodataset_signal-"+signalmass_str+"-narrow.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/RooFitWorkspace/GenSignalDataset/roodataset_signal-"+signalmass_str+"-narrow.root");
   RooDataSet *input = (RooDataSet*)file.Get("lmorphData");
   RooDataSet data("Signal","Signal"+signalmass_str,input,RooArgSet(*m));
   
   
+  
   // --- Perform ML fit of composite PDF to data ---
-  RooFitResult *r = model->fitTo(data,Range(600,3500),RooFit::Minimizer("Minuit2"),Save());
+  RooFitResult *r = model->fitTo(data,Range(600,4000),RooFit::Minimizer("Minuit2"),Save());
 
   cout<<"OK with fir"<<endl;
+
 
   
   // --- Plot ---
@@ -184,7 +185,6 @@ void make_signal_narrow_shapes(int signalmass = 1600)
   l->Draw("same");
   c01->Print(fun_name+signalmass_str+".png");
 
-  /*
   TCanvas *c02 = new TCanvas("c02","c02",1200,300);
   //axis,log scale and range setting functions must be called after all plotOn functions being called
   c02->cd();
@@ -210,17 +210,17 @@ void make_signal_narrow_shapes(int signalmass = 1600)
   pull_frame->Draw();
   c02->Update();
   c02->Print("pull"+fun_name+signalmass_str+".png");
-  */
+  
   
   // --- Output root file ---
   RooWorkspace *w = new RooWorkspace("w","w");
-  m->setRange(600,3500);
-  m->setBins(145);
+  m->setRange(600,4000);
+  m->setBins(170);
   w->import(*m);
   w->import(data,Rename("signal_MC"));
   w->import(*model);
   w->writeToFile(signalmass_str+"N-shapes-Unbinned-"+fun_name+".root");
 
-  cout<<chi2.getVal()<<endl;
+  //cout<<chi2.getVal()<<endl;
   
 }

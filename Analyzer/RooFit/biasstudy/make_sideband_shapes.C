@@ -1,4 +1,4 @@
-#define fun_type 7
+#define fun_type 3
 #define isNorm 2 //1: Norm 2: Orig
 #include <TMath.h>
 #include <TLegend.h>
@@ -90,7 +90,7 @@ void make_sideband_shapes(int seed=37)
 #endif
 
   // --- Import unBinned dataset ---
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/fullcutdataset/SinglePhoton2017_WGamma_Wsideband_full_finalcut.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/fullcut/SinglePhoton2017_WGamma_Wwindow_full_finalcut.root");
   TTree* tree = (TTree*)file.Get("Events");
   RooDataSet data("Data sideband","Data sideband",RooArgSet(*x),Import(*tree));//import branches with names match the "variable name" (not variable) listed in imargset
   RooRealVar weight("weight","weight",double(5653)/double(1076));

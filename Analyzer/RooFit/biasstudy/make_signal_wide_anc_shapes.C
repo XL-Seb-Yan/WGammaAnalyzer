@@ -31,6 +31,7 @@
 #include <RooArgSet.h>
 #include <RooArgList.h>
 #include <RooCBShape.h>
+#include <RooGaussian.h>
 #include <RooDataSet.h>
 #include <RooDataHist.h>
 #include <RooChi2Var.h>
@@ -47,11 +48,11 @@ std::string to_str_trim(const float a_value, const int n = 2)
     return std::to_string(a_value).substr(0,std::to_string(a_value).find(".") + n + 1);
 }
 
-void make_signal_wide_com1_shapes(int signalmass = 700)
+void make_signal_wide_anc_shapes(int signalmass = 1000)
 {
   //int rlo = 1200;
   //int rhi = 2100;
-  int yhi = 500;
+  double yhi = 0.01;
   //gErrorIgnoreLevel = kInfo;
   gROOT->SetBatch(1);
   using namespace std;
@@ -59,40 +60,49 @@ void make_signal_wide_com1_shapes(int signalmass = 700)
   //RooMsgService::instance().setGlobalKillBelow(RooFit::WARNING);
   RooMsgService::instance().setGlobalKillBelow(RooFit::WARNING);
   RooRandom::randomGenerator()->SetSeed(37);
-  TString signalmass_str = std::to_string(signalmass)+"W";
+  TString signalmass_str = std::to_string(signalmass);
 
   // --- Create obervable --- 
   RooRealVar *m = new RooRealVar("m","m",signalmass*0.75,signalmass*1.25,""); //the name "m" will be used by RooDataSet to import data
   m->setBins((int)signalmass*0.5 / (int)20);
   //RooRealVar *m = new RooRealVar("m","m",600,875,""); //the name "m" will be used by RooDataSet to import data
   //m->setBins(14);
+
+  
+  //--- signal PDF ---
+  RooRealVar* CB_mean = new RooRealVar("CB_mean","CB_mean",signalmass,signalmass-100,signalmass+100,"");
+  RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",50,0,250,"");
+  RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",1,0.1,5,"");
+  RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",3,0.1,10,"");
+  /*
+  RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",85,80,86.85,"");
+  RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",1,0.75,1.21,"");
+  RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",0.8,0.5,1.14,"");
+  */
+  RooCBShape* CB_model = new RooCBShape("CBShape","Cystal Ball Function",*m,*CB_mean,*CB_sigma,*CB_alpha,*CB_n);
   
   
   //--- signal PDF ---
-  RooRealVar* sqrtS = new RooRealVar("sqrtS","sqrtS",13000,"");
-  sqrtS->setConstant(kTRUE);
-  RooFormulaVar* mm = new RooFormulaVar("mm","m/ sqrtS",RooArgSet(*m,*sqrtS));
-  RooRealVar* Gaus_mean = new RooRealVar("Gaus_mean","Gaus_mean",signalmass,signalmass-100,signalmass+100,"");
-  RooRealVar* Gaus_sigma1 = new RooRealVar("Gaus_sigma1","Gaus_sigma1",50,0,100,"");
-  RooGaussian* Gaus_model1 = new RooGaussian("Gaussian1","Gaussian Functio1",*mm,*Gaus_mean,*Gaus_sigma1);
-  RooRealVar* Gaus_sigma2 = new RooRealVar("Gaus_sigma2","Gaus_sigma2",150,0,200,"");
-  RooGaussian* Gaus_model2 = new RooGaussian("Gaussian2","Gaussian Functio2",*mm,*Gaus_mean,*Gaus_sigma2);
+  
+  //RooRealVar* Gaus_mean = new RooRealVar("Gaus_mean","Gaus_mean",signalmass,signalmass-100,signalmass+100,"");
+  RooRealVar* Gaus_sigma = new RooRealVar("Gaus_sigma","Gaus_sigma",150,50,500,"");
+  RooGaussian* Gaus_model = new RooGaussian("Gaussian","Gaussian Function",*m,*CB_mean,*Gaus_sigma);
+  
+  /*
   RooRealVar* exp_p0 = new RooRealVar("exp_p0","exp_p0",0,-20,20,"");
   RooRealVar* exp_p1 = new RooRealVar("exp_p1","exp_p1",0,-20,20,"");
-  RooGenericPdf* exp_model = new RooGenericPdf("tail","exp(exp_p0+exp_p1*mm)",RooArgList(*mm,*exp_p0,*exp_p1));
+  RooGenericPdf* exp_model = new RooGenericPdf("tail","exp(exp_p0*m)",RooArgList(*m,*exp_p0));
+  */
 
-  RooRealVar* frac1 = new RooRealVar("frac1","frac1",0.5,0,1);
-  RooRealVar* frac2 = new RooRealVar("frac2","frac2",0.5,0,1);
-  RooAddPdf* peak_model = new RooAddPdf("peak","peak",RooArgList(*Gaus_model1,*Gaus_model2),RooArgList(*frac1));
-  RooAddPdf* com_model = new RooAddPdf("composite","composite",RooArgList(*peak_model,*exp_model),RooArgList(*frac2));
-  
+  RooRealVar* frac = new RooRealVar("frac","frac",0.7,0.5,1);
+  RooAddPdf* com_model = new RooAddPdf("composite","composite",RooArgList(*CB_model,*Gaus_model),RooArgList(*frac));
+
   // --- Import unBinned dataset ---
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/fullcutdataset/Signal"+signalmass_str+"_Wwindow_sigrange_finalcut.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/fullcut/Signal"+signalmass_str+"W_Wwindow_sigrange_finalcut.root");
   TTree* tree = (TTree*)file.Get("Events");
   RooArgList imarglist(*m);
   RooArgSet imargset(imarglist);
-  RooDataSet data("Signal","Signal"+signalmass_str,imargset,Import(*tree));//import branches with names match the "variable name" (not variable) listed in imargset
-
+  RooDataSet data("Signal","Signal"+signalmass_str,imargset,Import(*tree));//import branches with names match the "variable name" (not variable) listed in imargset  
   
   // --- Perform ML fit of composite PDF to data ---
   /*
@@ -104,7 +114,7 @@ void make_signal_wide_com1_shapes(int signalmass = 700)
   else if(signalmass*1.3 > 3500)
     r = com_model->fitTo(data,Range(signalmass*0.7,3500),RooFit::Minimizer("Minuit2"),Save());
   */
-  RooFitResult *r = com_model->fitTo(data,RooFit::Minimizer("Minuit2"),Save());
+  RooFitResult *r = com_model->fitTo(data,RooFit::Minimizer("Minuit2"),SumW2Error(false),Save());
 
   cout<<"OK with fir"<<endl;
 
@@ -116,13 +126,11 @@ void make_signal_wide_com1_shapes(int signalmass = 700)
   com_model->plotOn(frame,LineColor(2),RooFit::Name("fit"));
   //com_model->plotOn(frame,VisualizeError(*r,2,kFALSE),FillColor(kYellow),LineColor(0),RooFit::Name("err2"));
   //com_model->plotOn(frame,VisualizeError(*r,1,kFALSE),FillColor(kGreen),LineColor(0),RooFit::Name("err1"));
-  com_model->plotOn(frame,Components("Gaussian1"),LineStyle(kDashed),LineColor(1),RooFit::Name("Gaus1"));
-  com_model->plotOn(frame,Components("Gaussian2"),LineStyle(kDashed),RooFit::Name("Gaus2"));
-  com_model->plotOn(frame,Components("tail"),LineStyle(kDashed),LineColor(3),RooFit::Name("Exp"));
+  com_model->plotOn(frame,Components("CBShape"),LineStyle(kDashed),LineColor(1),RooFit::Name("CB"));
+  com_model->plotOn(frame,Components("Gaussian"),LineStyle(kDashed),RooFit::Name("Gaus"));
   com_model->plotOn(frame,LineColor(2),RooFit::Name("fit"));
   data.plotOn(frame);
 
-  /*
   RooDataHist datah("dh","binned data",RooArgSet(*m),data);
   RooChi2Var chi2 ("chi2", "chi2", *com_model,datah,DataError(RooAbsData::Poisson));//Default: SumW2
   TString chi2txt = "Chi2/ndf: "+to_str_trim(chi2.getVal()/datah.numEntries());
@@ -143,6 +151,7 @@ void make_signal_wide_com1_shapes(int signalmass = 700)
   TLatex *Gaussigmalax = new TLatex(0.7,0.7-0.18,Gaussigma);
   TLatex *Fraclax = new TLatex(0.7,0.7-0.21,Fraction);
 
+  /*
   // --- Perform extended ML fit ---
   RooRealVar *sig_norm = new RooRealVar("sig_norm","sig_norm",5000,0,100000,"");
   RooAddPdf *ex_model = new RooAddPdf("extended","extended",RooArgList(*com_model),RooArgList(*sig_norm));
@@ -151,6 +160,7 @@ void make_signal_wide_com1_shapes(int signalmass = 700)
   cout<<"Normalization is: "<<sig_norm->getVal()<<endl;
   TString sigN = "Ns: "+to_str_trim(sig_norm->getVal());
   TLatex *sigNlax = new TLatex(0.7,0.38,sigN);
+  */
 
   chi2lax->SetNDC();
   //NLLlax->SetNDC();
@@ -181,7 +191,7 @@ void make_signal_wide_com1_shapes(int signalmass = 700)
   frame->addObject(Gaussigmalax);
   frame->addObject(Fraclax);
   //frame->addObject(sigNlax);
-  */
+  
   
 
   TCanvas *c01 = new TCanvas("c01","c01",1200,900);
@@ -205,7 +215,7 @@ void make_signal_wide_com1_shapes(int signalmass = 700)
   //l->AddEntry(frame->findObject("err1"),"Fit Error 1 #sigma","f");
   //l->AddEntry(frame->findObject("err2"),"Fit Error 2 #sigma","f");
   l->Draw("same");
-  c01->Print(signalmass_str+".png");
+  c01->Print(signalmass_str+"line.png");
 
   TCanvas *c02 = new TCanvas("c02","c02",1200,300);
   //axis,log scale and range setting functions must be called after all plotOn functions being called
@@ -242,7 +252,7 @@ void make_signal_wide_com1_shapes(int signalmass = 700)
   xaxis->SetTitleOffset(1.2);
   yaxis->SetTitle("Events / 20 GeV");
   yaxis->SetTitleOffset(1.2);
-  yaxis->SetRangeUser(0.5,10000);
+  yaxis->SetRangeUser(0.00001,0.01);
   xaxis->SetRangeUser(signalmass*0.75,signalmass*1.25);
   //xaxis->SetRangeUser(600,875);
   //xaxis->SetRangeUser(600,signalmass*1.3);
@@ -263,7 +273,7 @@ void make_signal_wide_com1_shapes(int signalmass = 700)
   w->import(*m);
   w->import(data,Rename("signal_MC"));
   w->import(*com_model);
-  w->writeToFile(signalmass_str+"-shapes-Unbinned"+".root");
+  w->writeToFile(signalmass_str+"-shapes-Unbinned-"+".root");
   
   
 }

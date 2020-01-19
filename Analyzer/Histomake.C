@@ -21,11 +21,13 @@ void Histomake()
   Float_t p_pt, p_eta, p_phi, p_e, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight;
   std::vector<TFile*> file_v;
   // Data
-  file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/SinglePhoton2017_full_presel.root"));
+  //file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Pre_sel_Jan12/SinglePhoton2017_WGamma_Wsideband_full_presel.root"));
   // GJets
-  //file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/GJetsCombined_full_presel_weightedTo41p54_fitData.root"));
+  //file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Pre_sel_Jan12/GJets_WGamma_Wband_full_presel.root"));
   // QCD
-  //file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/QCDCombined_full_presel_weightedTo41p54_fitData.root"));
+  //file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Pre_sel_Jan12/QCD_WGamma_Wband_full_presel.root"));
+  // Signal
+  file_v.push_back(TFile::Open("SignalM2000W_WGamma_Wband_sigrange_tau21left.root"));
   
   for(int i = 0; i<file_v.size(); i++){
     TTree* theTree = (TTree*)file_v.at(i)->Get("Events");
@@ -42,28 +44,27 @@ void Histomake()
     theTree->SetBranchAddress("ak8puppijet_tau21", &j_tau21);
     theTree->SetBranchAddress("sys_costhetastar", &s_cos);
     theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
-    theTree->SetBranchAddress("sys_invmass", &s_mass);
-    //theTree->SetBranchAddress("xsec_weight", &x_weight);
+    theTree->SetBranchAddress("m", &s_mass);
+    theTree->SetBranchAddress("xsec_weight", &x_weight);
   
     for (int ievt = 0; ievt<theTree->GetEntries();ievt++){
       theTree->GetEntry(ievt);
-
-      double weight = 1;
-      hist1->Fill(p_pt, weight);
-      hist2->Fill(p_eta, weight);
-      hist3->Fill(j_pt, weight);
-      hist4->Fill(j_eta, weight);
-      hist5->Fill(j_e, weight);
-      hist6->Fill(j_mass, weight);
-      hist7->Fill(j_tau21, weight);
-      hist8->Fill(s_cos, weight);
-      hist9->Fill(s_ptm, weight);
-      hist10->Fill(s_mass, weight);
+      
+      hist1->Fill(p_pt, x_weight);
+      hist2->Fill(p_eta, x_weight);
+      hist3->Fill(j_pt, x_weight);
+      hist4->Fill(j_eta, x_weight);
+      hist5->Fill(j_e, x_weight);
+      hist6->Fill(j_mass, x_weight);
+      hist7->Fill(j_tau21, x_weight);
+      hist8->Fill(s_cos, x_weight);
+      hist9->Fill(s_ptm, x_weight);
+      hist10->Fill(s_mass, x_weight);
     }
   }
 
   // Write histos to root file
-  TFile *outFile = TFile::Open("Histogram_Data_fullyweighted.root","RECREATE");
+  TFile *outFile = TFile::Open("Histogram_2000W_fullyweighted.root","RECREATE");
   hist1->Write();
   hist2->Write();
   hist3->Write();
