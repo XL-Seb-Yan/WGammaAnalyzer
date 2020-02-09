@@ -52,7 +52,7 @@ void make_signal_wide_anc_shapes(int signalmass = 1000)
 {
   //int rlo = 1200;
   //int rhi = 2100;
-  double yhi = 0.01;
+  double yhi = 150;
   //gErrorIgnoreLevel = kInfo;
   gROOT->SetBatch(1);
   using namespace std;
@@ -98,7 +98,7 @@ void make_signal_wide_anc_shapes(int signalmass = 1000)
   RooAddPdf* com_model = new RooAddPdf("composite","composite",RooArgList(*CB_model,*Gaus_model),RooArgList(*frac));
 
   // --- Import unBinned dataset ---
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/fullcut/Signal"+signalmass_str+"W_Wwindow_sigrange_finalcut.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/fullcut_Jan12/SignalMC"+signalmass_str+"W_WGamma_sigrange_finalcut_Jan12.root");
   TTree* tree = (TTree*)file.Get("Events");
   RooArgList imarglist(*m);
   RooArgSet imargset(imarglist);
@@ -141,15 +141,14 @@ void make_signal_wide_anc_shapes(int signalmass = 1000)
   TString CBn = "n_{CB}: "+to_str_trim(CB_n->getVal())+" #pm "+to_str_trim(CB_n->getError());
   TString Gaussigma = "#sigma_{Gaus}: "+to_str_trim(Gaus_sigma->getVal())+" #pm "+to_str_trim(Gaus_sigma->getError())+" (GeV)";
   TString Fraction = "CB frac: "+to_str_trim(frac->getVal())+" #pm "+to_str_trim(frac->getError());
-  double position = 0.72;
-  TLatex *chi2lax = new TLatex(0.7,0.7-0.03,chi2txt);
-  //TLatex *NLLlax = new TLatex(0.7,0.7-0.06,NLLtxt);
-  TLatex *CBmeanlax = new TLatex(0.7,0.7-0.06,CBmean);
-  TLatex *CBsigmalax = new TLatex(0.7,0.7-0.09,CBsigma);
-  TLatex *CBalphalax = new TLatex(0.7,0.7-0.12,CBalpha);
-  TLatex *CBnlax = new TLatex(0.7,0.7-0.15,CBn);
-  TLatex *Gaussigmalax = new TLatex(0.7,0.7-0.18,Gaussigma);
-  TLatex *Fraclax = new TLatex(0.7,0.7-0.21,Fraction);
+  TLatex *chi2lax = new TLatex(0.15,0.8-0.03,chi2txt);
+  //TLatex *NLLlax = new TLatex(0.15,0.8-0.06,NLLtxt);
+  TLatex *CBmeanlax = new TLatex(0.15,0.8-0.06,CBmean);
+  TLatex *CBsigmalax = new TLatex(0.15,0.8-0.09,CBsigma);
+  TLatex *CBalphalax = new TLatex(0.15,0.8-0.12,CBalpha);
+  TLatex *CBnlax = new TLatex(0.15,0.8-0.15,CBn);
+  TLatex *Gaussigmalax = new TLatex(0.15,0.8-0.18,Gaussigma);
+  TLatex *Fraclax = new TLatex(0.15,0.8-0.21,Fraction);
 
   /*
   // --- Perform extended ML fit ---
@@ -215,7 +214,8 @@ void make_signal_wide_anc_shapes(int signalmass = 1000)
   //l->AddEntry(frame->findObject("err1"),"Fit Error 1 #sigma","f");
   //l->AddEntry(frame->findObject("err2"),"Fit Error 2 #sigma","f");
   l->Draw("same");
-  c01->Print(signalmass_str+"line.png");
+  c01->Print(signalmass_str+".png");
+  c01->Print(signalmass_str+".pdf");
 
   TCanvas *c02 = new TCanvas("c02","c02",1200,300);
   //axis,log scale and range setting functions must be called after all plotOn functions being called
@@ -235,7 +235,7 @@ void make_signal_wide_anc_shapes(int signalmass = 1000)
   yaxis->SetLabelSize(0.08);
   yaxis->SetTitleSize(0.08);
   yaxis->SetNdivisions(5);
-  xaxis->SetRangeUser(signalmass*0.7,signalmass*1.3);
+  xaxis->SetRangeUser(signalmass*0.75,signalmass*1.25);
   //xaxis->SetRangeUser(600,875);
   c02->SetBottomMargin(0.18);
   c02->SetTopMargin(0.18);
@@ -243,7 +243,9 @@ void make_signal_wide_anc_shapes(int signalmass = 1000)
   pull_frame->Draw();
   c02->Update();
   c02->Print("pull"+signalmass_str+".png");
+  c02->Print("pull"+signalmass_str+".pdf");
 
+  /*
   TCanvas *c03 = new TCanvas("c03","c03",1200,900);
   //axis,log scale and range setting functions must be called after all plotOn functions being called
   xaxis = frame->GetXaxis();
@@ -267,13 +269,14 @@ void make_signal_wide_anc_shapes(int signalmass = 1000)
   //l->AddEntry(frame->findObject("err2"),"Fit Error 2 #sigma","f");
   l->Draw("same");
   c03->Print(signalmass_str+"log.png");
+  */
   
   // --- Output root file ---
   RooWorkspace *w = new RooWorkspace("w","w");
   w->import(*m);
   w->import(data,Rename("signal_MC"));
   w->import(*com_model);
-  w->writeToFile(signalmass_str+"-shapes-Unbinned-"+".root");
+  w->writeToFile(signalmass_str+"W-shapes-Unbinned-composit"+".root");
   
   
 }

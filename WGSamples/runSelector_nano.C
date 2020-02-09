@@ -1,9 +1,8 @@
-void runSelector()
+void runSelector_nano()
 {
-  TFile infile("MC1600_nanoAOD.root");
-  //TDirectory *folder;
-  //folder = (TDirectory*)infile.Get("ntuplizer");
-  //TTree* tree = (TTree*)folder->Get("tree");
+  gROOT->SetBatch(1);
+  TFile infile("Signal_Nano_16_M1000N.root");
   TTree* tree = (TTree*)infile.Get("Events");
-  tree->Process("Selector.C");
+  cout<<tree<<endl;
+  tree->Process("Selector_nano.C");
 }

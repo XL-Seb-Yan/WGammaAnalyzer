@@ -6,7 +6,7 @@ void Histoplot()
   gStyle->SetOptStat(0);
 
   // Write histos to root file
-  TFile *file1 = TFile::Open("Histogram_2000_fullyweighted.root");
+  TFile *file1 = TFile::Open("Histogram_2800N_fullyweighted.root");
   TFile *file2 = TFile::Open("Histogram_GJets_fullyweighted.root");
   TFile *file3 = TFile::Open("Histogram_QCD_fullyweighted.root");
   TH1* hist1_1 = (TH1*)file1->Get("1"); //p_pt

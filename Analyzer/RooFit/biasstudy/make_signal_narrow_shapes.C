@@ -47,8 +47,9 @@ std::string to_str_trim(const float a_value, const int n = 2)
     return std::to_string(a_value).substr(0,std::to_string(a_value).find(".") + n + 1);
 }
 
-void make_signal_narrow_shapes(int signalmass = 3500)
+void make_signal_narrow_shapes(int signalmass = 750)
 {
+  int yhi = 5000;
   //gErrorIgnoreLevel = kInfo;
   gROOT->SetBatch(1);
   using namespace std;
@@ -67,9 +68,9 @@ void make_signal_narrow_shapes(int signalmass = 3500)
   
   TString fun_name = "CB";
   RooRealVar* mean = new RooRealVar("mean","mean",signalmass,signalmass-100,signalmass+100,"");
-  RooRealVar* sigma = new RooRealVar("sigma","sigma",30,0,150,"");
-  RooRealVar* alpha = new RooRealVar("alpha","alpha",1,0,5,"");
-  RooRealVar* n = new RooRealVar("n","n",1,0,50,"");
+  RooRealVar* sigma = new RooRealVar("sigma","sigma",50,20,150,"");
+  RooRealVar* alpha = new RooRealVar("alpha","alpha",1,0.1,5,"");
+  RooRealVar* n = new RooRealVar("n","n",1,0.1,50,"");
   RooCBShape* model = new RooCBShape("CBShape","Cystal Ball Function",*m,*mean,*sigma,*alpha,*n);
   
   
@@ -80,18 +81,18 @@ void make_signal_narrow_shapes(int signalmass = 3500)
   RooRealVar* sigma = new RooRealVar("sigma","sigma",40,0,80,"");
   RooGaussian* model = new RooGaussian("Gaussian","Gaussian Function",*m,*mean,*sigma);
   */
+
   /*
   // --- Import unBinned dataset ---
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/fullcut/Signal"+signalmass_str+"N_Wwindow_full_finalcut.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/fullcut_Jan12/SignalMC"+signalmass_str+"N_WGamma_sigrange_finalcut_Jan12.root");
   TTree* tree = (TTree*)file.Get("Events");
   RooArgList imarglist(*m);
   RooArgSet imargset(imarglist);
   RooDataSet data("Signal","Signal"+signalmass_str,imargset,Import(*tree));//import branches with names match the "variable name" (not variable) listed in imargset
-
   */
   
   // --- Import unBinned dataset ---
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/RooFitWorkspace/GenSignalDataset/roodataset_signal-"+signalmass_str+"-narrow.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/RooFitWorkspace_Jan12/GenSignalDataset/narrow/roodataset_signal-"+signalmass_str+"-narrow.root");
   RooDataSet *input = (RooDataSet*)file.Get("lmorphData");
   RooDataSet data("Signal","Signal"+signalmass_str,input,RooArgSet(*m));
   
@@ -109,7 +110,7 @@ void make_signal_narrow_shapes(int signalmass = 3500)
   RooPlot *frame = m->frame(Title("Signal"+signalmass_str));
   data.plotOn(frame,RooFit::Name("data"));
   model->plotOn(frame,LineStyle(kDashed),RooFit::Name(fun_name));
-  model->plotOn(frame,VisualizeError(*r,2,kFALSE),FillColor(kYellow),LineColor(0),RooFit::Name("err2"));
+  //model->plotOn(frame,VisualizeError(*r,2,kFALSE),FillColor(kYellow),LineColor(0),RooFit::Name("err2"));
   model->plotOn(frame,VisualizeError(*r,1,kFALSE),FillColor(kGreen),LineColor(0),RooFit::Name("err1"));
   model->plotOn(frame,LineStyle(kDashed),RooFit::Name(fun_name));
   data.plotOn(frame);
@@ -122,12 +123,12 @@ void make_signal_narrow_shapes(int signalmass = 3500)
   TString CBsigma = "#sigma_{CB}: "+to_str_trim(sigma->getVal())+" #pm "+to_str_trim(sigma->getError())+" (GeV)";
   TString CBalpha = "#alpha_{CB}: "+to_str_trim(alpha->getVal())+" #pm "+to_str_trim(alpha->getError());
   TString CBn = "n_{CB}: "+to_str_trim(n->getVal())+" #pm "+to_str_trim(n->getError());
-  TLatex *chi2lax = new TLatex(0.2,0.6,chi2txt);
-  TLatex *NLLlax = new TLatex(0.2,0.57,NLLtxt);
-  TLatex *CBmeanlax = new TLatex(0.2,0.54,CBmean);
-  TLatex *CBsigmalax = new TLatex(0.2,0.51,CBsigma);
-  TLatex *CBalphalax = new TLatex(0.2,0.48,CBalpha);
-  TLatex *CBnlax = new TLatex(0.2,0.45,CBn);
+  TLatex *chi2lax = new TLatex(0.15,0.8,chi2txt);
+  TLatex *NLLlax = new TLatex(0.15,0.77,NLLtxt);
+  TLatex *CBmeanlax = new TLatex(0.15,0.74,CBmean);
+  TLatex *CBsigmalax = new TLatex(0.15,0.71,CBsigma);
+  TLatex *CBalphalax = new TLatex(0.15,0.68,CBalpha);
+  TLatex *CBnlax = new TLatex(0.15,0.65,CBn);
 
   // --- Perform extended ML fit ---
   RooRealVar *sig_norm = new RooRealVar("sig_norm","sig_norm",5000,0,100000,"");
@@ -136,7 +137,7 @@ void make_signal_narrow_shapes(int signalmass = 3500)
   ex_r = ex_model->fitTo(data,RooFit::Minimizer("Minuit2"),Extended(true),Save());
   cout<<"Normalization is: "<<sig_norm->getVal()<<endl;
   TString sigN = "Ns: "+to_str_trim(sig_norm->getVal());
-  TLatex *sigNlax = new TLatex(0.2,0.42,sigN);
+  TLatex *sigNlax = new TLatex(0.15,0.62,sigN);
 
   chi2lax->SetNDC();
   NLLlax->SetNDC();
@@ -171,7 +172,7 @@ void make_signal_narrow_shapes(int signalmass = 3500)
   xaxis->SetTitleOffset(1.2);
   yaxis->SetTitle("Events / 20 GeV");
   yaxis->SetTitleOffset(1.2);
-  yaxis->SetRangeUser(0.5,10000);
+  yaxis->SetRangeUser(0,yhi);
   xaxis->SetRangeUser(signalmass*0.7,signalmass*1.3);
   //frame->SetMaximum(600);
   //frame->SetMinimum(0);
@@ -181,9 +182,10 @@ void make_signal_narrow_shapes(int signalmass = 3500)
   l->AddEntry(frame->findObject(fun_name),"SignalMC fit "+fun_name,"l");
   //l->AddEntry(frame->findObject("bkgfun"),"Background Fit","l");
   l->AddEntry(frame->findObject("err1"),"Fit Error 1 #sigma","f");
-  l->AddEntry(frame->findObject("err2"),"Fit Error 2 #sigma","f");
+  //l->AddEntry(frame->findObject("err2"),"Fit Error 2 #sigma","f");
   l->Draw("same");
   c01->Print(fun_name+signalmass_str+".png");
+  c01->Print(fun_name+signalmass_str+".pdf");
 
   TCanvas *c02 = new TCanvas("c02","c02",1200,300);
   //axis,log scale and range setting functions must be called after all plotOn functions being called
@@ -210,6 +212,7 @@ void make_signal_narrow_shapes(int signalmass = 3500)
   pull_frame->Draw();
   c02->Update();
   c02->Print("pull"+fun_name+signalmass_str+".png");
+  c02->Print("pull"+fun_name+signalmass_str+".pdf");
   
   
   // --- Output root file ---

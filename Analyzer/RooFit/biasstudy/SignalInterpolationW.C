@@ -24,7 +24,7 @@ void SignalInterpolationW(){
   const double step = 50;
   const int nMCpoints = 14;  
   RooAbsPdf* gMass[nMCpoints];   
-  const double masses[nMCpoints] = {700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,3000,3500};
+  const double masses[nMCpoints] = {700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3500};
   //const double masses[nMCpoints] = {3000,3500};
 
   TFile *f[nMCpoints];
@@ -32,7 +32,7 @@ void SignalInterpolationW(){
 
   for (int i = 0; i!=nMCpoints; ++i ){
     TString massname = std::to_string(int(masses[i]));
-    TString name = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/RooFitWorkspace/anchorpdf/wide/"+massname+"W-shapes-Unbinned-.root";
+    TString name = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/RooFitWorkspace_Jan12/anchor/"+massname+"W-shapes-Unbinned-composit.root";
     if (!gSystem->AccessPathName(name)){
       f[i] = new TFile(name);
       xf[i] = (RooWorkspace*)f[i]->Get("w");
@@ -129,7 +129,6 @@ void SignalInterpolationW(){
       dataGen->plotOn(frame_test);
       frame_test->Draw();
       c111->Write();
-
       */
       
       //dataGen->Write();
@@ -143,7 +142,7 @@ void SignalInterpolationW(){
     TCanvas *c = new TCanvas("","",1200,900);
     c->cd();
     c->Clear();
-    frame1[iPoint]->SetTitle("Signal Interpolation (Narrow)");
+    frame1[iPoint]->SetTitle("Signal Interpolation (Wide)");
     TAxis *xaxis = frame1[iPoint]->GetXaxis();
     TAxis *yaxis = frame1[iPoint]->GetYaxis();
     xaxis->SetTitle("m_{W#gamma}");
@@ -153,6 +152,7 @@ void SignalInterpolationW(){
     frame1[iPoint]->Draw();
     TString pngname = std::to_string(int(masses[iPoint]));
     c->Print(pngname+"W.png");
+    c->Print(pngname+"W.pdf");
   }
     
   return; 

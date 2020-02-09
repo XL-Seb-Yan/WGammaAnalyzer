@@ -48,11 +48,11 @@ std::string to_str_trim(const float a_value, const int n = 2)
     return std::to_string(a_value).substr(0,std::to_string(a_value).find(".") + n + 1);
 }
 
-void make_signal_wide_gen_shapes(int signalmass = 700)
+void make_signal_wide_gen_shapes(int signalmass = 3450)
 {
   //int rlo = 1200;
   //int rhi = 2100;
-  double yhi = 0.25;
+  double yhi = 0.1;
   //gErrorIgnoreLevel = kInfo;
   gROOT->SetBatch(1);
   using namespace std;
@@ -71,8 +71,8 @@ void make_signal_wide_gen_shapes(int signalmass = 700)
   
   //--- signal PDF ---
   RooRealVar* CB_mean = new RooRealVar("CB_mean","CB_mean",signalmass,signalmass-100,signalmass+100,"");
-  RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",50,0,250,"");
-  RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",1,0.1,3,"");
+  RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",50,10,250,"");
+  RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",1,0.1,5,"");
   RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",3,0.1,10,"");
   /*
   RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",85,80,86.85,"");
@@ -85,7 +85,7 @@ void make_signal_wide_gen_shapes(int signalmass = 700)
   //--- signal PDF ---
   
   //RooRealVar* Gaus_mean = new RooRealVar("Gaus_mean","Gaus_mean",signalmass,signalmass-100,signalmass+100,"");
-  RooRealVar* Gaus_sigma = new RooRealVar("Gaus_sigma","Gaus_sigma",150,0,500,"");
+  RooRealVar* Gaus_sigma = new RooRealVar("Gaus_sigma","Gaus_sigma",150,50,500,"");
   RooGaussian* Gaus_model = new RooGaussian("Gaussian","Gaussian Function",*m,*CB_mean,*Gaus_sigma);
   
   /*
@@ -107,15 +107,16 @@ void make_signal_wide_gen_shapes(int signalmass = 700)
   */
   /*
   // --- Import unBinned dataset ---
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/RooFitWorkspace/GenSignalDataset/wide/roodataset_signal-"+signalmass_str+"-wide.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/RooFitWorkspace_Jan12/GenSignalDataset/wide/roodataset_signal-"+signalmass_str+"-wide.root");
   RooDataSet *input = (RooDataSet*)file.Get("lmorphData");
   RooDataSet data("Signal","Signal"+signalmass_str,input,RooArgSet(*m));
   */
-
+  
   // --- Import Binned dataset ---
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/RooFitWorkspace/GenSignalDataset/wide/roodataset_signal-"+signalmass_str+"-wide.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/RooFitWorkspace_Jan12/GenSignalDataset/wide/roodataset_signal-"+signalmass_str+"-wide.root");
   TH1D *MChist = (TH1D*)file.Get("distribs_5_10_0__m");
   RooDataHist datah("Signal","Signal"+signalmass_str,RooArgSet(*m),MChist);
+  
   
   
   // --- Perform ML fit of composite PDF to data ---
@@ -128,7 +129,7 @@ void make_signal_wide_gen_shapes(int signalmass = 700)
   else if(signalmass*1.3 > 3500)
     r = com_model->fitTo(data,Range(signalmass*0.7,3500),RooFit::Minimizer("Minuit2"),Save());
   */
-  RooFitResult *r = com_model->fitTo(datah,RooFit::Minimizer("Minuit2"),SumW2Error(false),Save());
+  RooFitResult *r = com_model->fitTo(datah,Range(signalmass*0.75,signalmass*1.25),RooFit::Minimizer("Minuit2"),SumW2Error(false),Save());
 
   cout<<"OK with fir"<<endl;
 
@@ -136,7 +137,7 @@ void make_signal_wide_gen_shapes(int signalmass = 700)
   // --- Plot ---
   gStyle->SetOptStat(111111);
   RooPlot *frame = m->frame(Title("Signal"+signalmass_str));
-  datah.plotOn(frame,RooFit::Name("datah"));
+  datah.plotOn(frame,RooFit::Name("data"));
   com_model->plotOn(frame,LineColor(2),RooFit::Name("fit"));
   //com_model->plotOn(frame,VisualizeError(*r,2,kFALSE),FillColor(kYellow),LineColor(0),RooFit::Name("err2"));
   //com_model->plotOn(frame,VisualizeError(*r,1,kFALSE),FillColor(kGreen),LineColor(0),RooFit::Name("err1"));
@@ -265,7 +266,7 @@ void make_signal_wide_gen_shapes(int signalmass = 700)
   xaxis->SetTitleOffset(1.2);
   yaxis->SetTitle("Events / 20 GeV");
   yaxis->SetTitleOffset(1.2);
-  yaxis->SetRangeUser(0.00001,0.01);
+  yaxis->SetRangeUser(0.0001,0.1);
   xaxis->SetRangeUser(signalmass*0.75,signalmass*1.25);
   //xaxis->SetRangeUser(600,875);
   //xaxis->SetRangeUser(600,signalmass*1.3);

@@ -23,11 +23,11 @@ void Histomake()
   // Data
   //file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Pre_sel_Jan12/SinglePhoton2017_WGamma_Wsideband_full_presel.root"));
   // GJets
-  //file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Pre_sel_Jan12/GJets_WGamma_Wband_full_presel.root"));
+  //file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/GJets_tau21left.root"));
   // QCD
-  //file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Pre_sel_Jan12/QCD_WGamma_Wband_full_presel.root"));
+  //file_v.push_back(TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/QCD_tau21left.root"));
   // Signal
-  file_v.push_back(TFile::Open("SignalM2000W_WGamma_Wband_sigrange_tau21left.root"));
+  file_v.push_back(TFile::Open("SignalM2800W_WGamma_Wband_sigrange_tau21left.root"));
   
   for(int i = 0; i<file_v.size(); i++){
     TTree* theTree = (TTree*)file_v.at(i)->Get("Events");
@@ -64,7 +64,7 @@ void Histomake()
   }
 
   // Write histos to root file
-  TFile *outFile = TFile::Open("Histogram_2000W_fullyweighted.root","RECREATE");
+  TFile *outFile = TFile::Open("Histogram_2800W_fullyweighted.root","RECREATE");
   hist1->Write();
   hist2->Write();
   hist3->Write();

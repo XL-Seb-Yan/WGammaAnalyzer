@@ -43,7 +43,7 @@
 #endif
 
 double CB_pdf(double x){
-  return ROOT::Math::crystalball_pdf(x,1.3194,2.7968,80,3513.59);
+  return ROOT::Math::crystalball_pdf(x,0.93,10.82,77.12,3515.33);
 }
 /*
 double com_pdf(double x){
@@ -58,8 +58,7 @@ void KS_test()
   //rlo{600,600,600,800,1000,1100,1350,1500,1700,1800,2000,2200,2400}
   //rhi{1100,1200,1400,1600,1800,2100,2300,2600,2800,3000,3200,3400,3500}
 
-  int rlo = 3500*0.7;
-  int rhi = 3500*1.3;
+  
   //gErrorIgnoreLevel = kInfo;
   gROOT->SetBatch(1);
   using namespace std;
@@ -68,10 +67,12 @@ void KS_test()
   RooMsgService::instance().setGlobalKillBelow(RooFit::WARNING);
 
   int signalmass = 3500;
+  int rlo = signalmass*0.75;
+  int rhi = signalmass*1.25;
   TString signalmass_str = std::to_string(signalmass)+"N";
 
   // --- Import unBinned dataset ---
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_9_4_9/src/WGammaAnalyzer/Analyzer/fullcutdataset/Signal"+signalmass_str+"_Wwindow_full_finalcut.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/fullcut_Jan12/SignalMC"+signalmass_str+"_WGamma_sigrange_finalcut_Jan12.root");
   TTree* tree = (TTree*)file.Get("Events");
 
   // GOF test within ROOT

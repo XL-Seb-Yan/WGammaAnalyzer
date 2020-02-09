@@ -28,9 +28,9 @@
 #include <algorithm>
 #include <map>
 #endif
-#define mode 2 //1 for MC W band, 2 for sideband
+#define mode 1 //1 for MC W band, 2 for sideband
 
-double cut_peta(TTree* sigTree, TTree* bkgTree, int sigmass){
+double cut_peta(TTree* sigTree, TTree* bkgTree, int sigmass, int color){
   // Data structures to store info from produced flat ntuples
   float photon_pt;
   float photon_eta;
@@ -158,7 +158,7 @@ double cut_peta(TTree* sigTree, TTree* bkgTree, int sigmass){
 
   TGraph* gr = new TGraph(dim,&recordarr[0],&SBratio[0]);
   gr->SetTitle(Graphname);
-  gr->SetLineColor(2);
+  gr->SetLineColor(color);
   gr->SetLineWidth(4);
   gr->SetMarkerColor(4);
   gr->SetMarkerSize(1.5);
@@ -171,19 +171,21 @@ double cut_peta(TTree* sigTree, TTree* bkgTree, int sigmass){
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
   xaxis->SetRangeUser(0,2);
-  yaxis->SetRangeUser(0,500);
+  yaxis->SetRangeUser(1,5000);
+  c01->SetLogy();
   c01->cd();
   c01->SetGrid();
   cout<<"OK"<<endl;
   gr->Draw("AC");
   TString name = std::to_string(sigmass);
   c01->Print(name+"_peta.png");
+  c01->Print(name+"_peta.pdf");
 
   cout << "max S/Sqrt(B): "<<*std::max_element(SBratio.begin(), SBratio.end())<<endl;
   return recordarr.at(std::max_element(SBratio.begin(),SBratio.end()) - SBratio.begin());
 }
 
-double cut_petajeta(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut){
+double cut_petajeta(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut, int color){
   // Data structures to store info from produced flat ntuples
   float photon_pt;
   float photon_eta;
@@ -312,7 +314,7 @@ double cut_petajeta(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut
   int dim = SBratio.size();
   TGraph* gr = new TGraph(dim,&recordarr[0],&SBratio[0]);
   gr->SetTitle(Graphname);
-  gr->SetLineColor(2);
+  gr->SetLineColor(color);
   gr->SetLineWidth(4);
   gr->SetMarkerColor(4);
   gr->SetMarkerSize(1.5);
@@ -325,19 +327,20 @@ double cut_petajeta(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
   xaxis->SetRangeUser(0,2);
-  yaxis->SetRangeUser(0,500);
-  c01->cd();
+  yaxis->SetRangeUser(1,5000);
+  c01->SetLogy();
   c01->SetGrid();
   cout<<"OK"<<endl;
   gr->Draw("AC");
   TString name = std::to_string(sigmass);
   c01->Print(name+"_petajeta.png");
+  c01->Print(name+"_petajeta.pdf");
 
   cout << "max S/Sqrt(B): "<<*std::max_element(SBratio.begin(), SBratio.end())<<endl;
   return recordarr.at(std::max_element(SBratio.begin(),SBratio.end()) - SBratio.begin());
 }
 
-double cut_petajetaptm(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut, double jeta_cut){
+double cut_petajetaptm(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut, double jeta_cut, int color){
   // Data structures to store info from produced flat ntuples
   float photon_pt;
   float photon_eta;
@@ -468,7 +471,7 @@ double cut_petajetaptm(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_
   int dim = SBratio.size();
   TGraph* gr = new TGraph(dim,&recordarr[0],&SBratio[0]);
   gr->SetTitle(Graphname);
-  gr->SetLineColor(2);
+  gr->SetLineColor(color);
   gr->SetLineWidth(4);
   gr->SetMarkerColor(4);
   gr->SetMarkerSize(1.5);
@@ -481,19 +484,20 @@ double cut_petajetaptm(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
   xaxis->SetRangeUser(0,1);
-  yaxis->SetRangeUser(0,500);
-  c01->cd();
+  yaxis->SetRangeUser(1,5000);
+  c01->SetLogy();
   c01->SetGrid();
   cout<<"OK"<<endl;
   gr->Draw("AC");
   TString name = std::to_string(sigmass);
   c01->Print(name+"_petajetaptm.png");
+  c01->Print(name+"_petajetaptm.pdf");
 
   cout << "max S/Sqrt(B): "<<*std::max_element(SBratio.begin(), SBratio.end())<<endl;
   return recordarr.at(std::max_element(SBratio.begin(),SBratio.end()) - SBratio.begin());
 }
 
-double cut_petajetaptmcos(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut, double jeta_cut, double ptm_cut){
+double cut_petajetaptmcos(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut, double jeta_cut, double ptm_cut, int color){
   // Data structures to store info from produced flat ntuples
   float photon_pt;
   float photon_eta;
@@ -626,7 +630,7 @@ double cut_petajetaptmcos(TTree* sigTree, TTree* bkgTree, int sigmass, double pe
   int dim = SBratio.size();
   TGraph* gr = new TGraph(dim,&recordarr[0],&SBratio[0]);
   gr->SetTitle(Graphname);
-  gr->SetLineColor(2);
+  gr->SetLineColor(color);
   gr->SetLineWidth(4);
   gr->SetMarkerColor(4);
   gr->SetMarkerSize(1.5);
@@ -639,19 +643,20 @@ double cut_petajetaptmcos(TTree* sigTree, TTree* bkgTree, int sigmass, double pe
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
   xaxis->SetRangeUser(0,1);
-  yaxis->SetRangeUser(0,500);
-  c01->cd();
+  yaxis->SetRangeUser(1,5000);
+  c01->SetLogy();
   c01->SetGrid();
   cout<<"OK"<<endl;
   gr->Draw("AC");
   TString name = std::to_string(sigmass);
   c01->Print(name+"_petajetaptmcos.png");
+  c01->Print(name+"_petajetaptmcos.pdf");
 
   cout << "max S/Sqrt(B): "<<*std::max_element(SBratio.begin(), SBratio.end())<<endl;
   return recordarr.at(std::max_element(SBratio.begin(),SBratio.end()) - SBratio.begin());
 }
 
-double cut_petajetaptmcostau(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut, double jeta_cut, double ptm_cut, double cos_cut){
+double cut_petajetaptmcostau(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut, double jeta_cut, double ptm_cut, double cos_cut, int color){
   // Data structures to store info from produced flat ntuples
   float photon_pt;
   float photon_eta;
@@ -785,7 +790,7 @@ double cut_petajetaptmcostau(TTree* sigTree, TTree* bkgTree, int sigmass, double
   int dim = SBratio.size();
   TGraph* gr = new TGraph(dim,&recordarr[0],&SBratio[0]);
   gr->SetTitle(Graphname);
-  gr->SetLineColor(2);
+  gr->SetLineColor(color);
   gr->SetLineWidth(4);
   gr->SetMarkerColor(4);
   gr->SetMarkerSize(1.5);
@@ -798,13 +803,14 @@ double cut_petajetaptmcostau(TTree* sigTree, TTree* bkgTree, int sigmass, double
   yaxis->SetTitleOffset(1.3);
   xaxis->SetTitleOffset(1.3);
   xaxis->SetRangeUser(0,1);
-  yaxis->SetRangeUser(0,500);
-  c01->cd();
+  yaxis->SetRangeUser(1,5000);
+  c01->SetLogy();
   c01->SetGrid();
   cout<<"OK"<<endl;
   gr->Draw("AC");
   TString name = std::to_string(sigmass);
   c01->Print(name+"_petajetaptmcostau21.png");
+  c01->Print(name+"_petajetaptmcostau21.pdf");
 
   cout << "max S/Sqrt(B): "<<*std::max_element(SBratio.begin(), SBratio.end())<<endl;
   return recordarr.at(std::max_element(SBratio.begin(),SBratio.end()) - SBratio.begin());
@@ -814,29 +820,33 @@ void significance_count1D(){
 
   gROOT->SetBatch(1);
   gStyle->SetOptStat(0);
-  int sigmass = 2000;
-  TString sig_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/AnalysisNtuples/SignalMC"+std::to_string(sigmass)+"_WGamma_full_full.root";
-  //TString bkg_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/AnalysisNtuples_Jan12/MCbkgcombined_WGamma_full_full_Jan12.root";
-  TString bkg_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/AnalysisNtuples_Jan12/SinglePhoton2017_WGamma_full_full_Jan12.root";
+  int sigmass = 700;
+  TString width = "W";
+  //int color = 4;
+  //int color = kGreen+3;
+  int color = 2;
+  TString sig_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/AnalysisNtuples_Jan12/SignalMC"+std::to_string(sigmass)+width+"_WGamma_full_full_Jan12.root";
+  TString bkg_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/AnalysisNtuples_Jan12/MCbkgcombined_WGamma_full_full_Jan12.root";
+  //TString bkg_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/AnalysisNtuples_Jan12/SinglePhoton2017_WGamma_full_full_Jan12.root";
 
   TFile *infile_1 = TFile::Open(sig_sample);
   TTree* sigTree = (TTree*)infile_1->Get("Events");
   TFile *infile_2 = TFile::Open(bkg_sample);
   TTree* bkgTree = (TTree*)infile_2->Get("Events");
 
-  double peta_cut = cut_peta(sigTree,bkgTree,sigmass);
+  double peta_cut = cut_peta(sigTree,bkgTree,sigmass,color);
   cout<<"peta_cut: "<<peta_cut<<endl;
   
-  double jeta_cut = cut_petajeta(sigTree,bkgTree,sigmass,peta_cut);
+  double jeta_cut = cut_petajeta(sigTree,bkgTree,sigmass,peta_cut,color);
   cout<<"jeta_cut: "<<jeta_cut<<endl;
   
-  double ptm_cut = cut_petajetaptm(sigTree,bkgTree,sigmass,peta_cut,jeta_cut);
+  double ptm_cut = cut_petajetaptm(sigTree,bkgTree,sigmass,peta_cut,jeta_cut,color);
   cout<<"ptm_cut: "<<ptm_cut<<endl;
   
-  double cos_cut = cut_petajetaptmcos(sigTree,bkgTree,sigmass,peta_cut,jeta_cut,ptm_cut);
+  double cos_cut = cut_petajetaptmcos(sigTree,bkgTree,sigmass,peta_cut,jeta_cut,ptm_cut,color);
   cout<<"cos_cut: "<<cos_cut<<endl;
   
-  double tau21_cut = cut_petajetaptmcostau(sigTree,bkgTree,sigmass,peta_cut,jeta_cut,ptm_cut,cos_cut);
+  double tau21_cut = cut_petajetaptmcostau(sigTree,bkgTree,sigmass,peta_cut,jeta_cut,ptm_cut,cos_cut,color);
   cout<<"tau_cut: "<<tau21_cut<<endl;
 
   /*
