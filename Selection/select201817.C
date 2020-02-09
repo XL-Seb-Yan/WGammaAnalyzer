@@ -312,6 +312,7 @@ void select201817(const TString conf="samples.conf", // input file
       */
 
       for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
+      //for(UInt_t ientry=0; ientry<2; ientry++) {
 	count1++;
 
 	// Get Events
@@ -366,7 +367,7 @@ void select201817(const TString conf="samples.conf", // input file
 	  if (it->first.find("HLT_Photon200") != std::string::npos && it->second == 1)
 	    passTrig = true;
 	}
-	if (!passTrig) continue;
+	//if (!passTrig) continue;
 	count0++;
 	eventTree->GetEntry(ientry);
 
@@ -383,7 +384,7 @@ void select201817(const TString conf="samples.conf", // input file
 	Int_t index_p = -99;
 	for(int i=0; i<ph_pt->size(); i++){
 	  //if(ph_pt->at(i) < 225) continue;
-	  if(ph_pt->at(i) < 225) continue;
+	  if(ph_pt->at(i) < 120) continue;
 	  if(ph_passEleVeto->at(i) != true) continue;
 	  //if(abs(ph_eta->at(i)) > 2.4) continue;
 	  //if(abs(ph_eta->at(i)) > 1.4442 && abs(ph_eta->at(i))< 1.566) continue;
@@ -417,7 +418,7 @@ void select201817(const TString conf="samples.conf", // input file
 	  //if(jetAK8_puppi_IDTightLepVeto->at(i) != true) continue;
 	  if(jetAK8_puppi_IDTight->at(i) != true) continue;
 	  //if(jetAK8_puppi_softdrop_pt->at(i) < 225) continue;
-	  if(jetAK8_puppi_softdrop_pt->at(i) < 225) continue;
+	  if(jetAK8_puppi_softdrop_pt->at(i) < 120) continue;
 	  if(jetAK8_puppi_softdrop_mass->at(i) < 0) continue;
 	  TLorentzVector v_temp1;
 	  v_temp1.SetPtEtaPhiE(jetAK8_puppi_softdrop_pt->at(i),jetAK8_puppi_softdrop_eta->at(i),jetAK8_puppi_softdrop_phi->at(i),jetAK8_puppi_softdrop_E->at(i));
