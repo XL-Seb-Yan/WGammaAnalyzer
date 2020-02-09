@@ -14,6 +14,6 @@ NTUPDIR=SelOutPut
 #QCD1000-1500: 2.72
 #QCD1500-2000: 0.35
 #QCD2000-Inf: 0.14
-root -l -q select.C+\(\"SinglePhoton_2017F_Aug20.conf\",\"${NTUPDIR}\",1\)
+root -l -q ../select201817.C+\(\"SinglePhoton2017F.conf\",\"${NTUPDIR}\",1\)
 
 rm *.so *.d *.pcm

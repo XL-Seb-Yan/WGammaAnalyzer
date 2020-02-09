@@ -312,7 +312,7 @@ void select2016(const TString conf="samples.conf", // input file
       */
 
       for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
-	count1++;
+	count0++;
 
 	// Get Events
 	ph_pt->clear();               
@@ -371,7 +371,7 @@ void select2016(const TString conf="samples.conf", // input file
 	    passTrig = true;
 	}
 	if (!passTrig) continue;
-	count0++;
+	count1++;
 	eventTree->GetEntry(ientry);
 
 	//Only study events contain photons (EM objects here) and jets -- DATA -- 1st skimming
