@@ -12,12 +12,32 @@
 #include "TAxis.h"
 #include "RooPlot.h"
 #include "TH1.h"
+#include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/tdrstyle.C"
+#include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/CMS_lumi.C"
 
 using namespace RooFit;
 
 void SignalInterpolationN(){
 
   gROOT->SetBatch(1);
+  lumi_13TeV = "41.53 fb^{-1}";
+  writeExtraText = 1;
+  lumiTextOffset = 0.15;
+  bool plot_CMS = true;
+  extraText = "Simulation";
+  lumiTextSize = 0.35;
+  cmsTextSize = 0.45;
+  int iPeriod = 4;
+  int iPos = 33;
+  gStyle->SetOptStat(0);
+  gStyle->SetOptTitle(0);
+  gStyle->SetTitleSize(0.05,"XYZ");
+  gStyle->SetLabelSize(0.05,"XYZ");
+  gStyle->SetFrameLineWidth(2);
+  gStyle->SetLegendTextSize(0.025);
+  gStyle->SetBarWidth(2);
+  gStyle->SetHistLineWidth(2);
+  
   // Observable
   RooRealVar m("m","m",600,4000);
     
@@ -72,9 +92,7 @@ void SignalInterpolationN(){
   RooPlot* frame2[nMCpoints];
   RooPlot* frame3[nMCpoints];
   TH1* hh[nMCpoints];
-    
-  TCanvas* c[nMCpoints];
-    
+  
   for (int iPoint = 0; iPoint!=nMCpoints-1; ++iPoint) {
     cout<<"================================================================"<<endl;
     cout<<"===================Processing "<<iPoint<<" ====================="<<endl; 
@@ -124,70 +142,29 @@ void SignalInterpolationN(){
       delete dataGen;
       delete distribs0;
     }
-    TCanvas *c = new TCanvas("","",1200,900);
-    c->cd();
-    c->Clear();
-    frame1[iPoint]->SetTitle("Signal Interpolation (Narrow)");
-    TAxis *xaxis = frame1[iPoint]->GetXaxis();
-    TAxis *yaxis = frame1[iPoint]->GetYaxis();
-    xaxis->SetTitle("m_{W#gamma}");
-    yaxis->SetTitle("Events (a.u.)");
-    xaxis->SetRangeUser(0,4000);
-    yaxis->SetRangeUser(0,0.5);
-    frame1[iPoint]->Draw();
-    TString pngname = std::to_string(int(masses[iPoint]));
-    c->Print(pngname+"N.png");
-    c->Print(pngname+"N.pdf");
-
-    /*
-    // S h o w   2 D   d i s t r i b u t i o n   o f   p d f ( m , a l p h a )
-    // -----------------------------------------------------------------------
-        
-    // Create 2D histogram
-    hh[iPoint] = lmorph.createHistogram("hh",m,Binning(40),YVar(alpha,Binning(40))) ;
-    hh[iPoint]->SetLineColor(kBlue) ;
-        
-        
-    // F i t   p d f   t o   d a t a s e t   w i t h   a l p h a = 0 . 8
-    // -----------------------------------------------------------------
-        
-    // Generate a toy dataset at alpha = 0.8
-    alpha=0.8 ;
-    RooDataSet* data = lmorph.generate(m,1000) ;
-        
-    // Fit pdf to toy data
-    lmorph.setCacheAlpha(kTRUE) ;
-    lmorph.fitTo(*data,Verbose(kTRUE)) ;
-        
-    // Plot fitted pdf and data overlaid
-    frame2[iPoint] = m.frame(Bins(1500)) ;
-    data->plotOn(frame2[iPoint]) ;
-    lmorph.plotOn(frame2[iPoint]) ;
-        
-        
-    // S c a n   - l o g ( L )   v s   a l p h a
-    // -----------------------------------------
-        
-    // Show scan -log(L) of dataset w.r.t alpha
-    frame3[iPoint] = alpha.frame(Bins(100),Range(0.1,0.9)) ;
-        
-    // Make 2D pdf of histogram
-    RooNLLVar nll("nll","nll",lmorph,*data) ;
-    nll.plotOn(frame3[iPoint],ShiftToZero()) ;
-        
-    lmorph.setCacheAlpha(kFALSE) ;
-        
-        
-        
-    c[iPoint] = new TCanvas(Form("linearmorph_%d",iPoint),Form("linearmorph_%d",iPoint),700,700) ;
-    c[iPoint]->Divide(2,2) ;
-    c[iPoint]->cd(1) ; gPad->SetLeftMargin(0.15) ; frame1[iPoint]->GetYaxis()->SetTitleOffset(1.6) ; frame1[iPoint]->Draw() ;
-    c[iPoint]->cd(2) ; gPad->SetLeftMargin(0.20) ; hh[iPoint]->GetZaxis()->SetTitleOffset(2.5) ; hh[iPoint]->Draw("surf") ;
-    c[iPoint]->cd(3) ; gPad->SetLeftMargin(0.15) ; frame3[iPoint]->GetYaxis()->SetTitleOffset(1.4) ; frame3[iPoint]->Draw() ;
-    c[iPoint]->cd(4) ; gPad->SetLeftMargin(0.15) ; frame2[iPoint]->GetYaxis()->SetTitleOffset(1.4) ; frame2[iPoint]->Draw() ;
-    c[iPoint]->Modified(); c[iPoint]->Update();
-    */
   }
+  TCanvas *c = new TCanvas("","",2400,1800);
+  c->cd();
+  c->Clear();
+  c->SetLeftMargin(0.11);
+  c->SetBottomMargin(0.105);
+  frame1[0]->SetTitle("Signal Interpolation (Narrow)");
+  TAxis *xaxis = frame1[0]->GetXaxis();
+  TAxis *yaxis = frame1[0]->GetYaxis();
+  xaxis->SetTitle("m_{W#gamma}");
+  yaxis->SetTitle("Events (a.u.)");
+  yaxis->SetTitleOffset(1.1);
+  xaxis->SetRangeUser(0,4000);
+  yaxis->SetRangeUser(0,0.55);
+  frame1[0]->Draw();
+  for (int iPoint = 1; iPoint!=nMCpoints-1; ++iPoint) {
+    frame1[iPoint]->Draw("SAME");
+  }
+  CMS_lumi(c,iPeriod,iPos);
+  c->Print("Signal_interpolation_N.png");
+  c->Print("Signal_interpolation_N.pdf");
+  c->Print("Signal_interpolation_N.root");
+  c->Print("Signal_interpolation_N.svg");
     
   return; 
 }

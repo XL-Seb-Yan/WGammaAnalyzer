@@ -23,14 +23,14 @@
 #include "TGraphAsymmErrors.h"
 #include "TH1D.h"
 #include "TRandom.h"
-#include "../Utils/interface/ConfParse.hh"             // input conf file parser
-#include "../Utils/interface/CSample.hh"      // helper class to handle samples
+#include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/tdrstyle.C"
+#include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/CMS_lumi.C"
 #include <algorithm>
 #include <map>
 #endif
 #define mode 1 //1 for MC W band, 2 for sideband
 
-double cut_peta(TTree* sigTree, TTree* bkgTree, int sigmass, int color){
+double cut_peta(TTree* sigTree, TTree* bkgTree, int sigmass, int color, int iPeriod,int iPos, bool plot_CMS){
   // Data structures to store info from produced flat ntuples
   float photon_pt;
   float photon_eta;
@@ -104,7 +104,7 @@ double cut_peta(TTree* sigTree, TTree* bkgTree, int sigmass, int color){
   bkgTree->SetBranchAddress("ak8puppijet_tau21", &ak8puppijet_tau21);                     
   bkgTree->SetBranchAddress("sys_costhetastar", &sys_costhetastar);                       
   bkgTree->SetBranchAddress("sys_ptoverm", &sys_ptoverm);                                
-  bkgTree->SetBranchAddress("sys_invmass", &sys_invmass);
+  bkgTree->SetBranchAddress("m", &sys_invmass);
   bkgTree->SetBranchAddress("sys_seperation", &sys_seperation);
 #if mode == 1
   bkgTree->SetBranchAddress("xsec_weight", &xsec_weight);
@@ -138,7 +138,6 @@ double cut_peta(TTree* sigTree, TTree* bkgTree, int sigmass, int color){
   TString Graphname ="|#eta| cut on photon";
 
   //Non stacked plots
-  TLegend *legend1 = new TLegend(0.15,0.75,0.3,0.85);
   TAxis *xaxis = NULL;
   TAxis *yaxis = NULL;
 
@@ -163,13 +162,15 @@ double cut_peta(TTree* sigTree, TTree* bkgTree, int sigmass, int color){
   gr->SetMarkerColor(4);
   gr->SetMarkerSize(1.5);
 
-  TCanvas *c01 = new TCanvas("c01",Graphname,1200,900);
+  TCanvas *c01 = new TCanvas("c01",Graphname,2400,1800);
+  c01->SetBottomMargin(0.13);
+  c01->SetLeftMargin(0.13);
   xaxis = gr->GetXaxis();
   yaxis = gr->GetYaxis();
   xaxis->SetTitle(Graphname);
   yaxis->SetTitle("S/#sqrt{B} a.u.");
-  yaxis->SetTitleOffset(1.3);
-  xaxis->SetTitleOffset(1.3);
+  yaxis->SetTitleOffset(1.15);
+  xaxis->SetTitleOffset(1.15);
   xaxis->SetRangeUser(0,2);
   yaxis->SetRangeUser(1,5000);
   c01->SetLogy();
@@ -178,14 +179,20 @@ double cut_peta(TTree* sigTree, TTree* bkgTree, int sigmass, int color){
   cout<<"OK"<<endl;
   gr->Draw("AC");
   TString name = std::to_string(sigmass);
+  TLegend *legend1 = new TLegend(0.80,0.86,0.899,0.899);
+  legend1->AddEntry(gr,"M-"+name,"l");
+  legend1->Draw();
+  if(plot_CMS) CMS_lumi(c01,iPeriod,iPos);
   c01->Print(name+"_peta.png");
   c01->Print(name+"_peta.pdf");
+  c01->Print(name+"_peta.root");
+  c01->Print(name+"_peta.svg");
 
   cout << "max S/Sqrt(B): "<<*std::max_element(SBratio.begin(), SBratio.end())<<endl;
   return recordarr.at(std::max_element(SBratio.begin(),SBratio.end()) - SBratio.begin());
 }
 
-double cut_petajeta(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut, int color){
+double cut_petajeta(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut, int color, int iPeriod,int iPos, bool plot_CMS){
   // Data structures to store info from produced flat ntuples
   float photon_pt;
   float photon_eta;
@@ -260,7 +267,7 @@ double cut_petajeta(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut
   bkgTree->SetBranchAddress("ak8puppijet_tau21", &ak8puppijet_tau21);                     
   bkgTree->SetBranchAddress("sys_costhetastar", &sys_costhetastar);                       
   bkgTree->SetBranchAddress("sys_ptoverm", &sys_ptoverm);                                
-  bkgTree->SetBranchAddress("sys_invmass", &sys_invmass);
+  bkgTree->SetBranchAddress("m", &sys_invmass);
   bkgTree->SetBranchAddress("sys_seperation", &sys_seperation);
 #if mode == 1
   bkgTree->SetBranchAddress("xsec_weight", &xsec_weight);
@@ -295,7 +302,7 @@ double cut_petajeta(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut
   TString Graphname ="|#eta| cut on jet";
 
   //Non stacked plots
-  TLegend *legend1 = new TLegend(0.15,0.75,0.3,0.85);
+  
   TAxis *xaxis = NULL;
   TAxis *yaxis = NULL;
 
@@ -319,13 +326,15 @@ double cut_petajeta(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut
   gr->SetMarkerColor(4);
   gr->SetMarkerSize(1.5);
 
-  TCanvas *c01 = new TCanvas("c01",Graphname,1200,900);
+  TCanvas *c01 = new TCanvas("c01",Graphname,2400,1800);
+  c01->SetBottomMargin(0.13);
+  c01->SetLeftMargin(0.13);
   xaxis = gr->GetXaxis();
   yaxis = gr->GetYaxis();
   xaxis->SetTitle(Graphname);
   yaxis->SetTitle("S/#sqrt{B} a.u.");
-  yaxis->SetTitleOffset(1.3);
-  xaxis->SetTitleOffset(1.3);
+  yaxis->SetTitleOffset(1.15);
+  xaxis->SetTitleOffset(1.15);
   xaxis->SetRangeUser(0,2);
   yaxis->SetRangeUser(1,5000);
   c01->SetLogy();
@@ -333,14 +342,20 @@ double cut_petajeta(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut
   cout<<"OK"<<endl;
   gr->Draw("AC");
   TString name = std::to_string(sigmass);
+  TLegend *legend1 = new TLegend(0.80,0.86,0.899,0.899);
+  legend1->AddEntry(gr,"M-"+name,"l");
+  legend1->Draw();
+  if(plot_CMS) CMS_lumi(c01,iPeriod,iPos);
   c01->Print(name+"_petajeta.png");
   c01->Print(name+"_petajeta.pdf");
+  c01->Print(name+"_petajeta.root");
+  c01->Print(name+"_petajeta.svg");
 
   cout << "max S/Sqrt(B): "<<*std::max_element(SBratio.begin(), SBratio.end())<<endl;
   return recordarr.at(std::max_element(SBratio.begin(),SBratio.end()) - SBratio.begin());
 }
 
-double cut_petajetaptm(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut, double jeta_cut, int color){
+double cut_petajetaptm(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut, double jeta_cut, int color, int iPeriod,int iPos, bool plot_CMS){
   // Data structures to store info from produced flat ntuples
   float photon_pt;
   float photon_eta;
@@ -416,7 +431,7 @@ double cut_petajetaptm(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_
   bkgTree->SetBranchAddress("ak8puppijet_tau21", &ak8puppijet_tau21);                     
   bkgTree->SetBranchAddress("sys_costhetastar", &sys_costhetastar);                       
   bkgTree->SetBranchAddress("sys_ptoverm", &sys_ptoverm);                                
-  bkgTree->SetBranchAddress("sys_invmass", &sys_invmass);
+  bkgTree->SetBranchAddress("m", &sys_invmass);
   bkgTree->SetBranchAddress("sys_seperation", &sys_seperation);
 #if mode == 1
   bkgTree->SetBranchAddress("xsec_weight", &xsec_weight);
@@ -452,7 +467,7 @@ double cut_petajetaptm(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_
   TString Graphname ="pt/M cut on photon";
 
   //Non stacked plots
-  TLegend *legend1 = new TLegend(0.15,0.75,0.3,0.85);
+  
   TAxis *xaxis = NULL;
   TAxis *yaxis = NULL;
 
@@ -476,13 +491,15 @@ double cut_petajetaptm(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_
   gr->SetMarkerColor(4);
   gr->SetMarkerSize(1.5);
 
-  TCanvas *c01 = new TCanvas("c01",Graphname,1200,900);
+  TCanvas *c01 = new TCanvas("c01",Graphname,2400,1800);
+ c01->SetBottomMargin(0.13);
+  c01->SetLeftMargin(0.13);
   xaxis = gr->GetXaxis();
   yaxis = gr->GetYaxis();
   xaxis->SetTitle(Graphname);
   yaxis->SetTitle("S/#sqrt{B} a.u.");
-  yaxis->SetTitleOffset(1.3);
-  xaxis->SetTitleOffset(1.3);
+  yaxis->SetTitleOffset(1.15);
+  xaxis->SetTitleOffset(1.15);
   xaxis->SetRangeUser(0,1);
   yaxis->SetRangeUser(1,5000);
   c01->SetLogy();
@@ -490,14 +507,20 @@ double cut_petajetaptm(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_
   cout<<"OK"<<endl;
   gr->Draw("AC");
   TString name = std::to_string(sigmass);
+  TLegend *legend1 = new TLegend(0.80,0.86,0.899,0.899);
+  legend1->AddEntry(gr,"M-"+name,"l");
+  legend1->Draw();
+  if(plot_CMS) CMS_lumi(c01,iPeriod,iPos);
   c01->Print(name+"_petajetaptm.png");
   c01->Print(name+"_petajetaptm.pdf");
+  c01->Print(name+"_petajetaptm.root");
+  c01->Print(name+"_petajetaptm.svg");
 
   cout << "max S/Sqrt(B): "<<*std::max_element(SBratio.begin(), SBratio.end())<<endl;
   return recordarr.at(std::max_element(SBratio.begin(),SBratio.end()) - SBratio.begin());
 }
 
-double cut_petajetaptmcos(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut, double jeta_cut, double ptm_cut, int color){
+double cut_petajetaptmcos(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut, double jeta_cut, double ptm_cut, int color, int iPeriod,int iPos, bool plot_CMS){
   // Data structures to store info from produced flat ntuples
   float photon_pt;
   float photon_eta;
@@ -574,7 +597,7 @@ double cut_petajetaptmcos(TTree* sigTree, TTree* bkgTree, int sigmass, double pe
   bkgTree->SetBranchAddress("ak8puppijet_tau21", &ak8puppijet_tau21);                     
   bkgTree->SetBranchAddress("sys_costhetastar", &sys_costhetastar);                       
   bkgTree->SetBranchAddress("sys_ptoverm", &sys_ptoverm);                                
-  bkgTree->SetBranchAddress("sys_invmass", &sys_invmass);
+  bkgTree->SetBranchAddress("m", &sys_invmass);
   bkgTree->SetBranchAddress("sys_seperation", &sys_seperation);
 #if mode == 1
   bkgTree->SetBranchAddress("xsec_weight", &xsec_weight);
@@ -611,7 +634,7 @@ double cut_petajetaptmcos(TTree* sigTree, TTree* bkgTree, int sigmass, double pe
   TString Graphname ="cos(#theta*) cut on photon";
 
   //Non stacked plots
-  TLegend *legend1 = new TLegend(0.15,0.75,0.3,0.85);
+  
   TAxis *xaxis = NULL;
   TAxis *yaxis = NULL;
 
@@ -635,13 +658,15 @@ double cut_petajetaptmcos(TTree* sigTree, TTree* bkgTree, int sigmass, double pe
   gr->SetMarkerColor(4);
   gr->SetMarkerSize(1.5);
 
-  TCanvas *c01 = new TCanvas("c01",Graphname,1200,900);
+  TCanvas *c01 = new TCanvas("c01",Graphname,2400,1800);
+  c01->SetBottomMargin(0.13);
+  c01->SetLeftMargin(0.13);
   xaxis = gr->GetXaxis();
   yaxis = gr->GetYaxis();
   xaxis->SetTitle(Graphname);
   yaxis->SetTitle("S/#sqrt{B} a.u.");
-  yaxis->SetTitleOffset(1.3);
-  xaxis->SetTitleOffset(1.3);
+  yaxis->SetTitleOffset(1.15);
+  xaxis->SetTitleOffset(1.15);
   xaxis->SetRangeUser(0,1);
   yaxis->SetRangeUser(1,5000);
   c01->SetLogy();
@@ -649,14 +674,20 @@ double cut_petajetaptmcos(TTree* sigTree, TTree* bkgTree, int sigmass, double pe
   cout<<"OK"<<endl;
   gr->Draw("AC");
   TString name = std::to_string(sigmass);
+  TLegend *legend1 = new TLegend(0.80,0.86,0.899,0.899);
+  legend1->AddEntry(gr,"M-"+name,"l");
+  legend1->Draw();
+  if(plot_CMS) CMS_lumi(c01,iPeriod,iPos);
   c01->Print(name+"_petajetaptmcos.png");
   c01->Print(name+"_petajetaptmcos.pdf");
+  c01->Print(name+"_petajetaptmcos.root");
+  c01->Print(name+"_petajetaptmcos.svg");
 
   cout << "max S/Sqrt(B): "<<*std::max_element(SBratio.begin(), SBratio.end())<<endl;
   return recordarr.at(std::max_element(SBratio.begin(),SBratio.end()) - SBratio.begin());
 }
 
-double cut_petajetaptmcostau(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut, double jeta_cut, double ptm_cut, double cos_cut, int color){
+double cut_petajetaptmcostau(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut, double jeta_cut, double ptm_cut, double cos_cut, int color, int iPeriod,int iPos, bool plot_CMS){
   // Data structures to store info from produced flat ntuples
   float photon_pt;
   float photon_eta;
@@ -733,7 +764,7 @@ double cut_petajetaptmcostau(TTree* sigTree, TTree* bkgTree, int sigmass, double
   bkgTree->SetBranchAddress("ak8puppijet_tau21", &ak8puppijet_tau21);                     
   bkgTree->SetBranchAddress("sys_costhetastar", &sys_costhetastar);                       
   bkgTree->SetBranchAddress("sys_ptoverm", &sys_ptoverm);                                
-  bkgTree->SetBranchAddress("sys_invmass", &sys_invmass);
+  bkgTree->SetBranchAddress("m", &sys_invmass);
   bkgTree->SetBranchAddress("sys_seperation", &sys_seperation);
 #if mode == 1
   bkgTree->SetBranchAddress("xsec_weight", &xsec_weight);
@@ -771,7 +802,7 @@ double cut_petajetaptmcostau(TTree* sigTree, TTree* bkgTree, int sigmass, double
   TString Graphname ="tau21 cut on jet";
 
   //Non stacked plots
-  TLegend *legend1 = new TLegend(0.15,0.75,0.3,0.85);
+  
   TAxis *xaxis = NULL;
   TAxis *yaxis = NULL;
 
@@ -795,13 +826,15 @@ double cut_petajetaptmcostau(TTree* sigTree, TTree* bkgTree, int sigmass, double
   gr->SetMarkerColor(4);
   gr->SetMarkerSize(1.5);
 
-  TCanvas *c01 = new TCanvas("c01",Graphname,1200,900);
+  TCanvas *c01 = new TCanvas("c01",Graphname,2400,1800);
+  c01->SetBottomMargin(0.13);
+  c01->SetLeftMargin(0.13);
   xaxis = gr->GetXaxis();
   yaxis = gr->GetYaxis();
   xaxis->SetTitle(Graphname);
   yaxis->SetTitle("S/#sqrt{B} a.u.");
-  yaxis->SetTitleOffset(1.3);
-  xaxis->SetTitleOffset(1.3);
+  yaxis->SetTitleOffset(1.15);
+  xaxis->SetTitleOffset(1.15);
   xaxis->SetRangeUser(0,1);
   yaxis->SetRangeUser(1,5000);
   c01->SetLogy();
@@ -809,8 +842,17 @@ double cut_petajetaptmcostau(TTree* sigTree, TTree* bkgTree, int sigmass, double
   cout<<"OK"<<endl;
   gr->Draw("AC");
   TString name = std::to_string(sigmass);
+  if(plot_CMS) {
+    extraText = "Simulation";
+    CMS_lumi(c01,iPeriod,iPos);
+  }
+  TLegend *legend1 = new TLegend(0.80,0.86,0.899,0.899);
+  legend1->AddEntry(gr,"M-"+name,"l");
+  legend1->Draw();
   c01->Print(name+"_petajetaptmcostau21.png");
   c01->Print(name+"_petajetaptmcostau21.pdf");
+  c01->Print(name+"_petajetaptmcostau21.root");
+  c01->Print(name+"_petajetaptmcostau21.svg");
 
   cout << "max S/Sqrt(B): "<<*std::max_element(SBratio.begin(), SBratio.end())<<endl;
   return recordarr.at(std::max_element(SBratio.begin(),SBratio.end()) - SBratio.begin());
@@ -819,14 +861,32 @@ double cut_petajetaptmcostau(TTree* sigTree, TTree* bkgTree, int sigmass, double
 void significance_count1D(){
 
   gROOT->SetBatch(1);
+  lumi_13TeV = "41.53 fb^{-1}";
+  writeExtraText = 1;
+  lumiTextOffset = 0.15;
+  bool plot_CMS = true;
+  extraText = "Preliminary";
+  lumiTextSize = 0.30;
+  cmsTextSize = 0.40;
+  int iPeriod = 4;
+  int iPos = 0;
   gStyle->SetOptStat(0);
+  gStyle->SetOptTitle(0);
+  gStyle->SetTitleSize(0.05,"XYZ");
+  gStyle->SetLabelSize(0.05,"XYZ");
+  gStyle->SetFrameLineWidth(2);
+  gStyle->SetLegendTextSize(0.03);
+  gStyle->SetBarWidth(2);
+  gStyle->SetHistLineWidth(2);
+  
   int sigmass = 700;
-  TString width = "W";
-  //int color = 4;
-  //int color = kGreen+3;
+  TString width = "N";
   int color = 2;
+  //int color = kGreen+3;
+  //int color = 4;
+ 
   TString sig_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/AnalysisNtuples_Jan12/SignalMC"+std::to_string(sigmass)+width+"_WGamma_full_full_Jan12.root";
-  TString bkg_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/AnalysisNtuples_Jan12/MCbkgcombined_WGamma_full_full_Jan12.root";
+  TString bkg_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/AnalysisNtuples_Jan12/BkgMC_WGamma_full_full_Jan12_kfactor.root";
   //TString bkg_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/AnalysisNtuples_Jan12/SinglePhoton2017_WGamma_full_full_Jan12.root";
 
   TFile *infile_1 = TFile::Open(sig_sample);
@@ -834,19 +894,19 @@ void significance_count1D(){
   TFile *infile_2 = TFile::Open(bkg_sample);
   TTree* bkgTree = (TTree*)infile_2->Get("Events");
 
-  double peta_cut = cut_peta(sigTree,bkgTree,sigmass,color);
+  double peta_cut = cut_peta(sigTree,bkgTree,sigmass,color,iPeriod,iPos,plot_CMS);
   cout<<"peta_cut: "<<peta_cut<<endl;
   
-  double jeta_cut = cut_petajeta(sigTree,bkgTree,sigmass,peta_cut,color);
+  double jeta_cut = cut_petajeta(sigTree,bkgTree,sigmass,peta_cut,color,iPeriod,iPos,plot_CMS);
   cout<<"jeta_cut: "<<jeta_cut<<endl;
   
-  double ptm_cut = cut_petajetaptm(sigTree,bkgTree,sigmass,peta_cut,jeta_cut,color);
+  double ptm_cut = cut_petajetaptm(sigTree,bkgTree,sigmass,peta_cut,jeta_cut,color,iPeriod,iPos,plot_CMS);
   cout<<"ptm_cut: "<<ptm_cut<<endl;
   
-  double cos_cut = cut_petajetaptmcos(sigTree,bkgTree,sigmass,peta_cut,jeta_cut,ptm_cut,color);
+  double cos_cut = cut_petajetaptmcos(sigTree,bkgTree,sigmass,peta_cut,jeta_cut,ptm_cut,color,iPeriod,iPos,plot_CMS);
   cout<<"cos_cut: "<<cos_cut<<endl;
   
-  double tau21_cut = cut_petajetaptmcostau(sigTree,bkgTree,sigmass,peta_cut,jeta_cut,ptm_cut,cos_cut,color);
+  double tau21_cut = cut_petajetaptmcostau(sigTree,bkgTree,sigmass,peta_cut,jeta_cut,ptm_cut,cos_cut,color,iPeriod,iPos,plot_CMS);
   cout<<"tau_cut: "<<tau21_cut<<endl;
 
   /*

@@ -23,8 +23,6 @@
 #include "TGraphAsymmErrors.h"
 #include "TH1D.h"
 #include "TRandom.h"
-#include "../Utils/interface/ConfParse.hh"             // input conf file parser
-#include "../Utils/interface/CSample.hh"      // helper class to handle samples
 #include <algorithm>
 #include <map>
 #endif
@@ -49,9 +47,10 @@ void cutselection(int sigm = 2800)
   
   // Open input file
   Float_t p_pt, p_eta, p_phi, p_e, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight; 
-  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2018/AnalysisNtuples/200Trigger/EGamma2018_WGamma_full_full_Jan12_HLT200.root");
-  //TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/AnalysisNtuples_Jan12/SignalMC"+signal+"W_WGamma_full_full_Jan12.root");
-  //TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/AnalysisNtuples_Jan12/SignalMC2800W_WGamma_full_full_Jan12.root");
+  //TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/AnalysisNtuples_Jan12/SinglePhoton2017_WGamma_full_full_Jan12.root");
+  //TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/AnalysisNtuples_Jan12/GJets_WGamma_full_full_Jan12.root");
+  //TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/AnalysisNtuples_Jan12/QCD_WGamma_full_full_Jan12.root");
+  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/AnalysisNtuples_Jan12/SignalMC2800W_WGamma_full_full_Jan12.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -70,9 +69,10 @@ void cutselection(int sigm = 2800)
   theTree->SetBranchAddress("xsec_weight", &x_weight);
 
   // Create output file
-  //TFile *outFile = TFile::Open("SignalM2800W_WGamma_Wband_sigrange_tau21left.root", "RECREATE");
-  TFile *outFile = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2018/fullcut/EGamma2018_WGamma_Wwindow_full_finalcut.root", "RECREATE");
-  //TFile *outFile = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/fullcut_Jan12/SignalMC"+signal+"W_WGamma_sigrange_finalcut_Jan12.root", "RECREATE");
+  //TFile *outFile = TFile::Open("SinglePhoton2017_WGamma_full_full_Jan12_weightedforplot.root", "RECREATE");
+  //TFile *outFile = TFile::Open("GJets_WGamma_full_full_Jan12_tau21.root", "RECREATE");
+  //TFile *outFile = TFile::Open("QCD_WGamma_full_full_Jan12_tau21.root", "RECREATE");
+  TFile *outFile = TFile::Open("M2800W_WGamma_full_full_Jan12_tau21.root", "RECREATE");
   TTree *outTree = new TTree("Events","Events"); 
   outTree->Branch("photon_pt",       &photon_pt,      "photon_pt/F");
   outTree->Branch("photon_eta",      &photon_eta,      "photon_eta/F");
@@ -92,13 +92,16 @@ void cutselection(int sigm = 2800)
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
 
-    //if(s_mass < 0.75*sigm || s_mass > 1.25*sigm) continue;
+    
+    if(s_mass < 0.75*sigm || s_mass > 1.25*sigm) continue;
     if(j_mass < 65 || j_mass > 105) continue;
     if(abs(p_eta) > 1.44) continue;
     if(abs(j_eta) > 2) continue;
-    if(j_tau21 > 0.35) continue;
+    //if(j_tau21 > 0.35) continue;
     if(s_ptm < 0.37) continue;
     if(s_cos > 0.6) continue;
+    
+    
     
     photon_pt = p_pt;
     photon_eta = p_eta;
@@ -113,7 +116,7 @@ void cutselection(int sigm = 2800)
     sys_costhetastar = s_cos;
     sys_ptoverm = s_ptm;
     m = s_mass;
-    //xsec_weight = x_weight*1.41;//*1.41; //Additional kfactor on top of xsec weight: QCD:1.49, GJets:1.49
+    //xsec_weight = x_weight*1.39;//*1.41; //Additional kfactor on top of xsec weight: QCD:0.50, GJets:1.39
     xsec_weight = x_weight*1;
     
     outTree->Fill();

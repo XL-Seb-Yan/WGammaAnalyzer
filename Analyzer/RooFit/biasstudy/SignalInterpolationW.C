@@ -12,12 +12,32 @@
 #include "TAxis.h"
 #include "RooPlot.h"
 #include "TH1.h"
+#include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/tdrstyle.C"
+#include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/CMS_lumi.C"
 
 using namespace RooFit;
 
 void SignalInterpolationW(){
 
   gROOT->SetBatch(1);
+  lumi_13TeV = "41.53 fb^{-1}";
+  writeExtraText = 1;
+  lumiTextOffset = 0.15;
+  bool plot_CMS = true;
+  extraText = "Simulation";
+  lumiTextSize = 0.35;
+  cmsTextSize = 0.45;
+  int iPeriod = 4;
+  int iPos = 33;
+  gStyle->SetOptStat(0);
+  gStyle->SetOptTitle(0);
+  gStyle->SetTitleSize(0.05,"XYZ");
+  gStyle->SetLabelSize(0.05,"XYZ");
+  gStyle->SetFrameLineWidth(2);
+  gStyle->SetLegendTextSize(0.025);
+  gStyle->SetBarWidth(2);
+  gStyle->SetHistLineWidth(2);
+  
   // Observable
   RooRealVar m("m","m",600,4000);
     
@@ -72,8 +92,6 @@ void SignalInterpolationW(){
   RooPlot* frame2[nMCpoints];
   RooPlot* frame3[nMCpoints];
   TH1* hh[nMCpoints];
-    
-  TCanvas* c[nMCpoints];
     
   for (int iPoint = 0; iPoint!=nMCpoints-1; ++iPoint) {
     cout<<"================================================================"<<endl;
@@ -139,21 +157,29 @@ void SignalInterpolationW(){
       delete distribs0;
       //delete c111;
     }
-    TCanvas *c = new TCanvas("","",1200,900);
-    c->cd();
-    c->Clear();
-    frame1[iPoint]->SetTitle("Signal Interpolation (Wide)");
-    TAxis *xaxis = frame1[iPoint]->GetXaxis();
-    TAxis *yaxis = frame1[iPoint]->GetYaxis();
-    xaxis->SetTitle("m_{W#gamma}");
-    yaxis->SetTitle("Events (a.u.)");
-    xaxis->SetRangeUser(0,4000);
-    yaxis->SetRangeUser(0,0.35);
-    frame1[iPoint]->Draw();
-    TString pngname = std::to_string(int(masses[iPoint]));
-    c->Print(pngname+"W.png");
-    c->Print(pngname+"W.pdf");
   }
+  TCanvas *c = new TCanvas("","",2400,1800);
+  c->cd();
+  c->Clear();
+  c->SetLeftMargin(0.11);
+  c->SetBottomMargin(0.105);
+  frame1[0]->SetTitle("Signal Interpolation (Wide)");
+  TAxis *xaxis = frame1[0]->GetXaxis();
+  TAxis *yaxis = frame1[0]->GetYaxis();
+  xaxis->SetTitle("m_{W#gamma}");
+  yaxis->SetTitle("Events (a.u.)");
+  yaxis->SetTitleOffset(1.1);
+  xaxis->SetRangeUser(0,4000);
+  yaxis->SetRangeUser(0,0.35);
+  frame1[0]->Draw();
+  for (int iPoint = 1; iPoint!=nMCpoints-1; ++iPoint) {
+    frame1[iPoint]->Draw("SAME");
+  }
+  CMS_lumi(c,iPeriod,iPos);
+  c->Print("Signal_interpolation_W.png");
+  c->Print("Signal_interpolation_W.pdf");
+  c->Print("Signal_interpolation_W.root");
+  c->Print("Signal_interpolation_W.svg");
     
   return; 
 }
