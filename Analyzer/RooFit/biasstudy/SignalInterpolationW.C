@@ -27,7 +27,7 @@ void SignalInterpolationW(){
   extraText = "Simulation";
   lumiTextSize = 0.35;
   cmsTextSize = 0.45;
-  int iPeriod = 4;
+  int iPeriod = 5;
   int iPos = 33;
   gStyle->SetOptStat(0);
   gStyle->SetOptTitle(0);
@@ -52,7 +52,7 @@ void SignalInterpolationW(){
 
   for (int i = 0; i!=nMCpoints; ++i ){
     TString massname = std::to_string(int(masses[i]));
-    TString name = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/RooFitWorkspace_Jan12/anchor/"+massname+"W-shapes-Unbinned-composit.root";
+    TString name = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/rootfit_workspace/"+massname+"W-shapes-Unbinned-composit.root";
     if (!gSystem->AccessPathName(name)){
       f[i] = new TFile(name);
       xf[i] = (RooWorkspace*)f[i]->Get("w");

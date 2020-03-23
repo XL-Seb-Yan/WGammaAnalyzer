@@ -33,11 +33,10 @@
 #endif
 
 void select2016(const TString conf="samples.conf", // input file
-	      const TString outputDir=".",  // output directory
-	      const Float_t weight=1   // MC weight?
+	          const TString outputDir=".",  // output directory
+	          const Float_t weight=1   // MC weight?
 	       ) {
   gBenchmark->Start("selectWG");
-  gSystem->Load("lib/libMylib.so");
   gROOT->SetBatch(1);
   //--------------------------------------------------------------------------------------------------------------
   // Settings 
@@ -146,9 +145,10 @@ void select2016(const TString conf="samples.conf", // input file
 
   // Data Structure for output skimmed files
   // Photon
-  float photon_pt, photon_eta, photon_phi, photon_e, photon_mvaval, photon_mvacat;
+  float photon_pt, photon_eta, photon_phi, photon_e, photon_mvaval, photon_mvacat, photon_corr, photon_energyscale, photon_resolution;
   // Jet
   float ak8puppijet_pt, ak8puppijet_eta, ak8puppijet_phi, ak8puppijet_e, ak8puppijet_masssoftdropcorr, ak8puppijet_tau21, ak8puppijet_massdiff;
+  float ak8puppijet_jec, ak8puppijet_jec_up, ak8puppijet_jec_down, ak8puppijet_jer, ak8puppijet_jer_sf, ak8puppijet_jer_sf_up, ak8puppijet_jer_sf_down;
   // System
   float sys_costhetastar, sys_ptoverm, sys_invmass, sys_seperation;
   // MC xsec weight
@@ -179,6 +179,9 @@ void select2016(const TString conf="samples.conf", // input file
   std::vector<int>   *ph_passTightId = new std::vector<int>();
   std::vector<float> *ph_mvaVal = new std::vector<float>();
   std::vector<float> *ph_mvaCat = new std::vector<float>();
+  std::vector<float> *ph_corr = new std::vector<float>();
+  std::vector<float> *ph_energyscale= new std::vector<float>();
+  std::vector<float> *ph_resolution = new std::vector<float>();
   //--Jets(AK8)--
   Int_t jetAK8_puppi_N = -99;
   std::vector<bool>  *jetAK8_puppi_IDTight = new std::vector<bool>();
@@ -190,6 +193,13 @@ void select2016(const TString conf="samples.conf", // input file
   std::vector<float> *jetAK8_puppi_softdrop_E = new std::vector<float>();
   std::vector<float> *jetAK8_puppi_tau1 = new std::vector<float>();
   std::vector<float> *jetAK8_puppi_tau2 = new std::vector<float>();
+  std::vector<float> *jetAK8_puppi_jec = new std::vector<float>();
+  std::vector<float> *jetAK8_puppi_jec_up = new std::vector<float>();
+  std::vector<float> *jetAK8_puppi_jec_down = new std::vector<float>();
+  std::vector<float> *jetAK8_puppi_jer = new std::vector<float>();
+  std::vector<float> *jetAK8_puppi_jer_sf = new std::vector<float>();
+  std::vector<float> *jetAK8_puppi_jer_sf_up = new std::vector<float>();
+  std::vector<float> *jetAK8_puppi_jer_sf_down = new std::vector<float>();
   //--Trigger
   std::map<std::string,bool> *HLT_isFired = new std::map<std::string,bool>();
   //--GenParticle
@@ -218,7 +228,7 @@ void select2016(const TString conf="samples.conf", // input file
 
     // Set up output ntuple
     //TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_WGamma_full_full_weightedTo41p54.root");
-    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_WGamma_full_full_Jan12.root");
+    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_WGamma_full_full_Feb26.root");
     TFile *outFile1 = new TFile(outfilename1,"RECREATE"); 
     TTree *outTree1 = new TTree("Events","Events");
     outTree1->Branch("photon_pt",       &photon_pt,      "photon_pt/F");
@@ -227,6 +237,9 @@ void select2016(const TString conf="samples.conf", // input file
     outTree1->Branch("photon_e",        &photon_e,      "photon_e/F");
     outTree1->Branch("photon_mvaval",   &photon_mvaval,  "photon_mvaval/F");
     outTree1->Branch("photon_mvacat",   &photon_mvacat,  "photon_mvacat/F");
+	outTree1->Branch("photon_corr",   &photon_corr,  "photon_corr/F");
+	outTree1->Branch("photon_energyscale",   &photon_energyscale,  "photon_energyscale/F");
+	outTree1->Branch("photon_resolution",   &photon_resolution,  "photon_resolution/F");
     outTree1->Branch("ak8puppijet_pt",       &ak8puppijet_pt,      "ak8puppijet_pt/F");
     outTree1->Branch("ak8puppijet_eta",      &ak8puppijet_eta,      "ak8puppijet_eta/F");
     outTree1->Branch("ak8puppijet_phi",      &ak8puppijet_phi,      "ak8puppijet_phi/F");
@@ -234,6 +247,13 @@ void select2016(const TString conf="samples.conf", // input file
     outTree1->Branch("ak8puppijet_masssoftdropcorr",   &ak8puppijet_masssoftdropcorr,  "ak8puppijet_masssoftdropcorr/F");
     outTree1->Branch("ak8puppijet_tau21",              &ak8puppijet_tau21,             "ak8puppijet_tau21/F");
     outTree1->Branch("ak8puppijet_massdiff",           &ak8puppijet_massdiff,          "ak8puppijet_massdiff/F");
+	outTree1->Branch("ak8puppijet_jec",                &ak8puppijet_jec,               "ak8puppijet_jec/F");
+    outTree1->Branch("ak8puppijet_jecUp",              &ak8puppijet_jec_up,             "ak8puppijet_jec_up/F");
+    outTree1->Branch("ak8puppijet_jecDown",            &ak8puppijet_jec_down,           "ak8puppijet_jec_down/F");
+	outTree1->Branch("ak8puppijet_jer",                &ak8puppijet_jer,               "ak8puppijet_jer/F");
+	outTree1->Branch("ak8puppijet_jer_sf",             &ak8puppijet_jer_sf,            "ak8puppijet_jer_sf/F");
+    outTree1->Branch("ak8puppijet_jer_sf_Up",          &ak8puppijet_jer_sf_up,         "ak8puppijet_jer_sf_up/F");
+    outTree1->Branch("ak8puppijet_jer_sf_Down",        &ak8puppijet_jer_sf_down,       "ak8puppijet_jer_sf_down/F");
     outTree1->Branch("sys_costhetastar",        &sys_costhetastar,      "sys_costhetastar/F");
     outTree1->Branch("sys_ptoverm",             &sys_ptoverm,           "sys_ptoverm/F");
     outTree1->Branch("sys_invmass",             &sys_invmass,           "sys_invmass/F");
@@ -279,7 +299,10 @@ void select2016(const TString conf="samples.conf", // input file
       //eventTree->SetBranchAddress("ph_passMediumId", &ph_passMediumId);         
       eventTree->SetBranchAddress("ph_passTightId", &ph_passTightId);           
       eventTree->SetBranchAddress("ph_mvaVal", &ph_mvaVal);                    
-      eventTree->SetBranchAddress("ph_mvaCat", &ph_mvaCat);                    
+      eventTree->SetBranchAddress("ph_mvaCat", &ph_mvaCat);  
+      eventTree->SetBranchAddress("ph_Corr", &ph_corr);                    
+      eventTree->SetBranchAddress("ph_energyscale", &ph_energyscale); 	  
+	  eventTree->SetBranchAddress("ph_resolution", &ph_resolution); 
       //--Jets (AK8 PUPPI)
       eventTree->SetBranchAddress("jetAK8_N", &jetAK8_puppi_N);                                  
       eventTree->SetBranchAddress("jetAK8_pt", &jetAK8_puppi_softdrop_pt);             
@@ -289,7 +312,14 @@ void select2016(const TString conf="samples.conf", // input file
       eventTree->SetBranchAddress("jetAK8_softdrop_massCorr", &jetAK8_puppi_softdrop_mass);      
       eventTree->SetBranchAddress("jetAK8_tau1", &jetAK8_puppi_tau1);                           
       eventTree->SetBranchAddress("jetAK8_tau2", &jetAK8_puppi_tau2);                           
-      eventTree->SetBranchAddress("jetAK8_IDTight", &jetAK8_puppi_IDTight);                      
+      eventTree->SetBranchAddress("jetAK8_IDTight", &jetAK8_puppi_IDTight);
+      eventTree->SetBranchAddress("jetAK8_softdrop_jec", &jetAK8_puppi_jec);
+      eventTree->SetBranchAddress("jetAK8_softdrop_jecUp", &jetAK8_puppi_jec_up);
+      eventTree->SetBranchAddress("jetAK8_softdrop_jecDown", &jetAK8_puppi_jec_down);
+	  eventTree->SetBranchAddress("jetAK8_jer_sigma_pt", &jetAK8_puppi_jer);
+      eventTree->SetBranchAddress("jetAK8_jer_sf", &jetAK8_puppi_jer_sf);
+      eventTree->SetBranchAddress("jetAK8_jer_sf_up", &jetAK8_puppi_jer_sf_up);
+      eventTree->SetBranchAddress("jetAK8_jer_sf_down", &jetAK8_puppi_jer_sf_down);
       eventTree->SetBranchAddress("HLT_isFired", &HLT_isFired);
       //--GenPartticle
       /*
@@ -312,6 +342,7 @@ void select2016(const TString conf="samples.conf", // input file
       */
 
       for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
+      //for(UInt_t ientry=0; ientry<2; ientry++) {
 	count1++;
 
 	// Get Events
@@ -328,6 +359,9 @@ void select2016(const TString conf="samples.conf", // input file
 	ph_passTightId->clear();      
 	ph_mvaVal->clear();           
 	ph_mvaCat->clear(); 
+	ph_corr->clear();     
+	ph_energyscale->clear();     
+	ph_resolution->clear();     
 	jetAK8_puppi_softdrop_pt->clear();               
 	jetAK8_puppi_softdrop_eta->clear();             
 	jetAK8_puppi_softdrop_phi->clear();             
@@ -336,6 +370,14 @@ void select2016(const TString conf="samples.conf", // input file
 	jetAK8_puppi_tau1->clear();             
 	jetAK8_puppi_tau2->clear();            
 	jetAK8_puppi_IDTight->clear();
+
+	jetAK8_puppi_jec->clear();
+	jetAK8_puppi_jec_up->clear();
+	jetAK8_puppi_jec_down->clear();
+	jetAK8_puppi_jer->clear();
+	jetAK8_puppi_jer_sf->clear();
+	jetAK8_puppi_jer_sf_up->clear();
+	jetAK8_puppi_jer_sf_down->clear();
 	HLT_isFired->clear();
 	/*
 	genPart_pt->clear();
@@ -371,7 +413,7 @@ void select2016(const TString conf="samples.conf", // input file
 	    passTrig = true;
 	}
 	if (!passTrig) continue;
-	count0++;
+	count1++;
 	eventTree->GetEntry(ientry);
 
 	//Only study events contain photons (EM objects here) and jets -- DATA -- 1st skimming
@@ -386,10 +428,8 @@ void select2016(const TString conf="samples.conf", // input file
 	// Locate the first photon in EM objects array (highest pt) and kinetic cut
 	Int_t index_p = -99;
 	for(int i=0; i<ph_pt->size(); i++){
-	  if(ph_pt->at(i) < 225) continue;
+	  if(ph_pt->at(i)*ph_corr->at(i) < 225) continue;
 	  if(ph_passEleVeto->at(i) != true) continue;
-	  //if(abs(ph_eta->at(i)) > 2.4) continue;
-	  //if(abs(ph_eta->at(i)) > 1.4442 && abs(ph_eta->at(i))< 1.566) continue;
 	  if(abs(ph_eta->at(i)) > 1.44) continue; //barrel photon
 	  // Photon mvaID
 	  // See https://twiki.cern.ch/twiki/bin/view/CMS/MultivariatePhotonIdentificationRun2
@@ -405,7 +445,7 @@ void select2016(const TString conf="samples.conf", // input file
 
 	// Assigning leading photon
 	TLorentzVector v_p;
-	v_p.SetPtEtaPhiE(ph_pt->at(index_p), ph_eta->at(index_p), ph_phi->at(index_p), ph_E->at(index_p));
+	v_p.SetPtEtaPhiE(ph_pt->at(index_p)*ph_corr->at(index_p), ph_eta->at(index_p), ph_phi->at(index_p), ph_E->at(index_p)*ph_corr->at(index_p));
 
 	//--------------------------------------Jet----------------------------------------------------
 
@@ -417,12 +457,11 @@ void select2016(const TString conf="samples.conf", // input file
 	Int_t index_j = -99;
 	Double_t mass_diff = 99999;
 	for(int i=0; i<jetAK8_puppi_softdrop_pt->size(); i++){
-	  //if(jetAK8_puppi_IDTightLepVeto->at(i) != true) continue;
 	  if(jetAK8_puppi_IDTight->at(i) != true) continue;
-	  if(jetAK8_puppi_softdrop_pt->at(i) < 225) continue;
-	  if(jetAK8_puppi_softdrop_mass->at(i) < 0) continue;
+	  if(jetAK8_puppi_softdrop_pt->at(i)*jetAK8_puppi_jec->at(i) < 225) continue;
+	  if(jetAK8_puppi_softdrop_mass->at(i) < 0) continue; //mass is already corrected
 	  TLorentzVector v_temp1;
-	  v_temp1.SetPtEtaPhiE(jetAK8_puppi_softdrop_pt->at(i),jetAK8_puppi_softdrop_eta->at(i),jetAK8_puppi_softdrop_phi->at(i),jetAK8_puppi_softdrop_E->at(i));
+	  v_temp1.SetPtEtaPhiE(jetAK8_puppi_softdrop_pt->at(i)*jetAK8_puppi_jec->at(i),jetAK8_puppi_softdrop_eta->at(i),jetAK8_puppi_softdrop_phi->at(i),jetAK8_puppi_softdrop_E->at(i)*jetAK8_puppi_jec->at(i));
 	  if(v_temp1.DeltaR(v_p) < 1.1) continue;
 	  if(abs(jetAK8_puppi_softdrop_mass->at(i) - 80.379) < mass_diff){
 	    mass_diff = abs(jetAK8_puppi_softdrop_mass->at(i) - 80.379);
@@ -438,7 +477,7 @@ void select2016(const TString conf="samples.conf", // input file
 
 	// Assigning candidate jet
 	TLorentzVector v_j;
-	v_j.SetPtEtaPhiE(jetAK8_puppi_softdrop_pt->at(index_j), jetAK8_puppi_softdrop_eta->at(index_j), jetAK8_puppi_softdrop_phi->at(index_j), jetAK8_puppi_softdrop_E->at(index_j));
+	v_j.SetPtEtaPhiE(jetAK8_puppi_softdrop_pt->at(index_j)*jetAK8_puppi_jec->at(index_j), jetAK8_puppi_softdrop_eta->at(index_j), jetAK8_puppi_softdrop_phi->at(index_j), jetAK8_puppi_softdrop_E->at(index_j)*jetAK8_puppi_jec->at(index_j));
 
 	// Tight Selection
 	// Tau21: https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetWtagging
@@ -456,7 +495,7 @@ void select2016(const TString conf="samples.conf", // input file
 	Double_t invmass = 0;
 	Double_t ptoverM = 0;
 	invmass = (v_sys).M();
-	ptoverM = ph_pt->at(index_p)/invmass;
+	ptoverM = ph_pt->at(index_p)*ph_corr->at(index_p)/invmass;
 
 	//if(invmass > 675 && invmass < 1125)
 	pass_s1 = true;
@@ -465,8 +504,8 @@ void select2016(const TString conf="samples.conf", // input file
 	Double_t cosThetaStar = -999;
 	TLorentzVector v_boosted_j, v_boosted_p;
 	v_boosted_p = v_p;
-        v_boosted_p.Boost(-(v_sys.BoostVector()));
-        cosThetaStar = abs(v_boosted_p.Pz()/v_boosted_p.P());
+    v_boosted_p.Boost(-(v_sys.BoostVector()));
+    cosThetaStar = abs(v_boosted_p.Pz()/v_boosted_p.P());
 
 	// Calculate seperation
 	Double_t seperation = v_j.DeltaR(v_p);
@@ -535,19 +574,29 @@ void select2016(const TString conf="samples.conf", // input file
 	}
 	*/
 	if(pass_p2 && pass_j2 && pass_s1){
-	  photon_pt = ph_pt->at(index_p);
+	  photon_pt = ph_pt->at(index_p)*ph_corr->at(index_p);
 	  photon_eta = ph_eta->at(index_p);
 	  photon_phi = ph_phi->at(index_p);
-	  photon_e = ph_E->at(index_p);
+	  photon_e = ph_E->at(index_p)*ph_corr->at(index_p);
 	  photon_mvaval = ph_mvaVal->at(index_p);
 	  photon_mvacat = ph_mvaCat->at(index_p);
-	  ak8puppijet_pt = jetAK8_puppi_softdrop_pt->at(index_j);
+	  photon_corr = ph_corr->at(index_p);
+	  photon_energyscale = ph_energyscale->at(index_p);
+	  photon_resolution = ph_resolution->at(index_p);
+	  ak8puppijet_pt = jetAK8_puppi_softdrop_pt->at(index_j)*jetAK8_puppi_jec->at(index_j);
 	  ak8puppijet_eta = jetAK8_puppi_softdrop_eta->at(index_j);
 	  ak8puppijet_phi = jetAK8_puppi_softdrop_phi->at(index_j);
-	  ak8puppijet_e = jetAK8_puppi_softdrop_E->at(index_j);
+	  ak8puppijet_e = jetAK8_puppi_softdrop_E->at(index_j)*jetAK8_puppi_jec->at(index_j);
 	  ak8puppijet_masssoftdropcorr = jetAK8_puppi_softdrop_mass->at(index_j);
 	  ak8puppijet_tau21 = tau21;
 	  ak8puppijet_massdiff = mass_diff;
+	  ak8puppijet_jec = jetAK8_puppi_jec->at(index_j);
+	  ak8puppijet_jec_up = jetAK8_puppi_jec_up->at(index_j);
+	  ak8puppijet_jec_down = jetAK8_puppi_jec_down->at(index_j);
+	  ak8puppijet_jer = jetAK8_puppi_jer->at(index_j);
+	  ak8puppijet_jer_sf = jetAK8_puppi_jer_sf->at(index_j);
+	  ak8puppijet_jer_sf_up = jetAK8_puppi_jer_sf_up->at(index_j);
+	  ak8puppijet_jer_sf_down = jetAK8_puppi_jer_sf_down->at(index_j);
 	  sys_costhetastar = cosThetaStar;
 	  sys_ptoverm = ptoverM;
 	  sys_invmass = invmass;

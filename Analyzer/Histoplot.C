@@ -192,7 +192,7 @@ void Histoplot()
   TAxis *yaxis2 = NULL;
 
   //===========================================================
-  gStyle->SetHistMinimumZero();
+  //gStyle->SetHistMinimumZero();
   TCanvas *c01 = new TCanvas("c01","",2400,2200);
   c01->cd();
   TPad *p01a = new TPad("p01a","p01a",0.1,0.30,0.9,1.0);

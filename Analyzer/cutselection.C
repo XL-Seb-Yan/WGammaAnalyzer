@@ -25,14 +25,36 @@
 #include "TRandom.h"
 #include <algorithm>
 #include <map>
+#include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/tdrstyle.C"
+#include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/CMS_lumi.C"
 #endif
 
-void cutselection(int sigm = 2800)
+void cutselection(int sigm = 1600)
 {
 
   gROOT->SetBatch(1);
+  lumi_13TeV = "59.74 fb^{-1}";
+  writeExtraText = 1;
+  lumiTextOffset = 0.15;
+  bool plot_CMS = true;
+  extraText = "Simulation";
+  lumiTextSize = 0.35;
+  cmsTextSize = 0.45;
+  int iPeriod = 6;
+  int iPos = 0;
   gStyle->SetOptStat(0);
+  gStyle->SetOptTitle(0);
+  gStyle->SetTitleSize(0.05,"XYZ");
+  gStyle->SetLabelSize(0.05,"XYZ");
+  gStyle->SetFrameLineWidth(2);
+  gStyle->SetLegendTextSize(0.025);
+  gStyle->SetBarWidth(2);
+  gStyle->SetHistLineWidth(2);
   // Plots
+  TH1F* invmass1 = new TH1F("mass1","mass",85,600,4000);
+  TH1F* invmass2 = new TH1F("mass2","mass",85,600,4000);
+  TH1F* invmass3 = new TH1F("mass3","mass",85,600,4000);
+  TH1F* invmass4 = new TH1F("mass4","mass",85,600,4000);
   
   // Local variables to store to outfile
   // Photon
@@ -46,11 +68,12 @@ void cutselection(int sigm = 2800)
   TString signal = std::to_string(sigm);
   
   // Open input file
-  Float_t p_pt, p_eta, p_phi, p_e, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight; 
+  Float_t p_pt, p_eta, p_phi, p_e, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight;
+  int PV_N; 
   //TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/AnalysisNtuples_Jan12/SinglePhoton2017_WGamma_full_full_Jan12.root");
   //TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/AnalysisNtuples_Jan12/GJets_WGamma_full_full_Jan12.root");
   //TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/AnalysisNtuples_Jan12/QCD_WGamma_full_full_Jan12.root");
-  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/AnalysisNtuples_Jan12/SignalMC2800W_WGamma_full_full_Jan12.root");
+  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2018/pre_sel_signal/SignalMC"+signal+"W_nominal_pileup_WGamma_full_full_Mar17.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -68,11 +91,16 @@ void cutselection(int sigm = 2800)
   theTree->SetBranchAddress("sys_invmass", &s_mass);
   theTree->SetBranchAddress("xsec_weight", &x_weight);
 
+  //for pile-up study
+  theTree->SetBranchAddress("PV_N", &PV_N);
+  TH1D* pileup_MC = (TH1D*)input->Get("pileup");
+  pileup_MC->Scale(1/(double)pileup_MC->Integral());
+
   // Create output file
   //TFile *outFile = TFile::Open("SinglePhoton2017_WGamma_full_full_Jan12_weightedforplot.root", "RECREATE");
   //TFile *outFile = TFile::Open("GJets_WGamma_full_full_Jan12_tau21.root", "RECREATE");
   //TFile *outFile = TFile::Open("QCD_WGamma_full_full_Jan12_tau21.root", "RECREATE");
-  TFile *outFile = TFile::Open("M2800W_WGamma_full_full_Jan12_tau21.root", "RECREATE");
+  TFile *outFile = TFile::Open("M"+signal+"N_WGamma_sigrange_Wband_Feb26.root", "RECREATE");
   TTree *outTree = new TTree("Events","Events"); 
   outTree->Branch("photon_pt",       &photon_pt,      "photon_pt/F");
   outTree->Branch("photon_eta",      &photon_eta,      "photon_eta/F");
@@ -89,19 +117,35 @@ void cutselection(int sigm = 2800)
   outTree->Branch("m",                       &m,                     "m/F");
   outTree->Branch("xsec_weight",             &xsec_weight,           "xsec_weight/F");
   
+   //for pile-up study
+  TFile* pileup_central = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/pileup/Pileup_18.root", "READ");
+  TH1D* pileup_Data_central = (TH1D*)pileup_central->Get("pileup");
+  pileup_Data_central->Scale(1/(double)pileup_Data_central->Integral());
+  pileup_Data_central->Divide(pileup_MC);
+  
+  TFile* pileup_up = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/pileup/PileupUp_18.root", "READ");
+  TH1D* pileup_Data_up = (TH1D*)pileup_up->Get("pileup");
+  pileup_Data_up->Scale(1/(double)pileup_Data_up->Integral());
+  pileup_Data_up->Divide(pileup_MC);
+  
+  TFile* pileup_down = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/pileup/PileupDown_18.root", "READ");
+  TH1D* pileup_Data_down = (TH1D*)pileup_down->Get("pileup");
+  pileup_Data_down->Scale(1/(double)pileup_Data_down->Integral());
+  pileup_Data_down->Divide(pileup_MC);
+  
+  double SumWight_central = 0;
+  double SumWight_up = 0;
+  double SumWight_down = 0;
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
-
     
     if(s_mass < 0.75*sigm || s_mass > 1.25*sigm) continue;
     if(j_mass < 65 || j_mass > 105) continue;
     if(abs(p_eta) > 1.44) continue;
     if(abs(j_eta) > 2) continue;
-    //if(j_tau21 > 0.35) continue;
+    if(j_tau21 > 0.35) continue;
     if(s_ptm < 0.37) continue;
     if(s_cos > 0.6) continue;
-    
-    
     
     photon_pt = p_pt;
     photon_eta = p_eta;
@@ -118,58 +162,51 @@ void cutselection(int sigm = 2800)
     m = s_mass;
     //xsec_weight = x_weight*1.39;//*1.41; //Additional kfactor on top of xsec weight: QCD:0.50, GJets:1.39
     xsec_weight = x_weight*1;
-    
     outTree->Fill();
+	
+	int binnum = pileup_Data_central->GetXaxis()->FindBin(PV_N);
+	double pileupweight_central = pileup_Data_central->GetBinContent(binnum);
+	SumWight_central+=pileupweight_central;
+	double pileupweight_up = pileup_Data_up->GetBinContent(binnum);
+	SumWight_up+=pileupweight_up;
+	double pileupweight_down = pileup_Data_down->GetBinContent(binnum);
+	SumWight_down+=pileupweight_down;
+	
+	invmass1->Fill(m);
+	invmass2->Fill(m,pileupweight_central);
+	invmass3->Fill(m,pileupweight_up);
+	invmass4->Fill(m,pileupweight_down);
+	
   }
   cout<<"Entries: "<<outTree->GetEntries()<<endl;
+  cout<<"SumWeight_central: "<<SumWight_central<<" SumWeight_up: "<<SumWight_up<<" SumWeight_down: "<<SumWight_down<<endl;
   outFile->Write();
   outFile->Close();
-
-  /*
-  hist1->SetLineColor(2);
-  hist1->SetLineWidth(3);
-  hist1->Scale(1/double(hist1->GetEntries()));
-
-  TLegend *legend = new TLegend(0.7,0.75,0.85,0.85);
-  TCanvas *c01 = new TCanvas("c01","",1200,900);
-  TAxis *xaxis = hist1->GetXaxis();
-  TAxis *yaxis = hist1->GetYaxis();
-  xaxis->SetTitle("BDT");
-  yaxis->SetTitle("Entries / 0.1");
-  yaxis->SetTitleOffset(1.3);
-  xaxis->SetTitleOffset(1.2);
-  yaxis->SetRangeUser(0.0001,1);
-  c01->SetLogy();
-  c01->cd();
-  hist1->Draw("HIST");
-  c01->Print("BDT.png");
-  */
   
-  /*
-  hist1->SetLineColor(2);
-  hist2->SetLineColor(4);
-  hist1->SetLineWidth(3);
-  hist2->SetLineWidth(3);
-  hist1->Scale(1/double(hist1->GetEntries()));
-  hist2->Scale(1/double(hist2->GetEntries()));
-
-  TLegend *legend = new TLegend(0.7,0.75,0.85,0.85);
-  TCanvas *c01 = new TCanvas("c01","",1200,900);
-  TAxis *xaxis = hist2->GetXaxis();
-  TAxis *yaxis = hist2->GetYaxis();
-  xaxis->SetTitle("pt_{#gamma}/M");
-  yaxis->SetTitle("Entries / 0.1");
-  yaxis->SetTitleOffset(1.3);
-  xaxis->SetTitleOffset(1.2);
-  //yaxis->SetRangeUser(0.0001,1);
-  //c01->SetLogy();
-  c01->cd();
-  hist2->Draw("HIST");
-  hist1->Draw("SAMEHIST");
-  legend->Clear();
-  legend->AddEntry(hist1,"65-70 GeV" ,"f");
-  legend->AddEntry(hist2,"70-100 GeV","f");
-  legend->Draw();
-  c01->Print("BDT.png");
-  */
+  TCanvas *c1 = new TCanvas("c1","",2400,1400);
+  c1->cd();
+  c1->SetLogy();
+  c1->SetBottomMargin(0.12);
+  invmass2->GetYaxis()->SetRangeUser(0.1,10000);
+  invmass2->GetYaxis()->SetTitle("Events / 40 GeV");
+  invmass2->GetYaxis()->SetTitleOffset(1);
+  invmass2->GetXaxis()->SetTitle("M_{j#gamma}");
+  invmass2->GetXaxis()->SetLimits(sigm*0.7,sigm*1.3);
+  invmass3->GetXaxis()->SetLimits(sigm*0.7,sigm*1.3);
+  invmass4->GetXaxis()->SetLimits(sigm*0.7,sigm*1.3);
+  invmass2->SetLineColor(4);
+  invmass3->SetLineColor(2);
+  invmass4->SetLineColor(8);
+  invmass2->Draw();
+  invmass3->Draw("SAME");
+  invmass4->Draw("SAME");
+  TLegend *l = new TLegend(0.60,0.8,0.9,0.9);
+  l->AddEntry(invmass2, "Pileup reweighting - Central");
+  l->AddEntry(invmass3, "Pileup reweighting - Up");
+  l->AddEntry(invmass4, "Pileup reweighting - Down");
+  l->Draw();
+  CMS_lumi(c1,iPeriod,iPos);
+  c1->Print("m"+signal+".png");
+  c1->Print("m"+signal+".pdf");
+  c1->Print("m"+signal+".svg");
 }

@@ -41,6 +41,8 @@
 #include <RooPlotable.h>
 #include <RooWorkspace.h>
 #include <RooAddPdf.h>
+#include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/tdrstyle.C"
+#include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/CMS_lumi.C"
 #endif
 
 std::string to_str_trim(const float a_value, const int n = 2)
@@ -48,18 +50,35 @@ std::string to_str_trim(const float a_value, const int n = 2)
     return std::to_string(a_value).substr(0,std::to_string(a_value).find(".") + n + 1);
 }
 
-void make_signal_wide_anc_shapes(int signalmass = 1000)
+void make_signal_wide_anc_shapes(int signalmass = 1400)
 {
-  //int rlo = 1200;
-  //int rhi = 2100;
-  double yhi = 150;
   //gErrorIgnoreLevel = kInfo;
-  gROOT->SetBatch(1);
   using namespace std;
   using namespace RooFit;
   //RooMsgService::instance().setGlobalKillBelow(RooFit::WARNING);
   RooMsgService::instance().setGlobalKillBelow(RooFit::WARNING);
   RooRandom::randomGenerator()->SetSeed(37);
+  
+  gROOT->SetBatch(1);
+  lumi_13TeV = "41.53 fb^{-1}";
+  writeExtraText = 1;
+  lumiTextOffset = 0.15;
+  bool plot_CMS = true;
+  extraText = "Preliminary";
+  lumiTextSize = 0.35;
+  cmsTextSize = 0.45;
+  int iPeriod = 5;
+  int iPos = 11;
+  gStyle->SetOptStat(0);
+  gStyle->SetOptTitle(0);
+  gStyle->SetTitleSize(0.045,"XYZ");
+  gStyle->SetLabelSize(0.045,"XYZ");
+  gStyle->SetFrameLineWidth(2);
+  gStyle->SetLegendTextSize(0.03);
+  gStyle->SetBarWidth(1.03);
+  gStyle->SetHistLineWidth(2);
+
+  int yhi = 450;
   TString signalmass_str = std::to_string(signalmass);
 
   // --- Create obervable --- 
@@ -71,9 +90,11 @@ void make_signal_wide_anc_shapes(int signalmass = 1000)
   
   //--- signal PDF ---
   RooRealVar* CB_mean = new RooRealVar("CB_mean","CB_mean",signalmass,signalmass-100,signalmass+100,"");
-  RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",50,0,250,"");
+  //RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",50,0,250,"");
+  RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",45,0,65.08,"");
   RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",1,0.1,5,"");
-  RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",3,0.1,10,"");
+  //RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",2,0.1,10,"");
+  RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",5.01,4.99,10,"");
   /*
   RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",85,80,86.85,"");
   RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",1,0.75,1.21,"");
@@ -94,11 +115,11 @@ void make_signal_wide_anc_shapes(int signalmass = 1000)
   RooGenericPdf* exp_model = new RooGenericPdf("tail","exp(exp_p0*m)",RooArgList(*m,*exp_p0));
   */
 
-  RooRealVar* frac = new RooRealVar("frac","frac",0.7,0.5,1);
+  RooRealVar* frac = new RooRealVar("frac","frac",0.85,0.75,1);
   RooAddPdf* com_model = new RooAddPdf("composite","composite",RooArgList(*CB_model,*Gaus_model),RooArgList(*frac));
 
   // --- Import unBinned dataset ---
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/fullcut_Jan12/SignalMC"+signalmass_str+"W_WGamma_sigrange_finalcut_Jan12.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/fullcut/M"+signalmass_str+"W_WGamma_sigrange_Wband_Feb26.root");
   TTree* tree = (TTree*)file.Get("Events");
   RooArgList imarglist(*m);
   RooArgSet imargset(imarglist);
@@ -107,11 +128,11 @@ void make_signal_wide_anc_shapes(int signalmass = 1000)
   // --- Perform ML fit of composite PDF to data ---
   /*
   RooFitResult *r = NULL;
-  if(signalmass*0.7 > 600 && signalmass*1.3 < 3500)
-    r = com_model->fitTo(data,Range(signalmass*0.7,signalmass*1.3),RooFit::Minimizer("Minuit2"),Save());
+  if(signalmass*0.7 > 600 && signalmass*1.25 < 3500)
+    r = com_model->fitTo(data,Range(signalmass*0.7,signalmass*1.25),RooFit::Minimizer("Minuit2"),Save());
   else if(signalmass*0.7 < 600)
-    r = com_model->fitTo(data,Range(600,signalmass*1.3),RooFit::Minimizer("Minuit2"),Save());
-  else if(signalmass*1.3 > 3500)
+    r = com_model->fitTo(data,Range(600,signalmass*1.25),RooFit::Minimizer("Minuit2"),Save());
+  else if(signalmass*1.25 > 3500)
     r = com_model->fitTo(data,Range(signalmass*0.7,3500),RooFit::Minimizer("Minuit2"),Save());
   */
   RooFitResult *r = com_model->fitTo(data,RooFit::Minimizer("Minuit2"),SumW2Error(false),Save());
@@ -123,13 +144,15 @@ void make_signal_wide_anc_shapes(int signalmass = 1000)
   gStyle->SetOptStat(111111);
   RooPlot *frame = m->frame(Title("Signal"+signalmass_str));
   data.plotOn(frame,RooFit::Name("data"));
-  com_model->plotOn(frame,LineColor(2),RooFit::Name("fit"));
+  frame->getAttMarker()->SetMarkerSize(2);
+  com_model->plotOn(frame,LineColor(2),RooFit::Name("fit"),Range(signalmass*0.75,signalmass*1.25));
   //com_model->plotOn(frame,VisualizeError(*r,2,kFALSE),FillColor(kYellow),LineColor(0),RooFit::Name("err2"));
-  //com_model->plotOn(frame,VisualizeError(*r,1,kFALSE),FillColor(kGreen),LineColor(0),RooFit::Name("err1"));
-  com_model->plotOn(frame,Components("CBShape"),LineStyle(kDashed),LineColor(1),RooFit::Name("CB"));
-  com_model->plotOn(frame,Components("Gaussian"),LineStyle(kDashed),RooFit::Name("Gaus"));
-  com_model->plotOn(frame,LineColor(2),RooFit::Name("fit"));
+  com_model->plotOn(frame,VisualizeError(*r,1,kFALSE),FillColor(kGreen),LineColor(0),RooFit::Name("err1"),Range(signalmass*0.75,signalmass*1.25));
+  com_model->plotOn(frame,Components("CBShape"),LineStyle(kDashed),LineColor(1),RooFit::Name("CB"),Range(signalmass*0.75,signalmass*1.25));
+  com_model->plotOn(frame,Components("Gaussian"),LineStyle(kDashed),RooFit::Name("Gaus"),Range(signalmass*0.75,signalmass*1.25));
+  com_model->plotOn(frame,LineColor(2),RooFit::Name("fit"),Range(signalmass*0.75,signalmass*1.25));
   data.plotOn(frame);
+  frame->getAttMarker()->SetMarkerSize(2);
 
   RooDataHist datah("dh","binned data",RooArgSet(*m),data);
   RooChi2Var chi2 ("chi2", "chi2", *com_model,datah,DataError(RooAbsData::Poisson));//Default: SumW2
@@ -141,14 +164,14 @@ void make_signal_wide_anc_shapes(int signalmass = 1000)
   TString CBn = "n_{CB}: "+to_str_trim(CB_n->getVal())+" #pm "+to_str_trim(CB_n->getError());
   TString Gaussigma = "#sigma_{Gaus}: "+to_str_trim(Gaus_sigma->getVal())+" #pm "+to_str_trim(Gaus_sigma->getError())+" (GeV)";
   TString Fraction = "CB frac: "+to_str_trim(frac->getVal())+" #pm "+to_str_trim(frac->getError());
-  TLatex *chi2lax = new TLatex(0.15,0.8-0.03,chi2txt);
+  TLatex *chi2lax = new TLatex(0.15,0.7-0*0.04,chi2txt);
   //TLatex *NLLlax = new TLatex(0.15,0.8-0.06,NLLtxt);
-  TLatex *CBmeanlax = new TLatex(0.15,0.8-0.06,CBmean);
-  TLatex *CBsigmalax = new TLatex(0.15,0.8-0.09,CBsigma);
-  TLatex *CBalphalax = new TLatex(0.15,0.8-0.12,CBalpha);
-  TLatex *CBnlax = new TLatex(0.15,0.8-0.15,CBn);
-  TLatex *Gaussigmalax = new TLatex(0.15,0.8-0.18,Gaussigma);
-  TLatex *Fraclax = new TLatex(0.15,0.8-0.21,Fraction);
+  TLatex *CBmeanlax = new TLatex(0.15,0.7-1*0.04,CBmean);
+  TLatex *CBsigmalax = new TLatex(0.15,0.7-2*0.04,CBsigma);
+  TLatex *CBalphalax = new TLatex(0.15,0.7-3*0.04,CBalpha);
+  TLatex *CBnlax = new TLatex(0.15,0.7-4*0.04,CBn);
+  TLatex *Gaussigmalax = new TLatex(0.15,0.7-5*0.04,Gaussigma);
+  TLatex *Fraclax = new TLatex(0.15,0.7-6*0.04,Fraction);
 
   /*
   // --- Perform extended ML fit ---
@@ -171,15 +194,15 @@ void make_signal_wide_anc_shapes(int signalmass = 1000)
   Fraclax->SetNDC();
   //sigNlax->SetNDC();
   
-  chi2lax->SetTextSize(0.020);
-  //NLLlax->SetTextSize(0.020);
-  CBmeanlax->SetTextSize(0.020);
-  CBsigmalax->SetTextSize(0.020);
-  CBalphalax->SetTextSize(0.020);
-  CBnlax->SetTextSize(0.020);
-  Gaussigmalax->SetTextSize(0.020);
-  Fraclax->SetTextSize(0.020);
-  //sigNlax->SetTextSize(0.020);
+  chi2lax->SetTextSize(0.026);
+  //NLLlax->SetTextSize(0.026);
+  CBmeanlax->SetTextSize(0.026);
+  CBsigmalax->SetTextSize(0.026);
+  CBalphalax->SetTextSize(0.026);
+  CBnlax->SetTextSize(0.026);
+  Gaussigmalax->SetTextSize(0.026);
+  Fraclax->SetTextSize(0.026);
+  //sigNlax->SetTextSize(0.026);
   
   frame->addObject(chi2lax);
   //frame->addObject(NLLlax);
@@ -191,8 +214,68 @@ void make_signal_wide_anc_shapes(int signalmass = 1000)
   frame->addObject(Fraclax);
   //frame->addObject(sigNlax);
   
+  TCanvas *c01 = new TCanvas("c01","c01",2000,2000);
+  TPad *p01a = new TPad("p01a","p01a",0.05,0.27,0.95,1.0);
+  TPad *p01b = new TPad("p01b","p01b",0.05,0.10,0.95,0.315);
+  p01a->Draw();
+  p01b->Draw();
+  p01a->cd();
+  p01a->SetLeftMargin(0.11);
+  p01a->SetRightMargin(0.1);
+  p01a->SetBottomMargin(0.11);
+  //axis,log scale and range setting functions must be called after all plotOn functions being called
+  TAxis* xaxis = frame->GetXaxis();
+  TAxis* yaxis = frame->GetYaxis();
+  xaxis->SetTitle("");
+  xaxis->SetTitleOffset(1.2);
+  yaxis->SetTitle("Events / 20 GeV");
+  yaxis->SetTitleOffset(1.35);
+  yaxis->SetRangeUser(0,yhi);
+  xaxis->SetRangeUser(signalmass*0.75,signalmass*1.25);
+  frame->Draw();
+  CMS_lumi(p01a,iPeriod,iPos);
+  TLegend *l =  new TLegend(0.65,0.75,0.85,0.85);
+  l->AddEntry(frame->findObject("fit"),"SignalMC fit","l");
+  l->AddEntry(frame->findObject("err1"),"Fit Error 1 #sigma","f");
+  //l->AddEntry(frame->findObject("err2"),"Fit Error 2 #sigma","f");
+  l->Draw("same");
+  
+  p01b->cd();
+  p01b->SetLeftMargin(0.11);
+  p01b->SetRightMargin(0.1);
+  p01b->SetTopMargin(0.2);
+  p01b->SetBottomMargin(0.25);
+  RooHist* hpull = frame->pullHist();
+  RooPlot* pull_frame = m->frame();
+  pull_frame->addPlotable(hpull,"B") ;
+  hpull->SetMarkerStyle(8);
+  hpull->SetMarkerSize(0);
+  hpull->SetLineWidth(0);
+  hpull->SetFillColor(kViolet);
+  hpull->SetFillColorAlpha(kViolet,0.5);
+  xaxis = pull_frame->GetXaxis();
+  yaxis = pull_frame->GetYaxis();
+  xaxis->SetTitle("M_{j#gamma} (GeV)");
+  yaxis->SetTitle("#frac{MC-fit}{#sigma_{stat}}");
+  yaxis->SetTitleOffset(0.4);
+  yaxis->SetRangeUser(-5,5);
+  xaxis->SetLabelSize(0.12);
+  xaxis->SetTitleSize(0.12);
+  yaxis->SetLabelSize(0.12);
+  yaxis->SetTitleSize(0.12);
+  yaxis->SetNdivisions(5);
+  xaxis->SetRangeUser(signalmass*0.75,signalmass*1.25);
+  p01b->SetGrid();
+  pull_frame->Draw();
+  p01b->Update();
+  c01->Print("Com"+signalmass_str+".png");
+  c01->Print("Com"+signalmass_str+".pdf");
+  c01->Print("Com"+signalmass_str+".root");
+  c01->Print("Com"+signalmass_str+".svg");
+  
   
 
+/*
   TCanvas *c01 = new TCanvas("c01","c01",1200,900);
   //axis,log scale and range setting functions must be called after all plotOn functions being called
   TAxis* xaxis = frame->GetXaxis();
@@ -245,7 +328,6 @@ void make_signal_wide_anc_shapes(int signalmass = 1000)
   c02->Print("pull"+signalmass_str+".png");
   c02->Print("pull"+signalmass_str+".pdf");
 
-  /*
   TCanvas *c03 = new TCanvas("c03","c03",1200,900);
   //axis,log scale and range setting functions must be called after all plotOn functions being called
   xaxis = frame->GetXaxis();
