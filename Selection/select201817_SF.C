@@ -155,6 +155,7 @@ void select201817_SF(const TString conf="samples.conf", // input file
   float sys_costhetastar, sys_ptoverm, sys_invmass, sys_seperation;
   // MC xsec weight
   float xsec_weight;
+  float event_pdfunc;
   
   // Data structures to store info from produced flat ntuples
   Int_t runnum = -999;
@@ -206,6 +207,8 @@ void select201817_SF(const TString conf="samples.conf", // input file
   std::vector<float> *jetAK8_puppi_jer_sf_down = new std::vector<float>();
   //--Trigger
   std::map<std::string,bool> *HLT_isFired = new std::map<std::string,bool>();
+  //--GenInfo
+  std::vector<float> *evt_pdfunc = new std::vector<float>();
   //--GenParticle
   std::vector<float> *genPart_pt = new std::vector<float>();
   std::vector<float> *genPart_eta = new std::vector<float>();
@@ -245,7 +248,7 @@ void select201817_SF(const TString conf="samples.conf", // input file
 #elif runmode == 32
 	TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_jetjerdown_WGamma_full_full_Feb26.root");
 #else
-	TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_nominal_WGamma_full_full_Feb26.root");
+	TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_PDF_nominal_WGamma_full_full_Mar25.root");
 #endif
     TFile *outFile1 = new TFile(outfilename1,"RECREATE"); 
     TTree *outTree1 = new TTree("Events","Events");
@@ -277,6 +280,7 @@ void select201817_SF(const TString conf="samples.conf", // input file
     outTree1->Branch("sys_invmass",             &sys_invmass,           "sys_invmass/F");
     outTree1->Branch("sys_seperation",          &sys_seperation,        "sys_seperation/F");
     outTree1->Branch("xsec_weight",             &xsec_weight,           "xsec_weight/F");
+	outTree1->Branch("event_pdfunc",            &event_pdfunc,          "event_pdfunc/F");
     
    
 
@@ -284,6 +288,7 @@ void select201817_SF(const TString conf="samples.conf", // input file
     TStopwatch stopwatch;
     
     // loop through files
+	double TotalSumWeight = 0; //Total weight for PDF reweight
     const UInt_t nfiles = samp->fnamev.size();
     for(UInt_t ifile=0; ifile<nfiles; ifile++) {
       
@@ -341,6 +346,8 @@ void select201817_SF(const TString conf="samples.conf", // input file
       eventTree->SetBranchAddress("jetAK8_jer_sf_up", &jetAK8_puppi_jer_sf_up);
       eventTree->SetBranchAddress("jetAK8_jer_sf_down", &jetAK8_puppi_jer_sf_down);
       eventTree->SetBranchAddress("HLT_isFired", &HLT_isFired);
+	  //--GenInfo
+	  eventTree->SetBranchAddress("PDF_weight", &evt_pdfunc);
       //--GenPartticle
       /*
       eventTree->SetBranchAddress("genParticle_pt", &genPart_pt);
@@ -401,6 +408,7 @@ void select201817_SF(const TString conf="samples.conf", // input file
 	jetAK8_puppi_jer_sf_up->clear();
 	jetAK8_puppi_jer_sf_down->clear();
 	HLT_isFired->clear();
+	evt_pdfunc->clear();
 	/*
 	genPart_pt->clear();
 	genPart_eta->clear();
@@ -420,9 +428,18 @@ void select201817_SF(const TString conf="samples.conf", // input file
 	genPart_daughter_e->clear();
 	*/
 	
+	//-------------------------------------PDF weight info-------------------------------------
+	event_pdfunc = 0;
+	TBranch* PDFweightBranch = (TBranch*)eventTree->GetBranch("PDF_weight");
+	PDFweightBranch->GetEntry(ientry);
+	for (int i=0; i<100; i++){
+       event_pdfunc += evt_pdfunc->at(i);
+	}
+	TotalSumWeight += event_pdfunc / 100; //have 1oo replicas
+	
 	//-------------------------------------Trigger----------------------------------------------
 	// HLT Trigger decision first, improve speed
-	TBranch *HLTBranch = (TBranch*)eventTree->GetBranch("HLT_isFired");
+	TBranch* HLTBranch = (TBranch*)eventTree->GetBranch("HLT_isFired");
 	HLTBranch->GetEntry(ientry);
 	
 	bool passTrig = false;
@@ -709,6 +726,7 @@ void select201817_SF(const TString conf="samples.conf", // input file
 	  sys_invmass = invmass;
 	  sys_seperation = seperation;
 	  xsec_weight = weight;
+	  event_pdfunc = event_pdfunc / 100;
 	  outTree1->Fill();
 	}
 	if(pass_p2) count5++;
@@ -793,7 +811,9 @@ void select201817_SF(const TString conf="samples.conf", // input file
     }//end of file loop
     outFile1->Write();
     outFile1->Close();
+	cout<<"Number of events (weighted for PDF): "<<TotalSumWeight<<endl;
   }//end of sample loop
+  
   cout<<"Number of events: "<<count0<<endl;
   cout<<"Number of events have photon and AK8 jet: "<<count1<<endl;
   cout<<"Number of events fired trigger: "<<count2<<endl;

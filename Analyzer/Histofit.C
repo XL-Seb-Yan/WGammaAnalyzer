@@ -6,8 +6,8 @@ void Histofit()
 
   // Write histos to root file
   TFile *file1 = TFile::Open("Histogram_Data.root");
-  TFile *file2 = TFile::Open("Histogram_GJets_nokfactor.root");
-  TFile *file3 = TFile::Open("Histogram_QCD_nokfactor.root");
+  TFile *file2 = TFile::Open("Histogram_GJets.root");
+  TFile *file3 = TFile::Open("Histogram_QCD.root");
   TH1* hist1_1 = (TH1*)file1->Get("1"); //p_pt
   TH1* hist1_2 = (TH1*)file1->Get("2"); //p_eta
   TH1* hist1_3 = (TH1*)file1->Get("3"); //j_pt
@@ -83,8 +83,8 @@ void Histofit()
   double minls = 99999999999;
   double sGJets = -99;
   double sQCD = -99;
-  for(int i=400; i<750; i++){
-    for(int j=50; j<150; j++){
+  for(int i=400; i<1000; i++){
+    for(int j=0; j<150; j++){
       double ls = 0;
       double scaleGJets = i*0.002;
       double scaleQCD = j*0.01;

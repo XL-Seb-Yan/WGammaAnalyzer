@@ -1,10 +1,9 @@
-//Plot histograms with scale factors applied directly on historgams
 #include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/tdrstyle.C"
 #include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/CMS_lumi.C"
-void Histoplot()
+void kfactorfit()
 {
 
-  gROOT->SetBatch(1);
+   gROOT->SetBatch(1);
   lumi_13TeV = "41.53 fb^{-1}";
   writeExtraText = 1;
   lumiTextOffset = 0.15;
@@ -22,68 +21,237 @@ void Histoplot()
   gStyle->SetLegendTextSize(0.03);
   gStyle->SetBarWidth(2);
   gStyle->SetHistLineWidth(2);
+  
+  // Plots
+  TH1 *hist1_1 = new TH1F("1_1","pt_{#gamma}",100,0,3000);
+  TH1 *hist1_2 = new TH1F("1_2","eta_{#gamma}",50,-2,2);
+  TH1 *hist1_3 = new TH1F("1_3","pt_{j}",100,0,3000);
+  TH1 *hist1_4 = new TH1F("1_4","eta_{j}",50,-2,2);
+  TH1 *hist1_5 = new TH1F("1_5","E_{j}",100,0,3000);
+  TH1 *hist1_6 = new TH1F("1_6","masssoftdrop_{j}",40,40,120);
+  TH1 *hist1_7 = new TH1F("1_7","tau21_{j}",50,0,1);
+  TH1 *hist1_8 = new TH1F("1_8","cos(#theta*)_{p}",50,0,1);
+  TH1 *hist1_9 = new TH1F("1_9","pt/M",50,0,2);
+  TH1 *hist1_10 = new TH1F("1_10","invariant mass",100,0,4000);
+  TH1 *hist1_11 = new TH1F("1_11","PV_N",50,0,100);
+  TH1 *hist2_1 = new TH1F("2_1","pt_{#gamma}",100,0,3000);
+  TH1 *hist2_2 = new TH1F("2_2","eta_{#gamma}",50,-2,2);
+  TH1 *hist2_3 = new TH1F("2_3","pt_{j}",100,0,3000);
+  TH1 *hist2_4 = new TH1F("2_4","eta_{j}",50,-2,2);
+  TH1 *hist2_5 = new TH1F("2_5","E_{j}",100,0,3000);
+  TH1 *hist2_6 = new TH1F("2_6","masssoftdrop_{j}",40,40,120);
+  TH1 *hist2_7 = new TH1F("2_7","tau21_{j}",50,0,1);
+  TH1 *hist2_8 = new TH1F("2_8","cos(#theta*)_{p}",50,0,1);
+  TH1 *hist2_9 = new TH1F("2_9","pt/M",50,0,2);
+  TH1 *hist2_10 = new TH1F("2_10","invariant mass",100,0,4000);
+  TH1 *hist2_11 = new TH1F("2_11","PV_N",50,0,100);
+  TH1 *hist3_1 = new TH1F("3_1","pt_{#gamma}",100,0,3000);
+  TH1 *hist3_2 = new TH1F("3_2","eta_{#gamma}",50,-2,2);
+  TH1 *hist3_3 = new TH1F("3_3","pt_{j}",100,0,3000);
+  TH1 *hist3_4 = new TH1F("3_4","eta_{j}",50,-2,2);
+  TH1 *hist3_5 = new TH1F("3_5","E_{j}",100,0,3000);
+  TH1 *hist3_6 = new TH1F("3_6","masssoftdrop_{j}",40,40,120);
+  TH1 *hist3_7 = new TH1F("3_7","tau21_{j}",50,0,1);
+  TH1 *hist3_8 = new TH1F("3_8","cos(#theta*)_{p}",50,0,1);
+  TH1 *hist3_9 = new TH1F("3_9","pt/M",50,0,2);
+  TH1 *hist3_10 = new TH1F("3_10","invariant mass",100,0,4000);
+  TH1 *hist3_11 = new TH1F("3_11","PV_N",50,0,100);
 
-  // Write histos to root file
-  TFile *file1 = TFile::Open("Histogram_Data.root");
-  TFile *file2 = TFile::Open("Histogram_GJets.root");
-  TFile *file3 = TFile::Open("Histogram_QCD.root");
-  TH1* hist1_1 = (TH1*)file1->Get("1"); //p_pt
-  TH1* hist1_2 = (TH1*)file1->Get("2"); //p_eta
-  TH1* hist1_3 = (TH1*)file1->Get("3"); //j_pt
-  TH1* hist1_4 = (TH1*)file1->Get("4"); //j_eta
-  TH1* hist1_5 = (TH1*)file1->Get("5"); //j_e
-  TH1* hist1_6 = (TH1*)file1->Get("6"); //j_mass
-  TH1* hist1_7 = (TH1*)file1->Get("7"); //j_tau21
-  TH1* hist1_8 = (TH1*)file1->Get("8"); //s_cos
-  TH1* hist1_9 = (TH1*)file1->Get("9"); //s_ptm
-  TH1* hist1_10 = (TH1*)file1->Get("10"); //s_invmass
-  TH1* hist1_11 = (TH1*)file1->Get("11"); //s_pu
-  TH1* hist2_1 = (TH1*)file2->Get("1");
-  TH1* hist2_2 = (TH1*)file2->Get("2");
-  TH1* hist2_3 = (TH1*)file2->Get("3");
-  TH1* hist2_4 = (TH1*)file2->Get("4");
-  TH1* hist2_5 = (TH1*)file2->Get("5");
-  TH1* hist2_6 = (TH1*)file2->Get("6");
-  TH1* hist2_7 = (TH1*)file2->Get("7");
-  TH1* hist2_8 = (TH1*)file2->Get("8");
-  TH1* hist2_9 = (TH1*)file2->Get("9");
-  TH1* hist2_10 = (TH1*)file2->Get("10");
-  TH1* hist2_11 = (TH1*)file2->Get("11");
-  TH1* hist3_1 = (TH1*)file3->Get("1");
-  TH1* hist3_2 = (TH1*)file3->Get("2");
-  TH1* hist3_3 = (TH1*)file3->Get("3");
-  TH1* hist3_4 = (TH1*)file3->Get("4");
-  TH1* hist3_5 = (TH1*)file3->Get("5");
-  TH1* hist3_6 = (TH1*)file3->Get("6");
-  TH1* hist3_7 = (TH1*)file3->Get("7");
-  TH1* hist3_8 = (TH1*)file3->Get("8");
-  TH1* hist3_9 = (TH1*)file3->Get("9");
-  TH1* hist3_10 = (TH1*)file3->Get("10");
-  TH1* hist3_11 = (TH1*)file3->Get("11");
-
-  hist2_1->Scale(1.39);
-  hist2_2->Scale(1.39);
-  hist2_3->Scale(1.39);
-  hist2_4->Scale(1.39);
-  hist2_5->Scale(1.39);
-  hist2_6->Scale(1.39);
-  hist2_7->Scale(1.39);
-  hist2_8->Scale(1.39);
-  hist2_9->Scale(1.39);
-  hist2_10->Scale(1.39);
-  hist2_11->Scale(1.39);
-  hist3_1->Scale(0.5);
-  hist3_2->Scale(0.5);
-  hist3_3->Scale(0.5);
-  hist3_4->Scale(0.5);
-  hist3_5->Scale(0.5);
-  hist3_6->Scale(0.5);
-  hist3_7->Scale(0.5);
-  hist3_8->Scale(0.5);
-  hist3_9->Scale(0.5);
-  hist3_10->Scale(0.5);
-  hist3_11->Scale(0.5);
-
+  // Open input file
+  float p_pt, p_eta, p_phi, p_e, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight, x_puweight;
+  int s_PV;
+  
+  // Data
+  TFile* f_data = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2018/presel_data/EGamma2018_postproc_WGamma_full_full_Mar17.root");
+  TFile* f_gjets = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2018/presel_data/GJets_postproc_WGamma_full_full_Mar17.root");
+  TFile* f_qcd = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2018/presel_data/QCD_postproc_WGamma_full_full_Mar17.root");
+  
+  cout<<"Processing data"<<endl;
+    TTree* theTree = (TTree*)f_data->Get("Events");
+    // Improt variables for cutting
+    theTree->SetBranchAddress("photon_pt", &p_pt);
+    theTree->SetBranchAddress("photon_eta", &p_eta);
+    theTree->SetBranchAddress("photon_phi", &p_phi);
+    theTree->SetBranchAddress("photon_e", &p_e);
+    theTree->SetBranchAddress("ak8puppijet_pt", &j_pt);
+    theTree->SetBranchAddress("ak8puppijet_eta", &j_eta);
+    theTree->SetBranchAddress("ak8puppijet_phi", &j_phi);
+    theTree->SetBranchAddress("ak8puppijet_e", &j_e);
+    theTree->SetBranchAddress("ak8puppijet_masssoftdropcorr", &j_mass);
+    theTree->SetBranchAddress("ak8puppijet_tau21", &j_tau21);
+    theTree->SetBranchAddress("sys_costhetastar", &s_cos);
+    theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
+    theTree->SetBranchAddress("m", &s_mass);
+    theTree->SetBranchAddress("xsec_weight", &x_weight);
+	theTree->SetBranchAddress("xsec_puweight", &x_puweight);
+	theTree->SetBranchAddress("sys_pvn", &s_PV);
+  
+  
+    for (int ievt = 0; ievt<theTree->GetEntries();ievt++){
+      theTree->GetEntry(ievt);
+      hist1_1->Fill(p_pt, x_weight*x_puweight);
+      hist1_2->Fill(p_eta, x_weight*x_puweight);
+      hist1_3->Fill(j_pt, x_weight*x_puweight);
+      hist1_4->Fill(j_eta, x_weight*x_puweight);
+      hist1_5->Fill(j_e, x_weight*x_puweight);
+      hist1_6->Fill(j_mass, x_weight*x_puweight);
+      hist1_7->Fill(j_tau21, x_weight*x_puweight);
+      hist1_8->Fill(s_cos, x_weight*x_puweight);
+      hist1_9->Fill(s_ptm, x_weight*x_puweight);
+      hist1_10->Fill(s_mass, x_weight*x_puweight);
+	  hist1_11->Fill(s_PV, x_weight*x_puweight);
+    }
+	
+	cout<<"Processing GJets"<<endl;
+	theTree = (TTree*)f_gjets->Get("Events");
+    // Improt variables for cutting
+    theTree->SetBranchAddress("photon_pt", &p_pt);
+    theTree->SetBranchAddress("photon_eta", &p_eta);
+    theTree->SetBranchAddress("photon_phi", &p_phi);
+    theTree->SetBranchAddress("photon_e", &p_e);
+    theTree->SetBranchAddress("ak8puppijet_pt", &j_pt);
+    theTree->SetBranchAddress("ak8puppijet_eta", &j_eta);
+    theTree->SetBranchAddress("ak8puppijet_phi", &j_phi);
+    theTree->SetBranchAddress("ak8puppijet_e", &j_e);
+    theTree->SetBranchAddress("ak8puppijet_masssoftdropcorr", &j_mass);
+    theTree->SetBranchAddress("ak8puppijet_tau21", &j_tau21);
+    theTree->SetBranchAddress("sys_costhetastar", &s_cos);
+    theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
+    theTree->SetBranchAddress("m", &s_mass);
+    theTree->SetBranchAddress("xsec_weight", &x_weight);
+	theTree->SetBranchAddress("xsec_puweight", &x_puweight);
+	theTree->SetBranchAddress("sys_pvn", &s_PV);
+  
+  
+    for (int ievt = 0; ievt<theTree->GetEntries();ievt++){
+      theTree->GetEntry(ievt);
+	  //x_puweight = 1;
+      hist2_1->Fill(p_pt, x_weight*x_puweight);
+      hist2_2->Fill(p_eta, x_weight*x_puweight);
+      hist2_3->Fill(j_pt, x_weight*x_puweight);
+      hist2_4->Fill(j_eta, x_weight*x_puweight);
+      hist2_5->Fill(j_e, x_weight*x_puweight);
+      hist2_6->Fill(j_mass, x_weight*x_puweight);
+      hist2_7->Fill(j_tau21, x_weight*x_puweight);
+      hist2_8->Fill(s_cos, x_weight*x_puweight);
+      hist2_9->Fill(s_ptm, x_weight*x_puweight);
+      hist2_10->Fill(s_mass, x_weight*x_puweight);
+	  hist2_11->Fill(s_PV, x_weight*x_puweight);
+    }
+	
+	cout<<"Processing QCD"<<endl;
+    theTree = (TTree*)f_qcd->Get("Events");
+    // Improt variables for cutting
+    theTree->SetBranchAddress("photon_pt", &p_pt);
+    theTree->SetBranchAddress("photon_eta", &p_eta);
+    theTree->SetBranchAddress("photon_phi", &p_phi);
+    theTree->SetBranchAddress("photon_e", &p_e);
+    theTree->SetBranchAddress("ak8puppijet_pt", &j_pt);
+    theTree->SetBranchAddress("ak8puppijet_eta", &j_eta);
+    theTree->SetBranchAddress("ak8puppijet_phi", &j_phi);
+    theTree->SetBranchAddress("ak8puppijet_e", &j_e);
+    theTree->SetBranchAddress("ak8puppijet_masssoftdropcorr", &j_mass);
+    theTree->SetBranchAddress("ak8puppijet_tau21", &j_tau21);
+    theTree->SetBranchAddress("sys_costhetastar", &s_cos);
+    theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
+    theTree->SetBranchAddress("m", &s_mass);
+    theTree->SetBranchAddress("xsec_weight", &x_weight);
+	theTree->SetBranchAddress("xsec_puweight", &x_puweight);
+	theTree->SetBranchAddress("sys_pvn", &s_PV);
+  
+  
+    for (int ievt = 0; ievt<theTree->GetEntries();ievt++){
+      theTree->GetEntry(ievt);
+	  //x_puweight = 1;
+      hist3_1->Fill(p_pt, x_weight*x_puweight);
+      hist3_2->Fill(p_eta, x_weight*x_puweight);
+      hist3_3->Fill(j_pt, x_weight*x_puweight);
+      hist3_4->Fill(j_eta, x_weight*x_puweight);
+      hist3_5->Fill(j_e, x_weight*x_puweight);
+      hist3_6->Fill(j_mass, x_weight*x_puweight);
+      hist3_7->Fill(j_tau21, x_weight*x_puweight);
+      hist3_8->Fill(s_cos, x_weight*x_puweight);
+      hist3_9->Fill(s_ptm, x_weight*x_puweight);
+      hist3_10->Fill(s_mass, x_weight*x_puweight);
+	  hist3_11->Fill(s_PV, x_weight*x_puweight);
+    }
+	
+	
+  // Least Square fit result: GJets: 1.41, QCD: 0.57
+  // Least Square fitting to invariant mass histograms
+  TGraph2D *g = new TGraph2D();
+  int NBins = hist1_10->GetNbinsX();
+  cout<<"Number of bins: "<<NBins<<endl;
+  int point = 0;
+  double minls = 99999999999;
+  double sGJets = -99;
+  double sQCD = -99;
+  for(int i=400; i<600; i++){
+    for(int j=0; j<150; j++){
+      double ls = 0;
+      double scaleGJets = i*0.002;
+      double scaleQCD = j*0.01;
+      for(int k=1; k<NBins+1; k++){
+	    double NData = hist1_10->GetBinContent(k);
+	    double NGjets = hist2_10->GetBinContent(k);
+	    double NQCD = hist3_10->GetBinContent(k);
+	    //cout<<NData<<" "<<NGjets<<" "<<NQCD<<" "<<pow((NData-(scaleGJets*NGjets + scaleQCD*NQCD))/NData,2)<<endl;
+	    if(NData == 0) continue;//exclude first several empty bins lower than trigger turn on
+	    ls += pow((NData-(scaleGJets*NGjets + scaleQCD*NQCD))/1000,2);
+      }
+      if(ls < minls){
+	    minls = ls;
+	    sGJets = scaleGJets;
+	    sQCD = scaleQCD;
+      }
+      cout<<"Runnig through "<<i*0.002<<" "<<j*0.01<<" Least Square is: "<<ls<<endl;
+      g->SetPoint(point,scaleGJets,scaleQCD,ls);
+      point++;
+    }
+  }
+   cout<<sGJets<<" "<<sQCD<<" "<<minls<<endl;
+   
+   
+  TCanvas *c = new TCanvas("c","scale",1200,900);
+  TAxis *xaxis = g->GetXaxis();
+  TAxis *yaxis = g->GetYaxis();
+  yaxis->SetTitleOffset(1.3);
+  xaxis->SetTitleOffset(1.3);
+  xaxis->SetTitle("GJets scale");
+  yaxis->SetTitle("QCD scale");
+  //yaxis->SetRangeUser(0.5,10000000);
+  c->SetLogz();
+  c->cd();
+  c->SetGrid();
+  g->Draw("COLZ");
+  cout<<"OK"<<endl;
+  c->Print("MCFit.png");
+   
+  sGJets = 1.07;
+  sQCD = 0.81;
+  hist2_1->Scale(sGJets);
+  hist2_2->Scale(sGJets);
+  hist2_3->Scale(sGJets);
+  hist2_4->Scale(sGJets);
+  hist2_5->Scale(sGJets);
+  hist2_6->Scale(sGJets);
+  hist2_7->Scale(sGJets);
+  hist2_8->Scale(sGJets);
+  hist2_9->Scale(sGJets);
+  hist2_10->Scale(sGJets);
+  hist2_11->Scale(sGJets);
+  hist3_1->Scale(sQCD);
+  hist3_2->Scale(sQCD);
+  hist3_3->Scale(sQCD);
+  hist3_4->Scale(sQCD);
+  hist3_5->Scale(sQCD);
+  hist3_6->Scale(sQCD);
+  hist3_7->Scale(sQCD);
+  hist3_8->Scale(sQCD);
+  hist3_9->Scale(sQCD);
+  hist3_10->Scale(sQCD);
+  hist3_11->Scale(sQCD);
+  
   int color1 = 2;
   int color2 = 8;
   int color3 = 7;
@@ -167,11 +335,8 @@ void Histoplot()
   hist1_9->SetMarkerSize(1.5);
   hist1_10->SetMarkerSize(1.5);
   hist1_11->SetMarkerSize(1.5);
-
-  cout<<"OK";
-
+  
   //Stacked plot
-
   THStack *stack1 = new THStack("stack1","pt_{p}");
   THStack *stack2 = new THStack("stack2","eta_{p}");
   THStack *stack3 = new THStack("stack3","pt_{j}");
@@ -193,7 +358,7 @@ void Histoplot()
   stack8->Add(hist3_8); stack8->Add(hist2_8);
   stack9->Add(hist3_9); stack9->Add(hist2_9);
   stack10->Add(hist3_10); stack10->Add(hist2_10);
-  stack11->Add(hist3_11); stack10->Add(hist2_11);
+  stack11->Add(hist3_11); stack11->Add(hist2_11);
 
   TLegend *legend = new TLegend(0.54,0.78,0.9,0.9);
   // Residual plot
@@ -228,9 +393,9 @@ void Histoplot()
   hist1_1->Draw("E1SAME");
   hist1_1->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_1,"M-2800 Wide","lep");
-  legend->AddEntry(hist2_1,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_1,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(hist1_1,"2016 SinglePhoton","lep");
+  legend->AddEntry(hist2_1,"2016 MC, GJets(weighted)","f");
+  legend->AddEntry(hist3_1,"2016 MC, QCD(weighted)","f");
   legend->Draw();
   
   p01b->cd();
@@ -294,9 +459,9 @@ void Histoplot()
   hist1_2->Draw("E1SAME");
   hist1_2->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_2,"M-2800 Wide","lep");
-  legend->AddEntry(hist2_2,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_2,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(hist1_2,"2016 SinglePhoton","lep");
+  legend->AddEntry(hist2_2,"2016 MC, GJets(weighted)","f");
+  legend->AddEntry(hist3_2,"2016 MC, QCD(weighted)","f");
   legend->Draw();
 
   p02b->cd();
@@ -360,9 +525,9 @@ void Histoplot()
   hist1_3->Draw("E1SAME");
   hist1_3->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_3,"M-2800 Wide","lep");
-  legend->AddEntry(hist2_3,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_3,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(hist1_3,"2016 SinglePhoton","lep");
+  legend->AddEntry(hist2_3,"2016 MC, GJets(weighted)","f");
+  legend->AddEntry(hist3_3,"2016 MC, QCD(weighted)","f");
   legend->Draw();
 
   p03b->cd();
@@ -426,9 +591,9 @@ void Histoplot()
   hist1_4->Draw("E1SAME");
   hist1_4->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_4,"M-2800 Wide","lep");
-  legend->AddEntry(hist2_4,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_4,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(hist1_4,"2016 SinglePhoton","lep");
+  legend->AddEntry(hist2_4,"2016 MC, GJets(weighted)","f");
+  legend->AddEntry(hist3_4,"2016 MC, QCD(weighted)","f");
   legend->Draw();
 
   p04b->cd();
@@ -492,9 +657,9 @@ void Histoplot()
   hist1_5->Draw("E1SAME");
   hist1_5->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_5,"M-2800 Wide","lep");
-  legend->AddEntry(hist2_5,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_5,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(hist1_5,"2016 SinglePhoton","lep");
+  legend->AddEntry(hist2_5,"2016 MC, GJets(weighted)","f");
+  legend->AddEntry(hist3_5,"2016 MC, QCD(weighted)","f");
   legend->Draw();
 
   p05b->cd();
@@ -558,9 +723,9 @@ void Histoplot()
   hist1_6->Draw("E1SAME");
   hist1_6->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_6,"M-2800 Wide","lep");
-  legend->AddEntry(hist2_6,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_6,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(hist1_6,"2016 SinglePhoton","lep");
+  legend->AddEntry(hist2_6,"2016 MC, GJets(weighted)","f");
+  legend->AddEntry(hist3_6,"2016 MC, QCD(weighted)","f");
   legend->Draw();
 
   p06b->cd();
@@ -624,9 +789,9 @@ void Histoplot()
   hist1_7->Draw("E1SAME");
   hist1_7->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_7,"M-2800 Wide","lep");
-  legend->AddEntry(hist2_7,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_7,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(hist1_7,"2016 SinglePhoton","lep");
+  legend->AddEntry(hist2_7,"2016 MC, GJets(weighted)","f");
+  legend->AddEntry(hist3_7,"2016 MC, QCD(weighted)","f");
   legend->Draw();
 
   p07b->cd();
@@ -690,9 +855,9 @@ void Histoplot()
   hist1_8->Draw("E1SAME");
   hist1_8->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_8,"M-2800 Wide","lep");
-  legend->AddEntry(hist2_8,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_8,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(hist1_8,"2016 SinglePhoton","lep");
+  legend->AddEntry(hist2_8,"2016 MC, GJets(weighted)","f");
+  legend->AddEntry(hist3_8,"2016 MC, QCD(weighted)","f");
   legend->Draw();
 
   p08b->cd();
@@ -756,9 +921,9 @@ void Histoplot()
   hist1_9->Draw("E1SAME");
   hist1_9->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_9,"M-2800 Wide","lep");
-  legend->AddEntry(hist2_9,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_9,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(hist1_9,"2016 SinglePhoton","lep");
+  legend->AddEntry(hist2_9,"2016 MC, GJets(weighted)","f");
+  legend->AddEntry(hist3_9,"2016 MC, QCD(weighted)","f");
   legend->Draw();
 
   p09b->cd();
@@ -822,9 +987,9 @@ void Histoplot()
   hist1_10->Draw("E1SAME");
   hist1_10->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_10,"M-2800 Wide","lep");
-  legend->AddEntry(hist2_10,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_10,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(hist1_10,"2016 SinglePhoton","lep");
+  legend->AddEntry(hist2_10,"2016 MC, GJets(weighted)","f");
+  legend->AddEntry(hist3_10,"2016 MC, QCD(weighted)","f");
   legend->Draw();
 
   p10b->cd();
@@ -867,7 +1032,15 @@ void Histoplot()
   c10->Print("s_m.root");
   //==========================================================
   
-    //===========================================================
+  //===========================================================
+  //get MC sum of weight
+  double w_MC = 0;
+  w_MC = hist2_11->Integral() + hist3_11->Integral();
+  TFile* pileup_central = TFile::Open("/afs/cern.ch/user/x/xuyan/WGProj/PROD17/DATA/pileup/Pileup_18.root", "READ");
+  TH1F* pileup_Data_central = (TH1F*)pileup_central->Get("pileup");
+  pileup_Data_central->Scale(w_MC/(double)pileup_Data_central->Integral());
+  pileup_Data_central->SetLineColor(1);
+  pileup_Data_central->SetMarkerStyle(8);
   TCanvas *c11 = new TCanvas("c11","",2400,2200);
   c11->cd();
   TPad *p11a = new TPad("p11a","p11a",0.1,0.30,0.9,1.0);
@@ -884,14 +1057,14 @@ void Histoplot()
   xaxis1->SetTitleOffset(1.1);
   yaxis1->SetTitleOffset(1.3);
   yaxis1->SetRangeUser(0.01,1000000);
-  hist1_11->Draw("E1");
+  pileup_Data_central->Draw("E1");
   stack11->Draw("SAMEHIST");
-  hist1_11->Draw("E1SAME");
-  hist1_11->Draw("AXISSAME");
+  pileup_Data_central->Draw("E1SAME");
+  pileup_Data_central->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_11,"M-2800 Wide","lep");
-  legend->AddEntry(hist2_11,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_11,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(pileup_Data_central,"2016 Data","lep");
+  legend->AddEntry(hist2_11,"2016 MC, GJets(weighted)","f");
+  legend->AddEntry(hist3_11,"2016 MC, QCD(weighted)","f");
   legend->Draw();
 
   p11b->cd();
@@ -905,7 +1078,7 @@ void Histoplot()
   pull->Add(bkg,-1);
   pull->Divide(data);
   */
-  pull = (TH1*)hist1_11->Clone();
+  pull = (TH1*)pileup_Data_central->Clone();
   bkg = (TH1*)hist2_11->Clone();
   bkg->Add((TH1*)hist3_11->Clone());
   pull->Divide(bkg);

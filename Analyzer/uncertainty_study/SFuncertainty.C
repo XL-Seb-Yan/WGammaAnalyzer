@@ -33,14 +33,14 @@ void SFuncertainty(int sigm = 2800)
 {
 
   gROOT->SetBatch(1);
-  lumi_13TeV = "35.92 fb^{-1}";
+  lumi_13TeV = "59.74 fb^{-1}";
   writeExtraText = 1;
   lumiTextOffset = 0.15;
   bool plot_CMS = true;
   extraText = "Simulation";
   lumiTextSize = 0.8;
   cmsTextSize = 1;
-  int iPeriod = 4;
+  int iPeriod = 6;
   int iPos = 0;
   gStyle->SetOptStat(0);
   gStyle->SetOptTitle(0);
@@ -53,24 +53,24 @@ void SFuncertainty(int sigm = 2800)
   // Plots
   
   //16
-  double ph_energy_up_N[15] = {3122,3114,3146,3072,3096,3056,2956,2821,2679,2762,2594,2573,2451,2424,2455};
-  double ph_energy_up_W[14] = {2914,2874,2979,3015,2911,2881,2755,2775,2537,2466,2519,2211,2197,2090};
-  double ph_energy_down_N[15] = {3118,3106,3145,3064,3085,3039,2940,2805,2673,2751,2588,2565,2445,2413,2448};
-  double ph_energy_down_W[14] = {2913,2872,2975,3018,2896,2879,2739,2760,2522,2458,2506,2199,2181,2080};
-  double jet_energy_up_N[15] = {3103,3091,3135,3056,3089,3037,2942,2807,2684,2757,2592,2569,2463,2420,2451};
-  double jet_energy_up_W[14] = {2895,2861,2958,3006,2896,2874,2743,2775,2527,2468,2511,2204,2191,2087};
+  // double ph_energy_up_N[15] = {3122,3114,3146,3072,3096,3056,2956,2821,2679,2762,2594,2573,2451,2424,2455};
+  // double ph_energy_up_W[14] = {2914,2874,2979,3015,2911,2881,2755,2775,2537,2466,2519,2211,2197,2090};
+  // double ph_energy_down_N[15] = {3118,3106,3145,3064,3085,3039,2940,2805,2673,2751,2588,2565,2445,2413,2448};
+  // double ph_energy_down_W[14] = {2913,2872,2975,3018,2896,2879,2739,2760,2522,2458,2506,2199,2181,2080};
+  // double jet_energy_up_N[15] = {3103,3091,3135,3056,3089,3037,2942,2807,2684,2757,2592,2569,2463,2420,2451};
+  // double jet_energy_up_W[14] = {2895,2861,2958,3006,2896,2874,2743,2775,2527,2468,2511,2204,2191,2087};
  
-  double jet_energy_down_N[15] = {3141,3138,3154,3075,3098,3049,2947,2820,2668,2746,2578,2572,2444,2418,2456};
-  double jet_energy_down_W[14] = {2931,2884,2989,3030,2912,2879,2750,2771,2521,2450,2509,2208,2192,2081};
-  double jet_res_up_N[15] = {3095,3088,3137,3049,3074,3029,2939,2811,2666,2747,2578,2564,2446,2418,2446};
-  double jet_res_up_W[14] = {2886,2856,2955,3009,2889,2866,2733,2756,2518,2446,2508,2191,2177,2079};
-  double jet_res_down_N[15] = {3145,3131,3158,3083,3102,3061,2953,2817,2687,2761,2595,2578,2456,2432,2455};
-  double jet_res_down_W[14] = {2937,2888,2997,3037,2916,2889,2754,2774,2534,2468,2521,2216,2209,2084};
-  double nominal_N[15] = {3119,3109,3148,3069,3093,3049,2948,2816,2677,2756,2592,2568,2448,2420,2450};
-  double nominal_W[14] = {2915,2871,2978,3016,2902,2881,2748,2766,2530,2459,2513,2204,2187,2086};
+  // double jet_energy_down_N[15] = {3141,3138,3154,3075,3098,3049,2947,2820,2668,2746,2578,2572,2444,2418,2456};
+  // double jet_energy_down_W[14] = {2931,2884,2989,3030,2912,2879,2750,2771,2521,2450,2509,2208,2192,2081};
+  // double jet_res_up_N[15] = {3095,3088,3137,3049,3074,3029,2939,2811,2666,2747,2578,2564,2446,2418,2446};
+  // double jet_res_up_W[14] = {2886,2856,2955,3009,2889,2866,2733,2756,2518,2446,2508,2191,2177,2079};
+  // double jet_res_down_N[15] = {3145,3131,3158,3083,3102,3061,2953,2817,2687,2761,2595,2578,2456,2432,2455};
+  // double jet_res_down_W[14] = {2937,2888,2997,3037,2916,2889,2754,2774,2534,2468,2521,2216,2209,2084};
+  // double nominal_N[15] = {3119,3109,3148,3069,3093,3049,2948,2816,2677,2756,2592,2568,2448,2420,2450};
+  // double nominal_W[14] = {2915,2871,2978,3016,2902,2881,2748,2766,2530,2459,2513,2204,2187,2086};
   
-  double massN[15] = {700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3500};
-  double massW[14] = {700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2800,3000,3500};
+  // double massN[15] = {700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3500};
+  // double massW[14] = {700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2800,3000,3500};
   
   // 17
   // double ph_energy_up_N[14] = {3212,3275,3302,3391,3280,3221,3193,2926,2821,2759,2648,2710,2543,2523};
@@ -92,24 +92,24 @@ void SFuncertainty(int sigm = 2800)
   // double massW[14] = {700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3500};
   
   //18
-  // double ph_energy_up_N[3] = {3307,3085,3095};
-  // double ph_energy_up_W[4] = {3272,3189,3152,3028};
-  // double ph_energy_down_N[3] = {3273,3061,3069};
-  // double ph_energy_down_W[4] = {3262,3169,3130,3019};
-  // double jet_energy_up_N[3] = {3296,3078,3087};
-  // double jet_energy_up_W[4] = {3260,3181,3133,3030};
+  double ph_energy_up_N[3] = {3307,3085,3095};
+  double ph_energy_up_W[4] = {3272,3189,3152,3028};
+  double ph_energy_down_N[3] = {3273,3061,3069};
+  double ph_energy_down_W[4] = {3262,3169,3130,3019};
+  double jet_energy_up_N[3] = {3296,3078,3087};
+  double jet_energy_up_W[4] = {3260,3181,3133,3030};
  
-  // double jet_energy_down_N[3] = {3303,3076,3082};
-  // double jet_energy_down_W[4] = {3266,3190,3146,3027};
-  // double jet_res_up_N[3] = {3293,3074,3078};
-  // double jet_res_up_W[4] = {3258,3175,3126,3022};
-  // double jet_res_down_N[3] = {3304,3079,3091};
-  // double jet_res_down_W[4] = {3279,3192,3152,3036};
-  // double nominal_N[3] = {3298,3077,3081};
-  // double nominal_W[4] = {3269,3182,3143,3024};
+  double jet_energy_down_N[3] = {3303,3076,3082};
+  double jet_energy_down_W[4] = {3266,3190,3146,3027};
+  double jet_res_up_N[3] = {3293,3074,3078};
+  double jet_res_up_W[4] = {3258,3175,3126,3022};
+  double jet_res_down_N[3] = {3304,3079,3091};
+  double jet_res_down_W[4] = {3279,3192,3152,3036};
+  double nominal_N[3] = {3298,3077,3081};
+  double nominal_W[4] = {3269,3182,3143,3024};
   
-  // double massN[3] = {1200,1800,2000};
-  // double massW[4] = {900,1000,1200,1600};
+  double massN[3] = {1200,1800,2000};
+  double massW[4] = {900,1000,1200,1600};
   
   TGraph ph_corrNup;
   TGraph ph_corrNdown;
@@ -124,7 +124,7 @@ void SFuncertainty(int sigm = 2800)
   TGraph jet_resNdown;
   TGraph jet_resWdown;
   
-  for(int i=0; i<15; i++){
+  for(int i=0; i<3; i++){
 	  ph_corrNup.SetPoint(i,massN[i],ph_energy_up_N[i]/nominal_N[i] - 1);
 	  ph_corrNdown.SetPoint(i,massN[i],ph_energy_down_N[i]/nominal_N[i] - 1);
 	  jet_corrNup.SetPoint(i,massN[i],jet_energy_up_N[i]/nominal_N[i] - 1);
@@ -134,7 +134,7 @@ void SFuncertainty(int sigm = 2800)
 	  
   }
   
-    for(int i=0; i<14; i++){
+    for(int i=0; i<4; i++){
 	  ph_corrWup.SetPoint(i,massW[i],ph_energy_up_W[i]/nominal_W[i] - 1);
 	  ph_corrWdown.SetPoint(i,massW[i],ph_energy_down_W[i]/nominal_W[i] - 1);
 	  jet_corrWup.SetPoint(i,massW[i],jet_energy_up_W[i]/nominal_W[i] - 1);
@@ -263,7 +263,7 @@ void SFuncertainty(int sigm = 2800)
   yaxis->SetTitleOffset(0.4);
   yaxis->SetNdivisions(5);
   jet_corrNdown.SetFillColor(2);
-  //jet_corrNdown.SetFillColorAlpha(kViolet,0.5);
+  //jet_corrNdown.SetFillColorAlpha(2,0.9);
   jet_corrNdown.Draw("AB");
   TLegend *l12 = new TLegend(0.7,0.75,0.9,0.9);
   l12->AddEntry(&jet_corrNdown,"Jet energy corr. DOWN (N)","f");
@@ -279,7 +279,7 @@ void SFuncertainty(int sigm = 2800)
   yaxis->SetTitleOffset(0.4);
   yaxis->SetNdivisions(5);
   jet_corrWup.SetFillColor(8);
-  //jet_corrWup.SetFillColorAlpha(kGreen+3,0.5);
+  //jet_corrWup.SetFillColorAlpha(8,0.9);
   jet_corrWup.Draw("AB");
   TLegend *l13 = new TLegend(0.7,0.75,0.9,0.9);
   l13->AddEntry(&jet_corrWup,"Jet energy corr. UP (W)","f");
@@ -295,7 +295,7 @@ void SFuncertainty(int sigm = 2800)
   yaxis->SetTitleOffset(0.4);
   yaxis->SetNdivisions(5);
   jet_corrWdown.SetFillColor(8);
-  //jet_corrWdown.SetFillColorAlpha(kGreen+3,0.5);
+  //jet_corrWdown.SetFillColorAlpha(8,0.9);
   jet_corrWdown.Draw("AB");
   TLegend *l14 = new TLegend(0.7,0.75,0.9,0.9);
   l14->AddEntry(&jet_corrWdown,"Jet energy corr. DOWN (W)","f");
@@ -334,7 +334,7 @@ void SFuncertainty(int sigm = 2800)
   yaxis->SetTitleOffset(0.4);
   yaxis->SetNdivisions(5);
   jet_resNup.SetFillColor(2);
-  //jet_resNup.SetFillColorAlpha(kViolet,0.5);
+  //jet_resNup.SetFillColorAlpha(2,0.9);
   jet_resNup.Draw("AB");
   TLegend *l21 = new TLegend(0.7,0.75,0.9,0.9);
   l21->AddEntry(&jet_resNup,"Jet energy res. UP (N)","f");
@@ -350,7 +350,7 @@ void SFuncertainty(int sigm = 2800)
   yaxis->SetTitleOffset(0.4);
   yaxis->SetNdivisions(5);
   jet_resNdown.SetFillColor(2);
-  //jet_resNdown.SetFillColorAlpha(kViolet,0.5);
+  //jet_resNdown.SetFillColorAlpha(2,0.9);
   jet_resNdown.Draw("AB");
   TLegend *l22 = new TLegend(0.7,0.75,0.9,0.9);
   l22->AddEntry(&jet_resNdown,"Jet energy res. DOWN (N)","f");
@@ -365,8 +365,8 @@ void SFuncertainty(int sigm = 2800)
   yaxis->SetTitle("Variation");
   yaxis->SetTitleOffset(0.4);
   yaxis->SetNdivisions(5);
-  jet_resWup.SetFillColor(kGreen+3);
-  jet_resWup.SetFillColorAlpha(kGreen+3,0.5);
+  jet_resWup.SetFillColor(8);
+ // jet_resWup.SetFillColorAlpha(8,0.9);
   jet_resWup.Draw("AB");
   TLegend *l23 = new TLegend(0.7,0.75,0.9,0.9);
   l23->AddEntry(&jet_resWup,"Jet energy res. UP (W)","f");
@@ -381,8 +381,8 @@ void SFuncertainty(int sigm = 2800)
   yaxis->SetTitle("Variation");
   yaxis->SetTitleOffset(0.4);
   yaxis->SetNdivisions(5);
-  jet_resWdown.SetFillColor(kGreen+3);
-  jet_resWdown.SetFillColorAlpha(kGreen+3,0.5);
+  jet_resWdown.SetFillColor(8);
+  //jet_resWdown.SetFillColorAlpha(8,0.9);
   jet_resWdown.Draw("AB");
   TLegend *l24 = new TLegend(0.7,0.75,0.9,0.9);
   l24->AddEntry(&jet_resWdown,"Jet energy res. DOWN (W)","f");

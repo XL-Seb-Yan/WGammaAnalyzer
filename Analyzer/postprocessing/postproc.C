@@ -29,7 +29,7 @@
 #include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/CMS_lumi.C"
 #endif
 
-void cutselection(int sigm = 1600)
+void postproc(TString dataset, int runondata)
 {
 
   gROOT->SetBatch(1);
@@ -51,8 +51,7 @@ void cutselection(int sigm = 1600)
   gStyle->SetBarWidth(2);
   gStyle->SetHistLineWidth(2);
   // Plots
-  TH1F* mass = new TH1F("mass","mass",100,0,2000);
-  
+   
   // Local variables to store to outfile
   // Photon
   float photon_pt, photon_eta, photon_phi, photon_e, photon_mvaval, photon_mvacat;
@@ -61,17 +60,13 @@ void cutselection(int sigm = 1600)
   // System
   float sys_costhetastar, sys_ptoverm, m;
   float xsec_weight, xsec_kfactor, xsec_puweight;
-  int pv_N;
-
-  TString signal = std::to_string(sigm);
+  int sys_pvn;
   
   // Open input file
   Float_t p_pt, p_eta, p_phi, p_e, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight, evt_pdfunc;
-  int PV_N; 
-  //TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/AnalysisNtuples_Jan12/SinglePhoton2017_WGamma_full_full_Jan12.root");
-  //TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/AnalysisNtuples_Jan12/GJets_WGamma_full_full_Jan12.root");
-  //TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/AnalysisNtuples_Jan12/QCD_WGamma_full_full_Jan12.root");
-  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2016/ntuple_data/SinglePhoton2016_nominal_pileup_WGamma_full_full_Mar17.root");
+  int s_pv; 
+  
+  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2018/ntuple_data/"+dataset+"_nominal_pileup_WGamma_full_full_Mar17.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -88,22 +83,15 @@ void cutselection(int sigm = 1600)
   theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
   theTree->SetBranchAddress("sys_invmass", &s_mass);
   theTree->SetBranchAddress("xsec_weight", &x_weight);
-
-  //for pile-up study
-  theTree->SetBranchAddress("PV_N", &PV_N);
+  theTree->SetBranchAddress("PV_N", &s_pv);
+  
   TH1D* pileup_MC = (TH1D*)input->Get("pileup");
   pileup_MC->Scale(1/(double)pileup_MC->Integral());
-  
-  //for PDFunc study
-  //theTree->SetBranchAddress("event_pdfunc", &evt_pdfunc);
 
   // Create output file
-  TFile *outFile = TFile::Open("SinglePhoton2016_nominal_pileupweightadded_WGamma_full_full_Mar17.root", "RECREATE");
-  //TFile *outFile = TFile::Open("GJets_WGamma_full_full_Jan12_tau21.root", "RECREATE");
-  //TFile *outFile = TFile::Open("QCD_WGamma_full_full_Jan12_tau21.root", "RECREATE");
-  //TFile *outFile = TFile::Open("GJets_WGamma_full_full_kfactor_Feb26.root", "RECREATE");
+  TFile *outFile = TFile::Open(dataset+"_postproc_WGamma_full_full_Mar17.root", "RECREATE");
   TTree *outTree = new TTree("Events","Events"); 
-  outTree->Branch("PV_N",       &pv_N,      "PV_N/I");
+  outTree->Branch("sys_pvn",       &sys_pvn,      "sys_pvn/I");
   outTree->Branch("photon_pt",       &photon_pt,      "photon_pt/F");
   outTree->Branch("photon_eta",      &photon_eta,      "photon_eta/F");
   outTree->Branch("photon_phi",      &photon_phi,      "photon_phi/F");
@@ -121,38 +109,14 @@ void cutselection(int sigm = 1600)
   outTree->Branch("xsec_kfactor",            &xsec_kfactor,           "xsec_kfactor/F");
   outTree->Branch("xsec_puweight",          &xsec_puweight,         "xsec_puweight/F");
   
-   //for pile-up study
-  TFile* pileup_central = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/pileup/Pileup_16.root", "READ");
+  TFile* pileup_central = TFile::Open("/afs/cern.ch/user/x/xuyan/WGProj/PROD17/DATA/pileup/Pileup_18.root", "READ");
   TH1F* pileup_Data_central = (TH1F*)pileup_central->Get("pileup");
   pileup_Data_central->Scale(1/(double)pileup_Data_central->Integral());
   pileup_Data_central->Divide(pileup_MC);
-  
-  // TFile* pileup_up = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/pileup/PileupUp_18.root", "READ");
-  // TH1D* pileup_Data_up = (TH1D*)pileup_up->Get("pileup");
-  // pileup_Data_up->Scale(1/(double)pileup_Data_up->Integral());
-  // pileup_Data_up->Divide(pileup_MC);
-  
-  // TFile* pileup_down = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/pileup/PileupDown_18.root", "READ");
-  // TH1D* pileup_Data_down = (TH1D*)pileup_down->Get("pileup");
-  // pileup_Data_down->Scale(1/(double)pileup_Data_down->Integral());
-  // pileup_Data_down->Divide(pileup_MC);
-  // double SumWight_central = 0;
-  // double SumWight_up = 0;
-  // double SumWight_down = 0;
-  
-  //for PDFunc study
-  double SumWight_central = 0;
+ 
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
-    
-    //if(s_mass < 0.75*sigm || s_mass > 1.25*sigm) continue;
-    //if(j_mass < 65 || j_mass > 105) continue;
-    //f(abs(p_eta) > 1.44) continue;
-    //if(abs(j_eta) > 2) continue;
-    //if(j_tau21 > 0.35) continue;
-    //if(s_ptm < 0.37) continue;
-    //if(s_cos > 0.6) continue;
     
     photon_pt = p_pt;
     photon_eta = p_eta;
@@ -168,56 +132,20 @@ void cutselection(int sigm = 1600)
     sys_ptoverm = s_ptm;
     m = s_mass;
     xsec_weight = x_weight;
-	pv_N = PV_N;
-    xsec_kfactor = 1; //1.39 0.50
+	sys_pvn = s_pv;
+    xsec_kfactor = 1; 
 	
-	//for pile-up study
-	int binnum = pileup_Data_central->GetXaxis()->FindBin(PV_N);
+	//add pileup-weight
+	int binnum = pileup_Data_central->GetXaxis()->FindBin(s_pv);
 	double pileupweight_central = pileup_Data_central->GetBinContent(binnum);
-	SumWight_central+=pileupweight_central;
-	xsec_puweight = pileupweight_central ;
-	xsec_puweight  = 1;
-	
-	// double pileupweight_up = pileup_Data_up->GetBinContent(binnum);
-	// SumWight_up+=pileupweight_up;
-	// double pileupweight_down = pileup_Data_down->GetBinContent(binnum);
-	// SumWight_down+=pileupweight_down;
-	
-	// invmass1->Fill(m);
-	// invmass2->Fill(m,pileupweight_central);
-	// invmass3->Fill(m,pileupweight_up);
-	// invmass4->Fill(m,pileupweight_down);
-	
-	//for PDFucn study
-	//SumWight+=evt_pdfunc;
-	//pdfweight->Fill(evt_pdfunc);
-	
-	//Fill histogram for trigger turn-on study
-	mass->Fill(m,xsec_weight);
+	if(runondata)
+		xsec_puweight  = 1;
+	else
+		xsec_puweight = pileupweight_central ;
+
 	outTree->Fill();
   }
   cout<<"Entries: "<<outTree->GetEntries()<<endl;
-  //cout<<"SumWeight_central: "<<SumWight_central<<" SumWeight_up: "<<SumWight_up<<" SumWeight_down: "<<SumWight_down<<endl;
-  cout<<"SumWeight: "<<SumWight_central<<endl;
-  //outFile->cd();
-  //mass->Write();
   outFile->Write();
   outFile->Close();
-  
-  // TCanvas *c1 = new TCanvas("c1","",2400,1400);
-  // c1->cd();
-  // c1->SetLogy();
-  // c1->SetBottomMargin(0.12);
-  //invmass2->GetYaxis()->SetRangeUser(0.1,10000);
-  // pdfweight->GetYaxis()->SetTitle("Events / 0.04");
-  // pdfweight->GetYaxis()->SetTitleOffset(1);
-  // pdfweight->GetXaxis()->SetTitle("PDF weight");
-  // pdfweight->Draw();
-  // TLegend *l = new TLegend(0.50,0.85,0.9,0.9);
-  // l->AddEntry(pdfweight,"NNPDF31_nnlo_hessian replicas ave. M"+signal);
-  // l->Draw();
-  // CMS_lumi(c1,iPeriod,iPos);
-  // c1->Print("PDF_"+signal+"_N.png");
-  // c1->Print("PDF_"+signal+"_N.pdf");
-  // c1->Print("PDF_"+signal+"_N.svg");
 }
