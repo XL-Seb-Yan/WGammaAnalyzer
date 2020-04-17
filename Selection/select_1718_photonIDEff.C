@@ -49,8 +49,6 @@ void select_1718_photonIDEff(const TString conf="samples.conf", // input file
   TH1F* hist04pa = new TH1F("WGamma04pa","80ID",19,&xbinlow[0]);
   TH1F* hist05pa = new TH1F("WGamma05pa","90ID",19,&xbinlow[0]);
  
-  
-  UInt_t count0=0, count1=0, count2=0, count3=0, count4=0, count5=0, count6=0;
   gStyle->SetOptStat(0);
 
 
@@ -121,10 +119,12 @@ void select_1718_photonIDEff(const TString conf="samples.conf", // input file
   std::vector<float> *genPart_mass = new std::vector<float>();
   std::vector<int>   *genPart_pdgId = new std::vector<int>();
   std::vector<int>   *genPart_status = new std::vector<int>();
+  std::vector<std::vector<int>>  *genPart_mother = new std::vector<std::vector<int>>;
   
   // loop over samples
   TTree* eventTree = 0;
   for(UInt_t isam=0; isam<samplev.size(); isam++) {
+	UInt_t count0=0, count1=0, count2=0, count3=0, count4=0, count5=0, count6=0;
     CSample* samp = samplev[isam];
     cout<<"begin loop over files"<<endl;
     TStopwatch stopwatch;
@@ -172,10 +172,11 @@ void select_1718_photonIDEff(const TString conf="samples.conf", // input file
       eventTree->SetBranchAddress("genParticle_mass", &genPart_mass);
       eventTree->SetBranchAddress("genParticle_pdgId", &genPart_pdgId);
       eventTree->SetBranchAddress("genParticle_status", &genPart_status);
+	  eventTree->SetBranchAddress("genParticle_mother", &genPart_mother);
 
       for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
       //for(UInt_t ientry=0; ientry<2; ientry++) {
-		count1++;
+		count0++;
 
 		// Get Events
 		ph_pt->clear();               
@@ -200,6 +201,7 @@ void select_1718_photonIDEff(const TString conf="samples.conf", // input file
 	    genPart_mass->clear();
 	    genPart_pdgId->clear();
 	    genPart_status->clear();
+		genPart_mother->clear();
 		
 		// -------------------------------------Trigger----------------------------------------------
 		// HLT Trigger decision first, improve speed
@@ -211,8 +213,8 @@ void select_1718_photonIDEff(const TString conf="samples.conf", // input file
 		  if (it->first.find("HLT_Photon200") != std::string::npos && it->second == 1)
 			passTrig = true;
 		}
-		// if (!passTrig) continue;
-		count0++;
+		 if (!passTrig) continue;
+		count1++;
 		eventTree->GetEntry(ientry);
 
 		// Only study events contain photons (EM objects here) and jets -- DATA -- 1st skimming
@@ -229,20 +231,24 @@ void select_1718_photonIDEff(const TString conf="samples.conf", // input file
 		int index_p_gen = -99;
 		for(int i=0; i<genPart_pt->size(); i++){
 			if(genPart_pdgId->at(i) == 22 && genPart_status->at(i) == 1 && abs(genPart_eta->at(i)) < 1.44){
-				gen_ph.SetPtEtaPhiM(genPart_pt->at(i),genPart_eta->at(i),genPart_phi->at(i),genPart_mass->at(i));
-				index_p_gen = i;
-				break;
+				for(int j=0; j<genPart_mother->at(i).size(); j++){
+					if(abs(genPart_mother->at(i).at(j)) == 9000007){
+				       gen_ph.SetPtEtaPhiM(genPart_pt->at(i),genPart_eta->at(i),genPart_phi->at(i),genPart_mass->at(i));
+				       index_p_gen = i;
+				       break;
+					}
+			    }
 			}
 		} 
 		if(index_p_gen == -99) continue;
-		
+		count3++;
 		int index_p = -99;
 		for(int i=0; i<ph_pt->size(); i++){
 			reco_ph.SetPtEtaPhiE(ph_pt->at(i),ph_eta->at(i),ph_phi->at(i),ph_E->at(i));
 			if(reco_ph.DeltaR(gen_ph) < 0.3) index_p = i;
 		} 
 		if(index_p == -99) continue;
-		
+		count4++;
 		hist00pa->Fill(ph_pt->at(index_p)*ph_corr->at(index_p));
 		
 		if(ph_passLooseId->at(index_p)) hist01pa->Fill(ph_pt->at(index_p)*ph_corr->at(index_p));
@@ -271,11 +277,10 @@ void select_1718_photonIDEff(const TString conf="samples.conf", // input file
 	    }
       }
       cout<<"Number of events: "<<count0<<endl;
-      cout<<"Number of events have photon and AK8 jet: "<<count1<<endl;
-      cout<<"Number of events fired trigger: "<<count2<<endl;
-      cout<<"Number of events pass photon pre-selection: "<<count3<<endl;
-      cout<<"Number of events pass jet pre-selection: "<<count4<<endl;
-      cout<<"Number of events pass photon mvaID: "<<count5<<endl;
+	  cout<<"Number of events fired trigger: "<<count1<<endl;
+      cout<<"Number of events have photon and AK8 jet: "<<count2<<endl;  
+      cout<<"Number of events have reco photon: "<<count3<<endl;
+      cout<<"Number of events matched to GEN photon: "<<count4<<endl;
       cout<<"Time remaining: "<<hours<<":"<<minutes<<":"<<seconds<<endl;
       eventTree = 0;
       delete infile;

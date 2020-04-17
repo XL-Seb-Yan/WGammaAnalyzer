@@ -50,7 +50,6 @@ void postproc(TString dataset, int runondata)
   gStyle->SetLegendTextSize(0.025);
   gStyle->SetBarWidth(2);
   gStyle->SetHistLineWidth(2);
-  // Plots
    
   // Local variables to store to outfile
   // Photon
@@ -66,7 +65,9 @@ void postproc(TString dataset, int runondata)
   Float_t p_pt, p_eta, p_phi, p_e, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight, evt_pdfunc;
   int s_pv; 
   
-  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2018/ntuple_data/"+dataset+"_nominal_pileup_WGamma_full_full_Mar17.root");
+  //TString dataset = "SignalMC"+std::to_string(mass)+"N";
+  
+  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2016/ntuple/ntuple_data/"+dataset+"_nominal_pileup_WGamma_full_full_Mar17.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -89,7 +90,7 @@ void postproc(TString dataset, int runondata)
   pileup_MC->Scale(1/(double)pileup_MC->Integral());
 
   // Create output file
-  TFile *outFile = TFile::Open(dataset+"_postproc_WGamma_full_full_Mar17.root", "RECREATE");
+  TFile *outFile = TFile::Open(dataset+"_postproc_WGamma16_full full_presel_jmcorr_Mar17.root", "RECREATE");
   TTree *outTree = new TTree("Events","Events"); 
   outTree->Branch("sys_pvn",       &sys_pvn,      "sys_pvn/I");
   outTree->Branch("photon_pt",       &photon_pt,      "photon_pt/F");
@@ -109,14 +110,58 @@ void postproc(TString dataset, int runondata)
   outTree->Branch("xsec_kfactor",            &xsec_kfactor,           "xsec_kfactor/F");
   outTree->Branch("xsec_puweight",          &xsec_puweight,         "xsec_puweight/F");
   
-  TFile* pileup_central = TFile::Open("/afs/cern.ch/user/x/xuyan/WGProj/PROD17/DATA/pileup/Pileup_18.root", "READ");
+  TFile* pileup_central = TFile::Open("/afs/cern.ch/user/x/xuyan/WGProj/PROD17/DATA/pileup/Pileup_16.root", "READ");
   TH1F* pileup_Data_central = (TH1F*)pileup_central->Get("pileup");
   pileup_Data_central->Scale(1/(double)pileup_Data_central->Integral());
   pileup_Data_central->Divide(pileup_MC);
- 
   
+  //jet mass correction
+  //16
+  TF1* f1 = new TF1("f1","[0]/pow((x+[5])/[6],[1])+[2]/pow((x+[5])/[6]*100,[3])+[4]",400,3000);
+  f1->SetParameters(3.610,3.840,-458.30,0.4894,126.0119,1783.41,3403.76);
+  TF1* f1a = new TF1("f1a","pol1",200,400);
+  f1a->SetParameters(77.9253,0.019194);
+  
+  //17
+  TF1* f2 = new TF1("f2","[0]/pow((x+[5])/[6],[1])+[2]/pow((x+[5])/[6]*100,[3])+[4]",400,3000);
+  f2->SetParameters(2.2210,14.0254,-438.18,0.5065,119.99,4428.19,5359.17);
+  TF1* f2a = new TF1("f2a","pol1",200,400);
+  f2a->SetParameters(76.332,0.020022);
+   
+  float sumW = 0;
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
+	
+	//Apply mass correction
+	double masscorr = 1;
+	
+	if(j_pt < 400)
+		masscorr = 80.379 / f1a->Eval(j_pt);
+	else
+		masscorr = 80.379 / f1->Eval(j_pt);
+	if(masscorr > 5){
+		cout<<"ERROR IN MASS CORR CALCULATION"<<endl;
+		cout<<j_pt<<" "<<f1a->Eval(j_pt)<<" "<<f1->Eval(j_pt)<<endl;
+	}
+	// if(j_pt < 400)
+		// masscorr = 80.379 / f2a->Eval(j_pt);
+	// else
+		// masscorr = 80.379 / f2->Eval(j_pt);
+	// if(masscorr > 5){
+		// cout<<"ERROR IN MASS CORR CALCULATION"<<endl;
+		// cout<<j_pt<<" "<<f2a->Eval(j_pt)<<" "<<f2->Eval(j_pt)<<endl;
+	// }
+	
+	//if(s_mass < 0.75*mass || s_mass > 1.25*mass) continue;
+    //if(j_mass * masscorr < 68 || j_mass * masscorr > 94) continue;
+	//if(j_mass * masscorr < 38 || j_mass * masscorr > 64) continue;
+	//if(j_mass * masscorr < 88 || j_mass * masscorr > 114) continue;
+	//if(j_mass * masscorr < 40 || j_mass * masscorr > 65) continue;
+    if(abs(p_eta) > 1.44) continue;
+    if(abs(j_eta) > 2) continue;
+    if(j_tau21 > 0.35) continue;
+    if(s_ptm < 0.37) continue;
+    if(s_cos > 0.6) continue;
     
     photon_pt = p_pt;
     photon_eta = p_eta;
@@ -126,7 +171,7 @@ void postproc(TString dataset, int runondata)
     ak8puppijet_eta = j_eta;
     ak8puppijet_phi = j_phi;
     ak8puppijet_e = j_e;
-    ak8puppijet_masssoftdropcorr = j_mass;
+	ak8puppijet_masssoftdropcorr = j_mass * masscorr;
     ak8puppijet_tau21 = j_tau21;
     sys_costhetastar = s_cos;
     sys_ptoverm = s_ptm;
@@ -144,8 +189,10 @@ void postproc(TString dataset, int runondata)
 		xsec_puweight = pileupweight_central ;
 
 	outTree->Fill();
+	sumW += xsec_weight * xsec_kfactor * xsec_puweight;
   }
   cout<<"Entries: "<<outTree->GetEntries()<<endl;
+  // cout<<"++++,"<<mass<<","<<sumW<<endl;
   outFile->Write();
   outFile->Close();
 }

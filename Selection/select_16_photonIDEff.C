@@ -121,6 +121,7 @@ void select_16_photonIDEff(const TString conf="samples.conf", // input file
   std::vector<float> *genPart_mass = new std::vector<float>();
   std::vector<int>   *genPart_pdgId = new std::vector<int>();
   std::vector<int>   *genPart_status = new std::vector<int>();
+  std::vector<std::vector<int>>  *genPart_mother = new std::vector<std::vector<int>>;
   
   // loop over samples
   TTree* eventTree = 0;
@@ -171,6 +172,7 @@ void select_16_photonIDEff(const TString conf="samples.conf", // input file
       eventTree->SetBranchAddress("genParticle_mass", &genPart_mass);
       eventTree->SetBranchAddress("genParticle_pdgId", &genPart_pdgId);
       eventTree->SetBranchAddress("genParticle_status", &genPart_status);
+	  eventTree->SetBranchAddress("genParticle_mother", &genPart_mother);
 
       for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
       //for(UInt_t ientry=0; ientry<2; ientry++) {
@@ -199,6 +201,7 @@ void select_16_photonIDEff(const TString conf="samples.conf", // input file
 	    genPart_mass->clear();
 	    genPart_pdgId->clear();
 	    genPart_status->clear();
+		genPart_mother->clear();
 		
 		// -------------------------------------Trigger----------------------------------------------
 		// HLT Trigger decision first, improve speed
@@ -232,20 +235,24 @@ void select_16_photonIDEff(const TString conf="samples.conf", // input file
 		int index_p_gen = -99;
 		for(int i=0; i<genPart_pt->size(); i++){
 			if(genPart_pdgId->at(i) == 22 && genPart_status->at(i) == 1 && abs(genPart_eta->at(i)) < 1.44){
-				gen_ph.SetPtEtaPhiM(genPart_pt->at(i),genPart_eta->at(i),genPart_phi->at(i),genPart_mass->at(i));
-				index_p_gen = i;
-				break;
+				for(int j=0; j<genPart_mother->at(i).size(); j++){
+					if(abs(genPart_mother->at(i).at(j)) == 9000007){
+				       gen_ph.SetPtEtaPhiM(genPart_pt->at(i),genPart_eta->at(i),genPart_phi->at(i),genPart_mass->at(i));
+				       index_p_gen = i;
+				       break;
+					}
+			    }
 			}
 		} 
 		if(index_p_gen == -99) continue;
-		
+		count3++;
 		int index_p = -99;
 		for(int i=0; i<ph_pt->size(); i++){
 			reco_ph.SetPtEtaPhiE(ph_pt->at(i),ph_eta->at(i),ph_phi->at(i),ph_E->at(i));
 			if(reco_ph.DeltaR(gen_ph) < 0.3) index_p = i;
 		} 
 		if(index_p == -99) continue;
-		
+		count4++;
 		hist00pa->Fill(ph_pt->at(index_p)*ph_corr->at(index_p));
 		
 		if(ph_passLooseId->at(index_p)) hist01pa->Fill(ph_pt->at(index_p)*ph_corr->at(index_p));

@@ -52,7 +52,7 @@ void SignalInterpolationN(){
 
   for (int i = 0; i!=nMCpoints; ++i ){
     TString massname = std::to_string(int(masses[i]));
-    TString name = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/rootfit_workspace/"+massname+"N-shapes-Unbinned-CB.root";
+    TString name = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/rootfit_workspace/anchor/"+massname+"N-shapes-Unbinned-CB.root";
     if (!gSystem->AccessPathName(name)){
       f[i] = new TFile(name);
       xf[i] = (RooWorkspace*)f[i]->Get("w");
@@ -134,7 +134,7 @@ void SignalInterpolationN(){
       
       //distribs0->Scale(weight/effcy2);
       */
-      TFile* fileNew = new TFile(Form("GenSignal/roodataset_signal-%d-narrow.root",int(masses[iPoint+1]-i*step)),"RECREATE");
+      TFile* fileNew = new TFile(Form("PdfGenerateSignal/roodataset_signal-%d-narrow.root",int(masses[iPoint+1]-i*step)),"RECREATE");
       dataGen->Write();
       distribs0->Write();
       fileNew->Close();
@@ -155,7 +155,7 @@ void SignalInterpolationN(){
   yaxis->SetTitle("Events (a.u.)");
   yaxis->SetTitleOffset(1.1);
   xaxis->SetRangeUser(0,4000);
-  yaxis->SetRangeUser(0,0.55);
+  yaxis->SetRangeUser(0,0.5);
   frame1[0]->Draw();
   for (int iPoint = 1; iPoint!=nMCpoints-1; ++iPoint) {
     frame1[iPoint]->Draw("SAME");

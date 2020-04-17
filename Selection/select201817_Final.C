@@ -34,7 +34,7 @@
 
 #define runmode 0 //11: ph_corr_up 12: ph_corr_down 21: jec_corr_up 22:jec_corr_down 31: jer_sf_up 32: jer_sf_down
 
-void select201817_SF(const TString conf="samples.conf", // input file
+void select201817_Final(const TString conf="samples.conf", // input file
 	          const TString outputDir=".",  // output directory
 	          const Float_t weight=1   // MC weight?
 	       ) {
@@ -126,6 +126,9 @@ void select201817_SF(const TString conf="samples.conf", // input file
   TH1F* hist02sa = new TH1F("WGamma02sa",histotitle+", photon jet seperation",50,0,10);
   TH1F* hist02sb = new TH1F("WGamma02sb",histotitle+", photon jet seperation",50,0,10);
   
+  //Pileup histogram
+  TH1F* histpileup = NULL;
+  
   UInt_t count0=0, count1=0, count2=0, count3=0, count4=0, count5=0, count6=0;
   gStyle->SetOptStat(0);
 
@@ -156,12 +159,15 @@ void select201817_SF(const TString conf="samples.conf", // input file
   // MC xsec weight
   float xsec_weight;
   float event_pdfunc;
+  // Pileup
+  int PV_N;		   
   
   // Data structures to store info from produced flat ntuples
+  //--Event--
   Int_t runnum = -999;
   Int_t evtnum = -999;
   Int_t lumiBlock = -999;
-  
+  Int_t pv_N = -99;	
   //--Photons---
   Int_t ph_N = -99;//for int we need to use this to initialize the container
   std::vector<float> *ph_pt = new std::vector<float>();
@@ -208,50 +214,54 @@ void select201817_SF(const TString conf="samples.conf", // input file
   //--Trigger
   std::map<std::string,bool> *HLT_isFired = new std::map<std::string,bool>();
   //--GenInfo
-  float evt_pdfunc = -99;
+  float evt_pdfunc = -99;			 
   //--GenParticle
-  std::vector<float> *genPart_pt = new std::vector<float>();
-  std::vector<float> *genPart_eta = new std::vector<float>();
-  std::vector<float> *genPart_phi = new std::vector<float>();
-  std::vector<float> *genPart_mass = new std::vector<float>();
-  std::vector<int>   *genPart_pdgId = new std::vector<int>();
-  std::vector<int>   *genPart_status = new std::vector<int>();
-  std::vector<vector<int>>   *genPart_mother = new std::vector<vector<int>>();
-  std::vector<vector<float>> *genPart_mother_pt = new std::vector<vector<float>>();
-  std::vector<vector<float>> *genPart_mother_eta = new std::vector<vector<float>>();
-  std::vector<vector<float>> *genPart_mother_phi = new std::vector<vector<float>>();
-  std::vector<vector<float>> *genPart_mother_e = new std::vector<vector<float>>();
-  std::vector<vector<int>>   *genPart_daughter = new std::vector<vector<int>>();
-  std::vector<vector<float>> *genPart_daughter_pt = new std::vector<vector<float>>();
-  std::vector<vector<float>> *genPart_daughter_eta = new std::vector<vector<float>>();
-  std::vector<vector<float>> *genPart_daughter_phi = new std::vector<vector<float>>();
-  std::vector<vector<float>> *genPart_daughter_e = new std::vector<vector<float>>();
+  // std::vector<float> *genPart_pt = new std::vector<float>();
+  // std::vector<float> *genPart_eta = new std::vector<float>();
+  // std::vector<float> *genPart_phi = new std::vector<float>();
+  // std::vector<float> *genPart_mass = new std::vector<float>();
+  // std::vector<int>   *genPart_pdgId = new std::vector<int>();
+  // std::vector<int>   *genPart_status = new std::vector<int>();
+  // std::vector<vector<int>>   *genPart_mother = new std::vector<vector<int>>();
+  // std::vector<vector<float>> *genPart_mother_pt = new std::vector<vector<float>>();
+  // std::vector<vector<float>> *genPart_mother_eta = new std::vector<vector<float>>();
+  // std::vector<vector<float>> *genPart_mother_phi = new std::vector<vector<float>>();
+  // std::vector<vector<float>> *genPart_mother_e = new std::vector<vector<float>>();
+  // std::vector<vector<int>>   *genPart_daughter = new std::vector<vector<int>>();
+  // std::vector<vector<float>> *genPart_daughter_pt = new std::vector<vector<float>>();
+  // std::vector<vector<float>> *genPart_daughter_eta = new std::vector<vector<float>>();
+  // std::vector<vector<float>> *genPart_daughter_phi = new std::vector<vector<float>>();
+  // std::vector<vector<float>> *genPart_daughter_e = new std::vector<vector<float>>();
 
   
   // loop over samples
   TTree* eventTree = 0;
   for(UInt_t isam=0; isam<samplev.size(); isam++) {
     CSample* samp = samplev[isam];
+	
+	//pileip
+	histpileup = new TH1F("pileup","Pile up",50,0,100);
 
-    // Set up output ntuple
+    //Set up output ntuple
     //TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_WGamma_full_full_weightedTo41p54.root");
 #if runmode == 11
-    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_photonSFup_WGamma_full_full_Feb26.root");
+    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_photonSFup_WGamma_full_full_Mar17.root");
 #elif runmode == 12
-    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_photonSFdown_WGamma_full_full_Feb26.root");
+    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_photonSFdown_WGamma_full_full_Mar17.root");
 #elif runmode == 21
-    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_jetjecup_WGamma_full_full_Feb26.root");
+    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_jetjecup_WGamma_full_full_Mar17.root");
 #elif runmode == 22
-    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_jetjecdown_WGamma_full_full_Feb26.root");
+    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_jetjecdown_WGamma_full_full_Mar17.root");
 #elif runmode == 31
-    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_jetjerup_WGamma_full_full_Feb26.root");
+    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_jetjerup_WGamma_full_full_Mar17.root");
 #elif runmode == 32
-	TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_jetjerdown_WGamma_full_full_Feb26.root");
+	TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_jetjerdown_WGamma_full_full_Mar17.root");
 #else
-	TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_nominal_WGamma_full_full_Feb26.root");
+	TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_nominal_pileup_WGamma_full_full_Mar17.root");
 #endif
     TFile *outFile1 = new TFile(outfilename1,"RECREATE"); 
     TTree *outTree1 = new TTree("Events","Events");
+	outTree1->Branch("PV_N",            &PV_N,          "PV_N/I");
     outTree1->Branch("photon_pt",       &photon_pt,      "photon_pt/F");
     outTree1->Branch("photon_eta",      &photon_eta,      "photon_eta/F");
     outTree1->Branch("photon_phi",      &photon_phi,      "photon_phi/F");
@@ -280,7 +290,7 @@ void select201817_SF(const TString conf="samples.conf", // input file
     outTree1->Branch("sys_invmass",             &sys_invmass,           "sys_invmass/F");
     outTree1->Branch("sys_seperation",          &sys_seperation,        "sys_seperation/F");
     outTree1->Branch("xsec_weight",             &xsec_weight,           "xsec_weight/F");
-	outTree1->Branch("event_pdfunc",            &event_pdfunc,          "event_pdfunc/F");
+    outTree1->Branch("event_pdfunc",            &event_pdfunc,          "event_pdfunc/F");
     
    
 
@@ -307,6 +317,8 @@ void select201817_SF(const TString conf="samples.conf", // input file
       eventTree->SetBranchAddress("EVENT_lumiBlock", &lumiBlock); 
       */
       
+	  //--PV--
+	  eventTree->SetBranchAddress("PV_N", &pv_N);     
       //--Photons--
       eventTree->SetBranchAddress("ph_N", &ph_N);                              
       eventTree->SetBranchAddress("ph_pt", &ph_pt);                            
@@ -425,6 +437,12 @@ void select201817_SF(const TString conf="samples.conf", // input file
 	genPart_daughter_phi->clear();
 	genPart_daughter_e->clear();
 	*/
+	
+	//-------------------------------------pileup----------------------------------------------
+	// full pile-up before any selection, used to creat histogram for pileup reweighting after full selection
+	TBranch *PileupBranch = (TBranch*)eventTree->GetBranch("PV_N");
+	PileupBranch->GetEntry(ientry);
+	histpileup->Fill(pv_N);
 	
 	//-------------------------------------Trigger----------------------------------------------
 	// HLT Trigger decision first, improve speed
@@ -716,7 +734,7 @@ void select201817_SF(const TString conf="samples.conf", // input file
 	  sys_seperation = seperation;
 	  xsec_weight = weight;
 	  event_pdfunc = evt_pdfunc;
-	  cout<<event_pdfunc<<endl;
+	  PV_N = pv_N;			   
 	  outTree1->Fill();
 	}
 	if(pass_p2) count5++;
@@ -799,8 +817,11 @@ void select201817_SF(const TString conf="samples.conf", // input file
       eventTree = 0;
       delete infile;
     }//end of file loop
+	outFile1->cd();
+	histpileup->Write();
     outFile1->Write();
     outFile1->Close();
+	delete histpileup;
   }//end of sample loop
   cout<<"Number of events: "<<count0<<endl;
   cout<<"Number of events have photon and AK8 jet: "<<count1<<endl;

@@ -52,7 +52,7 @@ void SignalInterpolationW(){
 
   for (int i = 0; i!=nMCpoints; ++i ){
     TString massname = std::to_string(int(masses[i]));
-    TString name = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/rootfit_workspace/"+massname+"W-shapes-Unbinned-composit.root";
+    TString name = "/afs/cern.ch/work/x/xuyan/work5/PROD17/WGammaAnalyzer/Analyzer/RooFit/biasstudy/"+massname+"W-shapes-Unbinned-composit.root";
     if (!gSystem->AccessPathName(name)){
       f[i] = new TFile(name);
       xf[i] = (RooWorkspace*)f[i]->Get("w");
@@ -138,7 +138,7 @@ void SignalInterpolationW(){
       
       //distribs0->Scale(weight/effcy2);
       */
-      TFile* fileNew = new TFile(Form("GenSignal/roodataset_signal-%d-wide.root",int(masses[iPoint+1]-i*step)),"RECREATE");
+      TFile* fileNew = new TFile(Form("PdfGenerateSignal/roodataset_signal-%d-wide.root",int(masses[iPoint+1]-i*step)),"RECREATE");
 
       /*
       TCanvas *c111 = new TCanvas("","",1200,900);

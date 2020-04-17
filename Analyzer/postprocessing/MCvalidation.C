@@ -149,7 +149,7 @@ void MCvalidation()
   // Open input file
   Float_t p_pt, p_eta, p_phi, p_e, p_mva, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight, x_kfactor;
   
-  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuple_data/GJets_nominal_pileup_WGamma_full_full_Mar17.root");
+  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/GJets_postproc_WGamma_full_full_presel_kfactor_jmcorr_Mar17.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -165,27 +165,29 @@ void MCvalidation()
   theTree->SetBranchAddress("ak8puppijet_tau21", &j_tau21);
   theTree->SetBranchAddress("sys_costhetastar", &s_cos);
   theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
-  theTree->SetBranchAddress("sys_invmass", &s_mass);
+  theTree->SetBranchAddress("m", &s_mass);
   theTree->SetBranchAddress("xsec_weight", &x_weight);
   theTree->SetBranchAddress("xsec_kfactor", &x_kfactor);
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
-    if(j_mass < 65 || j_mass > 105) continue;
-    hist11->Fill(p_pt, x_weight * 1.39 * 3.30339);
-    hist12->Fill(p_eta, x_weight * 1.39 * 3.30339);
-    hist13->Fill(j_pt, x_weight * 1.39 * 3.30339);
-    hist14->Fill(j_eta, x_weight * 1.39 * 3.30339);
-    hist15->Fill(j_e, x_weight * 1.39 * 3.30339);
-    hist16->Fill(j_mass, x_weight * 1.39 * 3.30339);
-    hist17->Fill(j_tau21, x_weight * 1.39 * 3.30339);
-    hist18->Fill(s_cos, x_weight * 1.39 * 3.30339);
-    hist19->Fill(s_ptm, x_weight * 1.39 * 3.30339);
-    hist110->Fill(s_mass, x_weight * 1.39 * 3.30339);
-    hist111->Fill(p_mva, x_weight * 1.39 * 3.30339);  
+    if(j_mass < 68 || j_mass > 94) continue;
+	if(x_kfactor > 0.9999 && x_kfactor < 1.0001) 
+		cout<<"Check if k-factor is assigned!"<<endl;
+    hist11->Fill(p_pt, x_weight * x_kfactor * 3.30339);
+    hist12->Fill(p_eta, x_weight * x_kfactor * 3.30339);
+    hist13->Fill(j_pt, x_weight * x_kfactor * 3.30339);
+    hist14->Fill(j_eta, x_weight * x_kfactor * 3.30339);
+    hist15->Fill(j_e, x_weight * x_kfactor * 3.30339);
+    hist16->Fill(j_mass, x_weight * x_kfactor * 3.30339);
+    hist17->Fill(j_tau21, x_weight * x_kfactor * 3.30339);
+    hist18->Fill(s_cos, x_weight * x_kfactor * 3.30339);
+    hist19->Fill(s_ptm, x_weight * x_kfactor * 3.30339);
+    hist110->Fill(s_mass, x_weight * x_kfactor * 3.30339);
+    hist111->Fill(p_mva, x_weight * x_kfactor * 3.30339);  
   }
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuple_data/QCD_nominal_pileup_WGamma_full_full_Mar17.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/QCD_postproc_WGamma_full_full_presel_kfactor_jmcorr_Mar17.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -201,29 +203,31 @@ void MCvalidation()
   theTree->SetBranchAddress("ak8puppijet_tau21", &j_tau21);
   theTree->SetBranchAddress("sys_costhetastar", &s_cos);
   theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
-  theTree->SetBranchAddress("sys_invmass", &s_mass);
+  theTree->SetBranchAddress("m", &s_mass);
   theTree->SetBranchAddress("xsec_weight", &x_weight);
   theTree->SetBranchAddress("xsec_kfactor", &x_kfactor);
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
-    if(j_mass < 65 || j_mass > 105) continue;
-    hist21->Fill(p_pt, x_weight * 0.50 * 3.30339);
-    hist22->Fill(p_eta, x_weight * 0.50 * 3.30339);
-    hist23->Fill(j_pt, x_weight * 0.50 * 3.30339);
-    hist24->Fill(j_eta, x_weight * 0.50 * 3.30339);
-    hist25->Fill(j_e, x_weight * 0.50 * 3.30339);
-    hist26->Fill(j_mass, x_weight * 0.50 * 3.30339);
-    hist27->Fill(j_tau21, x_weight * 0.50 * 3.30339);
-    hist28->Fill(s_cos, x_weight * 0.50 * 3.30339);
-    hist29->Fill(s_ptm, x_weight * 0.50 * 3.30339);
-    hist210->Fill(s_mass, x_weight * 0.50 * 3.30339);
-    hist211->Fill(p_mva, x_weight * 0.50 * 3.30339);  
+    if(j_mass < 68 || j_mass > 94) continue;
+	if(x_kfactor > 0.9999 && x_kfactor < 1.0001) 
+		cout<<"Check if k-factor is assigned!"<<endl;
+    hist21->Fill(p_pt, x_weight * x_kfactor * 3.30339);
+    hist22->Fill(p_eta, x_weight * x_kfactor * 3.30339);
+    hist23->Fill(j_pt, x_weight * x_kfactor * 3.30339);
+    hist24->Fill(j_eta, x_weight * x_kfactor * 3.30339);
+    hist25->Fill(j_e, x_weight * x_kfactor * 3.30339);
+    hist26->Fill(j_mass, x_weight * x_kfactor * 3.30339);
+    hist27->Fill(j_tau21, x_weight * x_kfactor * 3.30339);
+    hist28->Fill(s_cos, x_weight * x_kfactor * 3.30339);
+    hist29->Fill(s_ptm, x_weight * x_kfactor * 3.30339);
+    hist210->Fill(s_mass, x_weight * x_kfactor * 3.30339);
+    hist211->Fill(p_mva, x_weight * x_kfactor * 3.30339);  
   }
 
   int SB = 0;
   int WB = 0;
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Full_Run2/Run2Data_nominal_pileup_WGamma_full_full_Mar17.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Full_Run2/presel/Run2Data_postproc_WGammaRun2_full_full_presel_jmcorr_Mar17.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -239,26 +243,26 @@ void MCvalidation()
   theTree->SetBranchAddress("ak8puppijet_tau21", &j_tau21);
   theTree->SetBranchAddress("sys_costhetastar", &s_cos);
   theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
-  theTree->SetBranchAddress("sys_invmass", &s_mass);
+  theTree->SetBranchAddress("m", &s_mass);
   //theTree->SetBranchAddress("xsec_weight", &x_weight);
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
     if(j_mass > 40 && j_mass < 65) SB++;
 	if(j_mass < 40 || j_mass > 65) continue;
-    hist31->Fill(p_pt, 1.1484);
-    hist32->Fill(p_eta, 1.1484);
-    hist33->Fill(j_pt, 1.1484);
-    hist34->Fill(j_eta, 1.1484);
-    hist35->Fill(j_e, 1.1484);
-    hist36->Fill(j_mass, 1.1484);
-    hist37->Fill(j_tau21, 1.1484);
-    hist38->Fill(s_cos, 1.1484);
-    hist39->Fill(s_ptm, 1.1484);
-    hist310->Fill(s_mass, 1.1484);
-    hist311->Fill(p_mva, 1.1484);  
+    hist31->Fill(p_pt, 0.7986727);
+    hist32->Fill(p_eta, 0.7986727);
+    hist33->Fill(j_pt, 0.7986727);
+    hist34->Fill(j_eta, 0.7986727);
+    hist35->Fill(j_e, 0.7986727);
+    hist36->Fill(j_mass, 1);
+    hist37->Fill(j_tau21, 0.7986727);
+    hist38->Fill(s_cos, 0.7986727);
+    hist39->Fill(s_ptm, 0.7986727);
+    hist310->Fill(s_mass, 0.7986727);
+    hist311->Fill(p_mva, 0.7986727);  
   }
   
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Full_Run2/Run2Data_nominal_pileup_WGamma_full_full_Mar17.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Full_Run2/presel/Run2Data_postproc_WGammaRun2_full_full_presel_jmcorr_Mar17.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -274,26 +278,26 @@ void MCvalidation()
   theTree->SetBranchAddress("ak8puppijet_tau21", &j_tau21);
   theTree->SetBranchAddress("sys_costhetastar", &s_cos);
   theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
-  theTree->SetBranchAddress("sys_invmass", &s_mass);
+  theTree->SetBranchAddress("m", &s_mass);
   //theTree->SetBranchAddress("xsec_weight", &x_weight);
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
-    if(j_mass > 65 && j_mass < 105) WB++;
-	if(j_mass < 65 || j_mass > 105) continue;
-    hist3a1->Fill(p_pt, 1.1484);
-    hist3a2->Fill(p_eta, 1.1484);
-    hist3a3->Fill(j_pt, 1.1484);
-    hist3a4->Fill(j_eta, 1.1484);
-    hist3a5->Fill(j_e, 1.1484);
-    hist3a6->Fill(j_mass, 1.1484);
-    hist3a7->Fill(j_tau21, 1.1484);
-    hist3a8->Fill(s_cos, 1.1484);
-    hist3a9->Fill(s_ptm, 1.1484);
-    hist3a10->Fill(s_mass, 1.1484);
-    hist3a11->Fill(p_mva, 1.1484);  
+    if(j_mass > 68 && j_mass < 94) WB++;
+	if(j_mass < 68 || j_mass > 94) continue;
+    hist3a1->Fill(p_pt);
+    hist3a2->Fill(p_eta);
+    hist3a3->Fill(j_pt);
+    hist3a4->Fill(j_eta);
+    hist3a5->Fill(j_e);
+    hist3a6->Fill(j_mass);
+    hist3a7->Fill(j_tau21);
+    hist3a8->Fill(s_cos);
+    hist3a9->Fill(s_ptm);
+    hist3a10->Fill(s_mass);
+    hist3a11->Fill(p_mva);  
   }
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuple_signal/SignalMC1000N_nominal_WGamma_full_full_Feb26.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SignalMC1000N_postproc_WGamma_full_full_presel_jmcorr_Mar17.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -309,7 +313,7 @@ void MCvalidation()
   theTree->SetBranchAddress("ak8puppijet_tau21", &j_tau21);
   theTree->SetBranchAddress("sys_costhetastar", &s_cos);
   theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
-  theTree->SetBranchAddress("sys_invmass", &s_mass);
+  theTree->SetBranchAddress("m", &s_mass);
   //theTree->SetBranchAddress("xsec_weight", &x_weight);
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
@@ -328,7 +332,7 @@ void MCvalidation()
     hist411->Fill(p_mva, 6.8595);  
   }
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuple_signal/SignalMC1000W_nominal_WGamma_full_full_Feb26.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SignalMC1000W_postproc_WGamma_full_full_presel_jmcorr_Mar17.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -344,7 +348,7 @@ void MCvalidation()
   theTree->SetBranchAddress("ak8puppijet_tau21", &j_tau21);
   theTree->SetBranchAddress("sys_costhetastar", &s_cos);
   theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
-  theTree->SetBranchAddress("sys_invmass", &s_mass);
+  theTree->SetBranchAddress("m", &s_mass);
   //theTree->SetBranchAddress("xsec_weight", &x_weight);
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
@@ -363,7 +367,7 @@ void MCvalidation()
     hist511->Fill(p_mva, 6.8595);  
   }
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuple_signal/SignalMC2800N_nominal_WGamma_full_full_Feb26.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SignalMC2800N_postproc_WGamma_full_full_presel_jmcorr_Mar17.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -379,7 +383,7 @@ void MCvalidation()
   theTree->SetBranchAddress("ak8puppijet_tau21", &j_tau21);
   theTree->SetBranchAddress("sys_costhetastar", &s_cos);
   theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
-  theTree->SetBranchAddress("sys_invmass", &s_mass);
+  theTree->SetBranchAddress("m", &s_mass);
   //theTree->SetBranchAddress("xsec_weight", &x_weight);
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
@@ -398,7 +402,7 @@ void MCvalidation()
     hist611->Fill(p_mva, 6.8595);  
   }
   
-    input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuple_signal/SignalMC2800W_nominal_WGamma_full_full_Feb26.root");
+    input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SignalMC2800W_postproc_WGamma_full_full_presel_jmcorr_Mar17.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -414,7 +418,7 @@ void MCvalidation()
   theTree->SetBranchAddress("ak8puppijet_tau21", &j_tau21);
   theTree->SetBranchAddress("sys_costhetastar", &s_cos);
   theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
-  theTree->SetBranchAddress("sys_invmass", &s_mass);
+  theTree->SetBranchAddress("m", &s_mass);
   //theTree->SetBranchAddress("xsec_weight", &x_weight);
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
@@ -759,7 +763,7 @@ void MCvalidation()
   hist3a1->Draw("E1SAME");
   hist31->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist31,"Data Sideband","lep");
+  legend->AddEntry(hist31,"Data Sideband (Norm)","lep");
   legend->AddEntry(hist41,"M-1000 N");
   legend->AddEntry(hist3a1,"Data Signal Region","lep");
   legend->AddEntry(hist51,"M-1000 W"); 
@@ -868,7 +872,7 @@ void MCvalidation()
   hist3a4->Draw("E1SAME");
   hist34->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist34,"Data Sideband","lep");
+  legend->AddEntry(hist34,"Data Sideband (Norm)","lep");
   legend->AddEntry(hist44,"M-1000 N");
   legend->AddEntry(hist3a4,"Data Signal Region","lep");
   legend->AddEntry(hist54,"M-1000 W"); 
@@ -1085,7 +1089,7 @@ void MCvalidation()
   hist3a7->Draw("E1SAME");
   hist37->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist37,"Data Sideband","lep");
+  legend->AddEntry(hist37,"Data Sideband (Norm)","lep");
   legend->AddEntry(hist47,"M-1000 N");
   legend->AddEntry(hist3a7,"Data Signal Region","lep");
   legend->AddEntry(hist57,"M-1000 W"); 
@@ -1193,7 +1197,7 @@ void MCvalidation()
   hist3a8->Draw("E1SAME");
   hist38->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist38,"Data Sideband","lep");
+  legend->AddEntry(hist38,"Data Sideband (Norm)","lep");
   legend->AddEntry(hist48,"M-1000 N");
   legend->AddEntry(hist3a8,"Data Signal Region","lep");
   legend->AddEntry(hist58,"M-1000 W"); 
@@ -1301,7 +1305,7 @@ void MCvalidation()
   hist3a9->Draw("E1SAME");
   hist39->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist39,"Data Sideband","lep");
+  legend->AddEntry(hist39,"Data Sideband (Norm)","lep");
   legend->AddEntry(hist49,"M-1000 N");
   legend->AddEntry(hist3a9,"Data Signal Region","lep");
   legend->AddEntry(hist59,"M-1000 W"); 
@@ -1409,7 +1413,7 @@ void MCvalidation()
   //hist3a10->Draw("E1SAME");
   hist310->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist310,"Data Sideband","lep");
+  legend->AddEntry(hist310,"Data Sideband (Norm)","lep");
   legend->AddEntry(hist410,"M-1000 N");
   legend->AddEntry(hist110,"#gamma + jet","f");
   legend->AddEntry(hist510,"M-1000 W");
@@ -1484,8 +1488,7 @@ void MCvalidation()
   c07->Print("s_M.svg");
   c07->Print("s_M.root");
   //==========================================================
-  
-  
+
   cout<<SB<<endl;
   cout<<WB<<endl;
 }
