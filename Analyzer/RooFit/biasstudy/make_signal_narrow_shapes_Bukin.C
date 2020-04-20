@@ -40,6 +40,7 @@
 #include <RooPlotable.h>
 #include <RooWorkspace.h>
 #include <RooAddPdf.h>
+#include <RooBukinPdf.h>
 #include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/tdrstyle.C"
 #include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/CMS_lumi.C"
 #endif
@@ -49,7 +50,7 @@ std::string to_str_trim(const float a_value, const int n = 2)
     return std::to_string(a_value).substr(0,std::to_string(a_value).find(".") + n + 1);
 }
 
-void make_signal_narrow_shapes(int signalmass = 900, int yhi = 900)
+void make_signal_narrow_shapes_Bukin(int signalmass = 2200, int yhi = 400)
 {
   //gErrorIgnoreLevel = kInfo;
   using namespace std;
@@ -78,18 +79,35 @@ void make_signal_narrow_shapes(int signalmass = 900, int yhi = 900)
 
   TString signalmass_str = std::to_string(signalmass);
   
+  // int lowrange = signalmass*0.75;
+  // int highrange = signalmass*1.25;
+  // if(lowrange < 600)
+	  // lowrange = 600;
+  // if(highrange > 4000)
+	  // highrange = 4000;
+  // if(lowrange % 20){
+	  // lowrange = (lowrange / 20) * 20;
+	  // cout<<"Changing lower boundary!!!"<<endl;
+  // }
+  // if(highrange % 20){
+	  // highrange = (highrange / 20) * 20;
+	  // cout<<"Changing upper boundary!!!"<<endl;
+  // }  
+  // int bins = (int)(highrange - lowrange)/20;
+  // cout<<"Using bins: "<<bins<<endl;
+  
   // --- Create obervable --- 
   RooRealVar *m = new RooRealVar("m","m",600,4000,""); //the name "m" will be used by RooDataSet to import data
   
   //--- signal PDF ---
-  TString fun_name = "CB";
-  RooRealVar* mean = new RooRealVar("mean","mean",signalmass,signalmass-100,signalmass+100,"");
-  RooRealVar* alpha = new RooRealVar("alpha","alpha",1,0.1,2.00,"");
-  // RooRealVar* sigma = new RooRealVar("sigma","sigma",50,20,150,"");
-  // RooRealVar* n = new RooRealVar("n","n",1,0.1,50,"");
-  RooRealVar* sigma = new RooRealVar("sigma","sigma",39,36.97,45,"");
-  RooRealVar* n = new RooRealVar("n","n",0.1,0,5,"");
-  RooCBShape* model = new RooCBShape("CBShape","Cystal Ball Function",*m,*mean,*sigma,*alpha,*n);
+  TString fun_name = "Bukin";
+  RooRealVar* mean = new RooRealVar("mean","mean",signalmass,signalmass-100,signalmass+100,""); 
+  RooRealVar* sigma = new RooRealVar("sigma","sigma",100,20,100,"");
+  RooRealVar* xi = new RooRealVar("xi","xi",-0.01,-2,2,"");
+  RooRealVar* rho1 = new RooRealVar("rho1","rho1",-0.01,-1,1,"");
+  RooRealVar* rho2 = new RooRealVar("rho2","rho2",0.01,-1,1,"");
+
+  RooBukinPdf* model = new RooBukinPdf("Bukin","Bukin Function",*m,*mean,*sigma,*xi,*rho1,*rho2);
 
   // --- Import Binned dataset ---
   float s_mass, xsec_puweight;
@@ -121,43 +139,48 @@ void make_signal_narrow_shapes(int signalmass = 900, int yhi = 900)
   datah.plotOn(frame);
   
   TString chi2txt = "#chi^{2}/ndf: "+to_str_trim(frame->chiSquare(fun_name,"data", 4));
-  TString NLLtxt = "NLL: "+to_str_trim(model->createNLL(datah)->getVal());
-  TString CBmean = "#mu_{CB}: "+to_str_trim(mean->getVal())+" #pm "+to_str_trim(mean->getError())+" (GeV)";
-  TString CBsigma = "#sigma_{CB}: "+to_str_trim(sigma->getVal())+" #pm "+to_str_trim(sigma->getError())+" (GeV)";
-  TString CBalpha = "#alpha_{CB}: "+to_str_trim(alpha->getVal())+" #pm "+to_str_trim(alpha->getError());
-  TString CBn = "n_{CB}: "+to_str_trim(n->getVal())+" #pm "+to_str_trim(n->getError());
+  TString NLLtxt = "NLL: "+to_str_trim(model->createNLL(datah)->getValV());
+  TString Bukinmean = "x_{p}: "+to_str_trim(mean->getValV())+" #pm "+to_str_trim(mean->getError())+" (GeV)";
+  TString Bukinsigma = "#sigma: "+to_str_trim(sigma->getValV())+" #pm "+to_str_trim(sigma->getError())+" (GeV)";
+  TString Bukinxi = "#xi: "+to_str_trim(xi->getValV())+" #pm "+to_str_trim(xi->getError());
+  TString Bukinrho1 = "#rho_{1}: "+to_str_trim(rho1->getValV())+" #pm "+to_str_trim(rho1->getError());
+  TString Bukinrho2 = "#rho_{2}: "+to_str_trim(rho2->getValV())+" #pm "+to_str_trim(rho2->getError());
   TLatex *chi2lax = new TLatex(0.15,0.7-0*0.04,chi2txt);
-  TLatex *CBmeanlax = new TLatex(0.15,0.7-1*0.04,CBmean);
-  TLatex *CBsigmalax = new TLatex(0.15,0.7-2*0.04,CBsigma);
-  TLatex *CBalphalax = new TLatex(0.15,0.7-3*0.04,CBalpha);
-  TLatex *CBnlax = new TLatex(0.15,0.7-4*0.04,CBn);
+  TLatex *Bukinmeanlax = new TLatex(0.15,0.7-1*0.04,Bukinmean);
+  TLatex *Bukinsigmalax = new TLatex(0.15,0.7-2*0.04,Bukinsigma);
+  TLatex *Bukinxilax = new TLatex(0.15,0.7-3*0.04,Bukinxi);
+  TLatex *Bukinrho1lax = new TLatex(0.15,0.7-4*0.04,Bukinrho1);
+  TLatex *Bukinrho2lax = new TLatex(0.15,0.7-5*0.04,Bukinrho2);
 
   // --- Perform extended ML fit ---
   // RooRealVar *sig_norm = new RooRealVar("sig_norm","sig_norm",2000,0,5000,"");
   // RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*sig_norm));
   // RooFitResult *ex_r = NULL;
   // ex_r = ex_model->fitTo(data,RooFit::Minimizer("Minuit2"),Extended(true),SumW2Error(false),Save());
-  // cout<<"Normalization is: "<<sig_norm->getVal()<<endl;
-  // TString sigN = "Ns: "+to_str_trim(sig_norm->getVal());
+  // cout<<"Normalization is: "<<sig_norm->getValV()<<endl;
+  // TString sigN = "Ns: "+to_str_trim(sig_norm->getValV());
   // TLatex *sigNlax = new TLatex(0.15,0.7-5*0.04,sigN);
 
   //chi2lax->SetNDC();
-  CBmeanlax->SetNDC();
-  CBsigmalax->SetNDC();
-  CBalphalax->SetNDC();
-  CBnlax->SetNDC();
+  Bukinmeanlax->SetNDC();
+  Bukinsigmalax->SetNDC();
+  Bukinxilax->SetNDC();
+  Bukinrho1lax->SetNDC();
+  Bukinrho2lax->SetNDC();
   
   //chi2lax->SetTextSize(0.026);
-  CBmeanlax->SetTextSize(0.026);
-  CBsigmalax->SetTextSize(0.026);
-  CBalphalax->SetTextSize(0.026);
-  CBnlax->SetTextSize(0.026);
+  Bukinmeanlax->SetTextSize(0.026);
+  Bukinsigmalax->SetTextSize(0.026);
+  Bukinxilax->SetTextSize(0.026);
+  Bukinrho1lax->SetTextSize(0.026);
+  Bukinrho2lax->SetTextSize(0.026);
   
   //frame->addObject(chi2lax);
-  frame->addObject(CBmeanlax);
-  frame->addObject(CBsigmalax);
-  frame->addObject(CBalphalax);
-  frame->addObject(CBnlax);
+  frame->addObject(Bukinmeanlax);
+  frame->addObject(Bukinsigmalax);
+  frame->addObject(Bukinxilax);
+  frame->addObject(Bukinrho1lax);
+  frame->addObject(Bukinrho2lax);
   
 
   TCanvas *c01 = new TCanvas("c01","c01",2100,2000);
@@ -220,6 +243,10 @@ void make_signal_narrow_shapes(int signalmass = 900, int yhi = 900)
   c01->Print(fun_name+signalmass_str+".pdf");
   c01->Print(fun_name+signalmass_str+".root");
   c01->Print(fun_name+signalmass_str+".svg");
+  
+  RooRealVar x1("x1","x1",00);
+  x1.setVal(600);
+  cout<<"========"<<model->getVal(RooArgSet(x1))<<endl;
   
   
   // --- Output root file ---

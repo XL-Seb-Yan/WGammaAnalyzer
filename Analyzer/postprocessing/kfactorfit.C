@@ -28,7 +28,7 @@ void kfactorfit()
   TH1 *hist1_3 = new TH1F("1_3","pt_{j}",100,0,3000);
   TH1 *hist1_4 = new TH1F("1_4","eta_{j}",50,-2,2);
   TH1 *hist1_5 = new TH1F("1_5","E_{j}",100,0,3000);
-  TH1 *hist1_6 = new TH1F("1_6","masssoftdrop_{j}",40,40,120);
+  TH1 *hist1_6 = new TH1F("1_6","masssoftdrop_{j}",50,40,140);
   TH1 *hist1_7 = new TH1F("1_7","tau21_{j}",50,0,1);
   TH1 *hist1_8 = new TH1F("1_8","cos(#theta*)_{p}",50,0,1);
   TH1 *hist1_9 = new TH1F("1_9","pt/M",50,0,2);
@@ -39,7 +39,7 @@ void kfactorfit()
   TH1 *hist2_3 = new TH1F("2_3","pt_{j}",100,0,3000);
   TH1 *hist2_4 = new TH1F("2_4","eta_{j}",50,-2,2);
   TH1 *hist2_5 = new TH1F("2_5","E_{j}",100,0,3000);
-  TH1 *hist2_6 = new TH1F("2_6","masssoftdrop_{j}",40,40,120);
+  TH1 *hist2_6 = new TH1F("2_6","masssoftdrop_{j}",50,40,140);
   TH1 *hist2_7 = new TH1F("2_7","tau21_{j}",50,0,1);
   TH1 *hist2_8 = new TH1F("2_8","cos(#theta*)_{p}",50,0,1);
   TH1 *hist2_9 = new TH1F("2_9","pt/M",50,0,2);
@@ -50,7 +50,7 @@ void kfactorfit()
   TH1 *hist3_3 = new TH1F("3_3","pt_{j}",100,0,3000);
   TH1 *hist3_4 = new TH1F("3_4","eta_{j}",50,-2,2);
   TH1 *hist3_5 = new TH1F("3_5","E_{j}",100,0,3000);
-  TH1 *hist3_6 = new TH1F("3_6","masssoftdrop_{j}",40,40,120);
+  TH1 *hist3_6 = new TH1F("3_6","masssoftdrop_{j}",50,40,140);
   TH1 *hist3_7 = new TH1F("3_7","tau21_{j}",50,0,1);
   TH1 *hist3_8 = new TH1F("3_8","cos(#theta*)_{p}",50,0,1);
   TH1 *hist3_9 = new TH1F("3_9","pt/M",50,0,2);
@@ -62,11 +62,12 @@ void kfactorfit()
   int s_PV;
   
   // Data
-  TFile* f_data = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/WGammaAnalyzer/Analyzer/postprocessing/TEMP/SinglePhoton2017_postproc_WGamma17_full full_presel_Mar17.root");
-  TFile* f_gjets = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/GJets_postproc_WGamma_full_full_presel_kfactor_jmcorr_Mar17.root");
-  TFile* f_qcd = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/QCD_postproc_WGamma_full_full_presel_kfactor_jmcorr_Mar17.root");
+  TFile* f_data = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Full_Run2/presel/Run2Data_postproc_WGammaRun2_full_full_presel_jmcorr_Mar17.root");
+  TFile* f_gjets = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/WGammaAnalyzer/Analyzer/postprocessing/TEMP/GJets_postproc_WGamma17_full_full_presel_jmcorr_Mar17.root");
+  TFile* f_qcd = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/WGammaAnalyzer/Analyzer/postprocessing/TEMP/QCD_postproc_WGamma17_full_full_presel_jmcorr_Mar17.root");
   
   cout<<"Processing data"<<endl;
+  
     TTree* theTree = (TTree*)f_data->Get("Events");
     // Improt variables for cutting
     theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -125,7 +126,7 @@ void kfactorfit()
   
     for (int ievt = 0; ievt<theTree->GetEntries();ievt++){
       theTree->GetEntry(ievt);
-	  //x_puweight = 1;
+	  x_weight = x_weight * 3.303395;
       hist2_1->Fill(p_pt, x_weight*x_puweight);
       hist2_2->Fill(p_eta, x_weight*x_puweight);
       hist2_3->Fill(j_pt, x_weight*x_puweight);
@@ -162,7 +163,7 @@ void kfactorfit()
   
     for (int ievt = 0; ievt<theTree->GetEntries();ievt++){
       theTree->GetEntry(ievt);
-	  //x_puweight = 1;
+	  x_weight = x_weight * 3.303395;
       hist3_1->Fill(p_pt, x_weight*x_puweight);
       hist3_2->Fill(p_eta, x_weight*x_puweight);
       hist3_3->Fill(j_pt, x_weight*x_puweight);
@@ -187,17 +188,17 @@ void kfactorfit()
   double sGJets = -99;
   double sQCD = -99;
   for(int i=80; i<150; i++){
-    for(int j=50; j<150; j++){
+    for(int j=50; j<250; j++){
       double ls = 0;
       double scaleGJets = i*0.01;
       double scaleQCD = j*0.01;
-      for(int k=1; k<NBins+1; k++){
+      for(int k=6; k<NBins+1; k++){ //starts from 180 GeV
 	    double NData = hist1_1->GetBinContent(k);
 	    double NGjets = hist2_1->GetBinContent(k);
 	    double NQCD = hist3_1->GetBinContent(k);
 	    //cout<<NData<<" "<<NGjets<<" "<<NQCD<<" "<<pow((NData-(scaleGJets*NGjets + scaleQCD*NQCD))/NData,2)<<endl;
 	    if(NData == 0) continue;//exclude first several empty bins lower than trigger turn on
-	    ls += pow((NData-(scaleGJets*NGjets + scaleQCD*NQCD)),2)/1000;
+	    ls += pow((NData-(scaleGJets*NGjets + scaleQCD*NQCD))/1000,2);
       }
       if(ls < minls){
 	    minls = ls;
@@ -222,13 +223,14 @@ void kfactorfit()
   //yaxis->SetRangeUser(0.5,10000000);
   c->SetLogz();
   c->cd();
+  c->SetRightMargin(0.15);
   c->SetGrid();
   g->Draw("COLZ");
   cout<<"OK"<<endl;
   c->Print("MCFit.png");
    
-  // sGJets = 1.07;
-  // sQCD = 0.81;
+  // sGJets = 0.99;
+  // sQCD = 0.55;
   hist2_1->Scale(sGJets);
   hist2_2->Scale(sGJets);
   hist2_3->Scale(sGJets);
@@ -717,8 +719,8 @@ void kfactorfit()
   yaxis1->SetTitle("Entries / 2 (GeV)");
   xaxis1->SetTitleOffset(1.1);
   yaxis1->SetTitleOffset(1.3);
-  yaxis1->SetRangeUser(3000,12000);
-  xaxis1->SetLimits(30,120);
+  yaxis1->SetRangeUser(0,25000);
+  xaxis1->SetLimits(30,150);
   hist1_6->Draw("E1");
   stack6->Draw("SAMEHIST");
   hist1_6->Draw("E1SAME");
@@ -1052,21 +1054,22 @@ void kfactorfit()
   p11a->cd();
   p11a->SetBottomMargin(0.11);
   p11a->SetLogy();
-  xaxis1 = hist1_11->GetXaxis();
-  yaxis1 = hist1_11->GetYaxis();
+  xaxis1 = pileup_Data_central->GetXaxis();
+  yaxis1 = pileup_Data_central->GetYaxis();
   xaxis1->SetTitle("PV");
   yaxis1->SetTitle("Entries / 1");
   xaxis1->SetTitleOffset(1.1);
   yaxis1->SetTitleOffset(1.3);
-  yaxis1->SetRangeUser(0.01,1000000);
+  yaxis1->SetRangeUser(0.01,100000000);
+  pileup_Data_central->SetMarkerSize(2);
   pileup_Data_central->Draw("E1");
   stack11->Draw("SAMEHIST");
   pileup_Data_central->Draw("E1SAME");
   pileup_Data_central->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(pileup_Data_central,"2017 Data","lep");
-  legend->AddEntry(hist2_11,"2017 MC, GJets(weighted)","f");
-  legend->AddEntry(hist3_11,"2017 MC, QCD(weighted)","f");
+  legend->AddEntry(pileup_Data_central,"2018 Data","lep");
+  legend->AddEntry(hist2_11,"2018 MC, GJets(weighted)","f");
+  legend->AddEntry(hist3_11,"2018 MC, QCD(weighted)","f");
   legend->Draw();
 
   p11b->cd();

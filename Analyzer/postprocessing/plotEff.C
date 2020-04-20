@@ -320,4 +320,11 @@ void plotEff(){
   c1->Print("Eff17.pdf");
   c1->Print("Eff17.root");
   c1->Print("Eff17.svg");
+  
+  for(int i=0; i<massn17.size(); i++){
+	  cout<<massn17.at(i)<<" "<<effn17.at(i)<<endl;
+  }
+  for(int i=0; i<massw17.size(); i++){
+	  cout<<massw17.at(i)<<" "<<effw17.at(i)<<endl;
+  }
 }

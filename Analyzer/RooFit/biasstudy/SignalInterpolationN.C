@@ -6,6 +6,7 @@
 #include "RooGaussian.h"
 #include "RooConstVar.h"
 #include "RooPolynomial.h"
+#include "RooBukinPdf.h"
 #include "RooIntegralMorph.h"
 #include "RooNLLVar.h"
 #include "TCanvas.h"
@@ -52,12 +53,12 @@ void SignalInterpolationN(){
 
   for (int i = 0; i!=nMCpoints; ++i ){
     TString massname = std::to_string(int(masses[i]));
-    TString name = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/rootfit_workspace/anchor/"+massname+"N-shapes-Unbinned-CB.root";
+    TString name = "/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/RooFit/biasstudy/"+massname+"N-shapes-Unbinned-Bukin.root";
     if (!gSystem->AccessPathName(name)){
       f[i] = new TFile(name);
       xf[i] = (RooWorkspace*)f[i]->Get("w");
       xf[i]->var("m")->setRange(600,4000);
-      gMass[i] = xf[i]->pdf("CBShape");
+      gMass[i] = xf[i]->pdf("Bukin");
     } else {
       std::cout<<"File is not found: "<<name<<std::endl;
       return;
@@ -65,18 +66,14 @@ void SignalInterpolationN(){
   }
   
   RooWorkspace w("w");
-  w.import(*gMass[0],RooFit::RenameVariable("CBShape","CBShape_low"),RooFit::RenameAllVariablesExcept("low","m"));
-  gMass[0] = w.pdf("CBShape_low");
+  w.import(*gMass[0],RooFit::RenameVariable("Bukin","Bukin_low"),RooFit::RenameAllVariablesExcept("low","m"));
+  gMass[0] = w.pdf("Bukin_low");
   for (int i = 1; i!=nMCpoints; ++i ) {
     TString name = Form("point_%d",i);
-    w.import(*gMass[i],RooFit::RenameConflictNodes(name),RooFit::RenameAllVariablesExcept(name,"m"),RooFit::RenameVariable("CBShape","CBShape_low"+name));
+    w.import(*gMass[i],RooFit::RenameConflictNodes(name),RooFit::RenameAllVariablesExcept(name,"m"),RooFit::RenameVariable("Bukin","Bukin"+name));
         
-    gMass[i] = w.pdf("CBShape_low"+name);    
+    gMass[i] = w.pdf("Bukin"+name);    
   }
-
-  TF1* funcEff = new TF1("effFunc","landau(0)",600,4000);
-  funcEff->SetParameters(0.7992,-15.5926,2450.04);
-  //funcEff->SetParameters(0.55203,803.672,337.859);
     
   // C r e a t e   i n t e r p o l a t i n g   p d f
   // -----------------------------------------------
@@ -86,7 +83,7 @@ void SignalInterpolationN(){
     
   // Specify sampling density on observable and interpolation variable
   m.setBins(3400,"cache") ;
-  alpha.setBins(2000,"cache") ;
+  alpha.setBins(1000,"cache") ;
     
   RooPlot* frame1[nMCpoints];
   RooPlot* frame2[nMCpoints];
@@ -99,7 +96,7 @@ void SignalInterpolationN(){
     //for (int iPoint = 1; iPoint!=2; ++iPoint) {
             
     // Construct interpolating pdf in (m,a) represent g1(m) at a=a_min and g2(m) at a=a_max
-    cout<<iPoint<<" "<<gMass[iPoint]<<" "<<gMass[iPoint+1]<<endl;
+    cout<<"Running on: "<<iPoint<<" "<<gMass[iPoint]<<" "<<gMass[iPoint+1]<<endl;
     RooIntegralMorph lmorph("lmorph","lmorph",*gMass[iPoint],*gMass[iPoint+1],m,alpha) ;
         
     // P l o t   i n t e r p o l a t i n g   p d f   a t   v a r i o u s   a l p h a

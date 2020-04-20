@@ -32,14 +32,14 @@
 void MCvalidation()
 {
   gROOT->SetBatch(1);
-  lumi_13TeV = "35.92 fb^{-1}";
+  lumi_13TeV = "137.19 fb^{-1}";
   writeExtraText = 1;
   lumiTextOffset = 0.15;
   bool plot_CMS = true;
   extraText = "";
   lumiTextSize = 0.3;
   cmsTextSize = 0.45;
-  int iPeriod = 4;
+  int iPeriod = 12;
   int iPos = 0;
   gStyle->SetOptStat(0);
   gStyle->SetOptTitle(0);
@@ -149,7 +149,7 @@ void MCvalidation()
   // Open input file
   Float_t p_pt, p_eta, p_phi, p_e, p_mva, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight, x_kfactor;
   
-  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/TEMP/GJets_postproc_WGamma16_full_full_presel_jmcorr_Mar17.root");
+  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/TEMP/GJets_postproc_WGamma17_full_full_presel_jmcorr_Mar17.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -172,22 +172,22 @@ void MCvalidation()
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
     if((j_mass > 68 && j_mass < 94)){
-	x_kfactor = 1.3;
-    hist11->Fill(p_pt, x_weight * x_kfactor * 1);
-    hist12->Fill(p_eta, x_weight * x_kfactor * 1);
-    hist13->Fill(j_pt, x_weight * x_kfactor * 1);
-    hist14->Fill(j_eta, x_weight * x_kfactor * 1);
-    hist15->Fill(j_e, x_weight * x_kfactor * 1);
-    hist16->Fill(j_mass, x_weight * x_kfactor * 1);
-    hist17->Fill(j_tau21, x_weight * x_kfactor * 1);
-    hist18->Fill(s_cos, x_weight * x_kfactor * 1);
-    hist19->Fill(s_ptm, x_weight * x_kfactor * 1);
-    hist110->Fill(s_mass, x_weight * x_kfactor * 1);
-    hist111->Fill(p_mva, x_weight * x_kfactor * 1);  
+	x_kfactor = 1.23;
+    hist11->Fill(p_pt, x_weight * x_kfactor * 3.303395);
+    hist12->Fill(p_eta, x_weight * x_kfactor * 3.303395);
+    hist13->Fill(j_pt, x_weight * x_kfactor * 3.303395);
+    hist14->Fill(j_eta, x_weight * x_kfactor * 3.303395);
+    hist15->Fill(j_e, x_weight * x_kfactor * 3.303395);
+    hist16->Fill(j_mass, x_weight * x_kfactor * 3.303395);
+    hist17->Fill(j_tau21, x_weight * x_kfactor * 3.303395);
+    hist18->Fill(s_cos, x_weight * x_kfactor * 3.303395);
+    hist19->Fill(s_ptm, x_weight * x_kfactor * 3.303395);
+    hist110->Fill(s_mass, x_weight * x_kfactor * 3.303395);
+    hist111->Fill(p_mva, x_weight * x_kfactor * 3.303395);  
 	}
   }
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/TEMP/QCD_postproc_WGamma16_full_full_presel_jmcorr_Mar17.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/TEMP/QCD_postproc_WGamma17_full_full_presel_jmcorr_Mar17.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -209,25 +209,25 @@ void MCvalidation()
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
-	x_kfactor = 0.70;
+	x_kfactor = 0.58;
     if((j_mass > 68 && j_mass < 94)){
-    hist21->Fill(p_pt, x_weight * x_kfactor * 1);
-    hist22->Fill(p_eta, x_weight * x_kfactor * 1);
-    hist23->Fill(j_pt, x_weight * x_kfactor * 1);
-    hist24->Fill(j_eta, x_weight * x_kfactor * 1);
-    hist25->Fill(j_e, x_weight * x_kfactor * 1);
-    hist26->Fill(j_mass, x_weight * x_kfactor * 1);
-    hist27->Fill(j_tau21, x_weight * x_kfactor * 1);
-    hist28->Fill(s_cos, x_weight * x_kfactor * 1);
-    hist29->Fill(s_ptm, x_weight * x_kfactor * 1);
-    hist210->Fill(s_mass, x_weight * x_kfactor * 1);
-    hist211->Fill(p_mva, x_weight * x_kfactor * 1);  
+    hist21->Fill(p_pt, x_weight * x_kfactor * 3.303395);
+    hist22->Fill(p_eta, x_weight * x_kfactor * 3.303395);
+    hist23->Fill(j_pt, x_weight * x_kfactor * 3.303395);
+    hist24->Fill(j_eta, x_weight * x_kfactor * 3.303395);
+    hist25->Fill(j_e, x_weight * x_kfactor * 3.303395);
+    hist26->Fill(j_mass, x_weight * x_kfactor * 3.303395);
+    hist27->Fill(j_tau21, x_weight * x_kfactor * 3.303395);
+    hist28->Fill(s_cos, x_weight * x_kfactor * 3.303395);
+    hist29->Fill(s_ptm, x_weight * x_kfactor * 3.303395);
+    hist210->Fill(s_mass, x_weight * x_kfactor * 3.303395);
+    hist211->Fill(p_mva, x_weight * x_kfactor * 3.303395);  
 	}
   }
 
   int SB = 0;
   int WB = 0;
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Full_Run2/presel/SinglePhoton2016_postproc_WGamma16_full_full_presel_jmcorr_Mar17.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Full_Run2/presel/Run2Data_postproc_WGammaRun2_full_full_presel_jmcorr_Mar17.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -249,17 +249,17 @@ void MCvalidation()
     theTree->GetEntry(ievt);
     if(j_mass > 40 && j_mass < 65) {
 		SB++;
-		hist31->Fill(p_pt, 0.79205);
-		hist32->Fill(p_eta, 0.79205);
-		hist33->Fill(j_pt, 0.79205);
-		hist34->Fill(j_eta, 0.79205);
-		hist35->Fill(j_e, 0.79205);
+		hist31->Fill(p_pt, 0.798672);
+		hist32->Fill(p_eta, 0.798672);
+		hist33->Fill(j_pt, 0.798672);
+		hist34->Fill(j_eta, 0.798672);
+		hist35->Fill(j_e, 0.798672);
 		hist36->Fill(j_mass, 1);
-		hist37->Fill(j_tau21, 0.79205);
-		hist38->Fill(s_cos, 0.79205);
-		hist39->Fill(s_ptm, 0.79205);
-		hist310->Fill(s_mass, 0.79205);
-		hist311->Fill(p_mva, 0.79205);  
+		hist37->Fill(j_tau21, 0.798672);
+		hist38->Fill(s_cos, 0.798672);
+		hist39->Fill(s_ptm, 0.798672);
+		hist310->Fill(s_mass, 0.798672);
+		hist311->Fill(p_mva, 0.798672);  
 	}
 	if(j_mass > 68 && j_mass < 94) {
 		WB++;
@@ -1057,7 +1057,7 @@ void MCvalidation()
   yaxis1->SetTitle("Entries / 0.02");
   xaxis1->SetTitleOffset(1.1);
   yaxis1->SetTitleOffset(1.2);
-  yaxis1->SetRangeUser(0,6000);
+  yaxis1->SetRangeUser(0,20000);
   hist37->Draw("PE1");
   hist3a7->Draw("SAMEPE1");
   stack4->Draw("SAMEHIST");

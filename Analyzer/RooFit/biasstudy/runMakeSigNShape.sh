@@ -7,6 +7,6 @@
 #for i in {2200,2400,2600}
 for i in {2800,3000,3500}
 do
-    root -l -q make_signal_narrow_shapes.C+\(${i},300\)
+    root -l -q make_signal_narrow_shapes_Bukin.C+\(${i},300\)
 done
 rm *.so *.d *.pcm
