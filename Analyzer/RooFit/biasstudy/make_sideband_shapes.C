@@ -1,7 +1,15 @@
 #define fun_type 1
-#define isNorm 2 //1: Norm 2: Orig
+#define isNorm 1 //1: Norm 2: Orig
 #include <TMath.h>
 #include <TLegend.h>
+#include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/tdrstyle.C"
+#include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/CMS_lumi.C"
+
+std::string to_str_trim(const float a_value, const int n = 2)
+{
+    return std::to_string(a_value).substr(0,std::to_string(a_value).find(".") + n + 1);
+}
+
 void make_sideband_shapes(int seed=37)
 {
   gErrorIgnoreLevel = kInfo;
@@ -9,6 +17,25 @@ void make_sideband_shapes(int seed=37)
   using namespace RooFit;
   RooMsgService::instance().setGlobalKillBelow(RooFit::WARNING);
   RooRandom::randomGenerator()->SetSeed(37); 
+  
+  gROOT->SetBatch(1);
+  lumi_13TeV = "41.53 fb^{-1}";
+  writeExtraText = 1;
+  lumiTextOffset = 0.15;
+  bool plot_CMS = true;
+  extraText = "Simulation";
+  lumiTextSize = 0.35;
+  cmsTextSize = 0.45;
+  int iPeriod = 5;
+  int iPos = 11;
+  gStyle->SetOptStat(0);
+  gStyle->SetOptTitle(0);
+  gStyle->SetTitleSize(0.045,"XYZ");
+  gStyle->SetLabelSize(0.045,"XYZ");
+  gStyle->SetFrameLineWidth(2);
+  gStyle->SetLegendTextSize(0.03);
+  gStyle->SetBarWidth(1.03);
+  gStyle->SetHistLineWidth(2);
 
   // --- Create obervable --- 
   RooRealVar *x = new RooRealVar("m","m",600,4000,""); //the name "m" will be used by RooDataSet to import data, normalization range is 600-3500 but plot range can be defined to like 600-3000
@@ -17,8 +44,8 @@ void make_sideband_shapes(int seed=37)
 #if fun_type == 1
   //-----------------------------dijet 2-----------------------------------
   TString fun_name = "dijet2";
-  RooRealVar *dijet2_p0 = new RooRealVar("dijet2_p0","dijet2_p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
-  RooRealVar *dijet2_p1 = new RooRealVar("dijet2_p1","dijet2_p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
+  RooRealVar *dijet2_p0 = new RooRealVar("dijet2_p0","dijet2_p_0",-11,-20,-5,""); //-10.5471 +- 3.06516
+  RooRealVar *dijet2_p1 = new RooRealVar("dijet2_p1","dijet2_p_1",-1,-5,-0.01,""); //-0.799413 +- 0.560435
   RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(m/13000,dijet2_p0+dijet2_p1*log(m/13000)))",RooArgList(*x,*dijet2_p0,*dijet2_p1));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
@@ -90,10 +117,10 @@ void make_sideband_shapes(int seed=37)
 #endif
 
   // --- Import unBinned dataset ---
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/fullcut_Jan12/SinglePhoton2017_WGamma_sideband_full_finalcut_Jan12.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/fullcut/SinglePhoton2017_postproc_WGamma_full_SB_fullcut_jmcorr_Mar17.root");
   TTree* tree = (TTree*)file.Get("Events");
   RooDataSet data("Data sideband","Data sideband",RooArgSet(*x),Import(*tree));//import branches with names match the "variable name" (not variable) listed in imargset
-  RooRealVar weight("weight","weight",double(5653)/double(1076));
+  RooRealVar weight("weight","weight",7.5897);
   RooDataSet data_norm("Data sideband norm.","Data sideband (nomalized to yield in W band)",&data,RooArgSet(*x,weight),"",weight.GetName());
   cout<<"number of data: "<<data.numEntries()<<endl;
   
@@ -159,7 +186,7 @@ void make_sideband_shapes(int seed=37)
   // RooChi2Var uses RooAbsData::SumW2, fail when arrive 0-entry bins
   // chi2square() obtains chi2 by skipping 0 entry bins, divide by numbr of non-0 entry bins
   RooChi2Var chi2 ("chi2", "chi2", *model,datah,DataError(RooAbsData::SumW2));//Default: SumW2
-  TString chi2txt = "Chi2/Ndof: "+std::to_string(frame->chiSquare(fun_name,"datah",nfloparam));
+  TString chi2txt = "Chi2/Ndof: "+to_str_trim(frame->chiSquare(fun_name,"datah",nfloparam));
   
   cout<<"chi2 from RooRealVar with possion is: "<<chi2.getVal()<<endl;
   cout<<"reduced chi2/ndof is: "<<frame->chiSquare(fun_name,"datah", nfloparam)<<endl;
@@ -169,7 +196,7 @@ void make_sideband_shapes(int seed=37)
   cout<<"compare: reduced chi2: "<<frame->chiSquare(fun_name,"datah", nfloparam)*(n_non0-nfloparam)<<" non-reduced chi2: "<<frame->chiSquare(fun_name,"datah")*n_non0<<endl;
   frame->Print("V");
   
-  TString NLLtxt = "NLL: "+std::to_string(nll->getVal());
+  TString NLLtxt = "NLL: "+to_str_trim(nll->getVal());
   TLatex *NLLlax = new TLatex(2150,70,NLLtxt);
   NLLlax->SetTextSize(0.025);
   NLLlax->SetTextColor(kBlack);
@@ -192,7 +219,7 @@ void make_sideband_shapes(int seed=37)
     SSR += pow(yy,2);
   }
   cout<<"SSR is: "<<SSR<<" NdoF is: "<<hist->GetN()<<endl;
-  TString SSRtxt = "SSR: "+std::to_string(SSR);
+  TString SSRtxt = "SSR: "+to_str_trim(SSR);
   TLatex *SSRlax = new TLatex(2150,50,SSRtxt);
   SSRlax->SetTextSize(0.025);
   SSRlax->SetTextColor(kBlack);
@@ -200,7 +227,15 @@ void make_sideband_shapes(int seed=37)
 
   // --- Visualization ---
   gStyle->SetOptStat(111111);
-  TCanvas *c01 = new TCanvas("c01","c01",1200,900);
+  TCanvas *c01 = new TCanvas("c01","c01",2100,2000);
+  TPad *p01a = new TPad("p01a","p01a",0.05,0.27,0.95,1.0);
+  TPad *p01b = new TPad("p01b","p01b",0.05,0.10,0.95,0.315);
+  p01a->Draw();
+  p01b->Draw();
+  p01a->cd();
+  p01a->SetLeftMargin(0.11);
+  p01a->SetRightMargin(0.1);
+  p01a->SetBottomMargin(0.11);
   //axis,log scale and range setting functions must be called after all plotOn functions being called
   TAxis* xaxis = frame->GetXaxis();
   TAxis* yaxis = frame->GetYaxis();
@@ -210,9 +245,7 @@ void make_sideband_shapes(int seed=37)
   yaxis->SetTitleOffset(1.2);
   yaxis->SetRangeUser(0.2,1000);
   xaxis->SetRangeUser(600,3000);
-  //frame->SetMaximum(600);
-  //frame->SetMinimum(0);
-  c01->SetLogy();
+  p01a->SetLogy();
   frame->Draw();
   TLegend *l =  new TLegend(0.6,0.7,0.8,0.78);
 #if isNorm == 1
@@ -221,46 +254,41 @@ void make_sideband_shapes(int seed=37)
     l->AddEntry(frame->findObject(fun_name),"Data SB fit "+fun_name,"l");
 #endif
   //l->AddEntry(frame->findObject("bkgfun"),"Background Fit","l");
-  l->AddEntry(frame->findObject("err1"),"Fit Error 1 #sigma","f");
-  l->AddEntry(frame->findObject("err2"),"Fit Error 2 #sigma","f");
-  l->Draw("same");
+    l->AddEntry(frame->findObject("err1"),"Fit Error 1 #sigma","f");
+    l->AddEntry(frame->findObject("err2"),"Fit Error 2 #sigma","f");
+    l->Draw("same");
+  
+    p01b->cd();
+	p01b->SetLeftMargin(0.11);
+    p01b->SetRightMargin(0.1);
+    p01b->SetTopMargin(0.2);
+    p01b->SetBottomMargin(0.25);
+	RooHist* hpull = frame->pullHist();
+    RooPlot* pull_frame = x->frame();
+    pull_frame->addPlotable(hpull,"P") ;
+    hpull->SetMarkerStyle(8);
+    xaxis = pull_frame->GetXaxis();
+    yaxis = pull_frame->GetYaxis();
+    xaxis->SetTitle("M_{j#gamma}");
+    yaxis->SetTitle("#frac{data_norm-fit}{#sigma_{stat}}");
+    yaxis->SetTitleOffset(0.5);
+    yaxis->SetRangeUser(-5,5);
+    xaxis->SetLabelSize(0.08);
+    xaxis->SetTitleSize(0.08);
+    xaxis->SetRangeUser(600,3000);
+    yaxis->SetLabelSize(0.08);
+    yaxis->SetTitleSize(0.08);
+    yaxis->SetNdivisions(5);
+    p01b->SetGrid();
+    pull_frame->Draw();
+    p01b->Update();
+	
 #if isNorm == 1
     c01->Print(fun_name+"_norm.png");
     c01->Print(fun_name+"_norm.pdf");
 #else
     c01->Print(fun_name+".png");
     c01->Print(fun_name+".pdf");
-#endif
-  TCanvas *c02 = new TCanvas("c02","c02",1200,300);
-  //axis,log scale and range setting functions must be called after all plotOn functions being called
-  c02->cd();
-  RooHist* hpull = frame->pullHist();
-  RooPlot* pull_frame = x->frame();
-  pull_frame->addPlotable(hpull,"P") ;
-  hpull->SetMarkerStyle(8);
-  xaxis = pull_frame->GetXaxis();
-  yaxis = pull_frame->GetYaxis();
-  xaxis->SetTitle("M_{j#gamma}");
-  yaxis->SetTitle("#frac{data_norm-fit}{#sigma_{stat}}");
-  yaxis->SetTitleOffset(0.5);
-  yaxis->SetRangeUser(-5,5);
-  xaxis->SetLabelSize(0.08);
-  xaxis->SetTitleSize(0.08);
-  xaxis->SetRangeUser(600,3000);
-  yaxis->SetLabelSize(0.08);
-  yaxis->SetTitleSize(0.08);
-  yaxis->SetNdivisions(5);
-  c02->SetBottomMargin(0.18);
-  c02->SetTopMargin(0.18);
-  c02->SetGrid();
-  pull_frame->Draw();
-  c02->Update();
-#if isNorm == 1
-  c02->Print("pull"+fun_name+"_norm.png"); //pull hist would not be accurated for weighted data
-  c02->Print("pull"+fun_name+"_norm.pdf");
-#else
-  c02->Print("pull"+fun_name+".png");
-  c02->Print("pull"+fun_name+".pdf"); 
 #endif
   
   // --- Output root file ---

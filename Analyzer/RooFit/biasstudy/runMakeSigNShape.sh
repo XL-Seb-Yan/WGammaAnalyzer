@@ -5,8 +5,8 @@
 #for i in {700,800,900}
 #for i in {1000,1200,1400,1600,1800}
 #for i in {2200,2400,2600}
-for i in {2800,3000,3500}
+for i in {700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3500}
 do
-    root -l -q make_signal_narrow_shapes_Bukin.C+\(${i},300\)
+    root -l -q GetNormalization.C+\(${i},500\)
 done
 rm *.so *.d *.pcm

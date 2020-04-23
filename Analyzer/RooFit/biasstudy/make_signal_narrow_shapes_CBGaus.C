@@ -50,7 +50,7 @@ std::string to_str_trim(const float a_value, const int n = 2)
     return std::to_string(a_value).substr(0,std::to_string(a_value).find(".") + n + 1);
 }
 
-void make_signal_narrow_shapes_1(int signalmass = 900, int yhi = 900)
+void make_signal_narrow_shapes_CBGaus(int signalmass = 900, int yhi = 900)
 {
   //gErrorIgnoreLevel = kInfo;
   using namespace std;
@@ -63,7 +63,7 @@ void make_signal_narrow_shapes_1(int signalmass = 900, int yhi = 900)
   writeExtraText = 1;
   lumiTextOffset = 0.15;
   bool plot_CMS = true;
-  extraText = "Preliminary";
+  extraText = "Simulation";
   lumiTextSize = 0.35;
   cmsTextSize = 0.45;
   int iPeriod = 5;
@@ -83,17 +83,17 @@ void make_signal_narrow_shapes_1(int signalmass = 900, int yhi = 900)
   RooRealVar *m = new RooRealVar("m","m",600,4000,""); //the name "m" will be used by RooDataSet to import data
 
   //--- signal PDF ---
-  TString fun_name = "CB+Gaus";
+  TString fun_name = "CBGaus";
   RooRealVar* CB_mean = new RooRealVar("CB_mean","CB_mean",signalmass,signalmass-100,signalmass+100,"");
-  RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",75,0,150,"");
-  RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",2,0.1,10,"");
-  RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",2,1,3,"");
+  RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",33,30,34.45,"");
+  RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",2.2,1,3,"");
+  RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",0.72,0.1,3,"");
   RooCBShape* CB_model = new RooCBShape("CBShape","Cystal Ball Function",*m,*CB_mean,*CB_sigma,*CB_alpha,*CB_n);
   
   RooRealVar* Gaus_mean = new RooRealVar("Gaus_mean","Gaus_mean",signalmass,signalmass-100,signalmass+100,"");
-  RooRealVar* Gaus_sigma = new RooRealVar("Gaus_sigma","Gaus_sigma",100,0,400,"");
+  RooRealVar* Gaus_sigma = new RooRealVar("Gaus_sigma","Gaus_sigma",20,10,110.96,"");
   RooGaussian* Gaus_model = new RooGaussian("Gaussian","Gaussian Function",*m,*Gaus_mean,*Gaus_sigma);
-  RooRealVar* frac = new RooRealVar("frac","frac",0.75,0.5,1);
+  RooRealVar* frac = new RooRealVar("frac","frac",0.80,0.5,0.90);
   RooAddPdf* com_model = new RooAddPdf("CBGaus","CBGaus",RooArgList(*CB_model,*Gaus_model),RooArgList(*frac));
 
   // --- Import Binned dataset ---
@@ -221,10 +221,10 @@ void make_signal_narrow_shapes_1(int signalmass = 900, int yhi = 900)
   p01b->SetGrid();
   pull_frame->Draw();
   p01b->Update();
-  c01->Print("Com"+signalmass_str+".png");
-  c01->Print("Com"+signalmass_str+".pdf");
-  c01->Print("Com"+signalmass_str+".root");
-  c01->Print("Com"+signalmass_str+".svg");
+  c01->Print("CBGaus"+signalmass_str+".png");
+  c01->Print("CBGaus"+signalmass_str+".pdf");
+  c01->Print("CBGaus"+signalmass_str+".root");
+  c01->Print("CBGaus"+signalmass_str+".svg");
   
   
 

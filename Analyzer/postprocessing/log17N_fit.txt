@@ -1,0 +1,363 @@
+
+Processing GetNormalization.C+(700,500)...
+Info in <TUnixSystem::ACLiC>: creating shared library /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/RooFit/biasstudy/./GetNormalization_C.so
+Minuit2Minimizer: Minimize with max-calls 500 convergence for edm < 1 strategy 1
+MnSeedGenerator: for initial parameters FCN = -5910.042466165
+MnSeedGenerator: Initial state:   - FCN =  -5910.042466165 Edm =      136.735 NCalls =      5
+VariableMetric: start iterating until Edm is < 0.001
+VariableMetric: Initial state   - FCN =  -5910.042466165 Edm =      136.735 NCalls =      5
+VariableMetric: Iteration #   0 - FCN =  -5910.042466165 Edm =      136.735 NCalls =      5
+VariableMetric: Iteration #   1 - FCN =  -6073.536692013 Edm =     0.130796 NCalls =     10
+VariableMetric: Iteration #   2 - FCN =  -6073.780771844 Edm =  1.22436e-05 NCalls =     14
+VariableMetric: After Hessian   - FCN =  -6073.780771844 Edm =  1.75361e-05 NCalls =     19
+VariableMetric: Iteration #   3 - FCN =  -6073.780771844 Edm =  1.75361e-05 NCalls =     19
+Minuit2Minimizer : Valid minimum - status = 0
+FVAL  = -6073.78077184367612
+Edm   = 1.75361253953953742e-05
+Nfcn  = 19
+sig_norm	  = 2861.65	 +/-  53.4729	(limited)
+Info in <Minuit2>: Minuit2Minimizer::Hesse : Hesse is valid - matrix is accurate
+Normalization: 2861.65 700
+
+Processing GetNormalization.C+(800,500)...
+Minuit2Minimizer: Minimize with max-calls 500 convergence for edm < 1 strategy 1
+MnSeedGenerator: for initial parameters FCN = -5580.800198829
+MnSeedGenerator: Initial state:   - FCN =  -5580.800198829 Edm =      140.044 NCalls =      5
+VariableMetric: start iterating until Edm is < 0.001
+VariableMetric: Initial state   - FCN =  -5580.800198829 Edm =      140.044 NCalls =      5
+VariableMetric: Iteration #   0 - FCN =  -5580.800198829 Edm =      140.044 NCalls =      5
+VariableMetric: Iteration #   1 - FCN =  -5748.598357896 Edm =     0.139944 NCalls =     10
+VariableMetric: Iteration #   2 - FCN =  -5748.861739384 Edm =  1.44182e-05 NCalls =     14
+VariableMetric: After Hessian   - FCN =  -5748.861739384 Edm =  2.07969e-05 NCalls =     19
+VariableMetric: Iteration #   3 - FCN =  -5748.861739384 Edm =  2.07969e-05 NCalls =     19
+Minuit2Minimizer : Valid minimum - status = 0
+FVAL  = -5748.86173938412321
+Edm   = 2.07968951769872298e-05
+Nfcn  = 19
+sig_norm	  = 2873.85	 +/-  53.6003	(limited)
+Info in <Minuit2>: Minuit2Minimizer::Hesse : Hesse is valid - matrix is accurate
+Normalization: 2873.85 800
+
+Processing GetNormalization.C+(900,500)...
+Minuit2Minimizer: Minimize with max-calls 500 convergence for edm < 1 strategy 1
+MnSeedGenerator: for initial parameters FCN = -5509.033280907
+MnSeedGenerator: Initial state:   - FCN =  -5509.033280907 Edm =      158.678 NCalls =      5
+VariableMetric: start iterating until Edm is < 0.001
+VariableMetric: Initial state   - FCN =  -5509.033280907 Edm =      158.678 NCalls =      5
+VariableMetric: Iteration #   0 - FCN =  -5509.033280907 Edm =      158.678 NCalls =      5
+VariableMetric: Iteration #   1 - FCN =  -5701.262813604 Edm =     0.198189 NCalls =     10
+VariableMetric: Iteration #   2 - FCN =  -5701.653311293 Edm =  3.37476e-05 NCalls =     14
+VariableMetric: After Hessian   - FCN =  -5701.653311293 Edm =  5.04675e-05 NCalls =     19
+VariableMetric: Iteration #   3 - FCN =  -5701.653311293 Edm =  5.04675e-05 NCalls =     19
+Minuit2Minimizer : Valid minimum - status = 0
+FVAL  = -5701.65331129274637
+Edm   = 5.04675302729325347e-05
+Nfcn  = 19
+sig_norm	  = 2939.84	 +/-  54.2381	(limited)
+Info in <Minuit2>: Minuit2Minimizer::Hesse : Hesse is valid - matrix is accurate
+Normalization: 2939.84 900
+
+Processing GetNormalization.C+(1000,500)...
+Minuit2Minimizer: Minimize with max-calls 500 convergence for edm < 1 strategy 1
+MnSeedGenerator: for initial parameters FCN = -5400.700333014
+MnSeedGenerator: Initial state:   - FCN =  -5400.700333014 Edm =      172.487 NCalls =      5
+VariableMetric: start iterating until Edm is < 0.001
+VariableMetric: Initial state   - FCN =  -5400.700333014 Edm =      172.487 NCalls =      5
+VariableMetric: Iteration #   0 - FCN =  -5400.700333014 Edm =      172.487 NCalls =      5
+VariableMetric: Iteration #   1 - FCN =  -5611.269096491 Edm =      0.24957 NCalls =     10
+VariableMetric: Iteration #   2 - FCN =  -5611.777148098 Edm =  5.96937e-05 NCalls =     14
+VariableMetric: After Hessian   - FCN =  -5611.777148098 Edm =  9.16239e-05 NCalls =     19
+VariableMetric: Iteration #   3 - FCN =  -5611.777148098 Edm =  9.16239e-05 NCalls =     19
+Minuit2Minimizer : Valid minimum - status = 0
+FVAL  = -5611.77714809788813
+Edm   = 9.16238778038331209e-05
+Nfcn  = 19
+sig_norm	  = 2987.08	 +/-  54.6938	(limited)
+Info in <Minuit2>: Minuit2Minimizer::Hesse : Hesse is valid - matrix is accurate
+Normalization: 2987.08 1000
+
+Processing GetNormalization.C+(1200,500)...
+Minuit2Minimizer: Minimize with max-calls 500 convergence for edm < 1 strategy 1
+MnSeedGenerator: for initial parameters FCN = -4740.192243986
+MnSeedGenerator: Initial state:   - FCN =  -4740.192243986 Edm =      142.262 NCalls =      5
+VariableMetric: start iterating until Edm is < 0.001
+VariableMetric: Initial state   - FCN =  -4740.192243986 Edm =      142.262 NCalls =      5
+VariableMetric: Iteration #   0 - FCN =  -4740.192243986 Edm =      142.262 NCalls =      5
+VariableMetric: Iteration #   1 - FCN =    -4910.9001245 Edm =     0.146605 NCalls =     10
+VariableMetric: Iteration #   2 - FCN =  -4911.177728314 Edm =   1.6147e-05 NCalls =     14
+VariableMetric: After Hessian   - FCN =  -4911.177728314 Edm =  2.34217e-05 NCalls =     19
+VariableMetric: Iteration #   3 - FCN =  -4911.177728314 Edm =  2.34217e-05 NCalls =     19
+Minuit2Minimizer : Valid minimum - status = 0
+FVAL  = -4911.17772831386355
+Edm   = 2.3421720574393202e-05
+Nfcn  = 19
+sig_norm	  = 2882.58	 +/-  53.723	(limited)
+Info in <Minuit2>: Minuit2Minimizer::Hesse : Hesse is valid - matrix is accurate
+Normalization: 2882.58 1200
+
+Processing GetNormalization.C+(1400,500)...
+Minuit2Minimizer: Minimize with max-calls 500 convergence for edm < 1 strategy 1
+MnSeedGenerator: for initial parameters FCN = -4269.164636653
+MnSeedGenerator: Initial state:   - FCN =  -4269.164636653 Edm =      140.757 NCalls =      5
+VariableMetric: start iterating until Edm is < 0.001
+VariableMetric: Initial state   - FCN =  -4269.164636653 Edm =      140.757 NCalls =      5
+VariableMetric: Iteration #   0 - FCN =  -4269.164636653 Edm =      140.757 NCalls =      5
+VariableMetric: Iteration #   1 - FCN =  -4437.948559058 Edm =     0.142971 NCalls =     10
+VariableMetric: Iteration #   2 - FCN =  -4438.218508318 Edm =  1.52324e-05 NCalls =     14
+VariableMetric: After Hessian   - FCN =  -4438.218508318 Edm =  2.20565e-05 NCalls =     19
+VariableMetric: Iteration #   3 - FCN =  -4438.218508318 Edm =  2.20565e-05 NCalls =     19
+Minuit2Minimizer : Valid minimum - status = 0
+FVAL  = -4438.21850831784286
+Edm   = 2.20565473300277022e-05
+Nfcn  = 19
+sig_norm	  = 2878.47	 +/-  53.7527	(limited)
+Info in <Minuit2>: Minuit2Minimizer::Hesse : Hesse is valid - matrix is accurate
+Normalization: 2878.47 1400
+
+Processing GetNormalization.C+(1600,500)...
+Minuit2Minimizer: Minimize with max-calls 500 convergence for edm < 1 strategy 1
+MnSeedGenerator: for initial parameters FCN = -4035.180934842
+MnSeedGenerator: Initial state:   - FCN =  -4035.180934842 Edm =      148.142 NCalls =      5
+VariableMetric: start iterating until Edm is < 0.001
+VariableMetric: Initial state   - FCN =  -4035.180934842 Edm =      148.142 NCalls =      5
+VariableMetric: Iteration #   0 - FCN =  -4035.180934842 Edm =      148.142 NCalls =      5
+VariableMetric: Iteration #   1 - FCN =   -4213.78140527 Edm =     0.168077 NCalls =     10
+VariableMetric: Iteration #   2 - FCN =  -4214.105933195 Edm =  2.29494e-05 NCalls =     14
+VariableMetric: After Hessian   - FCN =  -4214.105933195 Edm =  3.38164e-05 NCalls =     19
+VariableMetric: Iteration #   3 - FCN =  -4214.105933195 Edm =  3.38164e-05 NCalls =     19
+Minuit2Minimizer : Valid minimum - status = 0
+FVAL  = -4214.1059331954566
+Edm   = 3.38163756240458406e-05
+Nfcn  = 19
+sig_norm	  = 2910.63	 +/-  54.353	(limited)
+Info in <Minuit2>: Minuit2Minimizer::Hesse : Hesse is valid - matrix is accurate
+Normalization: 2910.63 1600
+
+Processing GetNormalization.C+(1800,500)...
+Error in <TFile::TFile>: file /afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/rootfit_workspace/anchor_N/1800N-shapes-Unbinned-CBGaus.root does not exist
+
+ *** Break *** segmentation violation
+
+
+
+===========================================================
+There was a crash.
+This is the entire stack trace of all threads:
+===========================================================
+#0  0x00007f19afbf441c in waitpid () from /lib64/libc.so.6
+#1  0x00007f19afb71f12 in do_system () from /lib64/libc.so.6
+#2  0x00007f19b06fe702 in TUnixSystem::StackTrace() () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
+#3  0x00007f19b0700bac in TUnixSystem::DispatchSignals(ESignals) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
+#4  <signal handler called>
+#5  0x00007f19a39154b7 in RooLinkedList::find(char const*) const () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libRooFitCore.so
+#6  0x00007f19a60c06a4 in GetNormalization(int, int) () from /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/RooFit/biasstudy/GetNormalization_C.so
+#7  0x00007f19ac694c29 in cling::Interpreter::RunFunction(clang::FunctionDecl const*, cling::Value*) [clone .part.280] () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#8  0x00007f19ac697ffd in cling::Interpreter::EvaluateInternal(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cling::CompilationOptions, cling::Value*, cling::Transaction**, unsigned long) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#9  0x00007f19ac6981c2 in cling::Interpreter::process(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cling::Value*, cling::Transaction**, bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#10 0x00007f19ac71fa8f in cling::MetaProcessor::process(char const*, cling::Interpreter::CompilationResult&, cling::Value*, bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#11 0x00007f19ac623291 in HandleInterpreterException(cling::MetaProcessor*, char const*, cling::Interpreter::CompilationResult&, cling::Value*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#12 0x00007f19ac63320e in TCling::ProcessLine(char const*, TInterpreter::EErrorCode*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#13 0x00007f19ac625e0d in TCling::ProcessLineSynch(char const*, TInterpreter::EErrorCode*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#14 0x00007f19b05e5bd7 in TApplication::ExecuteFile(char const*, int*, bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
+#15 0x00007f19b05e78a3 in TApplication::ProcessLine(char const*, bool, int*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
+#16 0x00007f19b0a3d73e in TRint::ProcessLineNr(char const*, char const*, int*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libRint.so
+#17 0x00007f19b0a3ec57 in TRint::Run(bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libRint.so
+#18 0x0000000000400bbc in main ()
+===========================================================
+
+
+The lines below might hint at the cause of the crash.
+You may get help by asking at the ROOT forum http://root.cern.ch/forum.
+Only if you are really convinced it is a bug in ROOT then please submit a
+report at http://root.cern.ch/bugs. Please post the ENTIRE stack trace
+from above as an attachment in addition to anything else
+that might help us fixing this issue.
+===========================================================
+#5  0x00007f19a39154b7 in RooLinkedList::find(char const*) const () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libRooFitCore.so
+#6  0x00007f19a60c06a4 in GetNormalization(int, int) () from /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/RooFit/biasstudy/GetNormalization_C.so
+#7  0x00007f19ac694c29 in cling::Interpreter::RunFunction(clang::FunctionDecl const*, cling::Value*) [clone .part.280] () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#8  0x00007f19ac697ffd in cling::Interpreter::EvaluateInternal(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cling::CompilationOptions, cling::Value*, cling::Transaction**, unsigned long) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#9  0x00007f19ac6981c2 in cling::Interpreter::process(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cling::Value*, cling::Transaction**, bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#10 0x00007f19ac71fa8f in cling::MetaProcessor::process(char const*, cling::Interpreter::CompilationResult&, cling::Value*, bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#11 0x00007f19ac623291 in HandleInterpreterException(cling::MetaProcessor*, char const*, cling::Interpreter::CompilationResult&, cling::Value*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+===========================================================
+
+
+
+ *** Break *** segmentation violation
+
+
+
+===========================================================
+There was a crash.
+This is the entire stack trace of all threads:
+===========================================================
+#0  0x00007f19afbf441c in waitpid () from /lib64/libc.so.6
+#1  0x00007f19afb71f12 in do_system () from /lib64/libc.so.6
+#2  0x00007f19b06fe702 in TUnixSystem::StackTrace() () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
+#3  0x00007f19b0700bac in TUnixSystem::DispatchSignals(ESignals) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
+#4  <signal handler called>
+#5  0x000000007ee40c19 in ?? ()
+#6  0x00007f19b0681853 in TList::Delete(char const*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
+#7  0x00007f19b0569275 in TROOT::~TROOT() () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
+#8  0x00007f19afb68c99 in __run_exit_handlers () from /lib64/libc.so.6
+#9  0x00007f19afb68ce7 in exit () from /lib64/libc.so.6
+#10 0x00007f19b06fb87d in TUnixSystem::Exit(int, bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
+#11 0x00007f19b05e6274 in TApplication::Terminate(int) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
+#12 0x00007f19b0a3eeaa in TRint::Run(bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libRint.so
+#13 0x0000000000400bbc in main ()
+===========================================================
+
+
+The lines below might hint at the cause of the crash.
+You may get help by asking at the ROOT forum http://root.cern.ch/forum.
+Only if you are really convinced it is a bug in ROOT then please submit a
+report at http://root.cern.ch/bugs. Please post the ENTIRE stack trace
+from above as an attachment in addition to anything else
+that might help us fixing this issue.
+===========================================================
+#5  0x000000007ee40c19 in ?? ()
+#6  0x00007f19b0681853 in TList::Delete(char const*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
+#7  0x00007f19b0569275 in TROOT::~TROOT() () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
+#8  0x00007f19afb68c99 in __run_exit_handlers () from /lib64/libc.so.6
+#9  0x00007f19afb68ce7 in exit () from /lib64/libc.so.6
+#10 0x00007f19b06fb87d in TUnixSystem::Exit(int, bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
+#11 0x00007f19b05e6274 in TApplication::Terminate(int) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
+#12 0x00007f19b0a3eeaa in TRint::Run(bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libRint.so
+#13 0x0000000000400bbc in main ()
+===========================================================
+
+
+
+Processing GetNormalization.C+(2000,500)...
+Minuit2Minimizer: Minimize with max-calls 500 convergence for edm < 1 strategy 1
+MnSeedGenerator: for initial parameters FCN = -3084.327798481
+MnSeedGenerator: Initial state:   - FCN =  -3084.327798481 Edm =      92.2361 NCalls =      5
+VariableMetric: start iterating until Edm is < 0.001
+VariableMetric: Initial state   - FCN =  -3084.327798481 Edm =      92.2361 NCalls =      5
+VariableMetric: Iteration #   0 - FCN =  -3084.327798481 Edm =      92.2361 NCalls =      5
+VariableMetric: Iteration #   1 - FCN =  -3191.330897927 Edm =    0.0433634 NCalls =     10
+VariableMetric: Iteration #   2 - FCN =  -3191.402666303 Edm =  8.93435e-07 NCalls =     14
+VariableMetric: After Hessian   - FCN =  -3191.402666303 Edm =  1.17067e-06 NCalls =     19
+VariableMetric: Iteration #   3 - FCN =  -3191.402666303 Edm =  1.17067e-06 NCalls =     19
+Minuit2Minimizer : Valid minimum - status = 0
+FVAL  = -3191.40266630268525
+Edm   = 1.17067470592207107e-06
+Nfcn  = 19
+sig_norm	  = 2690.89	 +/-  51.9931	(limited)
+Info in <Minuit2>: Minuit2Minimizer::Hesse : Hesse is valid - matrix is accurate
+Normalization: 2690.89 2000
+
+Processing GetNormalization.C+(2200,500)...
+Minuit2Minimizer: Minimize with max-calls 500 convergence for edm < 1 strategy 1
+MnSeedGenerator: for initial parameters FCN = -2764.48471819
+MnSeedGenerator: Initial state:   - FCN =   -2764.48471819 Edm =      65.3393 NCalls =      5
+VariableMetric: start iterating until Edm is < 0.001
+VariableMetric: Initial state   - FCN =   -2764.48471819 Edm =      65.3393 NCalls =      5
+VariableMetric: Iteration #   0 - FCN =   -2764.48471819 Edm =      65.3393 NCalls =      5
+VariableMetric: Iteration #   1 - FCN =  -2838.556519812 Edm =    0.0159231 NCalls =     10
+VariableMetric: Iteration #   2 - FCN =  -2838.580678415 Edm =  9.14071e-08 NCalls =     14
+VariableMetric: After Hessian   - FCN =  -2838.580678415 Edm =  1.10687e-07 NCalls =     19
+VariableMetric: Iteration #   3 - FCN =  -2838.580678415 Edm =  1.10687e-07 NCalls =     19
+Minuit2Minimizer : Valid minimum - status = 0
+FVAL  = -2838.5806784147444
+Edm   = 1.10686565236040369e-07
+Nfcn  = 19
+sig_norm	  = 2568.81	 +/-  50.701	(limited)
+Info in <Minuit2>: Minuit2Minimizer::Hesse : Hesse is valid - matrix is accurate
+Normalization: 2568.81 2200
+
+Processing GetNormalization.C+(2400,500)...
+Minuit2Minimizer: Minimize with max-calls 500 convergence for edm < 1 strategy 1
+MnSeedGenerator: for initial parameters FCN = -2443.258274819
+MnSeedGenerator: Initial state:   - FCN =  -2443.258274819 Edm =      56.0169 NCalls =      5
+VariableMetric: start iterating until Edm is < 0.001
+VariableMetric: Initial state   - FCN =  -2443.258274819 Edm =      56.0169 NCalls =      5
+VariableMetric: Iteration #   0 - FCN =  -2443.258274819 Edm =      56.0169 NCalls =      5
+VariableMetric: Iteration #   1 - FCN =  -2506.189634297 Edm =    0.0101768 NCalls =     10
+VariableMetric: Iteration #   2 - FCN =  -2506.204571558 Edm =   3.4133e-08 NCalls =     14
+VariableMetric: After Hessian   - FCN =  -2506.204571558 Edm =  3.98477e-08 NCalls =     19
+VariableMetric: Iteration #   3 - FCN =  -2506.204571558 Edm =  3.98477e-08 NCalls =     19
+Minuit2Minimizer : Valid minimum - status = 0
+FVAL  = -2506.20457155794975
+Edm   = 3.98476612572665659e-08
+Nfcn  = 19
+sig_norm	  = 2522.65	 +/-  50.2516	(limited)
+Info in <Minuit2>: Minuit2Minimizer::Hesse : Hesse is valid - matrix is accurate
+Normalization: 2522.65 2400
+
+Processing GetNormalization.C+(2600,500)...
+Minuit2Minimizer: Minimize with max-calls 500 convergence for edm < 1 strategy 1
+MnSeedGenerator: for initial parameters FCN = -2112.621070148
+MnSeedGenerator: Initial state:   - FCN =  -2112.621070148 Edm =      43.3915 NCalls =      5
+VariableMetric: start iterating until Edm is < 0.001
+VariableMetric: Initial state   - FCN =  -2112.621070148 Edm =      43.3915 NCalls =      5
+VariableMetric: Iteration #   0 - FCN =  -2112.621070148 Edm =      43.3915 NCalls =      5
+VariableMetric: Iteration #   1 - FCN =  -2160.709337347 Edm =   0.00482777 NCalls =     10
+VariableMetric: Iteration #   2 - FCN =  -2160.716085577 Edm =  7.08269e-09 NCalls =     14
+VariableMetric: After Hessian   - FCN =  -2160.716085577 Edm =  7.62342e-09 NCalls =     21
+VariableMetric: Iteration #   3 - FCN =  -2160.716085577 Edm =  7.62342e-09 NCalls =     21
+Minuit2Minimizer : Valid minimum - status = 0
+FVAL  = -2160.7160855774182
+Edm   = 7.62342283054486234e-09
+Nfcn  = 21
+sig_norm	  = 2454.91	 +/-  49.6019	(limited)
+Info in <Minuit2>: Minuit2Minimizer::Hesse : Hesse is valid - matrix is accurate
+Normalization: 2454.91 2600
+
+Processing GetNormalization.C+(2800,500)...
+Minuit2Minimizer: Minimize with max-calls 500 convergence for edm < 1 strategy 1
+MnSeedGenerator: for initial parameters FCN = -1973.823471222
+MnSeedGenerator: Initial state:   - FCN =  -1973.823471222 Edm =      46.0416 NCalls =      5
+VariableMetric: start iterating until Edm is < 0.001
+VariableMetric: Initial state   - FCN =  -1973.823471222 Edm =      46.0416 NCalls =      5
+VariableMetric: Iteration #   0 - FCN =  -1973.823471222 Edm =      46.0416 NCalls =      5
+VariableMetric: Iteration #   1 - FCN =  -2024.999216217 Edm =   0.00572761 NCalls =     10
+VariableMetric: Iteration #   2 - FCN =  -2025.007306611 Edm =  9.88952e-09 NCalls =     14
+VariableMetric: After Hessian   - FCN =  -2025.007306611 Edm =  1.09869e-08 NCalls =     19
+VariableMetric: Iteration #   3 - FCN =  -2025.007306611 Edm =  1.09869e-08 NCalls =     19
+Minuit2Minimizer : Valid minimum - status = 0
+FVAL  = -2025.00730661139823
+Edm   = 1.09869343409079376e-08
+Nfcn  = 19
+sig_norm	  = 2469.4	 +/-  49.7079	(limited)
+Info in <Minuit2>: Minuit2Minimizer::Hesse : Hesse is valid - matrix is accurate
+Normalization: 2469.4 2800
+
+Processing GetNormalization.C+(3000,500)...
+Minuit2Minimizer: Minimize with max-calls 500 convergence for edm < 1 strategy 1
+MnSeedGenerator: for initial parameters FCN = -1530.743099368
+MnSeedGenerator: Initial state:   - FCN =  -1530.743099368 Edm =      23.5862 NCalls =      5
+VariableMetric: start iterating until Edm is < 0.001
+VariableMetric: Initial state   - FCN =  -1530.743099368 Edm =      23.5862 NCalls =      5
+VariableMetric: Iteration #   0 - FCN =  -1530.743099368 Edm =      23.5862 NCalls =      5
+VariableMetric: Iteration #   1 - FCN =  -1556.152854033 Edm =    0.0417747 NCalls =      9
+VariableMetric: Iteration #   2 - FCN =  -1556.205797437 Edm =    2.982e-07 NCalls =     13
+VariableMetric: After Hessian   - FCN =  -1556.205797437 Edm =  3.36841e-07 NCalls =     18
+VariableMetric: Iteration #   3 - FCN =  -1556.205797437 Edm =  3.36841e-07 NCalls =     18
+Minuit2Minimizer : Valid minimum - status = 0
+FVAL  = -1556.205797437402
+Edm   = 3.36840823168502182e-07
+Nfcn  = 18
+sig_norm	  = 2329.62	 +/-  48.5707	(limited)
+Info in <Minuit2>: Minuit2Minimizer::Hesse : Hesse is valid - matrix is accurate
+Normalization: 2329.62 3000
+
+Processing GetNormalization.C+(3500,500)...
+Minuit2Minimizer: Minimize with max-calls 500 convergence for edm < 1 strategy 1
+MnSeedGenerator: for initial parameters FCN = -1225.664855052
+MnSeedGenerator: Initial state:   - FCN =  -1225.664855052 Edm =      15.1354 NCalls =      5
+VariableMetric: start iterating until Edm is < 0.001
+VariableMetric: Initial state   - FCN =  -1225.664855052 Edm =      15.1354 NCalls =      5
+VariableMetric: Iteration #   0 - FCN =  -1225.664855052 Edm =      15.1354 NCalls =      5
+VariableMetric: Iteration #   1 - FCN =  -1241.734954632 Edm =    0.0166754 NCalls =      9
+VariableMetric: Iteration #   2 - FCN =  -1241.755083501 Edm =  3.99351e-08 NCalls =     13
+VariableMetric: After Hessian   - FCN =  -1241.755083501 Edm =  4.32377e-08 NCalls =     18
+VariableMetric: Iteration #   3 - FCN =  -1241.755083501 Edm =  4.32377e-08 NCalls =     18
+Minuit2Minimizer : Valid minimum - status = 0
+FVAL  = -1241.75508350134078
+Edm   = 4.32376795179002499e-08
+Nfcn  = 18
+sig_norm	  = 2259.49	 +/-  47.6205	(limited)
+Info in <Minuit2>: Minuit2Minimizer::Hesse : Hesse is valid - matrix is accurate
+Normalization: 2259.49 3500

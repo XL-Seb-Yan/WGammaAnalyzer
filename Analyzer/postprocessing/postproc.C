@@ -90,7 +90,7 @@ void postproc(TString dataset, int runondata)
   pileup_MC->Scale(1/(double)pileup_MC->Integral());
 
   // Create output file
-  TFile *outFile = TFile::Open(dataset+"_postproc_WGamma17_full_full_presel_jmcorr_Mar17.root", "RECREATE");
+  TFile *outFile = TFile::Open(dataset+"_postproc_WGamma17_full_full_presel_jmcorr_kfactor_Mar17.root", "RECREATE");
   TTree *outTree = new TTree("Events","Events"); 
   outTree->Branch("sys_pvn",       &sys_pvn,      "sys_pvn/I");
   outTree->Branch("photon_pt",       &photon_pt,      "photon_pt/F");
@@ -174,7 +174,7 @@ void postproc(TString dataset, int runondata)
     m = s_mass;
     xsec_weight = x_weight;
 	sys_pvn = s_pv;
-    xsec_kfactor = 1; 
+    xsec_kfactor = 1.35; 
 	
 	//add pileup-weight
 	int binnum = pileup_Data_central->GetXaxis()->FindBin(s_pv);

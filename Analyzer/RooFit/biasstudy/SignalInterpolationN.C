@@ -53,12 +53,12 @@ void SignalInterpolationN(){
 
   for (int i = 0; i!=nMCpoints; ++i ){
     TString massname = std::to_string(int(masses[i]));
-    TString name = "/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/RooFit/biasstudy/"+massname+"N-shapes-Unbinned-Bukin.root";
+    TString name = "/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/RooFit/biasstudy/"+massname+"N-shapes-Unbinned-CBGaus.root";
     if (!gSystem->AccessPathName(name)){
       f[i] = new TFile(name);
       xf[i] = (RooWorkspace*)f[i]->Get("w");
       xf[i]->var("m")->setRange(600,4000);
-      gMass[i] = xf[i]->pdf("Bukin");
+      gMass[i] = xf[i]->pdf("CBGaus");
     } else {
       std::cout<<"File is not found: "<<name<<std::endl;
       return;
@@ -66,13 +66,13 @@ void SignalInterpolationN(){
   }
   
   RooWorkspace w("w");
-  w.import(*gMass[0],RooFit::RenameVariable("Bukin","Bukin_low"),RooFit::RenameAllVariablesExcept("low","m"));
-  gMass[0] = w.pdf("Bukin_low");
+  w.import(*gMass[0],RooFit::RenameVariable("CBGaus","CBGaus_low"),RooFit::RenameAllVariablesExcept("low","m"));
+  gMass[0] = w.pdf("CBGaus_low");
   for (int i = 1; i!=nMCpoints; ++i ) {
     TString name = Form("point_%d",i);
-    w.import(*gMass[i],RooFit::RenameConflictNodes(name),RooFit::RenameAllVariablesExcept(name,"m"),RooFit::RenameVariable("Bukin","Bukin"+name));
+    w.import(*gMass[i],RooFit::RenameConflictNodes(name),RooFit::RenameAllVariablesExcept(name,"m"),RooFit::RenameVariable("CBGaus","CBGaus"+name));
         
-    gMass[i] = w.pdf("Bukin"+name);    
+    gMass[i] = w.pdf("CBGaus"+name);    
   }
     
   // C r e a t e   i n t e r p o l a t i n g   p d f

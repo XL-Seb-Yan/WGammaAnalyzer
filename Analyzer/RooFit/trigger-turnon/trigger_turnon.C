@@ -58,7 +58,7 @@ void trigger_turnon(int seed=37)
   xaxis->SetTitleOffset(1.2);
   yaxis->SetTitle("Events / 20 GeV");
   yaxis->SetTitleOffset(1.2);
-  yaxis->SetRangeUser(0,1700);
+  yaxis->SetRangeUser(0,2500);
   xaxis->SetRangeUser(0,2000);
   //c01->SetLogy();
   frame->Draw();

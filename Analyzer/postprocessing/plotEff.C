@@ -33,9 +33,9 @@ void plotEff(){
   std::vector<float> effw_err17;
   
   ifstream file16n("log16N.txt");
-  ifstream file17n("log17N.txt");
+  ifstream file17n("log17NS1.txt");
   ifstream file16w("log16W.txt");
-  ifstream file17w("log17W.txt");
+  ifstream file17w("log17WS1.txt");
   string str; 
   while (getline(file16n,str)) {
    if(str.find("++++") != std::string::npos){
@@ -105,22 +105,41 @@ void plotEff(){
        }
    }
   }
-
-  //16 madrgaph
-  // double narrow[15] = {0.15595,0.15545,0.1574,0.15345,0.15465,0.15245,0.1474,0.1408,0.13385,0.1378,0.1296,0.1284,0.1224,0.121,0.1225};
-  // double wide[14] = {0.14575,0.14786,0.1489,0.1508,0.1451,0.14405,0.1374,0.1383,0.1265,0.12637,0.12565,0.11244,0.10935,0.1043};  
-  // double massn[15] = {700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3500};
-  // double massw[14] = {700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2800,3000,3500};
   
-  //17 pythia
-  //double narrow[15] = {0.1365,0.1346,0.1385,0.1352,0.1312,0.1324,0.1296,0.1233,0.1236,0.1190,0.1145,0.1065,0.1085,0.1092,0.1058};
-  //double wide[15] = {0.0963,0.0951,0.0889,0.0829,0.0658,0.0524,0.0408,0.0320,0.0244,0.0177,0.0140,0.0102,0.0077,0.0060,0.0029};
-
-  //17 madrgaph
-  // double narrow[14] = {0.1604,0.1635,0.1647,0.16915,0.1636,0.16085,0.1589,0.1461,0.14065,0.13755,0.13215,0.13525,0.12675,0.12615};
-  // double wide[14] = {0.15835,0.15715,0.16165,0.1652,0.15315,0.15405,0.14605,0.1465,0.1366,0.13415,0.12685,0.1229,0.11805,0.1044};
-  // double massn[14] = {700,800,900,1000,1200,1400,1600,2000,2200,2400,2600,2800,3000,3500};
-  // double massw[14] = {700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3500};
+    // while (getline(file17n,str)) {
+   // if(str.find("Normalization:") != std::string::npos){
+	   // std::stringstream ss(str);
+	   // int index = -1;
+	   // while(ss.good()){
+          // string substr;
+          // getline(ss,substr,' ');
+		  // index++;
+          // if(index == 0) continue;
+		  // if(index == 2) massn17.push_back(strtof((substr).c_str(),0));
+		  // if(index == 1){
+			  // effn17.push_back(strtof((substr).c_str(),0) / 20000);
+			  // effn_err17.push_back(sqrt(strtof((substr).c_str(),0)) / 20000);
+		  // }
+       // }
+   // }
+  // }
+  // while (getline(file17w,str)) {
+   // if(str.find("Normalization:") != std::string::npos){
+	   // std::stringstream ss(str);
+	   // int index = -1;
+	   // while(ss.good()){
+          // string substr;
+          // getline(ss,substr,' ');
+		  // index++;
+          // if(index == 0) continue;
+		  // if(index == 2) massw17.push_back(strtof((substr).c_str(),0));
+		  // if(index == 1){
+			  // effw17.push_back(strtof((substr).c_str(),0) / 20000);
+			  // effw_err17.push_back(sqrt(strtof((substr).c_str(),0)) / 20000);
+		  // }
+       // }
+   // }
+  // }
 
   //17 spin1
   double narrow[5] = {0.160777,0.175728,0.174048,0.1568783,0.149526316};
@@ -129,17 +148,9 @@ void plotEff(){
   double wide_err[5] = {0.00404133,0.004287507,0.0040248478,0.0038822287,0.003797644};
   double massn[5] = {700,1200,2000,2800,3500};
   double massw[5] = {700,1200,2000,2800,3500};
-
-  //17 spin0spin1 combine
-  //double narrow[5] = {0.1746,0.1868,0.1724,0.1583,0.1419};
-  //double wide[5] = {0.1580,0.1650,0.1596,0.1444,0.1357};
-  //double mass[5] = {700,1200,2000,2800,3500};
-  cout<<massn16.size()<<endl;
-  for(int i=0; i<effn16.size(); i++){
-	  cout<<massn16[i]<<endl;
-	  cout<<effn16[i]<<endl;
-  }
   
+  
+  cout<<"=========================Fitting 16==========================="<<endl;
   TGraphErrors *gr1 = new TGraphErrors(massn16.size(),&massn16[0],&effn16[0],0,&effn_err16[0]);
   gr1->SetMarkerColor(2);
   gr1->SetMarkerStyle(20);
@@ -168,6 +179,7 @@ void plotEff(){
   f2->SetLineColor(4);
   f2->SetLineWidth(2);
   
+  cout<<"=========================Fitting 17==========================="<<endl;
   TGraphErrors *gr3 = new TGraphErrors(massn17.size(),&massn17[0],&effn17[0],0,&effn_err17[0]);
   gr3->SetMarkerColor(2);
   gr3->SetMarkerStyle(20);
@@ -196,6 +208,7 @@ void plotEff(){
   f4->SetLineColor(4);
   f4->SetLineWidth(2);
   
+  cout<<"=========================Fitting 17 S1==========================="<<endl;
   TGraphErrors *gr5 = new TGraphErrors(5,&massn[0],&narrow[0],0,&narrow_err[0]);
   gr5->SetMarkerColor(2);
   gr5->SetMarkerStyle(21);
