@@ -33,9 +33,9 @@ void plotEff(){
   std::vector<float> effw_err17;
   
   ifstream file16n("log16N.txt");
-  ifstream file17n("log17NS1.txt");
+  ifstream file17n("log17N.txt");
   ifstream file16w("log16W.txt");
-  ifstream file17w("log17WS1.txt");
+  ifstream file17w("log17W.txt");
   string str; 
   while (getline(file16n,str)) {
    if(str.find("++++") != std::string::npos){
@@ -106,6 +106,7 @@ void plotEff(){
    }
   }
   
+  // READ SIGNAL NORMALIZATION FOR GOF TEST
     // while (getline(file17n,str)) {
    // if(str.find("Normalization:") != std::string::npos){
 	   // std::stringstream ss(str);
@@ -334,6 +335,7 @@ void plotEff(){
   c1->Print("Eff17.root");
   c1->Print("Eff17.svg");
   
+  cout<<massn17.size()<<endl;
   for(int i=0; i<massn17.size(); i++){
 	  cout<<massn17.at(i)<<" "<<effn17.at(i)<<endl;
   }

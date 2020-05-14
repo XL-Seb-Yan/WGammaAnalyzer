@@ -62,9 +62,9 @@ void kfactorfit()
   int s_PV;
   
   // Data
-  TFile* f_data = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Full_Run2/presel/Run2Data_postproc_WGammaRun2_full_full_presel_jmcorr_Mar17.root");
-  TFile* f_gjets = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/WGammaAnalyzer/Analyzer/postprocessing/TEMP/GJets_postproc_WGamma17_full_full_presel_jmcorr_Mar17.root");
-  TFile* f_qcd = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/WGammaAnalyzer/Analyzer/postprocessing/TEMP/QCD_postproc_WGamma17_full_full_presel_jmcorr_Mar17.root");
+  TFile* f_data = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Full_Run2/presel_nokfactor/Run2Data_postproc_WGammaRun2_full_full_presel_jmcorr_Mar17.root");
+  TFile* f_gjets = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Full_Run2/presel_nokfactor/GJets_postproc_WGamma17_full_full_presel_jmcorr_Mar17.root");
+  TFile* f_qcd = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Full_Run2/presel_nokfactor/QCD_postproc_WGamma17_full_full_presel_jmcorr_Mar17.root");
   
   cout<<"Processing data"<<endl;
   
@@ -90,6 +90,8 @@ void kfactorfit()
   
     for (int ievt = 0; ievt<theTree->GetEntries();ievt++){
       theTree->GetEntry(ievt);
+	  // if(p_pt < 225) continue;
+	  // if(j_pt < 225) continue;
       hist1_1->Fill(p_pt);
       hist1_2->Fill(p_eta);
       hist1_3->Fill(j_pt);
@@ -126,6 +128,8 @@ void kfactorfit()
   
     for (int ievt = 0; ievt<theTree->GetEntries();ievt++){
       theTree->GetEntry(ievt);
+	  // if(p_pt < 225) continue;
+	  // if(j_pt < 225) continue;
 	  x_weight = x_weight * 3.303395;
       hist2_1->Fill(p_pt, x_weight*x_puweight);
       hist2_2->Fill(p_eta, x_weight*x_puweight);
@@ -163,6 +167,8 @@ void kfactorfit()
   
     for (int ievt = 0; ievt<theTree->GetEntries();ievt++){
       theTree->GetEntry(ievt);
+	  // if(p_pt < 225) continue;
+	  // if(j_pt < 225) continue;
 	  x_weight = x_weight * 3.303395;
       hist3_1->Fill(p_pt, x_weight*x_puweight);
       hist3_2->Fill(p_eta, x_weight*x_puweight);
@@ -177,7 +183,6 @@ void kfactorfit()
 	  hist3_11->Fill(s_PV, x_weight*x_puweight);
     }
 	
-	
   // Least Square fit result: GJets: 1.41, QCD: 0.57
   // Least Square fitting to invariant mass histograms
   TGraph2D *g = new TGraph2D();
@@ -187,18 +192,18 @@ void kfactorfit()
   double minls = 99999999999;
   double sGJets = -99;
   double sQCD = -99;
-  for(int i=80; i<150; i++){
-    for(int j=50; j<250; j++){
+  for(int i=20; i<150; i++){
+    for(int j=20; j<150; j++){
       double ls = 0;
       double scaleGJets = i*0.01;
       double scaleQCD = j*0.01;
-      for(int k=6; k<NBins+1; k++){ //starts from 180 GeV
+      for(int k=7; k<NBins+1; k++){ //starts from 210. GeV
 	    double NData = hist1_1->GetBinContent(k);
 	    double NGjets = hist2_1->GetBinContent(k);
 	    double NQCD = hist3_1->GetBinContent(k);
 	    //cout<<NData<<" "<<NGjets<<" "<<NQCD<<" "<<pow((NData-(scaleGJets*NGjets + scaleQCD*NQCD))/NData,2)<<endl;
 	    if(NData == 0) continue;//exclude first several empty bins lower than trigger turn on
-	    ls += pow((NData-(scaleGJets*NGjets + scaleQCD*NQCD))/1000,2);
+	    ls += pow((NData-(scaleGJets*NGjets + scaleQCD*NQCD))/sqrt(NData),2);
       }
       if(ls < minls){
 	    minls = ls;
@@ -211,7 +216,6 @@ void kfactorfit()
     }
   }
    cout<<sGJets<<" "<<sQCD<<" "<<minls<<endl;
-   
    
   TCanvas *c = new TCanvas("c","scale",1200,900);
   TAxis *xaxis = g->GetXaxis();
@@ -229,8 +233,6 @@ void kfactorfit()
   cout<<"OK"<<endl;
   c->Print("MCFit.png");
    
-  // sGJets = 0.99;
-  // sQCD = 0.55;
   hist2_1->Scale(sGJets);
   hist2_2->Scale(sGJets);
   hist2_3->Scale(sGJets);

@@ -32,7 +32,7 @@
 void compare_plot_3()
 {
   gROOT->SetBatch(1);
-  lumi_13TeV = "41.53 fb^{-1}";
+  lumi_13TeV = "";
   writeExtraText = 1;
   lumiTextOffset = 0.2;
   relPosX = 0.11;
@@ -86,9 +86,9 @@ void compare_plot_3()
   TH1 *hist311 = new TH1F("311","#gamma MVA ID",60,-0.2,1);
   
   // Open input file
-  Float_t p_pt, p_eta, p_phi, p_e, p_mva, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight;
+  Float_t p_pt, p_eta, p_phi, p_e, p_mva, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight, x_puweight, x_kfactor;
   
-  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/fullcut/BkgMC_WGamma_full_40-65_Feb26.root");
+  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/SinglePhoton2016BC_nominal_pileup_WGamma_full_full_Mar17.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -104,11 +104,15 @@ void compare_plot_3()
   theTree->SetBranchAddress("ak8puppijet_tau21", &j_tau21);
   theTree->SetBranchAddress("sys_costhetastar", &s_cos);
   theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
-  theTree->SetBranchAddress("m", &s_mass);
+  theTree->SetBranchAddress("sys_invmass", &s_mass);
   theTree->SetBranchAddress("xsec_weight", &x_weight);
+  theTree->SetBranchAddress("xsec_puweight", &x_puweight);
+  theTree->SetBranchAddress("xsec_kfactor", &x_kfactor);
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
+	x_puweight = 1;
+	x_kfactor = 1;
     
     // hist11->Fill(p_pt);
     // hist12->Fill(p_eta);
@@ -121,20 +125,20 @@ void compare_plot_3()
     // hist19->Fill(s_ptm);
     // hist110->Fill(s_mass);
     // hist111->Fill(p_mva);  
-	hist11->Fill(p_pt,x_weight);
-    hist12->Fill(p_eta,x_weight);
-    hist13->Fill(j_pt,x_weight);
-    hist14->Fill(j_eta,x_weight);
-    hist15->Fill(j_e,x_weight);
-    hist16->Fill(j_mass,x_weight);
-    hist17->Fill(j_tau21,x_weight);
-    hist18->Fill(s_cos,x_weight);
-    hist19->Fill(s_ptm,x_weight);
-    hist110->Fill(s_mass,x_weight);
-    hist111->Fill(p_mva,x_weight);  
+	hist11->Fill(p_pt,x_puweight*x_weight*x_kfactor);
+    hist12->Fill(p_eta,x_puweight*x_weight*x_kfactor);
+    hist13->Fill(j_pt,x_puweight*x_weight*x_kfactor);
+    hist14->Fill(j_eta,x_puweight*x_weight*x_kfactor);
+    hist15->Fill(j_e,x_puweight*x_weight*x_kfactor);
+    hist16->Fill(j_mass,x_puweight*x_weight*x_kfactor);
+    hist17->Fill(j_tau21,x_puweight*x_weight*x_kfactor);
+    hist18->Fill(s_cos,x_puweight*x_weight*x_kfactor);
+    hist19->Fill(s_ptm,x_puweight*x_weight*x_kfactor);
+    hist110->Fill(s_mass,x_puweight*x_weight*x_kfactor);
+    hist111->Fill(p_mva,x_puweight*x_weight*x_kfactor);  
   }
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/fullcut/BkgMC_WGamma_full_65-90_Feb26.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/SinglePhoton2017E_nominal_pileup_WGamma_full_full_Mar17.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -150,12 +154,15 @@ void compare_plot_3()
   theTree->SetBranchAddress("ak8puppijet_tau21", &j_tau21);
   theTree->SetBranchAddress("sys_costhetastar", &s_cos);
   theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
-  theTree->SetBranchAddress("m", &s_mass);
+  theTree->SetBranchAddress("sys_invmass", &s_mass);
   theTree->SetBranchAddress("xsec_weight", &x_weight);
+  theTree->SetBranchAddress("xsec_puweight", &x_puweight);
+  theTree->SetBranchAddress("xsec_kfactor", &x_kfactor);
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
-    
+    x_puweight = 1;
+	x_kfactor = 1;
     // hist21->Fill(p_pt);
     // hist22->Fill(p_eta);
     // hist23->Fill(j_pt);
@@ -167,20 +174,20 @@ void compare_plot_3()
     // hist29->Fill(s_ptm);
     // hist210->Fill(s_mass);
     // hist211->Fill(p_mva);  
-	hist21->Fill(p_pt,x_weight);
-    hist22->Fill(p_eta,x_weight);
-    hist23->Fill(j_pt,x_weight);
-    hist24->Fill(j_eta,x_weight);
-    hist25->Fill(j_e,x_weight);
-    hist26->Fill(j_mass,x_weight);
-    hist27->Fill(j_tau21,x_weight);
-    hist28->Fill(s_cos,x_weight);
-    hist29->Fill(s_ptm,x_weight);
-    hist210->Fill(s_mass,x_weight);
-    hist211->Fill(p_mva,x_weight);  
+	hist21->Fill(p_pt,x_puweight*x_weight*x_kfactor);
+    hist22->Fill(p_eta,x_puweight*x_weight*x_kfactor);
+    hist23->Fill(j_pt,x_puweight*x_weight*x_kfactor);
+    hist24->Fill(j_eta,x_puweight*x_weight*x_kfactor);
+    hist25->Fill(j_e,x_puweight*x_weight*x_kfactor);
+    hist26->Fill(j_mass,x_puweight*x_weight*x_kfactor);
+    hist27->Fill(j_tau21,x_puweight*x_weight*x_kfactor);
+    hist28->Fill(s_cos,x_puweight*x_weight*x_kfactor);
+    hist29->Fill(s_ptm,x_puweight*x_weight*x_kfactor);
+    hist210->Fill(s_mass,x_puweight*x_weight*x_kfactor);
+    hist211->Fill(p_mva,x_puweight*x_weight*x_kfactor);  
   }
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/fullcut/BkgMC_WGamma_full_90-115_Feb26.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/EGamma2018A2_nominal_pileup_WGamma_full_full_Mar17.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -196,12 +203,15 @@ void compare_plot_3()
   theTree->SetBranchAddress("ak8puppijet_tau21", &j_tau21);
   theTree->SetBranchAddress("sys_costhetastar", &s_cos);
   theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
-  theTree->SetBranchAddress("m", &s_mass);
+  theTree->SetBranchAddress("sys_invmass", &s_mass);
   theTree->SetBranchAddress("xsec_weight", &x_weight);
+  theTree->SetBranchAddress("xsec_puweight", &x_puweight);
+  theTree->SetBranchAddress("xsec_kfactor", &x_kfactor);
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
-    
+    x_puweight = 1;
+	x_kfactor = 1;
     // hist31->Fill(p_pt);
     // hist32->Fill(p_eta);
     // hist33->Fill(j_pt);
@@ -213,17 +223,17 @@ void compare_plot_3()
     // hist39->Fill(s_ptm);
     // hist310->Fill(s_mass);
     // hist311->Fill(p_mva);  
-	hist31->Fill(p_pt,x_weight);
-    hist32->Fill(p_eta,x_weight);
-    hist33->Fill(j_pt,x_weight);
-    hist34->Fill(j_eta,x_weight);
-    hist35->Fill(j_e,x_weight);
-    hist36->Fill(j_mass,x_weight);
-    hist37->Fill(j_tau21,x_weight);
-    hist38->Fill(s_cos,x_weight);
-    hist39->Fill(s_ptm,x_weight);
-    hist310->Fill(s_mass,x_weight);
-    hist311->Fill(p_mva,x_weight);  
+	hist31->Fill(p_pt,x_puweight*x_weight*x_kfactor);
+    hist32->Fill(p_eta,x_puweight*x_weight*x_kfactor);
+    hist33->Fill(j_pt,x_puweight*x_weight*x_kfactor);
+    hist34->Fill(j_eta,x_puweight*x_weight*x_kfactor);
+    hist35->Fill(j_e,x_puweight*x_weight*x_kfactor);
+    hist36->Fill(j_mass,x_puweight*x_weight*x_kfactor);
+    hist37->Fill(j_tau21,x_puweight*x_weight*x_kfactor);
+    hist38->Fill(s_cos,x_puweight*x_weight*x_kfactor);
+    hist39->Fill(s_ptm,x_puweight*x_weight*x_kfactor);
+    hist310->Fill(s_mass,x_puweight*x_weight*x_kfactor);
+    hist311->Fill(p_mva,x_puweight*x_weight*x_kfactor);  
   }
 
 
@@ -332,44 +342,44 @@ void compare_plot_3()
   hist39->SetLineWidth(3);
   hist310->SetLineWidth(3);
 
-  // double norm1 = (double) hist11->GetEntries();
-  // double norm2 = (double) hist21->GetEntries();
-  // double norm3 = (double) hist31->GetEntries();
-  // hist11->Scale(1/norm1);
-  // hist12->Scale(1/norm1);
-  // hist13->Scale(1/norm1);
-  // hist14->Scale(1/norm1);
-  // hist15->Scale(1/norm1);
-  // hist16->Scale(1/norm1);
-  // hist17->Scale(1/norm1);
-  // hist18->Scale(1/norm1);
-  // hist19->Scale(1/norm1);
-  // hist110->Scale(1/norm1);
-  // hist111->Scale(1/norm1);
-  // hist21->Scale(1/norm2);
-  // hist22->Scale(1/norm2);
-  // hist23->Scale(1/norm2);
-  // hist24->Scale(1/norm2);
-  // hist25->Scale(1/norm2);
-  // hist26->Scale(1/norm2);
-  // hist27->Scale(1/norm2);
-  // hist28->Scale(1/norm2);
-  // hist29->Scale(1/norm2);
-  // hist210->Scale(1/norm2);
-  // hist211->Scale(1/norm2);
-  // hist31->Scale(1/norm3);
-  // hist32->Scale(1/norm3);
-  // hist33->Scale(1/norm3);
-  // hist34->Scale(1/norm3);
-  // hist35->Scale(1/norm3);
-  // hist36->Scale(1/norm3);
-  // hist37->Scale(1/norm3);
-  // hist38->Scale(1/norm3);
-  // hist39->Scale(1/norm3);
-  // hist310->Scale(1/norm3);
-  // hist311->Scale(1/norm3);
+  double norm1 = (double) hist11->GetEntries();
+  double norm2 = (double) hist21->GetEntries();
+  double norm3 = (double) hist31->GetEntries();
+  hist11->Scale(1/norm1);
+  hist12->Scale(1/norm1);
+  hist13->Scale(1/norm1);
+  hist14->Scale(1/norm1);
+  hist15->Scale(1/norm1);
+  hist16->Scale(1/norm1);
+  hist17->Scale(1/norm1);
+  hist18->Scale(1/norm1);
+  hist19->Scale(1/norm1);
+  hist110->Scale(1/norm1);
+  hist111->Scale(1/norm1);
+  hist21->Scale(1/norm2);
+  hist22->Scale(1/norm2);
+  hist23->Scale(1/norm2);
+  hist24->Scale(1/norm2);
+  hist25->Scale(1/norm2);
+  hist26->Scale(1/norm2);
+  hist27->Scale(1/norm2);
+  hist28->Scale(1/norm2);
+  hist29->Scale(1/norm2);
+  hist210->Scale(1/norm2);
+  hist211->Scale(1/norm2);
+  hist31->Scale(1/norm3);
+  hist32->Scale(1/norm3);
+  hist33->Scale(1/norm3);
+  hist34->Scale(1/norm3);
+  hist35->Scale(1/norm3);
+  hist36->Scale(1/norm3);
+  hist37->Scale(1/norm3);
+  hist38->Scale(1/norm3);
+  hist39->Scale(1/norm3);
+  hist310->Scale(1/norm3);
+  hist311->Scale(1/norm3);
 
-  TLegend *legend = new TLegend(0.6,0.78,0.9,0.9);
+  TLegend *legend = new TLegend(0.57,0.78,0.9,0.9);
   TAxis *xaxis = NULL;
   TAxis *yaxis = NULL;
   
@@ -400,14 +410,14 @@ void compare_plot_3()
   yaxis->SetTitle("Entries / 30 GeV");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.1,10000);
+  yaxis->SetRangeUser(0.0001,1);
   hist11->Draw("HIST");
   hist21->Draw("HISTSAME");
   hist31->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"40 GeV < m_{j} < 65 GeV","f");
-  legend->AddEntry(hist21,"65 GeV < m_{j} < 90 GeV","f");
-  legend->AddEntry(hist31,"90 GeV < m_{j} < 115 GeV","f");
+  legend->AddEntry(hist11,"M-1000","f");
+  legend->AddEntry(hist21,"M-2000","f");
+  legend->AddEntry(hist31,"M-3000","f");
   legend->Draw();
   CMS_lumi(p01a,iPeriod,iPos);
   legend->Draw();
@@ -485,14 +495,14 @@ void compare_plot_3()
   yaxis->SetTitle("Entries / 0.08");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.1,10000);
+  yaxis->SetRangeUser(0.0001,1);
   hist12->Draw("HIST");
   hist22->Draw("HISTSAME");
   hist32->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"40 GeV < m_{j} < 65 GeV","f");
-  legend->AddEntry(hist21,"65 GeV < m_{j} < 90 GeV","f");
-  legend->AddEntry(hist31,"90 GeV < m_{j} < 115 GeV","f");
+  legend->AddEntry(hist11,"M-1000","f");
+  legend->AddEntry(hist21,"M-2000","f");
+  legend->AddEntry(hist31,"M-3000","f");
   legend->Draw();
   CMS_lumi(p02a,iPeriod,iPos);
   legend->Draw();
@@ -570,14 +580,14 @@ void compare_plot_3()
   yaxis->SetTitle("Entries / 30 GeV");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.1,10000);
+  yaxis->SetRangeUser(0.0001,1);
   hist13->Draw("HIST");
   hist23->Draw("HISTSAME");
   hist33->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"40 GeV < m_{j} < 65 GeV","f");
-  legend->AddEntry(hist21,"65 GeV < m_{j} < 90 GeV","f");
-  legend->AddEntry(hist31,"90 GeV < m_{j} < 115 GeV","f");
+  legend->AddEntry(hist11,"M-1000","f");
+  legend->AddEntry(hist21,"M-2000","f");
+  legend->AddEntry(hist31,"M-3000","f");
   legend->Draw();
   CMS_lumi(p03a,iPeriod,iPos);
   legend->Draw();
@@ -656,14 +666,14 @@ void compare_plot_3()
   yaxis->SetTitle("Entries / 0.08");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.1,10000);
+  yaxis->SetRangeUser(0.0001,1);
   hist14->Draw("HIST");
   hist24->Draw("HISTSAME");
   hist34->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"40 GeV < m_{j} < 65 GeV","f");
-  legend->AddEntry(hist21,"65 GeV < m_{j} < 90 GeV","f");
-  legend->AddEntry(hist31,"90 GeV < m_{j} < 115 GeV","f");
+  legend->AddEntry(hist11,"M-1000","f");
+  legend->AddEntry(hist21,"M-2000","f");
+  legend->AddEntry(hist31,"M-3000","f");
   legend->Draw();
   CMS_lumi(p04a,iPeriod,iPos);
   legend->Draw();
@@ -742,14 +752,14 @@ void compare_plot_3()
   yaxis->SetTitle("Entries / 30 GeV");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.1,10000);
+  yaxis->SetRangeUser(0.0001,1);
   hist15->Draw("HIST");
   hist25->Draw("HISTSAME");
   hist35->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"40 GeV < m_{j} < 65 GeV","f");
-  legend->AddEntry(hist21,"65 GeV < m_{j} < 90 GeV","f");
-  legend->AddEntry(hist31,"90 GeV < m_{j} < 115 GeV","f");
+  legend->AddEntry(hist11,"M-1000","f");
+  legend->AddEntry(hist21,"M-2000","f");
+  legend->AddEntry(hist31,"M-3000","f");
   legend->Draw();
   CMS_lumi(p05a,iPeriod,iPos);
   legend->Draw();
@@ -809,7 +819,7 @@ void compare_plot_3()
   c05->Print("j_e.root");
   
   //==========================================================
-  
+  /*
         //gStyle->SetHistMinimumZero();
   TCanvas *c06 = new TCanvas("c06","",2400,2600);
   c06->cd();
@@ -821,21 +831,21 @@ void compare_plot_3()
   p06c->Draw();
   p06a->cd();
   p06a->SetBottomMargin(0.2);
-  p06a->SetLogy();
+  //p06a->SetLogy();
   xaxis = hist16->GetXaxis();
   yaxis = hist16->GetYaxis();
   xaxis->SetTitle("SD m_{j} (GeV)");
   yaxis->SetTitle("Entries / 2 GeV");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.1,10000);
+  yaxis->SetRangeUser(0,2000);
   hist16->Draw("HIST");
   hist26->Draw("HISTSAME");
   hist36->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"40 GeV < m_{j} < 65 GeV","f");
-  legend->AddEntry(hist21,"65 GeV < m_{j} < 90 GeV","f");
-  legend->AddEntry(hist31,"90 GeV < m_{j} < 115 GeV","f");
+  legend->AddEntry(hist11,"M-1000","f");
+  legend->AddEntry(hist21,"M-2000","f");
+  legend->AddEntry(hist31,"M-3000","f");
   legend->Draw();
   CMS_lumi(p06a,iPeriod,iPos);
   legend->Draw();
@@ -893,7 +903,32 @@ void compare_plot_3()
   c06->Print("j_sdm.pdf");
   c06->Print("j_sdm.svg");
   c06->Print("j_sdm.root");
-  
+  */
+       //gStyle->SetHistMinimumZero();
+  TCanvas *c06 = new TCanvas("c06","",2400,1800);
+  c06->cd();
+  //p06a->SetLogy();
+  xaxis = hist16->GetXaxis();
+  yaxis = hist16->GetYaxis();
+  xaxis->SetTitle("PUPPI softdrop mass (GeV)");
+  yaxis->SetTitle("Entries / 2 GeV");
+  xaxis->SetTitleOffset(1.1);
+  yaxis->SetTitleOffset(1.35);
+  yaxis->SetRangeUser(0,1000);
+  hist16->Draw("HIST");
+  hist26->Draw("HISTSAME");
+  hist36->Draw("HISTSAME");
+  legend->Clear();
+  legend->AddEntry(hist11,"2017 Signal MC M-1000","f");
+  legend->AddEntry(hist21,"2017 Signal MC M-2000","f");
+  legend->AddEntry(hist31,"2017 Signal MC M-3000","f");
+  legend->Draw();
+  CMS_lumi(c06,iPeriod,iPos);
+  legend->Draw();
+    c06->Print("j_sdm.png");
+  c06->Print("j_sdm.pdf");
+  c06->Print("j_sdm.svg");
+  c06->Print("j_sdm.root");
   //==========================================================
   
           //gStyle->SetHistMinimumZero();
@@ -914,14 +949,14 @@ void compare_plot_3()
   yaxis->SetTitle("Entries / 0.02");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.1,10000);
+  yaxis->SetRangeUser(0.0001,1);
   hist17->Draw("HIST");
   hist27->Draw("HISTSAME");
   hist37->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"40 GeV < m_{j} < 65 GeV","f");
-  legend->AddEntry(hist21,"65 GeV < m_{j} < 90 GeV","f");
-  legend->AddEntry(hist31,"90 GeV < m_{j} < 115 GeV","f");
+  legend->AddEntry(hist11,"M-1000","f");
+  legend->AddEntry(hist21,"M-2000","f");
+  legend->AddEntry(hist31,"M-3000","f");
   legend->Draw();
   CMS_lumi(p07a,iPeriod,iPos);
   legend->Draw();
@@ -1000,14 +1035,14 @@ void compare_plot_3()
   yaxis->SetTitle("Entries / 0.02");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.1,10000);
+  yaxis->SetRangeUser(0.0001,1);
   hist18->Draw("HIST");
   hist28->Draw("HISTSAME");
   hist38->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"40 GeV < m_{j} < 65 GeV","f");
-  legend->AddEntry(hist21,"65 GeV < m_{j} < 90 GeV","f");
-  legend->AddEntry(hist31,"90 GeV < m_{j} < 115 GeV","f");
+  legend->AddEntry(hist11,"M-1000","f");
+  legend->AddEntry(hist21,"M-2000","f");
+  legend->AddEntry(hist31,"M-3000","f");
   legend->Draw();
   CMS_lumi(p08a,iPeriod,iPos);
   legend->Draw();
@@ -1088,14 +1123,14 @@ void compare_plot_3()
   yaxis->SetTitle("Entries / 0.04");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.1,10000);
+  yaxis->SetRangeUser(0.0001,1);
   hist19->Draw("HIST");
   hist29->Draw("HISTSAME");
   hist39->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"40 GeV < m_{j} < 65 GeV","f");
-  legend->AddEntry(hist21,"65 GeV < m_{j} < 90 GeV","f");
-  legend->AddEntry(hist31,"90 GeV < m_{j} < 115 GeV","f");
+  legend->AddEntry(hist11,"M-1000","f");
+  legend->AddEntry(hist21,"M-2000","f");
+  legend->AddEntry(hist31,"M-3000","f");
   legend->Draw();
   CMS_lumi(p09a,iPeriod,iPos);
   legend->Draw();
@@ -1156,7 +1191,6 @@ void compare_plot_3()
   
   //==========================================================
   
-  
             //gStyle->SetHistMinimumZero();
   TCanvas *c10 = new TCanvas("c10","",2400,2600);
   c10->cd();
@@ -1175,7 +1209,7 @@ void compare_plot_3()
   yaxis->SetTitle("Entries / 40 GeV");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.1,10000);
+  yaxis->SetRangeUser(0.0001,1);
   // hist110->Draw("HIST");
   // hist210->Draw("HISTSAME");
   // hist310->Draw("HISTSAME");
@@ -1183,9 +1217,9 @@ void compare_plot_3()
   hist210->Draw("SAME");
   hist310->Draw("SAME");
   legend->Clear();
-  legend->AddEntry(hist11,"40 GeV < m_{j} < 65 GeV","f");
-  legend->AddEntry(hist21,"65 GeV < m_{j} < 90 GeV","f");
-  legend->AddEntry(hist31,"90 GeV < m_{j} < 115 GeV","f");
+  legend->AddEntry(hist11,"M-1000","f");
+  legend->AddEntry(hist21,"M-2000","f");
+  legend->AddEntry(hist31,"M-3000","f");
   legend->Draw();
   CMS_lumi(p10a,iPeriod,iPos);
   legend->Draw();
@@ -1245,7 +1279,7 @@ void compare_plot_3()
   c10->Print("s_M.root");
   
   //==========================================================
-  
+
   
             //gStyle->SetHistMinimumZero();
   TCanvas *c11 = new TCanvas("c11","",2400,2600);
@@ -1265,14 +1299,14 @@ void compare_plot_3()
   yaxis->SetTitle("Entries / 0.04");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.1,10000);
+  yaxis->SetRangeUser(0.0001,1);
   hist111->Draw("HIST");
   hist211->Draw("HISTSAME");
   hist311->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"40 GeV < m_{j} < 65 GeV","f");
-  legend->AddEntry(hist21,"65 GeV < m_{j} < 90 GeV","f");
-  legend->AddEntry(hist31,"90 GeV < m_{j} < 115 GeV","f");
+  legend->AddEntry(hist11,"M-1000","f");
+  legend->AddEntry(hist21,"M-2000","f");
+  legend->AddEntry(hist31,"M-3000","f");
   legend->Draw();
   CMS_lumi(p11a,iPeriod,iPos);
   legend->Draw();

@@ -32,14 +32,14 @@
 void MCvalidation()
 {
   gROOT->SetBatch(1);
-  lumi_13TeV = "35.92 fb^{-1}";
+  lumi_13TeV = "137.19 fb^{-1}";
   writeExtraText = 1;
   lumiTextOffset = 0.15;
   bool plot_CMS = true;
-  extraText = "";
+  extraText = "Preliminary";
   lumiTextSize = 0.3;
   cmsTextSize = 0.45;
-  int iPeriod = 4;
+  int iPeriod = 12;
   int iPos = 0;
   gStyle->SetOptStat(0);
   gStyle->SetOptTitle(0);
@@ -149,7 +149,7 @@ void MCvalidation()
   // Open input file
   Float_t p_pt, p_eta, p_phi, p_e, p_mva, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight, x_kfactor;
   
-  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/TEMP/GJets_postproc_WGamma16_full_full_presel_jmcorr_Mar17.root");
+  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Full_Run2/GJets_postproc_WGamma17_full_full_presel_jmcorr_kfactor_Mar17.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -171,23 +171,26 @@ void MCvalidation()
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
+	//if(p_pt < 225) continue;
+	//if(j_pt < 225) continue;
     if((j_mass > 68 && j_mass < 94)){
-	x_kfactor = 1.3;
-    hist11->Fill(p_pt, x_weight * x_kfactor * 1);
-    hist12->Fill(p_eta, x_weight * x_kfactor * 1);
-    hist13->Fill(j_pt, x_weight * x_kfactor * 1);
-    hist14->Fill(j_eta, x_weight * x_kfactor * 1);
-    hist15->Fill(j_e, x_weight * x_kfactor * 1);
-    hist16->Fill(j_mass, x_weight * x_kfactor * 1);
-    hist17->Fill(j_tau21, x_weight * x_kfactor * 1);
-    hist18->Fill(s_cos, x_weight * x_kfactor * 1);
-    hist19->Fill(s_ptm, x_weight * x_kfactor * 1);
-    hist110->Fill(s_mass, x_weight * x_kfactor * 1);
-    hist111->Fill(p_mva, x_weight * x_kfactor * 1);  
+	//if((j_mass > 68 && j_mass < 94) || (j_mass > 40 && j_mass < 65)){
+	//x_kfactor = 1.21;
+    hist11->Fill(p_pt, x_weight * x_kfactor * 3.30339);
+    hist12->Fill(p_eta, x_weight * x_kfactor * 3.30339);
+    hist13->Fill(j_pt, x_weight * x_kfactor * 3.30339);
+    hist14->Fill(j_eta, x_weight * x_kfactor * 3.30339);
+    hist15->Fill(j_e, x_weight * x_kfactor * 3.30339);
+    hist16->Fill(j_mass, x_weight * x_kfactor * 3.30339);
+    hist17->Fill(j_tau21, x_weight * x_kfactor * 3.30339);
+    hist18->Fill(s_cos, x_weight * x_kfactor * 3.30339);
+    hist19->Fill(s_ptm, x_weight * x_kfactor * 3.30339);
+    hist110->Fill(s_mass, x_weight * x_kfactor * 3.30339);
+    hist111->Fill(p_mva, x_weight * x_kfactor * 3.30339);  
 	}
   }
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/TEMP/QCD_postproc_WGamma16_full_full_presel_jmcorr_Mar17.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Full_Run2/QCD_postproc_WGamma17_full_full_presel_jmcorr_kfactor_Mar17.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -209,25 +212,28 @@ void MCvalidation()
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
-	x_kfactor = 0.70;
-    if((j_mass > 68 && j_mass < 94)){
-    hist21->Fill(p_pt, x_weight * x_kfactor * 1);
-    hist22->Fill(p_eta, x_weight * x_kfactor * 1);
-    hist23->Fill(j_pt, x_weight * x_kfactor * 1);
-    hist24->Fill(j_eta, x_weight * x_kfactor * 1);
-    hist25->Fill(j_e, x_weight * x_kfactor * 1);
-    hist26->Fill(j_mass, x_weight * x_kfactor * 1);
-    hist27->Fill(j_tau21, x_weight * x_kfactor * 1);
-    hist28->Fill(s_cos, x_weight * x_kfactor * 1);
-    hist29->Fill(s_ptm, x_weight * x_kfactor * 1);
-    hist210->Fill(s_mass, x_weight * x_kfactor * 1);
-    hist211->Fill(p_mva, x_weight * x_kfactor * 1);  
+	//if(p_pt < 225) continue;
+	//if(j_pt < 225) continue;
+	//x_kfactor = 1.03;
+     if((j_mass > 68 && j_mass < 94)){
+	//if((j_mass > 68 && j_mass < 94) || (j_mass > 40 && j_mass < 65)){
+    hist21->Fill(p_pt, x_weight * x_kfactor * 3.30339);
+    hist22->Fill(p_eta, x_weight * x_kfactor * 3.30339);
+    hist23->Fill(j_pt, x_weight * x_kfactor * 3.30339);
+    hist24->Fill(j_eta, x_weight * x_kfactor * 3.30339);
+    hist25->Fill(j_e, x_weight * x_kfactor * 3.30339);
+    hist26->Fill(j_mass, x_weight * x_kfactor * 3.30339);
+    hist27->Fill(j_tau21, x_weight * x_kfactor * 3.30339);
+    hist28->Fill(s_cos, x_weight * x_kfactor * 3.30339);
+    hist29->Fill(s_ptm, x_weight * x_kfactor * 3.30339);
+    hist210->Fill(s_mass, x_weight * x_kfactor * 3.30339);
+    hist211->Fill(p_mva, x_weight * x_kfactor * 3.30339);  
 	}
   }
 
   int SB = 0;
   int WB = 0;
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Full_Run2/presel/SinglePhoton2016_postproc_WGamma16_full_full_presel_jmcorr_Mar17.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Full_Run2/Run2Data_WGammaRun2_full_full_presel_jmcorr_Mar17.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -247,19 +253,21 @@ void MCvalidation()
   //theTree->SetBranchAddress("xsec_weight", &x_weight);
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
+	//if(p_pt < 225) continue;
+	//if(j_pt < 225) continue;
     if(j_mass > 40 && j_mass < 65) {
 		SB++;
-		hist31->Fill(p_pt, 0.79205);
-		hist32->Fill(p_eta, 0.79205);
-		hist33->Fill(j_pt, 0.79205);
-		hist34->Fill(j_eta, 0.79205);
-		hist35->Fill(j_e, 0.79205);
+		hist31->Fill(p_pt, 0.79867);
+		hist32->Fill(p_eta, 0.79867);
+		hist33->Fill(j_pt, 0.79867);
+		hist34->Fill(j_eta, 0.79867);
+		hist35->Fill(j_e, 0.79867);
 		hist36->Fill(j_mass, 1);
-		hist37->Fill(j_tau21, 0.79205);
-		hist38->Fill(s_cos, 0.79205);
-		hist39->Fill(s_ptm, 0.79205);
-		hist310->Fill(s_mass, 0.79205);
-		hist311->Fill(p_mva, 0.79205);  
+		hist37->Fill(j_tau21, 0.79867);
+		hist38->Fill(s_cos, 0.79867);
+		hist39->Fill(s_ptm, 0.79867);
+		hist310->Fill(s_mass, 0.79867);
+		hist311->Fill(p_mva, 0.79867);  
 	}
 	if(j_mass > 68 && j_mass < 94) {
 		WB++;
@@ -299,7 +307,8 @@ void MCvalidation()
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
-    
+    if(p_pt < 225) continue;
+	if(j_pt < 225) continue;
     hist41->Fill(p_pt, 6.8595);
     hist42->Fill(p_eta, 6.8595);
     hist43->Fill(j_pt, 6.8595);
@@ -334,7 +343,8 @@ void MCvalidation()
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
-    
+    if(p_pt < 225) continue;
+	if(j_pt < 225) continue;
     hist51->Fill(p_pt, 6.8595);
     hist52->Fill(p_eta, 6.8595);
     hist53->Fill(j_pt, 6.8595);
@@ -369,7 +379,8 @@ void MCvalidation()
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
-    
+    if(p_pt < 225) continue;
+	if(j_pt < 225) continue;
     hist61->Fill(p_pt, 6.8595);
     hist62->Fill(p_eta, 6.8595);
     hist63->Fill(j_pt, 6.8595);
@@ -378,7 +389,7 @@ void MCvalidation()
     hist66->Fill(j_mass, 5*6.8595);
     hist67->Fill(j_tau21, 6.8595);
     hist68->Fill(s_cos, 6.8595);
-    hist69->Fill(s_ptm, 30);
+    hist69->Fill(s_ptm, 6.8595);
     hist610->Fill(s_mass, 6.8595);
     hist611->Fill(p_mva, 6.8595);  
   }
@@ -404,7 +415,8 @@ void MCvalidation()
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
-    
+    if(p_pt < 225) continue;
+	if(j_pt < 225) continue;
     hist71->Fill(p_pt, 6.8595);
     hist72->Fill(p_eta, 6.8595);
     hist73->Fill(j_pt, 6.8595);
@@ -421,19 +433,23 @@ void MCvalidation()
   
   // Create stack for bkg MC
   THStack *stack1 = new THStack("stack1","pt_{p}");
-  THStack *stack2 = new THStack("stack2","eta_{j}");
-  THStack *stack3 = new THStack("stack3","Jet softdrop mass");
-  THStack *stack4 = new THStack("stack4","Jet tau21");
-  THStack *stack5 = new THStack("stack5","cos(#theta*)");
-  THStack *stack6 = new THStack("stack6","pt_{j} / M");
-  THStack *stack7 = new THStack("stack7","Invariant mass");
+  THStack *stack2 = new THStack("stack1","eta_{p}");
+  THStack *stack3 = new THStack("stack2","pt_{j}");
+  THStack *stack4 = new THStack("stack2","eta_{j}");
+  THStack *stack5 = new THStack("stack3","Jet softdrop mass");
+  THStack *stack6 = new THStack("stack4","Jet tau21");
+  THStack *stack7 = new THStack("stack5","cos(#theta*)");
+  THStack *stack8 = new THStack("stack6","pt_{j} / M");
+  THStack *stack9 = new THStack("stack7","Invariant mass");
   stack1->Add(hist21); stack1->Add(hist11);
-  stack2->Add(hist24); stack2->Add(hist14);
-  stack3->Add(hist26); stack3->Add(hist16);
-  stack4->Add(hist27); stack4->Add(hist17);
-  stack5->Add(hist28); stack5->Add(hist18);
-  stack6->Add(hist29); stack6->Add(hist19);
-  stack7->Add(hist210); stack7->Add(hist110);
+  stack2->Add(hist22); stack2->Add(hist12);
+  stack3->Add(hist23); stack3->Add(hist13);
+  stack4->Add(hist24); stack4->Add(hist14);
+  stack5->Add(hist26); stack5->Add(hist16);
+  stack6->Add(hist27); stack6->Add(hist17);
+  stack7->Add(hist28); stack7->Add(hist18);
+  stack8->Add(hist29); stack8->Add(hist19);
+  stack9->Add(hist210); stack9->Add(hist110);
 
 
   //=================================================================================
@@ -731,10 +747,10 @@ void MCvalidation()
   xaxis1->SetTitle("p_{T#gamma} (GeV)");
   yaxis1->SetTitle("Entries / 30 GeV");
   xaxis1->SetTitleOffset(1.1);
-  yaxis1->SetTitleOffset(1.2);
+  yaxis1->SetTitleOffset(1.6);
   yaxis1->SetRangeUser(0.1,1000000);
-  hist31->Draw("PE1");
-  hist3a1->Draw("SAMEPE1");
+  hist31->Draw("HIST");
+  hist3a1->Draw("SAMEHIST");
   stack1->Draw("SAMEHIST");
   hist41->Draw("SAMEHIST");
   hist51->Draw("SAMEHIST");
@@ -819,7 +835,7 @@ void MCvalidation()
   c01->Print("p_pt.pdf");
   c01->Print("p_pt.svg");
   c01->Print("p_pt.root");
-  //==========================================================
+  //=========================================================
   
   //===========================================================
   TCanvas *c02 = new TCanvas("c02","",2400,2600);
@@ -835,32 +851,33 @@ void MCvalidation()
   p02a->SetLeftMargin(0.145);
   p02a->SetRightMargin(0.07);
   p02a->SetLogy();
-  xaxis1 = hist34->GetXaxis();
-  yaxis1 = hist34->GetYaxis();
-  xaxis1->SetTitle("#eta_{j}");
+  xaxis1 = hist32->GetXaxis();
+  yaxis1 = hist32->GetYaxis();
+  xaxis1->SetTitle("#eta_{#gamma}");
   yaxis1->SetTitle("Entries / 0.08");
   xaxis1->SetTitleOffset(1.1);
-  yaxis1->SetTitleOffset(1.2);
+  yaxis1->SetTitleOffset(1.6);
   yaxis1->SetRangeUser(0.1,1000000);
-  hist34->Draw("PE1");
-  hist3a4->Draw("SAMEPE1");
+  hist32->Draw("HIST");
+  hist3a2->Draw("SAMEHIST");
   stack2->Draw("SAMEHIST");
-  hist44->Draw("SAMEHIST");
-  hist54->Draw("SAMEHIST");
-  hist64->Draw("SAMEHIST");
-  hist74->Draw("SAMEHIST");
-  hist34->Draw("E1SAME");
-  hist3a4->Draw("E1SAME");
-  hist34->Draw("AXISSAME");
+  hist42->Draw("SAMEHIST");
+  hist52->Draw("SAMEHIST");
+  hist62->Draw("SAMEHIST");
+  hist72->Draw("SAMEHIST");
+  hist32->Draw("E1SAME");
+  hist3a2->Draw("E1SAME");
+  hist32->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist34,"Data Sideband (Norm)","lep");
-  legend->AddEntry(hist44,"M-1000 N");
-  legend->AddEntry(hist3a4,"Data Signal Region","lep");
-  legend->AddEntry(hist54,"M-1000 W"); 
-  legend->AddEntry(hist14,"#gamma + jet","f");
-  legend->AddEntry(hist64,"M-2800 N");
-  legend->AddEntry(hist24,"QCD","f");
-  legend->AddEntry(hist74,"M-2800 W");
+  legend->AddEntry(hist31,"Data Sideband (Norm)","lep");
+  legend->AddEntry(hist41,"M-1000 N");
+  legend->AddEntry(hist3a1,"Data Signal Region","lep");
+  legend->AddEntry(hist51,"M-1000 W"); 
+  legend->AddEntry(hist11,"#gamma + jet","f");
+  legend->AddEntry(hist61,"M-2800 N");
+  legend->AddEntry(hist21,"QCD","f");
+  legend->AddEntry(hist71,"M-2800 W");
+
   legend->Draw();
   CMS_lumi(p02a,iPeriod,iPos);
   
@@ -869,13 +886,13 @@ void MCvalidation()
   p02b->SetBottomMargin(0.4);
   p02b->SetLeftMargin(0.144);
   p02b->SetRightMargin(0.07);
-  pull = (TH1*)hist34->Clone();
-  bkg = (TH1*)hist14->Clone();
-  bkg->Add((TH1*)hist24->Clone());
+  pull = (TH1*)hist32->Clone();
+  bkg = (TH1*)hist12->Clone();
+  bkg->Add((TH1*)hist22->Clone());
   pull->Divide(bkg);
   xaxis2 = pull->GetXaxis();
   yaxis2 = pull->GetYaxis();
-  xaxis2->SetTitle("#eta_{j}");
+  xaxis2->SetTitle("#eta_{#gamma}");
   xaxis2->SetTitleOffset(1.15);
   yaxis2->SetTitle("data/MC");
   yaxis2->SetTitleOffset(0.5);
@@ -899,13 +916,13 @@ void MCvalidation()
   p02c->SetBottomMargin(0.4);
   p02c->SetLeftMargin(0.144);
   p02c->SetRightMargin(0.07);
-  pull = (TH1*)hist3a4->Clone();
-  bkg = (TH1*)hist14->Clone();
-  bkg->Add((TH1*)hist24->Clone());
+  pull = (TH1*)hist3a2->Clone();
+  bkg = (TH1*)hist12->Clone();
+  bkg->Add((TH1*)hist22->Clone());
   pull->Divide(bkg);
   xaxis3 = pull->GetXaxis();
   yaxis3 = pull->GetYaxis();
-  xaxis3->SetTitle("#eta_{j}");
+  xaxis3->SetTitle("#eta_{#gamma}");
   xaxis3->SetTitleOffset(1.15);
   yaxis3->SetTitle("data/MC");
   yaxis3->SetTitleOffset(0.5);
@@ -923,12 +940,11 @@ void MCvalidation()
   //pull->SetFillColorAlpha(kViolet, 0.35);
   pull->Draw("PE1");
   //pull->Draw("BAR HIST");
-  c02->Print("j_eta.png");
-  c02->Print("j_eta.pdf");
-  c02->Print("j_eta.svg");
-  c02->Print("j_eta.root");
-  //==========================================================
-  
+  c02->Print("p_eta.png");
+  c02->Print("p_eta.pdf");
+  c02->Print("p_eta.svg");
+  c02->Print("p_eta.root");
+  //=========================================================
   
     //===========================================================
   TCanvas *c03 = new TCanvas("c03","",2400,2600);
@@ -943,32 +959,34 @@ void MCvalidation()
   p03a->SetBottomMargin(0.12);
   p03a->SetLeftMargin(0.145);
   p03a->SetRightMargin(0.07);
-  xaxis1 = hist36->GetXaxis();
-  yaxis1 = hist36->GetYaxis();
-  xaxis1->SetTitle("#m_{j}");
-  yaxis1->SetTitle("Entries / 1 GeV");
+  p03a->SetLogy();
+  xaxis1 = hist33->GetXaxis();
+  yaxis1 = hist33->GetYaxis();
+  xaxis1->SetTitle("p_{T j} (GeV)");
+  yaxis1->SetTitle("Entries / 30 Gev");
   xaxis1->SetTitleOffset(1.1);
-  yaxis1->SetTitleOffset(1.2);
-  yaxis1->SetRangeUser(0,20000);
-  hist36->Draw("PE1");
-  hist3a6->Draw("SAMEPE1");
+  yaxis1->SetTitleOffset(1.6);
+  yaxis1->SetRangeUser(0.1,1000000);
+  hist33->Draw("HIST");
+  hist3a3->Draw("SAMEHIST");
   stack3->Draw("SAMEHIST");
-  hist46->Draw("SAMEHIST");
-  hist56->Draw("SAMEHIST");
-  hist66->Draw("SAMEHIST");
-  hist76->Draw("SAMEHIST");
-  hist36->Draw("E1SAME");
-  hist3a6->Draw("E1SAME");
-  hist36->Draw("AXISSAME");
+  hist43->Draw("SAMEHIST");
+  hist53->Draw("SAMEHIST");
+  hist63->Draw("SAMEHIST");
+  hist73->Draw("SAMEHIST");
+  hist33->Draw("E1SAME");
+  hist3a3->Draw("E1SAME");
+  hist33->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist36,"Data Sideband","lep");
-  legend->AddEntry(hist46,"M-1000 N");
-  legend->AddEntry(hist3a6,"Data Signal Region","lep");
-  legend->AddEntry(hist56,"M-1000 W"); 
-  legend->AddEntry(hist16,"#gamma + jet","f");
-  legend->AddEntry(hist66,"M-2800 N");
-  legend->AddEntry(hist26,"QCD","f");
-  legend->AddEntry(hist76,"M-2800 W");
+  legend->AddEntry(hist31,"Data Sideband (Norm)","lep");
+  legend->AddEntry(hist41,"M-1000 N");
+  legend->AddEntry(hist3a1,"Data Signal Region","lep");
+  legend->AddEntry(hist51,"M-1000 W"); 
+  legend->AddEntry(hist11,"#gamma + jet","f");
+  legend->AddEntry(hist61,"M-2800 N");
+  legend->AddEntry(hist21,"QCD","f");
+  legend->AddEntry(hist71,"M-2800 W");
+
   legend->Draw();
   CMS_lumi(p03a,iPeriod,iPos);
   
@@ -977,13 +995,13 @@ void MCvalidation()
   p03b->SetBottomMargin(0.4);
   p03b->SetLeftMargin(0.144);
   p03b->SetRightMargin(0.07);
-  pull = (TH1*)hist36->Clone();
-  bkg = (TH1*)hist16->Clone();
-  bkg->Add((TH1*)hist26->Clone());
+  pull = (TH1*)hist33->Clone();
+  bkg = (TH1*)hist13->Clone();
+  bkg->Add((TH1*)hist23->Clone());
   pull->Divide(bkg);
   xaxis2 = pull->GetXaxis();
   yaxis2 = pull->GetYaxis();
-  xaxis2->SetTitle("#eta_{j}");
+  xaxis2->SetTitle("p_{T j} (GeV)");
   xaxis2->SetTitleOffset(1.15);
   yaxis2->SetTitle("data/MC");
   yaxis2->SetTitleOffset(0.5);
@@ -1007,13 +1025,13 @@ void MCvalidation()
   p03c->SetBottomMargin(0.4);
   p03c->SetLeftMargin(0.144);
   p03c->SetRightMargin(0.07);
-  pull = (TH1*)hist3a6->Clone();
-  bkg = (TH1*)hist16->Clone();
-  bkg->Add((TH1*)hist26->Clone());
+  pull = (TH1*)hist3a3->Clone();
+  bkg = (TH1*)hist13->Clone();
+  bkg->Add((TH1*)hist23->Clone());
   pull->Divide(bkg);
   xaxis3 = pull->GetXaxis();
   yaxis3 = pull->GetYaxis();
-  xaxis3->SetTitle("#eta_{j}");
+  xaxis3->SetTitle("p_{T j} (GeV)");
   xaxis3->SetTitleOffset(1.15);
   yaxis3->SetTitle("data/MC");
   yaxis3->SetTitleOffset(0.5);
@@ -1031,11 +1049,11 @@ void MCvalidation()
   //pull->SetFillColorAlpha(kViolet, 0.35);
   pull->Draw("PE1");
   //pull->Draw("BAR HIST");
-  c03->Print("j_m.png");
-  c03->Print("j_m.pdf");
-  c03->Print("j_m.svg");
-  c03->Print("j_m.root");
-  //==========================================================
+  c03->Print("j_pt.png");
+  c03->Print("j_pt.pdf");
+  c03->Print("j_pt.svg");
+  c03->Print("j_pt.root");
+  //=========================================================
   
   //===========================================================
   TCanvas *c04 = new TCanvas("c04","",2400,2600);
@@ -1050,33 +1068,33 @@ void MCvalidation()
   p04a->SetBottomMargin(0.12);
   p04a->SetLeftMargin(0.145);
   p04a->SetRightMargin(0.07);
-  //p04a->SetLogy();
-  xaxis1 = hist37->GetXaxis();
-  yaxis1 = hist37->GetYaxis();
-  xaxis1->SetTitle("#tau_{21}");
-  yaxis1->SetTitle("Entries / 0.02");
+  p04a->SetLogy();
+  xaxis1 = hist34->GetXaxis();
+  yaxis1 = hist34->GetYaxis();
+  xaxis1->SetTitle("#eta_{j}");
+  yaxis1->SetTitle("Entries / 0.08");
   xaxis1->SetTitleOffset(1.1);
-  yaxis1->SetTitleOffset(1.2);
-  yaxis1->SetRangeUser(0,6000);
-  hist37->Draw("PE1");
-  hist3a7->Draw("SAMEPE1");
+  yaxis1->SetTitleOffset(1.6);
+  yaxis1->SetRangeUser(0.1,1000000);
+  hist34->Draw("PE1");
+  hist3a4->Draw("SAMEPE1");
   stack4->Draw("SAMEHIST");
-  hist47->Draw("SAMEHIST");
-  hist57->Draw("SAMEHIST");
-  hist67->Draw("SAMEHIST");
-  hist77->Draw("SAMEHIST");
-  hist37->Draw("E1SAME");
-  hist3a7->Draw("E1SAME");
-  hist37->Draw("AXISSAME");
+  hist44->Draw("SAMEHIST");
+  hist54->Draw("SAMEHIST");
+  hist64->Draw("SAMEHIST");
+  hist74->Draw("SAMEHIST");
+  hist34->Draw("E1SAME");
+  hist3a4->Draw("E1SAME");
+  hist34->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist37,"Data Sideband (Norm)","lep");
-  legend->AddEntry(hist47,"M-1000 N");
-  legend->AddEntry(hist3a7,"Data Signal Region","lep");
-  legend->AddEntry(hist57,"M-1000 W"); 
-  legend->AddEntry(hist17,"#gamma + jet","f");
-  legend->AddEntry(hist67,"M-2800 N");
-  legend->AddEntry(hist27,"QCD","f");
-  legend->AddEntry(hist77,"M-2800 W");
+  legend->AddEntry(hist34,"Data Sideband (Norm)","lep");
+  legend->AddEntry(hist44,"M-1000 N");
+  legend->AddEntry(hist3a4,"Data Signal Region","lep");
+  legend->AddEntry(hist54,"M-1000 W"); 
+  legend->AddEntry(hist14,"#gamma + jet","f");
+  legend->AddEntry(hist64,"M-2800 N");
+  legend->AddEntry(hist24,"QCD","f");
+  legend->AddEntry(hist74,"M-2800 W");
   legend->Draw();
   CMS_lumi(p04a,iPeriod,iPos);
   
@@ -1085,13 +1103,13 @@ void MCvalidation()
   p04b->SetBottomMargin(0.4);
   p04b->SetLeftMargin(0.144);
   p04b->SetRightMargin(0.07);
-  pull = (TH1*)hist37->Clone();
-  bkg = (TH1*)hist17->Clone();
-  bkg->Add((TH1*)hist27->Clone());
+  pull = (TH1*)hist34->Clone();
+  bkg = (TH1*)hist14->Clone();
+  bkg->Add((TH1*)hist24->Clone());
   pull->Divide(bkg);
   xaxis2 = pull->GetXaxis();
   yaxis2 = pull->GetYaxis();
-  xaxis2->SetTitle("#tau_{21}");
+  xaxis2->SetTitle("#eta_{j}");
   xaxis2->SetTitleOffset(1.15);
   yaxis2->SetTitle("data/MC");
   yaxis2->SetTitleOffset(0.5);
@@ -1115,13 +1133,13 @@ void MCvalidation()
   p04c->SetBottomMargin(0.4);
   p04c->SetLeftMargin(0.144);
   p04c->SetRightMargin(0.07);
-  pull = (TH1*)hist3a7->Clone();
-  bkg = (TH1*)hist17->Clone();
-  bkg->Add((TH1*)hist27->Clone());
+  pull = (TH1*)hist3a4->Clone();
+  bkg = (TH1*)hist14->Clone();
+  bkg->Add((TH1*)hist24->Clone());
   pull->Divide(bkg);
   xaxis3 = pull->GetXaxis();
   yaxis3 = pull->GetYaxis();
-  xaxis3->SetTitle("#tau_{21}");
+  xaxis3->SetTitle("#eta_{j}");
   xaxis3->SetTitleOffset(1.15);
   yaxis3->SetTitle("data/MC");
   yaxis3->SetTitleOffset(0.5);
@@ -1139,13 +1157,14 @@ void MCvalidation()
   //pull->SetFillColorAlpha(kViolet, 0.35);
   pull->Draw("PE1");
   //pull->Draw("BAR HIST");
-  c04->Print("j_tau21.png");
-  c04->Print("j_tau21.pdf");
-  c04->Print("j_tau21.svg");
-  c04->Print("j_tau21.root");
+  c04->Print("j_eta.png");
+  c04->Print("j_eta.pdf");
+  c04->Print("j_eta.svg");
+  c04->Print("j_eta.root");
   //==========================================================
   
-  //===========================================================
+  
+    //===========================================================
   TCanvas *c05 = new TCanvas("c05","",2400,2600);
   c05->cd();
   TPad *p05a = new TPad("p05a","p05a",0,0.32,1,1.0);
@@ -1158,33 +1177,32 @@ void MCvalidation()
   p05a->SetBottomMargin(0.12);
   p05a->SetLeftMargin(0.145);
   p05a->SetRightMargin(0.07);
-  p05a->SetLogy();
-  xaxis1 = hist38->GetXaxis();
-  yaxis1 = hist38->GetYaxis();
-  xaxis1->SetTitle("cos(#theta*)");
-  yaxis1->SetTitle("Entries / 0.02");
+  xaxis1 = hist36->GetXaxis();
+  yaxis1 = hist36->GetYaxis();
+  xaxis1->SetTitle("m_{j} (GeV)");
+  yaxis1->SetTitle("Entries / 1 GeV");
   xaxis1->SetTitleOffset(1.1);
-  yaxis1->SetTitleOffset(1.2);
-  yaxis1->SetRangeUser(0.1,1000000);
-  hist38->Draw("PE1");
-  hist3a8->Draw("SAMEPE1");
+  yaxis1->SetTitleOffset(1.6);
+  yaxis1->SetRangeUser(0,20000);
+  hist36->Draw("PE1");
+  hist3a6->Draw("SAMEPE1");
   stack5->Draw("SAMEHIST");
-  hist48->Draw("SAMEHIST");
-  hist58->Draw("SAMEHIST");
-  hist68->Draw("SAMEHIST");
-  hist78->Draw("SAMEHIST");
-  hist38->Draw("E1SAME");
-  hist3a8->Draw("E1SAME");
-  hist38->Draw("AXISSAME");
+  hist46->Draw("SAMEHIST");
+  hist56->Draw("SAMEHIST");
+  hist66->Draw("SAMEHIST");
+  hist76->Draw("SAMEHIST");
+  hist36->Draw("E1SAME");
+  hist3a6->Draw("E1SAME");
+  hist36->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist38,"Data Sideband (Norm)","lep");
-  legend->AddEntry(hist48,"M-1000 N");
-  legend->AddEntry(hist3a8,"Data Signal Region","lep");
-  legend->AddEntry(hist58,"M-1000 W"); 
-  legend->AddEntry(hist18,"#gamma + jet","f");
-  legend->AddEntry(hist68,"M-2800 N");
-  legend->AddEntry(hist28,"QCD","f");
-  legend->AddEntry(hist78,"M-2800 W");
+  legend->AddEntry(hist36,"Data Sideband","lep");
+  legend->AddEntry(hist46,"M-1000 N");
+  legend->AddEntry(hist3a6,"Data Signal Region","lep");
+  legend->AddEntry(hist56,"M-1000 W"); 
+  legend->AddEntry(hist16,"#gamma + jet","f");
+  legend->AddEntry(hist66,"M-2800 N");
+  legend->AddEntry(hist26,"QCD","f");
+  legend->AddEntry(hist76,"M-2800 W");
   legend->Draw();
   CMS_lumi(p05a,iPeriod,iPos);
   
@@ -1193,13 +1211,13 @@ void MCvalidation()
   p05b->SetBottomMargin(0.4);
   p05b->SetLeftMargin(0.144);
   p05b->SetRightMargin(0.07);
-  pull = (TH1*)hist38->Clone();
-  bkg = (TH1*)hist18->Clone();
-  bkg->Add((TH1*)hist28->Clone());
+  pull = (TH1*)hist36->Clone();
+  bkg = (TH1*)hist16->Clone();
+  bkg->Add((TH1*)hist26->Clone());
   pull->Divide(bkg);
   xaxis2 = pull->GetXaxis();
   yaxis2 = pull->GetYaxis();
-  xaxis2->SetTitle("cos(#theta*)");
+  xaxis2->SetTitle("m_{j} (GeV)");
   xaxis2->SetTitleOffset(1.15);
   yaxis2->SetTitle("data/MC");
   yaxis2->SetTitleOffset(0.5);
@@ -1223,13 +1241,13 @@ void MCvalidation()
   p05c->SetBottomMargin(0.4);
   p05c->SetLeftMargin(0.144);
   p05c->SetRightMargin(0.07);
-  pull = (TH1*)hist3a8->Clone();
-  bkg = (TH1*)hist18->Clone();
-  bkg->Add((TH1*)hist28->Clone());
+  pull = (TH1*)hist3a6->Clone();
+  bkg = (TH1*)hist16->Clone();
+  bkg->Add((TH1*)hist26->Clone());
   pull->Divide(bkg);
   xaxis3 = pull->GetXaxis();
   yaxis3 = pull->GetYaxis();
-  xaxis3->SetTitle("cos(#theta*)");
+  xaxis3->SetTitle("m_{j} (GeV)");
   xaxis3->SetTitleOffset(1.15);
   yaxis3->SetTitle("data/MC");
   yaxis3->SetTitleOffset(0.5);
@@ -1247,10 +1265,10 @@ void MCvalidation()
   //pull->SetFillColorAlpha(kViolet, 0.35);
   pull->Draw("PE1");
   //pull->Draw("BAR HIST");
-  c05->Print("s_cos.png");
-  c05->Print("s_cos.pdf");
-  c05->Print("s_cos.svg");
-  c05->Print("s_cos.root");
+  c05->Print("j_m.png");
+  c05->Print("j_m.pdf");
+  c05->Print("j_m.svg");
+  c05->Print("j_m.root");
   //==========================================================
   
   //===========================================================
@@ -1266,33 +1284,33 @@ void MCvalidation()
   p06a->SetBottomMargin(0.12);
   p06a->SetLeftMargin(0.145);
   p06a->SetRightMargin(0.07);
-  p06a->SetLogy();
-  xaxis1 = hist39->GetXaxis();
-  yaxis1 = hist39->GetYaxis();
-  xaxis1->SetTitle("pT_{p} / M_{j#gamma}");
-  yaxis1->SetTitle("Entries / 0.04");
+  //p06a->SetLogy();
+  xaxis1 = hist37->GetXaxis();
+  yaxis1 = hist37->GetYaxis();
+  xaxis1->SetTitle("#tau_{21}");
+  yaxis1->SetTitle("Entries / 0.02");
   xaxis1->SetTitleOffset(1.1);
-  yaxis1->SetTitleOffset(1.2);
-  yaxis1->SetRangeUser(0.1,1000000);
-  hist39->Draw("PE1");
-  hist3a9->Draw("SAMEPE1");
+  yaxis1->SetTitleOffset(1.6);
+  yaxis1->SetRangeUser(0,16000);
+  hist37->Draw("PE1");
+  hist3a7->Draw("SAMEPE1");
   stack6->Draw("SAMEHIST");
-  hist49->Draw("SAMEHIST");
-  hist59->Draw("SAMEHIST");
-  hist69->Draw("SAMEHIST");
-  hist79->Draw("SAMEHIST");
-  hist39->Draw("E1SAME");
-  hist3a9->Draw("E1SAME");
-  hist39->Draw("AXISSAME");
+  hist47->Draw("SAMEHIST");
+  hist57->Draw("SAMEHIST");
+  hist67->Draw("SAMEHIST");
+  hist77->Draw("SAMEHIST");
+  hist37->Draw("E1SAME");
+  hist3a7->Draw("E1SAME");
+  hist37->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist39,"Data Sideband (Norm)","lep");
-  legend->AddEntry(hist49,"M-1000 N");
-  legend->AddEntry(hist3a9,"Data Signal Region","lep");
-  legend->AddEntry(hist59,"M-1000 W"); 
-  legend->AddEntry(hist19,"#gamma + jet","f");
-  legend->AddEntry(hist69,"M-2800 N");
-  legend->AddEntry(hist29,"QCD","f");
-  legend->AddEntry(hist79,"M-2800 W");
+  legend->AddEntry(hist37,"Data Sideband (Norm)","lep");
+  legend->AddEntry(hist47,"M-1000 N");
+  legend->AddEntry(hist3a7,"Data Signal Region","lep");
+  legend->AddEntry(hist57,"M-1000 W"); 
+  legend->AddEntry(hist17,"#gamma + jet","f");
+  legend->AddEntry(hist67,"M-2800 N");
+  legend->AddEntry(hist27,"QCD","f");
+  legend->AddEntry(hist77,"M-2800 W");
   legend->Draw();
   CMS_lumi(p06a,iPeriod,iPos);
   
@@ -1301,13 +1319,13 @@ void MCvalidation()
   p06b->SetBottomMargin(0.4);
   p06b->SetLeftMargin(0.144);
   p06b->SetRightMargin(0.07);
-  pull = (TH1*)hist39->Clone();
-  bkg = (TH1*)hist19->Clone();
-  bkg->Add((TH1*)hist29->Clone());
+  pull = (TH1*)hist37->Clone();
+  bkg = (TH1*)hist17->Clone();
+  bkg->Add((TH1*)hist27->Clone());
   pull->Divide(bkg);
   xaxis2 = pull->GetXaxis();
   yaxis2 = pull->GetYaxis();
-  xaxis2->SetTitle("pT_{p} / M_{j#gamma}");
+  xaxis2->SetTitle("#tau_{21}");
   xaxis2->SetTitleOffset(1.15);
   yaxis2->SetTitle("data/MC");
   yaxis2->SetTitleOffset(0.5);
@@ -1331,16 +1349,15 @@ void MCvalidation()
   p06c->SetBottomMargin(0.4);
   p06c->SetLeftMargin(0.144);
   p06c->SetRightMargin(0.07);
-  pull = (TH1*)hist3a9->Clone();
-  bkg = (TH1*)hist19->Clone();
-  bkg->Add((TH1*)hist29->Clone());
+  pull = (TH1*)hist3a7->Clone();
+  bkg = (TH1*)hist17->Clone();
+  bkg->Add((TH1*)hist27->Clone());
   pull->Divide(bkg);
   xaxis3 = pull->GetXaxis();
   yaxis3 = pull->GetYaxis();
-  xaxis3->SetTitle("pT_{p} / M_{j#gamma}");
+  xaxis3->SetTitle("#tau_{21}");
   xaxis3->SetTitleOffset(1.15);
   yaxis3->SetTitle("data/MC");
-  yaxis3->SetTitleOffset(0.5);
   yaxis3->SetRangeUser(0,2);
   xaxis3->SetLabelSize(0.15);
   xaxis3->SetLabelOffset(0.04);
@@ -1355,69 +1372,67 @@ void MCvalidation()
   //pull->SetFillColorAlpha(kViolet, 0.35);
   pull->Draw("PE1");
   //pull->Draw("BAR HIST");
-  c06->Print("s_ptm.png");
-  c06->Print("s_ptm.pdf");
-  c06->Print("s_ptm.svg");
-  c06->Print("s_ptm.root");
+  c06->Print("j_tau21.png");
+  c06->Print("j_tau21.pdf");
+  c06->Print("j_tau21.svg");
+  c06->Print("j_tau21.root");
   //==========================================================
   
-  legend = new TLegend(0.55,0.80,0.9,0.9);
-  legend->SetNColumns(2);
   //===========================================================
   TCanvas *c07 = new TCanvas("c07","",2400,2600);
   c07->cd();
-  TPad *p07a = new TPad("p07a","p07a",0,0.20,1,1.0);
-  TPad *p07b = new TPad("p07b","p07b",0,0.0,1,0.20);
+  TPad *p07a = new TPad("p07a","p07a",0,0.32,1,1.0);
+  TPad *p07b = new TPad("p07b","p07b",0,0.16,1,0.32);
   TPad *p07c = new TPad("p07c","p07c",0,0,1,0.16);
   p07a->Draw();
   p07b->Draw();
-  //p07c->Draw();
+  p07c->Draw();
   p07a->cd();
   p07a->SetBottomMargin(0.12);
   p07a->SetLeftMargin(0.145);
   p07a->SetRightMargin(0.07);
   p07a->SetLogy();
-  xaxis1 = hist310->GetXaxis();
-  yaxis1 = hist310->GetYaxis();
-  xaxis1->SetTitle("M_{j#gamma} (GeV)");
-  yaxis1->SetTitle("Entries / 40 GeV");
+  xaxis1 = hist38->GetXaxis();
+  yaxis1 = hist38->GetYaxis();
+  xaxis1->SetTitle("cos(#theta*)");
+  yaxis1->SetTitle("Entries / 0.02");
   xaxis1->SetTitleOffset(1.1);
-  yaxis1->SetTitleOffset(1.2);
+  yaxis1->SetTitleOffset(1.6);
   yaxis1->SetRangeUser(0.1,1000000);
-  hist310->Draw("PE1");
-  //hist3a10->Draw("SAMEPE1");
+  hist38->Draw("PE1");
+  hist3a8->Draw("SAMEPE1");
   stack7->Draw("SAMEHIST");
-  hist410->Draw("SAMEHIST");
-  hist510->Draw("SAMEHIST");
-  hist610->Draw("SAMEHIST");
-  hist710->Draw("SAMEHIST");
-  hist310->Draw("E1SAME");
-  //hist3a10->Draw("E1SAME");
-  hist310->Draw("AXISSAME");
+  hist48->Draw("SAMEHIST");
+  hist58->Draw("SAMEHIST");
+  hist68->Draw("SAMEHIST");
+  hist78->Draw("SAMEHIST");
+  hist38->Draw("E1SAME");
+  hist3a8->Draw("E1SAME");
+  hist38->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist310,"Data Sideband (Norm)","lep");
-  legend->AddEntry(hist410,"M-1000 N");
-  legend->AddEntry(hist110,"#gamma + jet","f");
-  legend->AddEntry(hist510,"M-1000 W");
-  legend->AddEntry(hist210,"QCD","f");
-  legend->AddEntry(hist610,"M-2800 N");
-  legend->AddEntry(hist710,"M-2800 W");
-  
+  legend->AddEntry(hist38,"Data Sideband (Norm)","lep");
+  legend->AddEntry(hist48,"M-1000 N");
+  legend->AddEntry(hist3a8,"Data Signal Region","lep");
+  legend->AddEntry(hist58,"M-1000 W"); 
+  legend->AddEntry(hist18,"#gamma + jet","f");
+  legend->AddEntry(hist68,"M-2800 N");
+  legend->AddEntry(hist28,"QCD","f");
+  legend->AddEntry(hist78,"M-2800 W");
   legend->Draw();
   CMS_lumi(p07a,iPeriod,iPos);
   
   p07b->cd();
-  p06b->SetTopMargin(0.06);
+  p07b->SetTopMargin(0.06);
   p07b->SetBottomMargin(0.4);
   p07b->SetLeftMargin(0.144);
   p07b->SetRightMargin(0.07);
-  pull = (TH1*)hist310->Clone();
-  bkg = (TH1*)hist110->Clone();
-  bkg->Add((TH1*)hist210->Clone());
+  pull = (TH1*)hist38->Clone();
+  bkg = (TH1*)hist18->Clone();
+  bkg->Add((TH1*)hist28->Clone());
   pull->Divide(bkg);
   xaxis2 = pull->GetXaxis();
   yaxis2 = pull->GetYaxis();
-  xaxis2->SetTitle("M_{j#gamma} (GeV)");
+  xaxis2->SetTitle("cos(#theta*)");
   xaxis2->SetTitleOffset(1.15);
   yaxis2->SetTitle("data/MC");
   yaxis2->SetTitleOffset(0.5);
@@ -1435,12 +1450,234 @@ void MCvalidation()
   //pull->SetFillColorAlpha(kViolet, 0.35);
   pull->Draw("PE1");
   //pull->Draw("BAR HIST");
-  /*
+  
   p07c->cd();
   p07c->SetTopMargin(0.06);
   p07c->SetBottomMargin(0.4);
   p07c->SetLeftMargin(0.144);
   p07c->SetRightMargin(0.07);
+  pull = (TH1*)hist3a8->Clone();
+  bkg = (TH1*)hist18->Clone();
+  bkg->Add((TH1*)hist28->Clone());
+  pull->Divide(bkg);
+  xaxis3 = pull->GetXaxis();
+  yaxis3 = pull->GetYaxis();
+  xaxis3->SetTitle("cos(#theta*)");
+  xaxis3->SetTitleOffset(1.15);
+  yaxis3->SetTitle("data/MC");
+  yaxis3->SetTitleOffset(0.5);
+  yaxis3->SetRangeUser(0,2);
+  xaxis3->SetLabelSize(0.15);
+  xaxis3->SetLabelOffset(0.04);
+  xaxis3->SetTitleSize(0.15);
+  yaxis3->SetLabelSize(0.15);
+  yaxis3->SetNdivisions(5);
+  yaxis3->SetTitleSize(0.15);
+  yaxis3->SetTitleOffset(0.4);
+  p07c->SetGrid();
+  //pull->SetFillColor(kViolet);
+  //pull->SetLineColor(kViolet);
+  //pull->SetFillColorAlpha(kViolet, 0.35);
+  pull->Draw("PE1");
+  //pull->Draw("BAR HIST");
+  c07->Print("s_cos.png");
+  c07->Print("s_cos.pdf");
+  c07->Print("s_cos.svg");
+  c07->Print("s_cos.root");
+  //==========================================================
+  
+  //===========================================================
+  TCanvas *c08 = new TCanvas("c08","",2400,2600);
+  c08->cd();
+  TPad *p08a = new TPad("p08a","p08a",0,0.32,1,1.0);
+  TPad *p08b = new TPad("p08b","p08b",0,0.16,1,0.32);
+  TPad *p08c = new TPad("p08c","p08c",0,0,1,0.16);
+  p08a->Draw();
+  p08b->Draw();
+  p08c->Draw();
+  p08a->cd();
+  p08a->SetBottomMargin(0.12);
+  p08a->SetLeftMargin(0.145);
+  p08a->SetRightMargin(0.07);
+  p08a->SetLogy();
+  xaxis1 = hist39->GetXaxis();
+  yaxis1 = hist39->GetYaxis();
+  xaxis1->SetTitle("pT_{#gamma} / M_{j#gamma}");
+  yaxis1->SetTitle("Entries / 0.04");
+  xaxis1->SetTitleOffset(1.1);
+  yaxis1->SetTitleOffset(1.6);
+  yaxis1->SetRangeUser(0.1,1000000);
+  hist39->Draw("PE1");
+  hist3a9->Draw("SAMEPE1");
+  stack8->Draw("SAMEHIST");
+  hist49->Draw("SAMEHIST");
+  hist59->Draw("SAMEHIST");
+  hist69->Draw("SAMEHIST");
+  hist79->Draw("SAMEHIST");
+  hist39->Draw("E1SAME");
+  hist3a9->Draw("E1SAME");
+  hist39->Draw("AXISSAME");
+  legend->Clear();
+  legend->AddEntry(hist39,"Data Sideband (Norm)","lep");
+  legend->AddEntry(hist49,"M-1000 N");
+  legend->AddEntry(hist3a9,"Data Signal Region","lep");
+  legend->AddEntry(hist59,"M-1000 W"); 
+  legend->AddEntry(hist19,"#gamma + jet","f");
+  legend->AddEntry(hist69,"M-2800 N");
+  legend->AddEntry(hist29,"QCD","f");
+  legend->AddEntry(hist79,"M-2800 W");
+  legend->Draw();
+  CMS_lumi(p08a,iPeriod,iPos);
+  
+  p08b->cd();
+  p06b->SetTopMargin(0.06);
+  p08b->SetBottomMargin(0.4);
+  p08b->SetLeftMargin(0.144);
+  p08b->SetRightMargin(0.07);
+  pull = (TH1*)hist39->Clone();
+  bkg = (TH1*)hist19->Clone();
+  bkg->Add((TH1*)hist29->Clone());
+  pull->Divide(bkg);
+  xaxis2 = pull->GetXaxis();
+  yaxis2 = pull->GetYaxis();
+  xaxis2->SetTitle("pT_{#gamma} / M_{j#gamma}");
+  xaxis2->SetTitleOffset(1.15);
+  yaxis2->SetTitle("data/MC");
+  yaxis2->SetTitleOffset(0.5);
+  yaxis2->SetRangeUser(0,2);
+  xaxis2->SetLabelSize(0.15);
+  xaxis2->SetLabelOffset(0.04);
+  xaxis2->SetTitleSize(0.15);
+  yaxis2->SetLabelSize(0.15);
+  yaxis2->SetNdivisions(5);
+  yaxis2->SetTitleSize(0.15);
+  yaxis2->SetTitleOffset(0.4);
+  p08b->SetGrid();
+  //pull->SetFillColor(kViolet);
+  //pull->SetLineColor(kViolet);
+  //pull->SetFillColorAlpha(kViolet, 0.35);
+  pull->Draw("PE1");
+  //pull->Draw("BAR HIST");
+  
+  p08c->cd();
+  p08c->SetTopMargin(0.06);
+  p08c->SetBottomMargin(0.4);
+  p08c->SetLeftMargin(0.144);
+  p08c->SetRightMargin(0.07);
+  pull = (TH1*)hist3a9->Clone();
+  bkg = (TH1*)hist19->Clone();
+  bkg->Add((TH1*)hist29->Clone());
+  pull->Divide(bkg);
+  xaxis3 = pull->GetXaxis();
+  yaxis3 = pull->GetYaxis();
+  xaxis3->SetTitle("pT_{#gamma} / M_{j#gamma}");
+  xaxis3->SetTitleOffset(1.15);
+  yaxis3->SetTitle("data/MC");
+  yaxis3->SetTitleOffset(0.5);
+  yaxis3->SetRangeUser(0,2);
+  xaxis3->SetLabelSize(0.15);
+  xaxis3->SetLabelOffset(0.04);
+  xaxis3->SetTitleSize(0.15);
+  yaxis3->SetLabelSize(0.15);
+  yaxis3->SetNdivisions(5);
+  yaxis3->SetTitleSize(0.15);
+  yaxis3->SetTitleOffset(0.4);
+  p08c->SetGrid();
+  //pull->SetFillColor(kViolet);
+  //pull->SetLineColor(kViolet);
+  //pull->SetFillColorAlpha(kViolet, 0.35);
+  pull->Draw("PE1");
+  //pull->Draw("BAR HIST");
+  c08->Print("s_ptm.png");
+  c08->Print("s_ptm.pdf");
+  c08->Print("s_ptm.svg");
+  c08->Print("s_ptm.root");
+  //==========================================================
+  
+  legend = new TLegend(0.57,0.75,0.9,0.9);
+  legend->SetNColumns(2);
+  //===========================================================
+  TCanvas *c09 = new TCanvas("c09","",2400,2600);
+  c09->cd();
+  TPad *p09a = new TPad("p09a","p09a",0,0.20,1,1.0);
+  TPad *p09b = new TPad("p09b","p09b",0,0.0,1,0.20);
+  TPad *p09c = new TPad("p09c","p09c",0,0,1,0.16);
+  p09a->Draw();
+  p09b->Draw();
+  //p09c->Draw();
+  p09a->cd();
+  p09a->SetBottomMargin(0.12);
+  p09a->SetLeftMargin(0.145);
+  p09a->SetRightMargin(0.07);
+  p09a->SetLogy();
+  xaxis1 = hist310->GetXaxis();
+  yaxis1 = hist310->GetYaxis();
+  xaxis1->SetTitle("M_{j#gamma} (GeV)");
+  yaxis1->SetTitle("Entries / 40 GeV");
+  xaxis1->SetTitleOffset(1.1);
+  yaxis1->SetTitleOffset(1.6);
+  xaxis1->SetTitleSize(0.03);
+  xaxis1->SetLabelSize(0.03);
+  yaxis1->SetTitleSize(0.03);
+  yaxis1->SetLabelSize(0.03);
+  yaxis1->SetRangeUser(0.1,1000000);
+  hist310->Draw("PE1");
+  //hist3a10->Draw("SAMEPE1");
+  stack9->Draw("SAMEHIST");
+  hist410->Draw("SAMEHIST");
+  hist510->Draw("SAMEHIST");
+  hist610->Draw("SAMEHIST");
+  hist710->Draw("SAMEHIST");
+  hist310->Draw("E1SAME");
+  //hist3a10->Draw("E1SAME");
+  hist310->Draw("AXISSAME");
+  legend->Clear();
+  legend->AddEntry(hist310,"Data Sideband (Norm)","lep");
+  legend->AddEntry(hist410,"M-1000 N");
+  legend->AddEntry(hist110,"#gamma + jet","f");
+  legend->AddEntry(hist510,"M-1000 W");
+  legend->AddEntry(hist210,"QCD","f");
+  legend->AddEntry(hist610,"M-2800 N");
+  legend->AddEntry(hist710,"M-2800 W");
+  
+  legend->Draw();
+  CMS_lumi(p09a,iPeriod,iPos);
+  
+  p09b->cd();
+  p06b->SetTopMargin(0.06);
+  p09b->SetBottomMargin(0.4);
+  p09b->SetLeftMargin(0.144);
+  p09b->SetRightMargin(0.07);
+  pull = (TH1*)hist310->Clone();
+  bkg = (TH1*)hist110->Clone();
+  bkg->Add((TH1*)hist210->Clone());
+  pull->Divide(bkg);
+  xaxis2 = pull->GetXaxis();
+  yaxis2 = pull->GetYaxis();
+  xaxis2->SetTitle("M_{j#gamma} (GeV)");
+  xaxis2->SetTitleOffset(1.15);
+  yaxis2->SetTitle("data/MC");
+  yaxis2->SetTitleOffset(0.5);
+  yaxis2->SetRangeUser(0,2);
+  xaxis2->SetLabelSize(0.12);
+  xaxis2->SetLabelOffset(0.04);
+  xaxis2->SetTitleSize(0.12);
+  yaxis2->SetLabelSize(0.12);
+  yaxis2->SetNdivisions(5);
+  yaxis2->SetTitleSize(0.12);
+  p09b->SetGrid();
+  //pull->SetFillColor(kViolet);
+  //pull->SetLineColor(kViolet);
+  //pull->SetFillColorAlpha(kViolet, 0.35);
+  pull->Draw("PE1");
+  //pull->Draw("BAR HIST");
+  
+  /*
+  p09c->cd();
+  p09c->SetTopMargin(0.06);
+  p09c->SetBottomMargin(0.4);
+  p09c->SetLeftMargin(0.144);
+  p09c->SetRightMargin(0.07);
   pull = (TH1*)hist3a10->Clone();
   bkg = (TH1*)hist110->Clone();
   bkg->Add((TH1*)hist210->Clone());
@@ -1458,17 +1695,18 @@ void MCvalidation()
   yaxis3->SetNdivisions(5);
   yaxis3->SetTitleSize(0.15);
   yaxis3->SetTitleOffset(0.4);
-  p07c->SetGrid();
+  p09c->SetGrid();
   //pull->SetFillColor(kViolet);
   //pull->SetLineColor(kViolet);
   //pull->SetFillColorAlpha(kViolet, 0.35);
   pull->Draw("PE1");
   //pull->Draw("BAR HIST");
   */
-  c07->Print("s_M.png");
-  c07->Print("s_M.pdf");
-  c07->Print("s_M.svg");
-  c07->Print("s_M.root");
+  
+  c09->Print("s_M.png");
+  c09->Print("s_M.pdf");
+  c09->Print("s_M.svg");
+  c09->Print("s_M.root");
   //==========================================================
   
   cout<<SB<<endl;

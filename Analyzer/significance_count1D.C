@@ -28,7 +28,7 @@
 #include <algorithm>
 #include <map>
 #endif
-#define mode 2 //1 for MC W band, 2 for sideband
+#define mode 1 //1 for MC W band, 2 for sideband
 
 double cut_jmass(TTree* sigTree, TTree* bkgTree, int sigmass, int color, int iPeriod,int iPos, bool plot_CMS){
   // Data structures to store info from produced flat ntuples
@@ -90,6 +90,8 @@ double cut_jmass(TTree* sigTree, TTree* bkgTree, int sigmass, int color, int iPe
         for(UInt_t ientry=0; ientry<sigTree->GetEntries(); ientry++) {
           // Get Events
           sigTree->GetEntry(ientry);
+		  if(photon_pt < 225) continue;
+		  if(ak8puppijet_pt < 225) continue;
           if(abs(sys_invmass - sigmass)  >  0.25 * sigmass) continue;
 	      if(ak8puppijet_masssoftdropcorr > cutlow && ak8puppijet_masssoftdropcorr < cuthigh)
 	          N+=xsec_weight*xsec_kfactor*xsec_puweight;
@@ -132,6 +134,8 @@ double cut_jmass(TTree* sigTree, TTree* bkgTree, int sigmass, int color, int iPe
         for(UInt_t ientry=0; ientry<bkgTree->GetEntries(); ientry++) {
           // Get Events
           bkgTree->GetEntry(ientry);
+		  if(photon_pt < 225) continue;
+		  if(ak8puppijet_pt < 225) continue;
           if(abs(sys_invmass - sigmass)  >  0.25 * sigmass) continue;
 	      if(ak8puppijet_masssoftdropcorr > cutlow && ak8puppijet_masssoftdropcorr < cuthigh){
 #if mode == 1
@@ -248,7 +252,10 @@ double cut_peta(TTree* sigTree, TTree* bkgTree, int sigmass, int color, int iPer
     for(UInt_t ientry=0; ientry<sigTree->GetEntries(); ientry++) {
       // Get Events
       sigTree->GetEntry(ientry);
+	  if(photon_pt < 225) continue;
+      if(ak8puppijet_pt < 225) continue;
       if(ak8puppijet_masssoftdropcorr < 68 || ak8puppijet_masssoftdropcorr > 94) continue;
+	  if(sys_invmass < 600) continue;
       if(abs(sys_invmass - sigmass)  >  0.25 * sigmass) continue;
       if(abs(photon_eta) < cut){
 	    N+=xsec_weight*xsec_kfactor*xsec_puweight;
@@ -286,11 +293,14 @@ double cut_peta(TTree* sigTree, TTree* bkgTree, int sigmass, int color, int iPer
     for(UInt_t ientry=0; ientry<bkgTree->GetEntries(); ientry++) {
       // Get Events
       bkgTree->GetEntry(ientry);
+	  if(photon_pt < 225) continue;
+	  if(ak8puppijet_pt < 225) continue;
 #if mode == 1
       if(ak8puppijet_masssoftdropcorr < 68 || ak8puppijet_masssoftdropcorr > 94) continue;
 #else
       if(ak8puppijet_masssoftdropcorr < 40 || ak8puppijet_masssoftdropcorr > 65) continue;
 #endif
+      if(sys_invmass < 600) continue;
       if(abs(sys_invmass - sigmass)  >  0.25 * sigmass) continue;
       if(abs(photon_eta) < cut){
 #if mode == 1
@@ -419,7 +429,10 @@ double cut_petajeta(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut
     for(UInt_t ientry=0; ientry<sigTree->GetEntries(); ientry++) {
       // Get Events
       sigTree->GetEntry(ientry);
+	  if(photon_pt < 225) continue;
+	  if(ak8puppijet_pt < 225) continue;
       if(ak8puppijet_masssoftdropcorr < 68 || ak8puppijet_masssoftdropcorr > 94) continue;
+	  if(sys_invmass < 600) continue;
       if(abs(sys_invmass - sigmass)  >  0.25 * sigmass) continue;
       if(abs(photon_eta) > peta_cut) continue;
       if(abs(ak8puppijet_eta) < cut){
@@ -458,11 +471,14 @@ double cut_petajeta(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_cut
     for(UInt_t ientry=0; ientry<bkgTree->GetEntries(); ientry++) {
       // Get Events
       bkgTree->GetEntry(ientry);
+	  if(photon_pt < 225) continue;
+	  if(ak8puppijet_pt < 225) continue;
 #if mode == 1
       if(ak8puppijet_masssoftdropcorr < 68 || ak8puppijet_masssoftdropcorr > 94) continue;
 #else
       if(ak8puppijet_masssoftdropcorr < 40 || ak8puppijet_masssoftdropcorr > 65) continue;
 #endif
+      if(sys_invmass < 600) continue;
       if(abs(sys_invmass - sigmass)  >  0.25 * sigmass) continue;
       if(abs(photon_eta) > peta_cut) continue;
       if(abs(ak8puppijet_eta) < cut){
@@ -591,7 +607,10 @@ double cut_petajetaptm(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_
     for(UInt_t ientry=0; ientry<sigTree->GetEntries(); ientry++) {
       // Get Events
       sigTree->GetEntry(ientry);
+	  if(photon_pt < 225) continue;
+	  if(ak8puppijet_pt < 225) continue;
       if(ak8puppijet_masssoftdropcorr < 68 || ak8puppijet_masssoftdropcorr > 94) continue;
+	  if(sys_invmass < 600) continue;
       if(abs(sys_invmass - sigmass)  >  0.25 * sigmass) continue;
       if(abs(photon_eta) > peta_cut) continue;
       if(abs(ak8puppijet_eta) > jeta_cut) continue;
@@ -631,11 +650,14 @@ double cut_petajetaptm(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_
     for(UInt_t ientry=0; ientry<bkgTree->GetEntries(); ientry++) {
       // Get Events
       bkgTree->GetEntry(ientry);
+	  if(photon_pt < 225) continue;
+	  if(ak8puppijet_pt < 225) continue;
 #if mode == 1
       if(ak8puppijet_masssoftdropcorr < 68 || ak8puppijet_masssoftdropcorr > 94) continue;
 #else
       if(ak8puppijet_masssoftdropcorr < 40 || ak8puppijet_masssoftdropcorr > 65) continue;
 #endif
+      if(sys_invmass < 600) continue;
       if(abs(sys_invmass - sigmass)  >  0.25 * sigmass) continue;
       if(abs(photon_eta) > peta_cut) continue;
       if(abs(ak8puppijet_eta) > jeta_cut) continue;
@@ -666,7 +688,7 @@ double cut_petajetaptm(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_
 	if(bkg_N[i] != 0)
       sbratio = float(sig_N[i])/sqrt(float(bkg_N[i]));
     SBratio.push_back(sbratio);
-    cout<<sig_N[i]<<" "<<bkg_N[i]<<" "<<float(sig_N[i]) / float(Nsig)<<" "<<float(bkg_N[i]) / float(Nbkg)<<" "<<sbratio<<endl;
+    cout<<"At "<<recordarr[i]<<": "<<sig_N[i]<<" "<<bkg_N[i]<<" "<<sbratio<<endl;
     Sigeff.push_back(float(sig_N[i]) / float(Nsig));
     Bkgeff.push_back(float(bkg_N[i]) / float(Nbkg));
   }
@@ -694,7 +716,7 @@ double cut_petajetaptm(TTree* sigTree, TTree* bkgTree, int sigmass, double peta_
   yaxis->SetTitleOffset(1.15);
   xaxis->SetTitleOffset(1.15);
   xaxis->SetRangeUser(0,1);
-  yaxis->SetRangeUser(0,1.5);
+  yaxis->SetRangeUser(0,1.6);
   //c01->SetLogy();
   c01->SetGrid();
   cout<<"OK"<<endl;
@@ -768,7 +790,10 @@ double cut_petajetaptmcos(TTree* sigTree, TTree* bkgTree, int sigmass, double pe
     for(UInt_t ientry=0; ientry<sigTree->GetEntries(); ientry++) {
       // Get Events
       sigTree->GetEntry(ientry);
+	  if(photon_pt < 225) continue;
+	  if(ak8puppijet_pt < 225) continue;
       if(ak8puppijet_masssoftdropcorr < 68 || ak8puppijet_masssoftdropcorr > 94) continue;
+	  if(sys_invmass < 600) continue;
       if(abs(sys_invmass - sigmass)  >  0.25 * sigmass) continue;
       if(abs(photon_eta) > peta_cut) continue;
       if(abs(ak8puppijet_eta) > jeta_cut) continue;
@@ -809,11 +834,14 @@ double cut_petajetaptmcos(TTree* sigTree, TTree* bkgTree, int sigmass, double pe
     for(UInt_t ientry=0; ientry<bkgTree->GetEntries(); ientry++) {
       // Get Events
       bkgTree->GetEntry(ientry);
+	  if(photon_pt < 225) continue;
+	  if(ak8puppijet_pt < 225) continue;
 #if mode == 1
       if(ak8puppijet_masssoftdropcorr < 68 || ak8puppijet_masssoftdropcorr > 94) continue;
 #else
       if(ak8puppijet_masssoftdropcorr < 40 || ak8puppijet_masssoftdropcorr > 65) continue;
 #endif
+      if(sys_invmass < 600) continue;
       if(abs(sys_invmass - sigmass)  >  0.25 * sigmass) continue;
       if(abs(photon_eta) > peta_cut) continue;
       if(abs(ak8puppijet_eta) > jeta_cut) continue;
@@ -944,12 +972,15 @@ double cut_petajetaptmcostau(TTree* sigTree, TTree* bkgTree, int sigmass, double
     for(UInt_t ientry=0; ientry<sigTree->GetEntries(); ientry++) {
       // Get Events
       sigTree->GetEntry(ientry);
+	  if(photon_pt < 225) continue;
+	  if(ak8puppijet_pt < 225) continue;
       if(ak8puppijet_masssoftdropcorr < 68 || ak8puppijet_masssoftdropcorr > 94) continue;
+	  if(sys_invmass < 600) continue;
       if(abs(sys_invmass - sigmass)  >  0.25 * sigmass) continue;
-      // if(abs(photon_eta) > peta_cut) continue;
-      // if(abs(ak8puppijet_eta) > jeta_cut) continue;
-      // if(sys_ptoverm < ptm_cut) continue;
-      // if(sys_costhetastar > cos_cut) continue;
+      if(abs(photon_eta) > peta_cut) continue;
+      if(abs(ak8puppijet_eta) > jeta_cut) continue;
+      if(sys_ptoverm < ptm_cut) continue;
+      if(sys_costhetastar > cos_cut) continue;
       if(ak8puppijet_tau21 < cut){
 	    N+=xsec_weight*xsec_kfactor*xsec_puweight;
       }
@@ -986,16 +1017,19 @@ double cut_petajetaptmcostau(TTree* sigTree, TTree* bkgTree, int sigmass, double
     for(UInt_t ientry=0; ientry<bkgTree->GetEntries(); ientry++) {
       // Get Events
       bkgTree->GetEntry(ientry);
+	  if(photon_pt < 225) continue;
+	  if(ak8puppijet_pt < 225) continue;
 #if mode == 1
       if(ak8puppijet_masssoftdropcorr < 68 || ak8puppijet_masssoftdropcorr > 94) continue;
 #else
       if(ak8puppijet_masssoftdropcorr < 40 || ak8puppijet_masssoftdropcorr > 65) continue;
 #endif
+      if(sys_invmass < 600) continue;
       if(abs(sys_invmass - sigmass)  >  0.25 * sigmass) continue;
-      // if(abs(photon_eta) > peta_cut) continue;
-      // if(abs(ak8puppijet_eta) > jeta_cut) continue;
-      // if(sys_ptoverm < ptm_cut) continue;
-      // if(sys_costhetastar > cos_cut) continue;
+      if(abs(photon_eta) > peta_cut) continue;
+      if(abs(ak8puppijet_eta) > jeta_cut) continue;
+      if(sys_ptoverm < ptm_cut) continue;
+      if(sys_costhetastar > cos_cut) continue;
       if(ak8puppijet_tau21 < cut){
 #if mode == 1
 	N+=xsec_weight*xsec_kfactor*xsec_puweight;
@@ -1023,7 +1057,7 @@ double cut_petajetaptmcostau(TTree* sigTree, TTree* bkgTree, int sigmass, double
 	if(bkg_N[i] != 0)
       sbratio = float(sig_N[i])/sqrt(float(bkg_N[i]));
     SBratio.push_back(sbratio);
-    cout<<sig_N[i]<<" "<<bkg_N[i]<<" "<<float(sig_N[i]) / float(Nsig)<<" "<<float(bkg_N[i]) / float(Nbkg)<<" "<<sbratio<<endl;
+    cout<<"At "<<recordarr[i]<<": "<<sig_N[i]<<" "<<bkg_N[i]<<" "<<sbratio<<endl;
     Sigeff.push_back(float(sig_N[i]) / float(Nsig));
     Bkgeff.push_back(float(bkg_N[i]) / float(Nbkg));
   }
@@ -1048,7 +1082,7 @@ double cut_petajetaptmcostau(TTree* sigTree, TTree* bkgTree, int sigmass, double
   yaxis->SetTitleOffset(1.15);
   xaxis->SetTitleOffset(1.15);
   xaxis->SetRangeUser(0,1);
-  yaxis->SetRangeUser(0,2.8);
+  yaxis->SetRangeUser(0,2);
   //c01->SetLogy();
   c01->SetGrid();
   cout<<"OK"<<endl;
@@ -1091,17 +1125,17 @@ void significance_count1D(){
   gStyle->SetBarWidth(2);
   gStyle->SetHistLineWidth(2);
   
-  TString width = "W";
-  int sigmass = 700;
-  int color = 2;
+  TString width = "N";
+  // int sigmass = 700;
+  // int color = 2;
   // int sigmass = 1600;
   // int color = kGreen+3;
-  // int sigmass = 2800;
-  // int color = 4;
+  int sigmass = 2800;
+  int color = 4;
  
-  TString sig_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel_MC/SignalMC"+std::to_string(sigmass)+width+"_postproc_WGamma_full_full_presel_jmcorr_Mar17.root";
-  //TString bkg_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel_data/bkgMC_postproc_WGamma_full_full_presel_jmcorr_Mar17.root";
-  TString bkg_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel_data/SinglePhoton2017_postproc_WGamma_full_full_presel_jmcorr_Mar17.root";
+  TString sig_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SignalMC"+std::to_string(sigmass)+width+"_postproc_WGamma_full_full_presel_jmcorr_Mar17.root";
+  TString bkg_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/BkgMC_postproc_WGamma_full_full_presel_jmcorr_Mar17.root";
+  // TString bkg_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SinglePhoton2017_postproc_WGamma_full_full_presel_jmcorr_Mar17.root";
 
   TFile *infile_1 = TFile::Open(sig_sample);
   TTree* sigTree = (TTree*)infile_1->Get("Events");
@@ -1111,21 +1145,21 @@ void significance_count1D(){
   // double jmass_cut = cut_jmass(sigTree,bkgTree,sigmass,color,iPeriod,iPos,plot_CMS);
   // cout<<"jmass_cut: "<<jmass_cut<<endl;
 
-  double peta_cut = cut_peta(sigTree,bkgTree,sigmass,color,iPeriod,iPos,plot_CMS);
-  cout<<"peta_cut: "<<peta_cut<<endl;
+  // double peta_cut = cut_peta(sigTree,bkgTree,sigmass,color,iPeriod,iPos,plot_CMS);
+  // cout<<"peta_cut: "<<peta_cut<<endl;
   
-  double jeta_cut = cut_petajeta(sigTree,bkgTree,sigmass,peta_cut,color,iPeriod,iPos,plot_CMS);
-  cout<<"jeta_cut: "<<jeta_cut<<endl;
+  // double jeta_cut = cut_petajeta(sigTree,bkgTree,sigmass,1.44,color,iPeriod,iPos,plot_CMS);
+  // cout<<"jeta_cut: "<<jeta_cut<<endl;
   
-  double ptm_cut = cut_petajetaptm(sigTree,bkgTree,sigmass,peta_cut,jeta_cut,color,iPeriod,iPos,plot_CMS);
-  cout<<"ptm_cut: "<<ptm_cut<<endl;
+  // double ptm_cut = cut_petajetaptm(sigTree,bkgTree,sigmass,1.44,2.0,color,iPeriod,iPos,plot_CMS);
+  // cout<<"ptm_cut: "<<ptm_cut<<endl;
   
-  double cos_cut = cut_petajetaptmcos(sigTree,bkgTree,sigmass,peta_cut,jeta_cut,ptm_cut,color,iPeriod,iPos,plot_CMS);
-  cout<<"cos_cut: "<<cos_cut<<endl;
+  // double cos_cut = cut_petajetaptmcos(sigTree,bkgTree,sigmass,1.44,2.0,0.37,color,iPeriod,iPos,plot_CMS);
+  // cout<<"cos_cut: "<<cos_cut<<endl;
   
   //double tau21_cut = cut_petajetaptmcostau(sigTree,bkgTree,sigmass,peta_cut,jeta_cut,ptm_cut,cos_cut,color,iPeriod,iPos,plot_CMS);
-  // double tau21_cut = cut_petajetaptmcostau(sigTree,bkgTree,sigmass,1.44,2,0.35,0.60,color,iPeriod,iPos,plot_CMS);
-  // cout<<"tau_cut: "<<tau21_cut<<endl;
+  double tau21_cut = cut_petajetaptmcostau(sigTree,bkgTree,sigmass,1.44,2,0,1,color,iPeriod,iPos,plot_CMS);
+  cout<<"tau_cut: "<<tau21_cut<<endl;
 
   /*
   TGraph* gr1 = new TGraph(dim,&recordarr[0],&Sigeff[0]);

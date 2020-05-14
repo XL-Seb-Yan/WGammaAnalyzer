@@ -20,15 +20,20 @@ void trigger_turnon(int seed=37)
   RooGenericPdf * model = new RooGenericPdf("ErfExp","ErfExp","TMath::Exp(p0*m+p1*pow(m,2))*(1.+TMath::Erf((m-offset)/width))/2.",RooArgList(*x, *p0, *p1, *offset, *width));
 
   // --- Import Binned dataset ---
-  float s_mass, x_weight;
+  float s_mass;
+  float x_weight = 1;
+  float x_kfactor = 1;
+  float x_puweight = 1;
   TH1F MChist("MC","MC",40,400,2000);
-  TFile file("/afs/cern.ch/user/x/xuyan/WGProj/PROD17/DATA/2017/fullcut/BkgMC_WGamma_full_65-105_kfac_Feb26.root");
+  TFile file("/afs/cern.ch/user/x/xuyan/WGProj/PROD17/DATA/2017/fullcut/BkgMC_postproc_WGamma_full_68-94_fullcut_jmcorr_Mar17.root");
   TTree *tree = (TTree*)file.Get("Events");
   tree->SetBranchAddress("m", &s_mass);
   tree->SetBranchAddress("xsec_weight", &x_weight);
+  tree->SetBranchAddress("xsec_kfactor", &x_kfactor);
+  tree->SetBranchAddress("xsec_puweight", &x_puweight);
   for (int ievt = 0; ievt<tree->GetEntries();ievt++) {
     tree->GetEntry(ievt);
-    MChist.Fill(s_mass, x_weight);
+    MChist.Fill(s_mass, x_weight*x_kfactor*x_puweight);
   }
   RooDataHist datah("Background MC (W band)","Background MC (W band)",RooArgSet(*x),&MChist);
   cout<<"number of weighted entries: "<<datah.sum(false)<<endl;
@@ -59,7 +64,7 @@ void trigger_turnon(int seed=37)
   yaxis->SetTitle("Events / 20 GeV");
   yaxis->SetTitleOffset(1.2);
   yaxis->SetRangeUser(0,2500);
-  xaxis->SetRangeUser(0,2000);
+  xaxis->SetLimits(400,1500);
   //c01->SetLogy();
   frame->Draw();
   TLegend *l =  new TLegend(0.6,0.7,0.8,0.78);
@@ -99,15 +104,16 @@ void trigger_turnon(int seed=37)
   // c02->Print("pull"+fun_name+".pdf"); 
   // c02->Print("pull"+fun_name+".svg"); 
   
-  // TCanvas *c03 = new TCanvas("c03","c03",1200,900);
-  // c03->cd();
-  TF1 *f1 = new TF1("erf","(1.+TMath::Erf((x-[0])/[1]))/2.",0,2000);
+  TCanvas *c03 = new TCanvas("c03","c03",1200,900);
+  c03->cd();
+  TF1 *f1 = new TF1("erf","2250*(1.+TMath::Erf((x-[0])/[1]))/2.",400,1500);
   f1->SetParameters(offset->getValV(), width->getValV());
+  TF1 *f2 = new TF1("exp","300000*TMath::Exp([0]*x+[1]*pow(x,2))",400,1500);
+  f2->SetParameters(p0->getValV(), p1->getValV());
   cout<<"Turn-on end point is: "<<f1->GetX(0.99)<<endl;
-  // TF1 *f2 = new TF1("dijet2","",0,2000);
-  // f2->SetParameters(dijet2_p0->getValV(), dijet2_p1->getValV());
-  // f1->Draw();
-  // f2->Draw("SAME");
-  // c03->Print("pdf.png");
-  // c03->Print("pdf.svg");
+  f1->GetYaxis()->SetRangeUser(0,2500);
+  f1->Draw();
+  f2->Draw("SAME");
+  c03->Print("pdf.png");
+  c03->Print("pdf.svg");
 }

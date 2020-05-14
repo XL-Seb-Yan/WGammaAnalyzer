@@ -29,7 +29,7 @@
 #include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/CMS_lumi.C"
 #endif
 
-void postproc(TString dataset, int runondata)
+void postproc(std::string dataset, int runondata, int runyear)
 {
 
   gROOT->SetBatch(1);
@@ -67,7 +67,9 @@ void postproc(TString dataset, int runondata)
   
   //TString dataset = "SignalMC"+std::to_string(mass)+"N";
   
-  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuple/ntuple_data/"+dataset+"_nominal_pileup_WGamma_full_full_Mar17.root");
+  TString year_str = std::to_string(runyear);
+  
+ TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/20"+year_str+"/ntuple/ntuple_data/"+dataset+"_nominal_pileup_WGamma_full_full_Mar17.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -90,7 +92,8 @@ void postproc(TString dataset, int runondata)
   pileup_MC->Scale(1/(double)pileup_MC->Integral());
 
   // Create output file
-  TFile *outFile = TFile::Open(dataset+"_postproc_WGamma17_full_full_presel_jmcorr_kfactor_Mar17.root", "RECREATE");
+  //TFile *outFile = TFile::Open(dataset+"_postproc_WGamma"+year_str+"_full_full_presel_jmcorr_kfactor_Mar17.root", "RECREATE");
+  TFile *outFile = TFile::Open(dataset+"_postproc_WGamma"+year_str+"_full_full_presel_jmcorr_Mar17.root", "RECREATE");
   TTree *outTree = new TTree("Events","Events"); 
   outTree->Branch("sys_pvn",       &sys_pvn,      "sys_pvn/I");
   outTree->Branch("photon_pt",       &photon_pt,      "photon_pt/F");
@@ -110,7 +113,7 @@ void postproc(TString dataset, int runondata)
   outTree->Branch("xsec_kfactor",            &xsec_kfactor,           "xsec_kfactor/F");
   outTree->Branch("xsec_puweight",          &xsec_puweight,         "xsec_puweight/F");
   
-  TFile* pileup_central = TFile::Open("/afs/cern.ch/user/x/xuyan/WGProj/PROD17/DATA/pileup/Pileup_17.root", "READ");
+  TFile* pileup_central = TFile::Open("/afs/cern.ch/user/x/xuyan/WGProj/PROD17/DATA/pileup/Pileup_"+year_str+".root", "READ");
   TH1F* pileup_Data_central = (TH1F*)pileup_central->Get("pileup");
   pileup_Data_central->Scale(1/(double)pileup_Data_central->Integral());
   pileup_Data_central->Divide(pileup_MC);
@@ -136,15 +139,20 @@ void postproc(TString dataset, int runondata)
 	//Apply mass correction
 	double masscorr = 1;
 	
-	// if(j_pt < 400)
-			// masscorr = 80.379 / f1a->Eval(j_pt);
-	// else
-			// masscorr = 80.379 / f1->Eval(j_pt);
+	if(runyear == 16){
+	
+	if(j_pt < 400)
+			masscorr = 80.379 / f1a->Eval(j_pt);
+	else
+			masscorr = 80.379 / f1->Eval(j_pt);
+	}
+	else{
 		
 	if(j_pt < 400)
 			masscorr = 80.379 / f2a->Eval(j_pt);
 	else
 			masscorr = 80.379 / f2->Eval(j_pt);
+	}
 	if(masscorr > 5)
 		cout<<"ERROR IN MASS CORR CALCULATION"<<endl;
 	
@@ -153,6 +161,8 @@ void postproc(TString dataset, int runondata)
 	//if(j_mass * masscorr < 38 || j_mass * masscorr > 64) continue;
 	//if(j_mass * masscorr < 88 || j_mass * masscorr > 114) continue;
 	//if(j_mass * masscorr < 40 || j_mass * masscorr > 65) continue;
+	if(p_pt < 225) continue;
+	if(j_pt < 225) continue;
     // if(abs(p_eta) > 1.44) continue;
     // if(abs(j_eta) > 2) continue;
     // if(j_tau21 > 0.35) continue;
@@ -174,7 +184,13 @@ void postproc(TString dataset, int runondata)
     m = s_mass;
     xsec_weight = x_weight;
 	sys_pvn = s_pv;
-    xsec_kfactor = 1.35; 
+	std::string str = dataset;
+	if(dataset.find("GJets") != std::string::npos)
+		xsec_kfactor = 1.21;
+	else if(dataset.find("QCD") != std::string::npos)
+		xsec_kfactor = 1.03;
+	else
+		xsec_kfactor = 1;
 	
 	//add pileup-weight
 	int binnum = pileup_Data_central->GetXaxis()->FindBin(s_pv);
