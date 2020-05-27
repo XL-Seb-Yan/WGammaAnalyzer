@@ -150,7 +150,8 @@ void select201817_Final(const TString conf="samples.conf", // input file
 
   // Data Structure for output skimmed files
   // Photon
-  float photon_pt, photon_eta, photon_phi, photon_e, photon_mvaval, photon_mvacat, photon_corr, photon_energyscale, photon_energyscale_up, photon_energyscale_down, photon_resolution;
+  float photon_pt, photon_eta, photon_phi, photon_e, photon_corr, photon_energyscale, photon_energyscale_up, photon_energyscale_down, photon_resolution;
+  int photon_looseid;
   // Jet
   float ak8puppijet_pt, ak8puppijet_eta, ak8puppijet_phi, ak8puppijet_e, ak8puppijet_masssoftdropcorr, ak8puppijet_tau21, ak8puppijet_massdiff;
   float ak8puppijet_jec, ak8puppijet_jec_up, ak8puppijet_jec_down, ak8puppijet_jer, ak8puppijet_jer_sf, ak8puppijet_jer_sf_up, ak8puppijet_jer_sf_down;
@@ -186,8 +187,6 @@ void select201817_Final(const TString conf="samples.conf", // input file
   std::vector<int>   *ph_passLooseId = new std::vector<int>(); //check this 2.15
   std::vector<int>   *ph_passMediumId = new std::vector<int>();
   std::vector<int>   *ph_passTightId = new std::vector<int>();
-  std::vector<float> *ph_mvaVal = new std::vector<float>();
-  std::vector<float> *ph_mvaCat = new std::vector<float>();
   std::vector<float> *ph_corr = new std::vector<float>();
   std::vector<float> *ph_energyscale = new std::vector<float>();
   std::vector<float> *ph_energyscale_up = new std::vector<float>();
@@ -245,19 +244,19 @@ void select201817_Final(const TString conf="samples.conf", // input file
     //Set up output ntuple
     //TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_WGamma_full_full_weightedTo41p54.root");
 #if runmode == 11
-    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_photonSFup_WGamma_full_full_Mar17.root");
+    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_photonSFup_WGamma_full_full_May22.root");
 #elif runmode == 12
-    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_photonSFdown_WGamma_full_full_Mar17.root");
+    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_photonSFdown_WGamma_full_full_May22.root");
 #elif runmode == 21
-    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_jetjecup_WGamma_full_full_Mar17.root");
+    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_jetjecup_WGamma_full_full_May22.root");
 #elif runmode == 22
-    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_jetjecdown_WGamma_full_full_Mar17.root");
+    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_jetjecdown_WGamma_full_full_May22.root");
 #elif runmode == 31
-    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_jetjerup_WGamma_full_full_Mar17.root");
+    TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_jetjerup_WGamma_full_full_May22.root");
 #elif runmode == 32
-	TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_jetjerdown_WGamma_full_full_Mar17.root");
+	TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_jetjerdown_WGamma_full_full_May22.root");
 #else
-	TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_nominal_pileup_WGamma_full_full_Mar17.root");
+	TString outfilename1 = ntupDir + TString("/") + snamev[isam] + TString("_nominal_pileup_WGamma_full_full_May22.root");
 #endif
     TFile *outFile1 = new TFile(outfilename1,"RECREATE"); 
     TTree *outTree1 = new TTree("Events","Events");
@@ -266,8 +265,7 @@ void select201817_Final(const TString conf="samples.conf", // input file
     outTree1->Branch("photon_eta",      &photon_eta,      "photon_eta/F");
     outTree1->Branch("photon_phi",      &photon_phi,      "photon_phi/F");
     outTree1->Branch("photon_e",        &photon_e,      "photon_e/F");
-    outTree1->Branch("photon_mvaval",   &photon_mvaval,  "photon_mvaval/F");
-    outTree1->Branch("photon_mvacat",   &photon_mvacat,  "photon_mvacat/F");
+    outTree1->Branch("photon_looseid",   &photon_looseid,  "photon_looseid/I");
 	outTree1->Branch("photon_corr",   &photon_corr,  "photon_corr/F");
 	outTree1->Branch("photon_energyscale",   &photon_energyscale,  "photon_energyscale/F");
 	outTree1->Branch("photon_resolution",   &photon_resolution,  "photon_resolution/F");
@@ -332,8 +330,8 @@ void select201817_Final(const TString conf="samples.conf", // input file
       eventTree->SetBranchAddress("ph_passLooseId", &ph_passLooseId);           
       //eventTree->SetBranchAddress("ph_passMediumId", &ph_passMediumId);         
       eventTree->SetBranchAddress("ph_passTightId", &ph_passTightId);           
-      eventTree->SetBranchAddress("ph_mvaVal", &ph_mvaVal);                    
-      eventTree->SetBranchAddress("ph_mvaCat", &ph_mvaCat);  
+      // eventTree->SetBranchAddress("ph_mvaVal", &ph_mvaVal);                    
+      // eventTree->SetBranchAddress("ph_mvaCat", &ph_mvaCat);  
       eventTree->SetBranchAddress("ph_Corr", &ph_corr);                    
       eventTree->SetBranchAddress("ph_energyscale", &ph_energyscale); 	 
 	  eventTree->SetBranchAddress("ph_energyscale_up", &ph_energyscale_up); 	
@@ -392,11 +390,11 @@ void select201817_Final(const TString conf="samples.conf", // input file
 	//ph_isoGamma->clear();          
 	//ph_isoCh->clear();             
 	ph_passEleVeto->clear();       
-	//ph_passLooseId->clear();       
-	ph_passMediumId->clear();     
+	ph_passLooseId->clear();       
+	//ph_passMediumId->clear();     
 	ph_passTightId->clear();      
-	ph_mvaVal->clear();           
-	ph_mvaCat->clear(); 
+	// ph_mvaVal->clear();           
+	// ph_mvaCat->clear(); 
 	ph_corr->clear();     
 	ph_energyscale->clear();     
 	ph_energyscale_up->clear();     
@@ -454,7 +452,7 @@ void select201817_Final(const TString conf="samples.conf", // input file
 	  if (it->first.find("HLT_Photon200") != std::string::npos && it->second == 1)
 	    passTrig = true;
 	}
-	//if (!passTrig) continue;
+	if (!passTrig) continue;
 	count0++;
 	eventTree->GetEntry(ientry);
 
@@ -479,9 +477,10 @@ void select201817_Final(const TString conf="samples.conf", // input file
 #endif
 	  if(ph_passEleVeto->at(i) != true) continue;
 	  if(abs(ph_eta->at(i)) > 1.44) continue; //barrel photon
+	  if(!(ph_passLooseId->at(i))) continue;
 	  // Photon mvaID
 	  // See https://twiki.cern.ch/twiki/bin/view/CMS/MultivariatePhotonIdentificationRun2
-	  if(ph_mvaVal->at(i) < -0.02) continue;
+	  // if(ph_mvaVal->at(i) < -0.02) continue;
 	  index_p = i;
 	  break;
 	} 
@@ -583,6 +582,7 @@ void select201817_Final(const TString conf="samples.conf", // input file
 	// Bool_t tau21_cut = (tau21 < 0.45);
 	//Bool_t mass_range = (jetAK8_puppi_softdrop_mass->at(index_j) > 50 && jetAK8_puppi_softdrop_mass->at(index_j) < 105);
 	//Bool_t mass_range = (jetAK8_puppi_softdrop_mass->at(index_j) > 65 && jetAK8_puppi_softdrop_mass->at(index_j) < 95); //for sig samples derived from data for TMVA
+	if(v_j.Pt() < 225) continue;
 	pass_j2 = true;
 
 	//-----------------------------------------W+Gamma system--------------------------------------------------
@@ -691,8 +691,9 @@ void select201817_Final(const TString conf="samples.conf", // input file
 #endif  
 	  photon_eta = ph_eta->at(index_p);
 	  photon_phi = ph_phi->at(index_p);
-	  photon_mvaval = ph_mvaVal->at(index_p);
-	  photon_mvacat = ph_mvaCat->at(index_p);
+	  // photon_mvaval = ph_mvaVal->at(index_p);
+	  // photon_mvacat = ph_mvaCat->at(index_p);
+	  photon_looseid = ph_passLooseId->at(index_p);
 	  photon_corr = ph_corr->at(index_p);
 	  photon_energyscale = ph_energyscale->at(index_p);
 	  photon_resolution = ph_resolution->at(index_p);

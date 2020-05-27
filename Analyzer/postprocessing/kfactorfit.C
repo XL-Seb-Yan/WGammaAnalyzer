@@ -62,9 +62,9 @@ void kfactorfit()
   int s_PV;
   
   // Data
-  TFile* f_data = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Full_Run2/presel_nokfactor/Run2Data_postproc_WGammaRun2_full_full_presel_jmcorr_Mar17.root");
-  TFile* f_gjets = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Full_Run2/presel_nokfactor/GJets_postproc_WGamma17_full_full_presel_jmcorr_Mar17.root");
-  TFile* f_qcd = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Full_Run2/presel_nokfactor/QCD_postproc_WGamma17_full_full_presel_jmcorr_Mar17.root");
+  TFile* f_data = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/temp/Run2Data_postproc_WGamma17_full_full_jmcorr_May22.root");
+  TFile* f_gjets = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/temp/GJets_postproc_WGamma17_full_full_jmcorr_May22.root");
+  TFile* f_qcd = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/temp/QCD_postproc_WGamma17_full_full_jmcorr_May22.root");
   
   cout<<"Processing data"<<endl;
   
@@ -216,6 +216,9 @@ void kfactorfit()
     }
   }
    cout<<sGJets<<" "<<sQCD<<" "<<minls<<endl;
+   
+   sGJets = 1.3;
+   sQCD = 1.1;
    
   TCanvas *c = new TCanvas("c","scale",1200,900);
   TAxis *xaxis = g->GetXaxis();

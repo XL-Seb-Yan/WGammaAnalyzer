@@ -21,7 +21,7 @@ using namespace RooFit;
 void SignalInterpolationN(){
 
   gROOT->SetBatch(1);
-  lumi_13TeV = "41.53 fb^{-1}";
+  lumi_13TeV = "";
   writeExtraText = 1;
   lumiTextOffset = 0.15;
   bool plot_CMS = true;
@@ -46,14 +46,14 @@ void SignalInterpolationN(){
   const int nMCpoints = 14;  
   RooAbsPdf* gMass[nMCpoints];   
   const double masses[nMCpoints] = {700,800,900,1000,1200,1400,1600,2000,2200,2400,2600,2800,3000,3500};
-  //const double masses[nMCpoints] = {3000,3500};
+  // const double masses[nMCpoints] = {2200,2400,2600,2800,3000,3500};
 
   TFile *f[nMCpoints];
   RooWorkspace* xf[nMCpoints];
 
   for (int i = 0; i!=nMCpoints; ++i ){
     TString massname = std::to_string(int(masses[i]));
-    TString name = "/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/RooFit/biasstudy/"+massname+"N-shapes-Unbinned-CBGaus.root";
+    TString name = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/RooFitWorkspace/N/"+massname+"N-shapes-Unbinned-CBGaus.root";
     if (!gSystem->AccessPathName(name)){
       f[i] = new TFile(name);
       xf[i] = (RooWorkspace*)f[i]->Get("w");
@@ -116,7 +116,7 @@ void SignalInterpolationN(){
       lmorph.plotOn(frame1[iPoint],LineColor(kRed));
             
       RooDataSet* dataGen = lmorph.generate(m,30000);
-      TH1D* distribs0 = (TH1D*)lmorph.createHistogram("distribs_5_10_0",m,Binning(170,600,4000));
+      TH1D* distribs0 = (TH1D*)lmorph.createHistogram("GeneratedData",m,Binning(170,600,4000));
       dataGen->fillHistogram(distribs0,m);
       /*
       double effcy = funcEff->Eval(masses[iPoint+1]-i*step);
@@ -132,7 +132,6 @@ void SignalInterpolationN(){
       //distribs0->Scale(weight/effcy2);
       */
       TFile* fileNew = new TFile(Form("PdfGenerateSignal/roodataset_signal-%d-narrow.root",int(masses[iPoint+1]-i*step)),"RECREATE");
-      dataGen->Write();
       distribs0->Write();
       fileNew->Close();
             

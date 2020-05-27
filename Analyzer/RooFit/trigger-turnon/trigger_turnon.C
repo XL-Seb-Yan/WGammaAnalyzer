@@ -24,8 +24,8 @@ void trigger_turnon(int seed=37)
   float x_weight = 1;
   float x_kfactor = 1;
   float x_puweight = 1;
-  TH1F MChist("MC","MC",40,400,2000);
-  TFile file("/afs/cern.ch/user/x/xuyan/WGProj/PROD17/DATA/2017/fullcut/BkgMC_postproc_WGamma_full_68-94_fullcut_jmcorr_Mar17.root");
+  TH1F MChist("MC","MC",80,400,2000);
+  TFile file("/afs/cern.ch/user/x/xuyan/WGProj/PROD17/DATA/2017/fullcut/BkgMC_postproc_WGamma17_SR_fullcut_jmcorr_May22.root");
   TTree *tree = (TTree*)file.Get("Events");
   tree->SetBranchAddress("m", &s_mass);
   tree->SetBranchAddress("xsec_weight", &x_weight);
@@ -63,7 +63,7 @@ void trigger_turnon(int seed=37)
   xaxis->SetTitleOffset(1.2);
   yaxis->SetTitle("Events / 20 GeV");
   yaxis->SetTitleOffset(1.2);
-  yaxis->SetRangeUser(0,2500);
+  yaxis->SetRangeUser(0,2200);
   xaxis->SetLimits(400,1500);
   //c01->SetLogy();
   frame->Draw();
@@ -106,7 +106,7 @@ void trigger_turnon(int seed=37)
   
   TCanvas *c03 = new TCanvas("c03","c03",1200,900);
   c03->cd();
-  TF1 *f1 = new TF1("erf","2250*(1.+TMath::Erf((x-[0])/[1]))/2.",400,1500);
+  TF1 *f1 = new TF1("erf","1980*(1.+TMath::Erf((x-[0])/[1]))/2.",400,1500);
   f1->SetParameters(offset->getValV(), width->getValV());
   TF1 *f2 = new TF1("exp","300000*TMath::Exp([0]*x+[1]*pow(x,2))",400,1500);
   f2->SetParameters(p0->getValV(), p1->getValV());

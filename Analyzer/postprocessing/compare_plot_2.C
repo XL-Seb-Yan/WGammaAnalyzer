@@ -32,15 +32,15 @@
 void compare_plot_2()
 {
   gROOT->SetBatch(1);
-  lumi_13TeV = "41.53 fb^{-1}";
+  lumi_13TeV = "";
   writeExtraText = 1;
-  lumiTextOffset = 0.2;
+  lumiTextOffset = 0.15;
   relPosX = 0.11;
   bool plot_CMS = true;
   extraText = "Simulation";
   lumiTextSize = 0.35;
   cmsTextSize = 0.45;
-  int iPeriod = 5;
+  int iPeriod = 12;
   int iPos = 0;
   gStyle->SetOptStat(0);
   gStyle->SetOptTitle(0);
@@ -84,7 +84,7 @@ void compare_plot_2()
   // Open input file
   Float_t p_pt, p_eta, p_phi, p_e, p_mva, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight;
   
-  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/old_before_add_SF/AnalysisNtuples_private/Signalspin1_2000W_WGamma_full_full_Jan12.root");
+  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuples_looseID/SignalMC2000W_S1_nominal_pileup_WGamma_full_full_May22.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -119,7 +119,7 @@ void compare_plot_2()
     hist111->Fill(p_mva);  
   }
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/old_before_add_SF/AnalysisNtuples_Jan12/SignalMC2000W_WGamma_full_full_Jan12.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuples_looseID/SignalMC2000W_nominal_pileup_WGamma_full_full_May22.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -156,7 +156,7 @@ void compare_plot_2()
 
   //=================================================================================
   int color1 = 2;
-  int color2 = 4;
+  int color2 = kSpring-7;
   hist11->SetLineColor(color1);
   hist12->SetLineColor(color1);
   hist13->SetLineColor(color1);
@@ -236,6 +236,33 @@ void compare_plot_2()
   hist29->SetLineWidth(3);
   hist210->SetLineWidth(3);
   hist211->SetLineWidth(3);
+  
+  //fix strange error bars...
+  hist11->Sumw2();
+  hist12->Sumw2();
+  hist13->Sumw2();
+  hist14->Sumw2();
+  hist15->Sumw2();
+  hist16->Sumw2();
+  hist17->Sumw2();
+  hist18->Sumw2();
+  hist19->Sumw2();
+  hist110->Sumw2();
+  hist111->Sumw2();
+  hist21->Sumw2();
+  hist22->Sumw2();
+  hist23->Sumw2();
+  hist24->Sumw2();
+  hist25->Sumw2();
+  hist26->Sumw2();
+  hist27->Sumw2();
+  hist28->Sumw2();
+  hist29->Sumw2();
+  hist210->Sumw2();
+  hist211->Sumw2();
+  
+  // double norm1 = 1;
+  // double norm2 = 1;
 
   double norm1 = (double) hist11->GetEntries();
   double norm2 = (double) hist21->GetEntries();
@@ -262,7 +289,7 @@ void compare_plot_2()
   hist210->Scale(1/norm2);
   hist211->Scale(1/norm2);
 
-  TLegend *legend = new TLegend(0.55,0.78,0.9,0.9);
+  TLegend *legend = new TLegend(0.50,0.82,0.9,0.9);
   TAxis *xaxis = NULL;
   TAxis *yaxis = NULL;
   
@@ -291,12 +318,12 @@ void compare_plot_2()
   yaxis->SetTitle("Entries / 30 GeV");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.000001,10);
+  yaxis->SetRangeUser(0.00001,1);
   hist11->Draw("HIST");
   hist21->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"2017 Signal MC S-1","f");
-  legend->AddEntry(hist21,"2017 Signal MC S-0","f");
+  legend->AddEntry(hist11,"2017 MC M-2000 W S1","f");
+  legend->AddEntry(hist21,"2017 MC M-2000 W S0","f");
   legend->Draw();
   CMS_lumi(p01a,iPeriod,iPos);
   legend->Draw();
@@ -347,12 +374,12 @@ void compare_plot_2()
   yaxis->SetTitle("Entries / 0.08");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.000001,10);
+  yaxis->SetRangeUser(0.00001,1);
   hist12->Draw("HIST");
   hist22->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"2017 Signal MC S-1","f");
-  legend->AddEntry(hist21,"2017 Signal MC S-0","f");
+  legend->AddEntry(hist11,"2017 MC M-2000 W S1","f");
+  legend->AddEntry(hist21,"2017 MC M-2000 W S0","f");
   legend->Draw();
   CMS_lumi(p02a,iPeriod,iPos);
   legend->Draw();
@@ -403,12 +430,12 @@ void compare_plot_2()
   yaxis->SetTitle("Entries / 30 GeV");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.000001,10);
+  yaxis->SetRangeUser(0.00001,1);
   hist13->Draw("HIST");
   hist23->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"2017 Signal MC S-1","f");
-  legend->AddEntry(hist21,"2017 Signal MC S-0","f");
+  legend->AddEntry(hist11,"2017 MC M-2000 W S1","f");
+  legend->AddEntry(hist21,"2017 MC M-2000 W S0","f");
   legend->Draw();
   CMS_lumi(p03a,iPeriod,iPos);
   legend->Draw();
@@ -461,12 +488,12 @@ void compare_plot_2()
   yaxis->SetTitle("Entries / 0.08");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.000001,10);
+  yaxis->SetRangeUser(0.00001,1);
   hist14->Draw("HIST");
   hist24->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"2017 Signal MC S-1","f");
-  legend->AddEntry(hist21,"2017 Signal MC S-0","f");
+  legend->AddEntry(hist11,"2017 MC M-2000 W S1","f");
+  legend->AddEntry(hist21,"2017 MC M-2000 W S0","f");
   legend->Draw();
   CMS_lumi(p04a,iPeriod,iPos);
   legend->Draw();
@@ -519,12 +546,12 @@ void compare_plot_2()
   yaxis->SetTitle("Entries / 30 GeV");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.000001,10);
+  yaxis->SetRangeUser(0.00001,1);
   hist15->Draw("HIST");
   hist25->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"2017 Signal MC S-1","f");
-  legend->AddEntry(hist21,"2017 Signal MC S-0","f");
+  legend->AddEntry(hist11,"2017 MC M-2000 W S1","f");
+  legend->AddEntry(hist21,"2017 MC M-2000 W S0","f");
   legend->Draw();
   CMS_lumi(p05a,iPeriod,iPos);
   legend->Draw();
@@ -577,12 +604,12 @@ void compare_plot_2()
   yaxis->SetTitle("Entries / 2 GeV");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.000001,10);
+  yaxis->SetRangeUser(0.00001,1);
   hist16->Draw("HIST");
   hist26->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"2017 Signal MC S-1","f");
-  legend->AddEntry(hist21,"2017 Signal MC S-0","f");
+  legend->AddEntry(hist11,"2017 MC M-2000 W S1","f");
+  legend->AddEntry(hist21,"2017 MC M-2000 W S0","f");
   legend->Draw();
   CMS_lumi(p06a,iPeriod,iPos);
   legend->Draw();
@@ -634,12 +661,12 @@ void compare_plot_2()
   yaxis->SetTitle("Entries / 0.02");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.000001,10);
+  yaxis->SetRangeUser(0.00001,1);
   hist17->Draw("HIST");
   hist27->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"2017 Signal MC S-1","f");
-  legend->AddEntry(hist21,"2017 Signal MC S-0","f");
+  legend->AddEntry(hist11,"2017 MC M-2000 W S1","f");
+  legend->AddEntry(hist21,"2017 MC M-2000 W S0","f");
   legend->Draw();
   CMS_lumi(p07a,iPeriod,iPos);
   legend->Draw();
@@ -692,12 +719,12 @@ void compare_plot_2()
   yaxis->SetTitle("Entries / 0.02");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.000001,10);
+  yaxis->SetRangeUser(0.00001,1);
   hist18->Draw("HIST");
   hist28->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"2017 Signal MC S-1","f");
-  legend->AddEntry(hist21,"2017 Signal MC S-0","f");
+  legend->AddEntry(hist11,"2017 MC M-2000 W S1","f");
+  legend->AddEntry(hist21,"2017 MC M-2000 W S0","f");
   legend->Draw();
   CMS_lumi(p08a,iPeriod,iPos);
   legend->Draw();
@@ -752,12 +779,12 @@ void compare_plot_2()
   yaxis->SetTitle("Entries / 0.04");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.000001,10);
+  yaxis->SetRangeUser(0.00001,1);
   hist19->Draw("HIST");
   hist29->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"2017 Signal MC S-1","f");
-  legend->AddEntry(hist21,"2017 Signal MC S-0","f");
+  legend->AddEntry(hist11,"2017 MC M-2000 W S1","f");
+  legend->AddEntry(hist21,"2017 MC M-2000 W S0","f");
   legend->Draw();
   CMS_lumi(p09a,iPeriod,iPos);
   legend->Draw();
@@ -811,12 +838,12 @@ void compare_plot_2()
   yaxis->SetTitle("Entries / 40 GeV");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.000001,10);
+  yaxis->SetRangeUser(0.00001,1);
   hist110->Draw("HIST");
   hist210->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"2017 Signal MC S-1","f");
-  legend->AddEntry(hist21,"2017 Signal MC S-0","f");
+  legend->AddEntry(hist11,"2017 MC M-2000 W S1","f");
+  legend->AddEntry(hist21,"2017 MC M-2000 W S0","f");
   legend->Draw();
   CMS_lumi(p10a,iPeriod,iPos);
   legend->Draw();
@@ -870,12 +897,12 @@ void compare_plot_2()
   yaxis->SetTitle("Entries / 0.04");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.000001,10);
+  yaxis->SetRangeUser(0.00001,1);
   hist111->Draw("HIST");
   hist211->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"2017 Signal MC S-1","f");
-  legend->AddEntry(hist21,"2017 Signal MC S-0","f");
+  legend->AddEntry(hist11,"2017 MC M-2000 W S1","f");
+  legend->AddEntry(hist21,"2017 MC M-2000 W S0","f");
   legend->Draw();
   CMS_lumi(p11a,iPeriod,iPos);
   legend->Draw();

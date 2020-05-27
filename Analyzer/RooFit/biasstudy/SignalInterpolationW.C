@@ -45,14 +45,14 @@ void SignalInterpolationW(){
   const int nMCpoints = 14;  
   RooAbsPdf* gMass[nMCpoints];   
   const double masses[nMCpoints] = {700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3500};
-  //const double masses[nMCpoints] = {3000,3500};
+  // const double masses[nMCpoints] = {1200,1400,1600,1800,2000,2200,2400,2600};
 
   TFile *f[nMCpoints];
   RooWorkspace* xf[nMCpoints];
 
   for (int i = 0; i!=nMCpoints; ++i ){
     TString massname = std::to_string(int(masses[i]));
-    TString name = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/rootfit_workspace/anchor_W/"+massname+"W-shapes-Unbinned-CB2Gaus.root";
+    TString name = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/RooFitWorkspace/W/"+massname+"W-shapes-Unbinned-CB2Gaus.root";
     if (!gSystem->AccessPathName(name)){
       f[i] = new TFile(name);
       xf[i] = (RooWorkspace*)f[i]->Get("w");
@@ -118,7 +118,7 @@ void SignalInterpolationW(){
       double xlow = (masses[iPoint+1]-i*step)*0.75;
       double xhig = (masses[iPoint+1]-i*step)*1.25;
       int bins = (int)((masses[iPoint+1]-i*step)*0.5)/(int)20;
-      TH1D* distribs0 = (TH1D*)lmorph.createHistogram("distribs_5_10_0",m,Binning(bins,xlow,xhig));
+      TH1D* distribs0 = (TH1D*)lmorph.createHistogram("GeneratedData",m,Binning(bins,xlow,xhig));
       //TH1D* distribs0 = new TH1D("","",bins,xlow,xhig);
       //dataGen->fillHistogram(distribs0,m);
       /*

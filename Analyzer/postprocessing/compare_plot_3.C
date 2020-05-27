@@ -37,10 +37,10 @@ void compare_plot_3()
   lumiTextOffset = 0.2;
   relPosX = 0.11;
   bool plot_CMS = true;
-  extraText = "Simulation";
+  extraText = "Preliminary";
   lumiTextSize = 0.35;
   cmsTextSize = 0.45;
-  int iPeriod = 5;
+  int iPeriod = 12;
   int iPos = 0;
   gStyle->SetOptStat(0);
   gStyle->SetOptTitle(0);
@@ -55,40 +55,40 @@ void compare_plot_3()
   TH1 *hist12 = new TH1F("12","eta_{#gamma}",50,-2,2);
   TH1 *hist13 = new TH1F("13","pt_{j}",100,0,3000);
   TH1 *hist14 = new TH1F("14","eta_{j}",50,-2,2);
-  TH1 *hist15 = new TH1F("15","E_{j}",100,0,3000);
+  TH1 *hist15 = new TH1F("15","E_{j}",100,0,5000);
   TH1 *hist16 = new TH1F("16","masssoftdrop_{j}",40,40,120);
   TH1 *hist17 = new TH1F("17","tau21_{j}",50,0,1);
   TH1 *hist18 = new TH1F("18","cos(#theta*)_{p}",50,0,1);
   TH1 *hist19 = new TH1F("19","pt/M",50,0,2);
-  TH1 *hist110 = new TH1F("110","invariant mass",75,0,3000);
+  TH1 *hist110 = new TH1F("110","invariant mass",100,0,7000);
   TH1 *hist111 = new TH1F("111","#gamma MVA ID",60,-0.2,1);
   TH1 *hist21 = new TH1F("21","pt_{#gamma}",100,0,3000);
   TH1 *hist22 = new TH1F("22","eta_{#gamma}",50,-2,2);
   TH1 *hist23 = new TH1F("23","pt_{j}",100,0,3000);
   TH1 *hist24 = new TH1F("24","eta_{j}",50,-2,2);
-  TH1 *hist25 = new TH1F("25","E_{j}",100,0,3000);
+  TH1 *hist25 = new TH1F("25","E_{j}",100,0,5000);
   TH1 *hist26 = new TH1F("26","masssoftdrop_{j}",40,40,120);
   TH1 *hist27 = new TH1F("27","tau21_{j}",50,0,1);
   TH1 *hist28 = new TH1F("28","cos(#theta*)_{p}",50,0,1);
   TH1 *hist29 = new TH1F("29","pt/M",50,0,2);
-  TH1 *hist210 = new TH1F("210","invariant mass",75,0,3000);
+  TH1 *hist210 = new TH1F("210","invariant mass",100,0,7000);
   TH1 *hist211 = new TH1F("211","#gamma MVA ID",60,-0.2,1);
   TH1 *hist31 = new TH1F("31","pt_{#gamma}",100,0,3000);
   TH1 *hist32 = new TH1F("32","eta_{#gamma}",50,-2,2);
   TH1 *hist33 = new TH1F("33","pt_{j}",100,0,3000);
   TH1 *hist34 = new TH1F("34","eta_{j}",50,-2,2);
-  TH1 *hist35 = new TH1F("35","E_{j}",100,0,3000);
+  TH1 *hist35 = new TH1F("35","E_{j}",100,0,5000);
   TH1 *hist36 = new TH1F("36","masssoftdrop_{j}",40,40,120);
   TH1 *hist37 = new TH1F("37","tau21_{j}",50,0,1);
   TH1 *hist38 = new TH1F("38","cos(#theta*)_{p}",50,0,1);
   TH1 *hist39 = new TH1F("39","pt/M",50,0,2);
-  TH1 *hist310 = new TH1F("310","invariant mass",75,0,3000);
+  TH1 *hist310 = new TH1F("310","invariant mass",100,0,7000);
   TH1 *hist311 = new TH1F("311","#gamma MVA ID",60,-0.2,1);
   
   // Open input file
   Float_t p_pt, p_eta, p_phi, p_e, p_mva, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight, x_puweight, x_kfactor;
   
-  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/SinglePhoton2016BC_nominal_pileup_WGamma_full_full_Mar17.root");
+  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2016/ntuples_looseID/SinglePhoton2016_nominal_pileup_WGamma_full_full_May22.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -138,7 +138,7 @@ void compare_plot_3()
     hist111->Fill(p_mva,x_puweight*x_weight*x_kfactor);  
   }
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/SinglePhoton2017E_nominal_pileup_WGamma_full_full_Mar17.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuples_looseID/SinglePhoton2017_nominal_pileup_WGamma_full_full_May22.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -187,7 +187,7 @@ void compare_plot_3()
     hist211->Fill(p_mva,x_puweight*x_weight*x_kfactor);  
   }
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/EGamma2018A2_nominal_pileup_WGamma_full_full_Mar17.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2018/ntuples_looseID/EGamma2018_nominal_pileup_WGamma_full_full_May22.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -410,14 +410,14 @@ void compare_plot_3()
   yaxis->SetTitle("Entries / 30 GeV");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.0001,1);
+  yaxis->SetRangeUser(0.0000001,1);
   hist11->Draw("HIST");
   hist21->Draw("HISTSAME");
   hist31->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"M-1000","f");
-  legend->AddEntry(hist21,"M-2000","f");
-  legend->AddEntry(hist31,"M-3000","f");
+  legend->AddEntry(hist11,"SinglePhoton2016","f");
+  legend->AddEntry(hist21,"SinglePhoton2017","f");
+  legend->AddEntry(hist31,"EGamma2018","f");
   legend->Draw();
   CMS_lumi(p01a,iPeriod,iPos);
   legend->Draw();
@@ -495,14 +495,14 @@ void compare_plot_3()
   yaxis->SetTitle("Entries / 0.08");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.0001,1);
+  yaxis->SetRangeUser(0.0000001,1);
   hist12->Draw("HIST");
   hist22->Draw("HISTSAME");
   hist32->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"M-1000","f");
-  legend->AddEntry(hist21,"M-2000","f");
-  legend->AddEntry(hist31,"M-3000","f");
+  legend->AddEntry(hist11,"SinglePhoton2016","f");
+  legend->AddEntry(hist21,"SinglePhoton2017","f");
+  legend->AddEntry(hist31,"EGamma2018","f");
   legend->Draw();
   CMS_lumi(p02a,iPeriod,iPos);
   legend->Draw();
@@ -580,14 +580,14 @@ void compare_plot_3()
   yaxis->SetTitle("Entries / 30 GeV");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.0001,1);
+  yaxis->SetRangeUser(0.0000001,1);
   hist13->Draw("HIST");
   hist23->Draw("HISTSAME");
   hist33->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"M-1000","f");
-  legend->AddEntry(hist21,"M-2000","f");
-  legend->AddEntry(hist31,"M-3000","f");
+  legend->AddEntry(hist11,"SinglePhoton2016","f");
+  legend->AddEntry(hist21,"SinglePhoton2017","f");
+  legend->AddEntry(hist31,"EGamma2018","f");
   legend->Draw();
   CMS_lumi(p03a,iPeriod,iPos);
   legend->Draw();
@@ -666,14 +666,14 @@ void compare_plot_3()
   yaxis->SetTitle("Entries / 0.08");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.0001,1);
+  yaxis->SetRangeUser(0.0000001,1);
   hist14->Draw("HIST");
   hist24->Draw("HISTSAME");
   hist34->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"M-1000","f");
-  legend->AddEntry(hist21,"M-2000","f");
-  legend->AddEntry(hist31,"M-3000","f");
+  legend->AddEntry(hist11,"SinglePhoton2016","f");
+  legend->AddEntry(hist21,"SinglePhoton2017","f");
+  legend->AddEntry(hist31,"EGamma2018","f");
   legend->Draw();
   CMS_lumi(p04a,iPeriod,iPos);
   legend->Draw();
@@ -749,17 +749,17 @@ void compare_plot_3()
   xaxis = hist15->GetXaxis();
   yaxis = hist15->GetYaxis();
   xaxis->SetTitle("E_{j} (GeV)");
-  yaxis->SetTitle("Entries / 30 GeV");
+  yaxis->SetTitle("Entries / 50 GeV");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.0001,1);
+  yaxis->SetRangeUser(0.0000001,1);
   hist15->Draw("HIST");
   hist25->Draw("HISTSAME");
   hist35->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"M-1000","f");
-  legend->AddEntry(hist21,"M-2000","f");
-  legend->AddEntry(hist31,"M-3000","f");
+  legend->AddEntry(hist11,"SinglePhoton2016","f");
+  legend->AddEntry(hist21,"SinglePhoton2017","f");
+  legend->AddEntry(hist31,"EGamma2018","f");
   legend->Draw();
   CMS_lumi(p05a,iPeriod,iPos);
   legend->Draw();
@@ -819,7 +819,6 @@ void compare_plot_3()
   c05->Print("j_e.root");
   
   //==========================================================
-  /*
         //gStyle->SetHistMinimumZero();
   TCanvas *c06 = new TCanvas("c06","",2400,2600);
   c06->cd();
@@ -831,21 +830,21 @@ void compare_plot_3()
   p06c->Draw();
   p06a->cd();
   p06a->SetBottomMargin(0.2);
-  //p06a->SetLogy();
+  p06a->SetLogy();
   xaxis = hist16->GetXaxis();
   yaxis = hist16->GetYaxis();
   xaxis->SetTitle("SD m_{j} (GeV)");
   yaxis->SetTitle("Entries / 2 GeV");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0,2000);
+  yaxis->SetRangeUser(0.0000001,1);
   hist16->Draw("HIST");
   hist26->Draw("HISTSAME");
   hist36->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"M-1000","f");
-  legend->AddEntry(hist21,"M-2000","f");
-  legend->AddEntry(hist31,"M-3000","f");
+  legend->AddEntry(hist11,"SinglePhoton2016","f");
+  legend->AddEntry(hist21,"SinglePhoton2017","f");
+  legend->AddEntry(hist31,"EGamma2018","f");
   legend->Draw();
   CMS_lumi(p06a,iPeriod,iPos);
   legend->Draw();
@@ -903,7 +902,7 @@ void compare_plot_3()
   c06->Print("j_sdm.pdf");
   c06->Print("j_sdm.svg");
   c06->Print("j_sdm.root");
-  */
+  /*
        //gStyle->SetHistMinimumZero();
   TCanvas *c06 = new TCanvas("c06","",2400,1800);
   c06->cd();
@@ -919,9 +918,9 @@ void compare_plot_3()
   hist26->Draw("HISTSAME");
   hist36->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"2017 Signal MC M-1000","f");
-  legend->AddEntry(hist21,"2017 Signal MC M-2000","f");
-  legend->AddEntry(hist31,"2017 Signal MC M-3000","f");
+  legend->AddEntry(hist11,"2017 Signal MC SinglePhoton2016","f");
+  legend->AddEntry(hist21,"2017 Signal MC SinglePhoton2017","f");
+  legend->AddEntry(hist31,"2017 Signal MC EGamma2018","f");
   legend->Draw();
   CMS_lumi(c06,iPeriod,iPos);
   legend->Draw();
@@ -930,6 +929,7 @@ void compare_plot_3()
   c06->Print("j_sdm.svg");
   c06->Print("j_sdm.root");
   //==========================================================
+  */
   
           //gStyle->SetHistMinimumZero();
   TCanvas *c07 = new TCanvas("c07","",2400,2600);
@@ -949,14 +949,14 @@ void compare_plot_3()
   yaxis->SetTitle("Entries / 0.02");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.0001,1);
+  yaxis->SetRangeUser(0.0000001,1);
   hist17->Draw("HIST");
   hist27->Draw("HISTSAME");
   hist37->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"M-1000","f");
-  legend->AddEntry(hist21,"M-2000","f");
-  legend->AddEntry(hist31,"M-3000","f");
+  legend->AddEntry(hist11,"SinglePhoton2016","f");
+  legend->AddEntry(hist21,"SinglePhoton2017","f");
+  legend->AddEntry(hist31,"EGamma2018","f");
   legend->Draw();
   CMS_lumi(p07a,iPeriod,iPos);
   legend->Draw();
@@ -1035,14 +1035,14 @@ void compare_plot_3()
   yaxis->SetTitle("Entries / 0.02");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.0001,1);
+  yaxis->SetRangeUser(0.0000001,1);
   hist18->Draw("HIST");
   hist28->Draw("HISTSAME");
   hist38->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"M-1000","f");
-  legend->AddEntry(hist21,"M-2000","f");
-  legend->AddEntry(hist31,"M-3000","f");
+  legend->AddEntry(hist11,"SinglePhoton2016","f");
+  legend->AddEntry(hist21,"SinglePhoton2017","f");
+  legend->AddEntry(hist31,"EGamma2018","f");
   legend->Draw();
   CMS_lumi(p08a,iPeriod,iPos);
   legend->Draw();
@@ -1123,14 +1123,14 @@ void compare_plot_3()
   yaxis->SetTitle("Entries / 0.04");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.0001,1);
+  yaxis->SetRangeUser(0.0000001,1);
   hist19->Draw("HIST");
   hist29->Draw("HISTSAME");
   hist39->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"M-1000","f");
-  legend->AddEntry(hist21,"M-2000","f");
-  legend->AddEntry(hist31,"M-3000","f");
+  legend->AddEntry(hist11,"SinglePhoton2016","f");
+  legend->AddEntry(hist21,"SinglePhoton2017","f");
+  legend->AddEntry(hist31,"EGamma2018","f");
   legend->Draw();
   CMS_lumi(p09a,iPeriod,iPos);
   legend->Draw();
@@ -1206,20 +1206,20 @@ void compare_plot_3()
   xaxis = hist110->GetXaxis();
   yaxis = hist110->GetYaxis();
   xaxis->SetTitle("M_{j#gamma} (GeV)");
-  yaxis->SetTitle("Entries / 40 GeV");
+  yaxis->SetTitle("Entries / 70 GeV");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.0001,1);
-  // hist110->Draw("HIST");
-  // hist210->Draw("HISTSAME");
-  // hist310->Draw("HISTSAME");
-  hist110->Draw();
-  hist210->Draw("SAME");
-  hist310->Draw("SAME");
+  yaxis->SetRangeUser(0.0000001,1);
+  hist110->Draw("HIST");
+  hist210->Draw("HISTSAME");
+  hist310->Draw("HISTSAME");
+  // hist110->Draw();
+  // hist210->Draw("SAME");
+  // hist310->Draw("SAME");
   legend->Clear();
-  legend->AddEntry(hist11,"M-1000","f");
-  legend->AddEntry(hist21,"M-2000","f");
-  legend->AddEntry(hist31,"M-3000","f");
+  legend->AddEntry(hist11,"SinglePhoton2016","f");
+  legend->AddEntry(hist21,"SinglePhoton2017","f");
+  legend->AddEntry(hist31,"EGamma2018","f");
   legend->Draw();
   CMS_lumi(p10a,iPeriod,iPos);
   legend->Draw();
@@ -1299,14 +1299,14 @@ void compare_plot_3()
   yaxis->SetTitle("Entries / 0.04");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
-  yaxis->SetRangeUser(0.0001,1);
+  yaxis->SetRangeUser(0.0000001,1);
   hist111->Draw("HIST");
   hist211->Draw("HISTSAME");
   hist311->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"M-1000","f");
-  legend->AddEntry(hist21,"M-2000","f");
-  legend->AddEntry(hist31,"M-3000","f");
+  legend->AddEntry(hist11,"SinglePhoton2016","f");
+  legend->AddEntry(hist21,"SinglePhoton2017","f");
+  legend->AddEntry(hist31,"EGamma2018","f");
   legend->Draw();
   CMS_lumi(p11a,iPeriod,iPos);
   legend->Draw();

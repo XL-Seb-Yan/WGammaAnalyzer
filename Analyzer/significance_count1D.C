@@ -1125,17 +1125,17 @@ void significance_count1D(){
   gStyle->SetBarWidth(2);
   gStyle->SetHistLineWidth(2);
   
-  TString width = "N";
-  // int sigmass = 700;
-  // int color = 2;
+  TString width = "W";
+  int sigmass = 700;
+  int color = 2;
   // int sigmass = 1600;
   // int color = kGreen+3;
-  int sigmass = 2800;
-  int color = 4;
+  // int sigmass = 2800;
+  // int color = 4;
  
-  TString sig_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SignalMC"+std::to_string(sigmass)+width+"_postproc_WGamma_full_full_presel_jmcorr_Mar17.root";
-  TString bkg_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/BkgMC_postproc_WGamma_full_full_presel_jmcorr_Mar17.root";
-  // TString bkg_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SinglePhoton2017_postproc_WGamma_full_full_presel_jmcorr_Mar17.root";
+  TString sig_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SignalMC"+std::to_string(sigmass)+width+"_postproc_WGamma17_full_full_jmcorr_May22.root";
+  TString bkg_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/BkgMC_postproc_WGamma17_full_full_kfactor_jmcorr_May22.root";
+  // TString bkg_sample = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SinglePhoton2017_postproc_WGamma17_full_full_jmcorr_May22.root";
 
   TFile *infile_1 = TFile::Open(sig_sample);
   TTree* sigTree = (TTree*)infile_1->Get("Events");

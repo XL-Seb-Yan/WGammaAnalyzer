@@ -30,6 +30,7 @@
 #endif
 
 void postproc(std::string dataset, int runondata, int runyear)
+// void postproc(int mass, int runondata, int runyear)
 {
 
   gROOT->SetBatch(1);
@@ -62,14 +63,17 @@ void postproc(std::string dataset, int runondata, int runyear)
   int sys_pvn;
   
   // Open input file
-  Float_t p_pt, p_eta, p_phi, p_e, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight, evt_pdfunc;
+  Float_t p_pt, p_eta, p_phi, p_e, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, evt_pdfunc;
+  float x_weight = 1;
+  float x_kfactor = 1;
+  float x_puweight = 1;
   int s_pv; 
   
-  //TString dataset = "SignalMC"+std::to_string(mass)+"N";
+  // std::string dataset = "SignalMC"+std::to_string(mass)+"N";
   
   TString year_str = std::to_string(runyear);
   
- TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/20"+year_str+"/ntuple/ntuple_data/"+dataset+"_nominal_pileup_WGamma_full_full_Mar17.root");
+ TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/20"+ year_str +"/ntuples_looseID/"+dataset+"_nominal_pileup_WGamma_full_full_May22.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -93,7 +97,7 @@ void postproc(std::string dataset, int runondata, int runyear)
 
   // Create output file
   //TFile *outFile = TFile::Open(dataset+"_postproc_WGamma"+year_str+"_full_full_presel_jmcorr_kfactor_Mar17.root", "RECREATE");
-  TFile *outFile = TFile::Open(dataset+"_postproc_WGamma"+year_str+"_full_full_presel_jmcorr_Mar17.root", "RECREATE");
+  TFile *outFile = TFile::Open(dataset+"_postproc_WGamma"+year_str+"_SR_fullcut_600_jmcorr_May22.root", "RECREATE");
   TTree *outTree = new TTree("Events","Events"); 
   outTree->Branch("sys_pvn",       &sys_pvn,      "sys_pvn/I");
   outTree->Branch("photon_pt",       &photon_pt,      "photon_pt/F");
@@ -132,9 +136,27 @@ void postproc(std::string dataset, int runondata, int runyear)
   f2a->SetParameters(76.332,0.020022);
   
    
-  float sumW = 0;
+  float sumWtotal = 0;
+  float sumWpass = 0;
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
+	
+	//add pileup-weight
+	int binnum = pileup_Data_central->GetXaxis()->FindBin(s_pv);
+	double pileupweight_central = pileup_Data_central->GetBinContent(binnum);
+	if(runondata)
+		x_puweight  = 1;
+	else
+		x_puweight = pileupweight_central ;
+	
+	if(dataset.find("GJets") != std::string::npos)
+		x_kfactor = 1.23;
+	else if(dataset.find("QCD") != std::string::npos)
+		x_kfactor = 1.20;
+	else
+		x_kfactor = 1;
+	
+	sumWtotal += x_weight * x_kfactor * x_puweight;
 	
 	//Apply mass correction
 	double masscorr = 1;
@@ -156,18 +178,19 @@ void postproc(std::string dataset, int runondata, int runyear)
 	if(masscorr > 5)
 		cout<<"ERROR IN MASS CORR CALCULATION"<<endl;
 	
-	//if(s_mass < 0.75*mass || s_mass > 1.25*mass) continue;
-    //if(j_mass * masscorr < 68 || j_mass * masscorr > 94) continue;
+	if(s_mass < 600) continue;
+	// if(s_mass < 0.75*mass || s_mass > 1.25*mass) continue;
+    if(j_mass * masscorr < 68 || j_mass * masscorr > 94) continue;
 	//if(j_mass * masscorr < 38 || j_mass * masscorr > 64) continue;
 	//if(j_mass * masscorr < 88 || j_mass * masscorr > 114) continue;
 	//if(j_mass * masscorr < 40 || j_mass * masscorr > 65) continue;
 	if(p_pt < 225) continue;
 	if(j_pt < 225) continue;
-    // if(abs(p_eta) > 1.44) continue;
-    // if(abs(j_eta) > 2) continue;
-    // if(j_tau21 > 0.35) continue;
-    // if(s_ptm < 0.37) continue;
-    // if(s_cos > 0.6) continue;
+    if(abs(p_eta) > 1.44) continue;
+    if(abs(j_eta) > 2) continue;
+    if(j_tau21 > 0.35) continue;
+    if(s_ptm < 0.37) continue;
+    if(s_cos > 0.6) continue;
     
     photon_pt = p_pt;
     photon_eta = p_eta;
@@ -183,28 +206,17 @@ void postproc(std::string dataset, int runondata, int runyear)
     sys_ptoverm = s_ptm;
     m = s_mass;
     xsec_weight = x_weight;
+	xsec_kfactor = x_kfactor;
+	xsec_puweight = x_puweight;
 	sys_pvn = s_pv;
-	std::string str = dataset;
-	if(dataset.find("GJets") != std::string::npos)
-		xsec_kfactor = 1.21;
-	else if(dataset.find("QCD") != std::string::npos)
-		xsec_kfactor = 1.03;
-	else
-		xsec_kfactor = 1;
 	
-	//add pileup-weight
-	int binnum = pileup_Data_central->GetXaxis()->FindBin(s_pv);
-	double pileupweight_central = pileup_Data_central->GetBinContent(binnum);
-	if(runondata)
-		xsec_puweight  = 1;
-	else
-		xsec_puweight = pileupweight_central ;
-
 	outTree->Fill();
-	sumW += xsec_weight * xsec_kfactor * xsec_puweight;
+	sumWpass += xsec_weight * xsec_kfactor * xsec_puweight;
+
   }
   cout<<"Entries: "<<outTree->GetEntries()<<endl;
-  // cout<<"++++,"<<mass<<","<<sumW<<endl;
+  cout<<sumWpass<<","<<sumWtotal<<endl;
+  // cout<<"++++,"<<mass<<","<<sumWpass<<","<<sumWtotal<<endl;
   outFile->Write();
   outFile->Close();
 }

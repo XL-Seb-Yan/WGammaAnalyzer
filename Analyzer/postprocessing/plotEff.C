@@ -32,10 +32,19 @@ void plotEff(){
   std::vector<float> effn_err17;
   std::vector<float> effw_err17;
   
-  ifstream file16n("log16N.txt");
-  ifstream file17n("log17N.txt");
-  ifstream file16w("log16W.txt");
-  ifstream file17w("log17W.txt");
+  std::vector<float> massn17s1;
+  std::vector<float> massw17s1;
+  std::vector<float> effn17s1;
+  std::vector<float> effw17s1;
+  std::vector<float> effn_err17s1;
+  std::vector<float> effw_err17s1;
+  
+  ifstream file16n("log16N_loose.txt");
+  ifstream file17n("log17N_loose.txt");
+  ifstream file16w("log16W_loose.txt");
+  ifstream file17w("log17W_loose.txt");
+  ifstream file17ns1("log17NS1_loose.txt");
+  ifstream file17ws1("log17WS1_loose.txt");
   string str; 
   while (getline(file16n,str)) {
    if(str.find("++++") != std::string::npos){
@@ -106,6 +115,51 @@ void plotEff(){
    }
   }
   
+  while (getline(file17ns1,str)) {
+   if(str.find("++++") != std::string::npos){
+	   std::stringstream ss(str);
+	   int index = -1;
+	   while(ss.good()){
+          string substr;
+          getline(ss,substr,',');
+		  index++;
+          if(index == 0) continue;
+		  if(index == 1) massn17s1.push_back(strtof((substr).c_str(),0));
+		  if(index == 2){
+			  int Ngen = 10000;
+			  if(abs(massn17s1.back()-3500) < 1) //M-3500 only has 9500 events
+				  Ngen = 9500;
+			  effn17s1.push_back(strtof((substr).c_str(),0) / Ngen);
+			  effn_err17s1.push_back(sqrt(strtof((substr).c_str(),0)) / Ngen);
+		  }
+       }
+   }
+  }
+  
+  
+   while (getline(file17ws1,str)) {
+   if(str.find("++++") != std::string::npos){
+	   std::stringstream ss(str);
+	   int index = -1;
+	   while(ss.good()){
+          string substr;
+          getline(ss,substr,',');
+		  index++;
+          if(index == 0) continue;
+		  if(index == 1) massw17s1.push_back(strtof((substr).c_str(),0));
+		  if(index == 2){
+			  int Ngen = 10000;
+			  if(abs(massw17s1.back()-700) < 1) //M-700 only has 9000 events
+				  Ngen = 9000;
+			  if(abs(massw17s1.back()-1200) < 1) //M-1200 only has 9000 events
+				  Ngen = 9000;
+			  effw17s1.push_back(strtof((substr).c_str(),0) / Ngen);
+			  effw_err17s1.push_back(sqrt(strtof((substr).c_str(),0)) / Ngen);
+		  }
+       }
+   }
+  }
+  
   // READ SIGNAL NORMALIZATION FOR GOF TEST
     // while (getline(file17n,str)) {
    // if(str.find("Normalization:") != std::string::npos){
@@ -142,13 +196,13 @@ void plotEff(){
    // }
   // }
 
-  //17 spin1
-  double narrow[5] = {0.160777,0.175728,0.174048,0.1568783,0.149526316};
-  double narrow_err[5] = {0.004014262,0.004202095,0.004184388,0.003978605,0.003967318};
-  double wide[5] = {0.146991,0.165444,0.161994,0.150717,0.144221};
-  double wide_err[5] = {0.00404133,0.004287507,0.0040248478,0.0038822287,0.003797644};
-  double massn[5] = {700,1200,2000,2800,3500};
-  double massw[5] = {700,1200,2000,2800,3500};
+  //17 spin1 MVAID
+  // double narrow[5] = {0.160777,0.175728,0.174048,0.1568783,0.149526316};
+  // double narrow_err[5] = {0.004014262,0.004202095,0.004184388,0.003978605,0.003967318};
+  // double wide[5] = {0.146991,0.165444,0.161994,0.150717,0.144221};
+  // double wide_err[5] = {0.00404133,0.004287507,0.0040248478,0.0038822287,0.003797644};
+  // double massn[5] = {700,1200,2000,2800,3500};
+  // double massw[5] = {700,1200,2000,2800,3500};
   
   
   cout<<"=========================Fitting 16==========================="<<endl;
@@ -210,7 +264,7 @@ void plotEff(){
   f4->SetLineWidth(2);
   
   cout<<"=========================Fitting 17 S1==========================="<<endl;
-  TGraphErrors *gr5 = new TGraphErrors(5,&massn[0],&narrow[0],0,&narrow_err[0]);
+  TGraphErrors *gr5 = new TGraphErrors(5,&massn17s1[0],&effn17s1[0],0,&effn_err17s1[0]);
   gr5->SetMarkerColor(2);
   gr5->SetMarkerStyle(21);
   //gr1->SetMarkerStyle(20);
@@ -218,8 +272,8 @@ void plotEff(){
   gr5->SetLineWidth(2);
   gr5->SetLineColor(2);
   gr5->SetLineStyle(2);
-  TF1 *f5 = new TF1("fun5","pol4",700,3500);
-  f5->SetParameters(0.0796303,0.000227561,-1.8753*pow(10,-7),5.7758*pow(10,-11),-6.1749*pow(10,-15));
+  TF1 *f5 = new TF1("fun5","pol3",700,3500);
+  f5->SetParameters(0.0796303,0.000227561,-1.8753*pow(10,-7),5.7758*pow(10,-11));
   f5->SetLineColor(2);
   f5->SetLineStyle(2);
   gr5->Fit(f5,"R");
@@ -228,7 +282,7 @@ void plotEff(){
   f5->SetLineStyle(2);
   f5->SetLineWidth(2);
 
-  TGraphErrors *gr6 = new TGraphErrors(5,&massw[0],&wide[0],0,&wide_err[0]);
+  TGraphErrors *gr6 = new TGraphErrors(5,&massw17s1[0],&effw17s1[0],0,&effw_err17s1[0]);
   gr6->SetMarkerColor(4);
   gr6->SetMarkerStyle(21);
   //gr2->SetMarkerStyle(20);
@@ -236,8 +290,8 @@ void plotEff(){
   gr6->SetLineColor(4);
   gr6->SetLineStyle(2);
   gr6->SetLineWidth(2);
-  TF1 *f6 = new TF1("fun6","pol4",700,3500);
-  f6->SetParameters(0.122574,0.000114036,-9.69702*pow(10,-8),2.80535*pow(10,-11),-2.86354*pow(10,-15));
+  TF1 *f6 = new TF1("fun6","pol3",700,3500);
+  f6->SetParameters(0.122574,0.000114036,-9.69702*pow(10,-8),2.80535*pow(10,-11));
   f6->SetLineColor(4);
   f6->SetLineStyle(2);
   gr6->Fit(f6,"R");
@@ -341,5 +395,11 @@ void plotEff(){
   }
   for(int i=0; i<massw17.size(); i++){
 	  cout<<massw17.at(i)<<" "<<effw17.at(i)<<endl;
+  }
+  for(int i=0; i<massn17s1.size(); i++){
+	  cout<<massn17s1.at(i)<<" "<<effn17s1.at(i)<<endl;
+  }
+  for(int i=0; i<massw17.size(); i++){
+	  cout<<massw17s1.at(i)<<" "<<effw17s1.at(i)<<endl;
   }
 }

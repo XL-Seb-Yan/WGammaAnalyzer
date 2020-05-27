@@ -50,7 +50,7 @@ std::string to_str_trim(const float a_value, const int n = 2)
     return std::to_string(a_value).substr(0,std::to_string(a_value).find(".") + n + 1);
 }
 
-void make_signal_narrow_shapes_CBGaus(int signalmass = 900, int yhi = 900)
+void make_signal_narrow_shapes_CBGaus(int signalmass = 2600, int yhi = 900)
 {
   //gErrorIgnoreLevel = kInfo;
   using namespace std;
@@ -59,7 +59,7 @@ void make_signal_narrow_shapes_CBGaus(int signalmass = 900, int yhi = 900)
   RooRandom::randomGenerator()->SetSeed(37);
   
   gROOT->SetBatch(1);
-  lumi_13TeV = "41.53 fb^{-1}";
+  lumi_13TeV = "";
   writeExtraText = 1;
   lumiTextOffset = 0.15;
   bool plot_CMS = true;
@@ -85,22 +85,25 @@ void make_signal_narrow_shapes_CBGaus(int signalmass = 900, int yhi = 900)
   //--- signal PDF ---
   TString fun_name = "CBGaus";
   RooRealVar* CB_mean = new RooRealVar("CB_mean","CB_mean",signalmass,signalmass-100,signalmass+100,"");
-  RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",33,30,34.45,"");
-  RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",2.2,1,3,"");
-  RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",0.72,0.1,3,"");
+  RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",105,103.85,110,"");
+  RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",2.22,0.1,3,"");
+  RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",1.22,0.1,5,"");
   RooCBShape* CB_model = new RooCBShape("CBShape","Cystal Ball Function",*m,*CB_mean,*CB_sigma,*CB_alpha,*CB_n);
   
   RooRealVar* Gaus_mean = new RooRealVar("Gaus_mean","Gaus_mean",signalmass,signalmass-100,signalmass+100,"");
-  RooRealVar* Gaus_sigma = new RooRealVar("Gaus_sigma","Gaus_sigma",20,10,110.96,"");
+  RooRealVar* Gaus_sigma = new RooRealVar("Gaus_sigma","Gaus_sigma",70,61.20,80,"");
   RooGaussian* Gaus_model = new RooGaussian("Gaussian","Gaussian Function",*m,*Gaus_mean,*Gaus_sigma);
-  RooRealVar* frac = new RooRealVar("frac","frac",0.80,0.5,0.90);
+  RooRealVar* frac = new RooRealVar("frac","frac",0.55,0.5,0.80);
   RooAddPdf* com_model = new RooAddPdf("CBGaus","CBGaus",RooArgList(*CB_model,*Gaus_model),RooArgList(*frac));
 
   // --- Import Binned dataset ---
+  int bin = 140;
+  if(signalmass > 1999)
+	  bin = 85;
   float s_mass, xsec_puweight;
-  TH1F MChist("MC","MC",170,600,4000);
+  TH1F MChist("MC","MC",bin,600,4000);
 									
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/fullcut/SignalMC"+signalmass_str+"N_postproc_WGamma17_sigrange_WB_fullcut_jmcorr_Mar17.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/fullcut/SignalMC"+signalmass_str+"N_postproc_WGamma17_SR_sigrange_fullcut_jmcorr_May22.root");
   TTree* tree = (TTree*)file.Get("Events");
   tree->SetBranchAddress("m", &s_mass);
   tree->SetBranchAddress("xsec_puweight", &xsec_puweight);
@@ -134,6 +137,7 @@ void make_signal_narrow_shapes_CBGaus(int signalmass = 900, int yhi = 900)
   TString CBsigma = "#sigma_{CB}: "+to_str_trim(CB_sigma->getVal())+" #pm "+to_str_trim(CB_sigma->getError())+" (GeV)";
   TString CBalpha = "#alpha_{CB}: "+to_str_trim(CB_alpha->getVal())+" #pm "+to_str_trim(CB_alpha->getError());
   TString CBn = "n_{CB}: "+to_str_trim(CB_n->getVal())+" #pm "+to_str_trim(CB_n->getError());
+  TString Gaussmean = "#mu_{Gaus}: "+to_str_trim(Gaus_mean->getVal())+" #pm "+to_str_trim(Gaus_mean->getError())+" (GeV)";
   TString Gaussigma = "#sigma_{Gaus}: "+to_str_trim(Gaus_sigma->getVal())+" #pm "+to_str_trim(Gaus_sigma->getError())+" (GeV)";
   TString Fraction = "CB frac: "+to_str_trim(frac->getVal())+" #pm "+to_str_trim(frac->getError());
   TLatex *chi2lax = new TLatex(0.15,0.7-0*0.04,chi2txt);
@@ -143,13 +147,15 @@ void make_signal_narrow_shapes_CBGaus(int signalmass = 900, int yhi = 900)
   TLatex *CBalphalax = new TLatex(0.15,0.7-3*0.04,CBalpha);
   TLatex *CBnlax = new TLatex(0.15,0.7-4*0.04,CBn);
   TLatex *Gaussigmalax = new TLatex(0.15,0.7-5*0.04,Gaussigma);
-  TLatex *Fraclax = new TLatex(0.15,0.7-6*0.04,Fraction);
+  TLatex *Gaussmeanlax = new TLatex(0.15,0.7-6*0.04,Gaussmean);
+  TLatex *Fraclax = new TLatex(0.15,0.7-7*0.04,Fraction);
 
   CBmeanlax->SetNDC();
   CBsigmalax->SetNDC();
   CBalphalax->SetNDC();
   CBnlax->SetNDC();
   Gaussigmalax->SetNDC();
+  Gaussmeanlax->SetNDC();
   Fraclax->SetNDC();
 
   CBmeanlax->SetTextSize(0.026);
@@ -157,6 +163,7 @@ void make_signal_narrow_shapes_CBGaus(int signalmass = 900, int yhi = 900)
   CBalphalax->SetTextSize(0.026);
   CBnlax->SetTextSize(0.026);
   Gaussigmalax->SetTextSize(0.026);
+  Gaussmeanlax->SetTextSize(0.026);
   Fraclax->SetTextSize(0.026);
   
   frame->addObject(CBmeanlax);
@@ -164,6 +171,7 @@ void make_signal_narrow_shapes_CBGaus(int signalmass = 900, int yhi = 900)
   frame->addObject(CBalphalax);
   frame->addObject(CBnlax);
   frame->addObject(Gaussigmalax);
+  frame->addObject(Gaussmeanlax);
   frame->addObject(Fraclax);
   
   TCanvas *c01 = new TCanvas("c01","c01",2100,2000);

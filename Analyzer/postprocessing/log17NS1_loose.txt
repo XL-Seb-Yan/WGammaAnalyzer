@@ -1,0 +1,26 @@
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(700,0,17)...
+Info in <TUnixSystem::ACLiC>: creating shared library /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/./postproc_C.so
+Entries: 1552
+++++,700,1576.15,5297.39
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(1200,0,17)...
+Entries: 1705
+++++,1200,1712.72,6773.66
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(2000,0,17)...
+Entries: 1735
+++++,2000,1735.11,7429.05
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(2800,0,17)...
+Entries: 1601
+++++,2800,1600.58,7678.34
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(3500,0,17)...
+Entries: 1449
+++++,3500,1473.48,7401.91

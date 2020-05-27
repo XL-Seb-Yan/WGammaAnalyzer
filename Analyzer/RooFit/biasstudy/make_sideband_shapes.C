@@ -117,10 +117,10 @@ void make_sideband_shapes(int seed=37)
 #endif
 
   // --- Import unBinned dataset ---
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/fullcut/SinglePhoton2017_postproc_WGamma_full_SB_fullcut_jmcorr_Mar17.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/Run2Data_postproc_WGammaRun2_SB_fullcut_600_jmcorr_May22.root");
   TTree* tree = (TTree*)file.Get("Events");
   RooDataSet data("Data sideband","Data sideband",RooArgSet(*x),Import(*tree));//import branches with names match the "variable name" (not variable) listed in imargset
-  RooRealVar weight("weight","weight",7.5897);
+  RooRealVar weight("weight","weight",2.4826);
   RooDataSet data_norm("Data sideband norm.","Data sideband (nomalized to yield in W band)",&data,RooArgSet(*x,weight),"",weight.GetName());
   cout<<"number of data: "<<data.numEntries()<<endl;
   
@@ -243,11 +243,11 @@ void make_sideband_shapes(int seed=37)
   xaxis->SetTitleOffset(1.2);
   yaxis->SetTitle("Events / 20 GeV");
   yaxis->SetTitleOffset(1.2);
-  yaxis->SetRangeUser(0.2,1000);
-  xaxis->SetRangeUser(600,3000);
+  yaxis->SetRangeUser(0.2,10000);
+  xaxis->SetRangeUser(600,4000);
   p01a->SetLogy();
   frame->Draw();
-  TLegend *l =  new TLegend(0.6,0.7,0.8,0.78);
+  TLegend *l =  new TLegend(0.5,0.7,0.85,0.85);
 #if isNorm == 1
     l->AddEntry(frame->findObject(fun_name),"Data SB norm. fit "+fun_name,"l");
 #else

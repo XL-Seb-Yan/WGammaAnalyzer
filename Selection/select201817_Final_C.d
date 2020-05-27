@@ -244,12 +244,12 @@
 ./../select201817_Final_C.so: /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/include/TRandom3.h
 ./../select201817_Final_C.so: /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/include/TRandom.h
 ./../select201817_Final_C.so: /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/include/Math/TRandomEngine.h
-./../select201817_Final_C.so: /afs/cern.ch/work/x/xuyan/work5/PROD17/WGammaAnalyzer/Selection/2017conf/./../../Utils/interface/ConfParse.hh
+./../select201817_Final_C.so: /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Selection/2017conf/./../../Utils/interface/ConfParse.hh
 ./../select201817_Final_C.so: /cvmfs/cms.cern.ch/slc7_amd64_gcc630/external/gcc/6.3.0/include/c++/6.3.0/sstream
 ./../select201817_Final_C.so: /cvmfs/cms.cern.ch/slc7_amd64_gcc630/external/gcc/6.3.0/include/c++/6.3.0/bits/sstream.tcc
-./../select201817_Final_C.so: /afs/cern.ch/work/x/xuyan/work5/PROD17/WGammaAnalyzer/Selection/2017conf/./../../Utils/interface/CSample.hh
-./../select201817_Final_C.so: /afs/cern.ch/work/x/xuyan/work5/PROD17/WGammaAnalyzer/Selection/2017conf/./../../Utils/interface/CSample.hh
-./../select201817_Final_C.so: /afs/cern.ch/work/x/xuyan/work5/PROD17/WGammaAnalyzer/Selection/2017conf/./../../Utils/interface/RunLumiRangeMap.hh
+./../select201817_Final_C.so: /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Selection/2017conf/./../../Utils/interface/CSample.hh
+./../select201817_Final_C.so: /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Selection/2017conf/./../../Utils/interface/CSample.hh
+./../select201817_Final_C.so: /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Selection/2017conf/./../../Utils/interface/RunLumiRangeMap.hh
 ./../select201817_Final_C.so: /cvmfs/cms.cern.ch/slc7_amd64_gcc630/external/boost/1.63.0-fmblme/include/boost/property_tree/ptree.hpp
 ./../select201817_Final_C.so: /cvmfs/cms.cern.ch/slc7_amd64_gcc630/external/boost/1.63.0-fmblme/include/boost/property_tree/ptree_fwd.hpp
 ./../select201817_Final_C.so: /cvmfs/cms.cern.ch/slc7_amd64_gcc630/external/boost/1.63.0-fmblme/include/boost/config.hpp

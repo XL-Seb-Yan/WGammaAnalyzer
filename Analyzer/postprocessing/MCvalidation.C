@@ -36,7 +36,7 @@ void MCvalidation()
   writeExtraText = 1;
   lumiTextOffset = 0.15;
   bool plot_CMS = true;
-  extraText = "Preliminary";
+  extraText = "";
   lumiTextSize = 0.3;
   cmsTextSize = 0.45;
   int iPeriod = 12;
@@ -149,7 +149,7 @@ void MCvalidation()
   // Open input file
   Float_t p_pt, p_eta, p_phi, p_e, p_mva, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight, x_kfactor;
   
-  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Full_Run2/GJets_postproc_WGamma17_full_full_presel_jmcorr_kfactor_Mar17.root");
+  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/GJets_postproc_WGamma17_full_full_kfactor_jmcorr_May22.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -174,7 +174,7 @@ void MCvalidation()
 	//if(p_pt < 225) continue;
 	//if(j_pt < 225) continue;
     if((j_mass > 68 && j_mass < 94)){
-	//if((j_mass > 68 && j_mass < 94) || (j_mass > 40 && j_mass < 65)){
+	// if((j_mass > 68 && j_mass < 94) || (j_mass > 40 && j_mass < 65)){
 	//x_kfactor = 1.21;
     hist11->Fill(p_pt, x_weight * x_kfactor * 3.30339);
     hist12->Fill(p_eta, x_weight * x_kfactor * 3.30339);
@@ -190,7 +190,7 @@ void MCvalidation()
 	}
   }
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Full_Run2/QCD_postproc_WGamma17_full_full_presel_jmcorr_kfactor_Mar17.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/QCD_postproc_WGamma17_full_full_kfactor_jmcorr_May22.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -216,7 +216,7 @@ void MCvalidation()
 	//if(j_pt < 225) continue;
 	//x_kfactor = 1.03;
      if((j_mass > 68 && j_mass < 94)){
-	//if((j_mass > 68 && j_mass < 94) || (j_mass > 40 && j_mass < 65)){
+	// if((j_mass > 68 && j_mass < 94) || (j_mass > 40 && j_mass < 65)){
     hist21->Fill(p_pt, x_weight * x_kfactor * 3.30339);
     hist22->Fill(p_eta, x_weight * x_kfactor * 3.30339);
     hist23->Fill(j_pt, x_weight * x_kfactor * 3.30339);
@@ -233,7 +233,7 @@ void MCvalidation()
 
   int SB = 0;
   int WB = 0;
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Full_Run2/Run2Data_WGammaRun2_full_full_presel_jmcorr_Mar17.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/Run2Data_postproc_WGammaRun2_full_full_jmcorr_May22.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -257,17 +257,29 @@ void MCvalidation()
 	//if(j_pt < 225) continue;
     if(j_mass > 40 && j_mass < 65) {
 		SB++;
-		hist31->Fill(p_pt, 0.79867);
-		hist32->Fill(p_eta, 0.79867);
-		hist33->Fill(j_pt, 0.79867);
-		hist34->Fill(j_eta, 0.79867);
-		hist35->Fill(j_e, 0.79867);
+		hist31->Fill(p_pt, 1);
+		hist32->Fill(p_eta, 1);
+		hist33->Fill(j_pt, 1);
+		hist34->Fill(j_eta, 1);
+		hist35->Fill(j_e, 1);
 		hist36->Fill(j_mass, 1);
-		hist37->Fill(j_tau21, 0.79867);
-		hist38->Fill(s_cos, 0.79867);
-		hist39->Fill(s_ptm, 0.79867);
-		hist310->Fill(s_mass, 0.79867);
-		hist311->Fill(p_mva, 0.79867);  
+		hist37->Fill(j_tau21, 1);
+		hist38->Fill(s_cos, 1);
+		hist39->Fill(s_ptm, 1);
+		hist310->Fill(s_mass, 1);
+		hist311->Fill(p_mva, 1);  
+		
+		// hist31->Fill(p_pt, 1);
+		// hist32->Fill(p_eta, 1);
+		// hist33->Fill(j_pt, 1);
+		// hist34->Fill(j_eta, 1);
+		// hist35->Fill(j_e, 1);
+		// hist36->Fill(j_mass, 1);
+		// hist37->Fill(j_tau21, 1);
+		// hist38->Fill(s_cos, 1);
+		// hist39->Fill(s_ptm, 1);
+		// hist310->Fill(s_mass, 1);
+		// hist311->Fill(p_mva, 1);  
 	}
 	if(j_mass > 68 && j_mass < 94) {
 		WB++;
@@ -286,7 +298,7 @@ void MCvalidation()
   }
   
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SignalMC1000N_postproc_WGamma_full_full_presel_jmcorr_Mar17.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SignalMC1000N_postproc_WGamma17_full_full_jmcorr_May22.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -322,7 +334,7 @@ void MCvalidation()
     hist411->Fill(p_mva, 6.8595);  
   }
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SignalMC1000W_postproc_WGamma_full_full_presel_jmcorr_Mar17.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SignalMC1000W_postproc_WGamma17_full_full_jmcorr_May22.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -358,7 +370,7 @@ void MCvalidation()
     hist511->Fill(p_mva, 6.8595);  
   }
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SignalMC2800N_postproc_WGamma_full_full_presel_jmcorr_Mar17.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SignalMC2000N_postproc_WGamma17_full_full_jmcorr_May22.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -394,7 +406,7 @@ void MCvalidation()
     hist611->Fill(p_mva, 6.8595);  
   }
   
-    input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SignalMC2800W_postproc_WGamma_full_full_presel_jmcorr_Mar17.root");
+    input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SignalMC2000W_postproc_WGamma17_full_full_jmcorr_May22.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -542,17 +554,17 @@ void MCvalidation()
   hist3a10->SetLineColor(kRed);
   hist3a11->SetLineColor(kRed);
   
-  hist3a1->SetMarkerStyle(20);
-  hist3a2->SetMarkerStyle(20);
-  hist3a3->SetMarkerStyle(20);
-  hist3a4->SetMarkerStyle(20);
-  hist3a5->SetMarkerStyle(20);
-  hist3a6->SetMarkerStyle(20);
-  hist3a7->SetMarkerStyle(20);
-  hist3a8->SetMarkerStyle(20);
-  hist3a9->SetMarkerStyle(20);
-  hist3a10->SetMarkerStyle(20);
-  hist3a11->SetMarkerStyle(20);
+  hist3a1->SetMarkerStyle(21);
+  hist3a2->SetMarkerStyle(21);
+  hist3a3->SetMarkerStyle(21);
+  hist3a4->SetMarkerStyle(21);
+  hist3a5->SetMarkerStyle(21);
+  hist3a6->SetMarkerStyle(21);
+  hist3a7->SetMarkerStyle(21);
+  hist3a8->SetMarkerStyle(21);
+  hist3a9->SetMarkerStyle(21);
+  hist3a10->SetMarkerStyle(21);
+  hist3a11->SetMarkerStyle(21);
   
   hist3a1->SetMarkerSize(2);
   hist3a2->SetMarkerSize(2);
