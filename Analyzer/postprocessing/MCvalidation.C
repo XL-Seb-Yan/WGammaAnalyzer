@@ -36,7 +36,7 @@ void MCvalidation()
   writeExtraText = 1;
   lumiTextOffset = 0.15;
   bool plot_CMS = true;
-  extraText = "";
+  extraText = "Preliminary";
   lumiTextSize = 0.3;
   cmsTextSize = 0.45;
   int iPeriod = 12;
@@ -59,7 +59,7 @@ void MCvalidation()
   TH1 *hist17 = new TH1F("17","tau21_{j}",50,0,1);
   TH1 *hist18 = new TH1F("18","cos(#theta*)_{p}",50,0,1);
   TH1 *hist19 = new TH1F("19","pt/M",50,0,2);
-  TH1 *hist110 = new TH1F("110","invariant mass",100,0,4000);
+  TH1 *hist110 = new TH1F("110","invariant mass",100,0,6000);
   TH1 *hist111 = new TH1F("111","seperation",50,0,8);
   TH1 *hist21 = new TH1F("21","pt_{#gamma}",100,0,3000);
   TH1 *hist22 = new TH1F("22","eta_{#gamma}",50,-2,2);
@@ -70,7 +70,7 @@ void MCvalidation()
   TH1 *hist27 = new TH1F("27","tau21_{j}",50,0,1);
   TH1 *hist28 = new TH1F("28","cos(#theta*)_{p}",50,0,1);
   TH1 *hist29 = new TH1F("29","pt/M",50,0,2);
-  TH1 *hist210 = new TH1F("210","invariant mass",100,0,4000);
+  TH1 *hist210 = new TH1F("210","invariant mass",100,0,6000);
   TH1 *hist211 = new TH1F("211","seperation",50,0,8);
   TH1 *hist31 = new TH1F("31","pt_{#gamma}",100,0,3000);
   TH1 *hist32 = new TH1F("32","eta_{#gamma}",50,-2,2);
@@ -81,7 +81,7 @@ void MCvalidation()
   TH1 *hist37 = new TH1F("37","tau21_{j}",50,0,1);
   TH1 *hist38 = new TH1F("38","cos(#theta*)_{p}",50,0,1);
   TH1 *hist39 = new TH1F("39","pt/M",50,0,2);
-  TH1 *hist310 = new TH1F("310","invariant mass",100,0,4000);
+  TH1 *hist310 = new TH1F("310","invariant mass",100,0,6000);
   TH1 *hist311 = new TH1F("311","seperation",50,0,8);
   TH1 *hist3a1 = new TH1F("3a1","pt_{#gamma}",100,0,3000);
   TH1 *hist3a2 = new TH1F("3a2","eta_{#gamma}",50,-2,2);
@@ -92,7 +92,7 @@ void MCvalidation()
   TH1 *hist3a7 = new TH1F("3a7","tau21_{j}",50,0,1);
   TH1 *hist3a8 = new TH1F("3a8","cos(#theta*)_{p}",50,0,1);
   TH1 *hist3a9 = new TH1F("3a9","pt/M",50,0,2);
-  TH1 *hist3a10 = new TH1F("3a10","invariant mass",100,0,4000);
+  TH1 *hist3a10 = new TH1F("3a10","invariant mass",100,0,6000);
   TH1 *hist3a11 = new TH1F("3a11","seperation",50,0,8);
   TH1 *hist41 = new TH1F("41","pt_{#gamma}",100,0,3000);
   TH1 *hist42 = new TH1F("42","eta_{#gamma}",50,-2,2);
@@ -103,7 +103,7 @@ void MCvalidation()
   TH1 *hist47 = new TH1F("47","tau21_{j}",50,0,1);
   TH1 *hist48 = new TH1F("48","cos(#theta*)_{p}",50,0,1);
   TH1 *hist49 = new TH1F("49","pt/M",50,0,2);
-  TH1 *hist410 = new TH1F("410","invariant mass",100,0,4000);
+  TH1 *hist410 = new TH1F("410","invariant mass",100,0,6000);
   TH1 *hist411 = new TH1F("411","seperation",50,0,8);
   TH1 *hist51 = new TH1F("51","pt_{#gamma}",100,0,3000);
   TH1 *hist52 = new TH1F("52","eta_{#gamma}",50,-2,2);
@@ -114,7 +114,7 @@ void MCvalidation()
   TH1 *hist57 = new TH1F("57","tau21_{j}",50,0,1);
   TH1 *hist58 = new TH1F("58","cos(#theta*)_{p}",50,0,1);
   TH1 *hist59 = new TH1F("59","pt/M",50,0,2);
-  TH1 *hist510 = new TH1F("510","invariant mass",100,0,4000);
+  TH1 *hist510 = new TH1F("510","invariant mass",100,0,6000);
   TH1 *hist511 = new TH1F("511","seperation",50,0,8);
   TH1 *hist61 = new TH1F("61","pt_{#gamma}",100,0,3000);
   TH1 *hist62 = new TH1F("62","eta_{#gamma}",50,-2,2);
@@ -125,7 +125,7 @@ void MCvalidation()
   TH1 *hist67 = new TH1F("67","tau21_{j}",50,0,1);
   TH1 *hist68 = new TH1F("68","cos(#theta*)_{p}",50,0,1);
   TH1 *hist69 = new TH1F("69","pt/M",50,0,2);
-  TH1 *hist610 = new TH1F("610","invariant mass",100,0,4000);
+  TH1 *hist610 = new TH1F("610","invariant mass",100,0,6000);
   TH1 *hist611 = new TH1F("611","seperation",50,0,8);
   TH1 *hist71 = new TH1F("71","pt_{#gamma}",100,0,3000);
   TH1 *hist72 = new TH1F("72","eta_{#gamma}",50,-2,2);
@@ -136,8 +136,30 @@ void MCvalidation()
   TH1 *hist77 = new TH1F("77","tau21_{j}",50,0,1);
   TH1 *hist78 = new TH1F("78","cos(#theta*)_{p}",50,0,1);
   TH1 *hist79 = new TH1F("79","pt/M",50,0,2);
-  TH1 *hist710 = new TH1F("710","invariant mass",100,0,4000);
+  TH1 *hist710 = new TH1F("710","invariant mass",100,0,6000);
   TH1 *hist711 = new TH1F("711","seperation",50,0,8);
+  TH1 *hist81 = new TH1F("81","pt_{#gamma}",100,0,3000);
+  TH1 *hist82 = new TH1F("82","eta_{#gamma}",50,-2,2);
+  TH1 *hist83 = new TH1F("83","pt_{j}",100,0,3000);
+  TH1 *hist84 = new TH1F("84","eta_{j}",50,-2,2);
+  TH1 *hist85 = new TH1F("85","E_{j}",100,0,3000);
+  TH1 *hist86 = new TH1F("86","masssoftdrop_{j}",80,30,110);
+  TH1 *hist87 = new TH1F("87","tau21_{j}",50,0,1);
+  TH1 *hist88 = new TH1F("88","cos(#theta*)_{p}",50,0,1);
+  TH1 *hist89 = new TH1F("89","pt/M",50,0,2);
+  TH1 *hist810 = new TH1F("810","invariant mass",100,0,8000);
+  TH1 *hist811 = new TH1F("811","seperation",50,0,8);
+  TH1 *hist91 = new TH1F("91","pt_{#gamma}",100,0,3000);
+  TH1 *hist92 = new TH1F("92","eta_{#gamma}",50,-2,2);
+  TH1 *hist93 = new TH1F("93","pt_{j}",100,0,3000);
+  TH1 *hist94 = new TH1F("94","eta_{j}",50,-2,2);
+  TH1 *hist95 = new TH1F("95","E_{j}",100,0,3000);
+  TH1 *hist96 = new TH1F("96","masssoftdrop_{j}",80,30,110);
+  TH1 *hist97 = new TH1F("97","tau21_{j}",50,0,1);
+  TH1 *hist98 = new TH1F("98","cos(#theta*)_{p}",50,0,1);
+  TH1 *hist99 = new TH1F("99","pt/M",50,0,2);
+  TH1 *hist910 = new TH1F("910","invariant mass",100,0,6000);
+  TH1 *hist911 = new TH1F("911","seperation",50,0,8);
   // Local variables to store to outfile
   // Photon
   float photon_pt, photon_eta, photon_phi, photon_e, photon_mvaval, photon_mvacat;
@@ -147,9 +169,9 @@ void MCvalidation()
   float sys_costhetastar, sys_ptoverm, m;
   
   // Open input file
-  Float_t p_pt, p_eta, p_phi, p_e, p_mva, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight, x_kfactor;
+  Float_t p_pt, p_eta, p_phi, p_e, p_mva, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight, x_kfactor, x_puweight, x_sf;
   
-  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/GJets_postproc_WGamma17_full_full_kfactor_jmcorr_May22.root");
+  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/presel/GJets_postproc_WGamma17_full_full_jmcorr_May22.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -168,29 +190,31 @@ void MCvalidation()
   theTree->SetBranchAddress("m", &s_mass);
   theTree->SetBranchAddress("xsec_weight", &x_weight);
   theTree->SetBranchAddress("xsec_kfactor", &x_kfactor);
+  theTree->SetBranchAddress("xsec_puweight", &x_puweight);
+  theTree->SetBranchAddress("xsec_sf", &x_sf);
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
-	//if(p_pt < 225) continue;
-	//if(j_pt < 225) continue;
+	if(p_pt < 225) continue;
+	if(j_pt < 225) continue;
     if((j_mass > 68 && j_mass < 94)){
-	// if((j_mass > 68 && j_mass < 94) || (j_mass > 40 && j_mass < 65)){
-	//x_kfactor = 1.21;
-    hist11->Fill(p_pt, x_weight * x_kfactor * 3.30339);
-    hist12->Fill(p_eta, x_weight * x_kfactor * 3.30339);
-    hist13->Fill(j_pt, x_weight * x_kfactor * 3.30339);
-    hist14->Fill(j_eta, x_weight * x_kfactor * 3.30339);
-    hist15->Fill(j_e, x_weight * x_kfactor * 3.30339);
-    hist16->Fill(j_mass, x_weight * x_kfactor * 3.30339);
-    hist17->Fill(j_tau21, x_weight * x_kfactor * 3.30339);
-    hist18->Fill(s_cos, x_weight * x_kfactor * 3.30339);
-    hist19->Fill(s_ptm, x_weight * x_kfactor * 3.30339);
-    hist110->Fill(s_mass, x_weight * x_kfactor * 3.30339);
-    hist111->Fill(p_mva, x_weight * x_kfactor * 3.30339);  
+	//if((j_mass > 68 && j_mass < 94) || (j_mass > 40 && j_mass < 65)){
+	x_kfactor = 1.4;
+    hist11->Fill(p_pt, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);
+    hist12->Fill(p_eta, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);
+    hist13->Fill(j_pt, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);
+    hist14->Fill(j_eta, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);
+    hist15->Fill(j_e, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);
+    hist16->Fill(j_mass, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);
+    hist17->Fill(j_tau21, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);
+    hist18->Fill(s_cos, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);
+    hist19->Fill(s_ptm, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);
+    hist110->Fill(s_mass, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);
+    hist111->Fill(p_mva, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);  
 	}
   }
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/QCD_postproc_WGamma17_full_full_kfactor_jmcorr_May22.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/presel/QCD_postproc_WGamma17_full_full_jmcorr_May22.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -209,31 +233,33 @@ void MCvalidation()
   theTree->SetBranchAddress("m", &s_mass);
   theTree->SetBranchAddress("xsec_weight", &x_weight);
   theTree->SetBranchAddress("xsec_kfactor", &x_kfactor);
+  theTree->SetBranchAddress("xsec_puweight", &x_puweight);
+  theTree->SetBranchAddress("xsec_sf", &x_sf);
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
-	//if(p_pt < 225) continue;
-	//if(j_pt < 225) continue;
-	//x_kfactor = 1.03;
-     if((j_mass > 68 && j_mass < 94)){
-	// if((j_mass > 68 && j_mass < 94) || (j_mass > 40 && j_mass < 65)){
-    hist21->Fill(p_pt, x_weight * x_kfactor * 3.30339);
-    hist22->Fill(p_eta, x_weight * x_kfactor * 3.30339);
-    hist23->Fill(j_pt, x_weight * x_kfactor * 3.30339);
-    hist24->Fill(j_eta, x_weight * x_kfactor * 3.30339);
-    hist25->Fill(j_e, x_weight * x_kfactor * 3.30339);
-    hist26->Fill(j_mass, x_weight * x_kfactor * 3.30339);
-    hist27->Fill(j_tau21, x_weight * x_kfactor * 3.30339);
-    hist28->Fill(s_cos, x_weight * x_kfactor * 3.30339);
-    hist29->Fill(s_ptm, x_weight * x_kfactor * 3.30339);
-    hist210->Fill(s_mass, x_weight * x_kfactor * 3.30339);
-    hist211->Fill(p_mva, x_weight * x_kfactor * 3.30339);  
+	if(p_pt < 225) continue;
+	if(j_pt < 225) continue;
+	x_kfactor = 1.2;
+    if((j_mass > 68 && j_mass < 94)){
+	//if((j_mass > 68 && j_mass < 94) || (j_mass > 40 && j_mass < 65)){
+    hist21->Fill(p_pt, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);
+    hist22->Fill(p_eta, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);
+    hist23->Fill(j_pt, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);
+    hist24->Fill(j_eta, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);
+    hist25->Fill(j_e, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);
+    hist26->Fill(j_mass, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);
+    hist27->Fill(j_tau21, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);
+    hist28->Fill(s_cos, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);
+    hist29->Fill(s_ptm, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);
+    hist210->Fill(s_mass, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);
+    hist211->Fill(p_mva, x_weight * x_kfactor * x_sf * x_puweight * 3.30339);  
 	}
   }
 
   int SB = 0;
   int WB = 0;
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/Run2Data_postproc_WGammaRun2_full_full_jmcorr_May22.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/presel/Run2Data_postproc_WGammaRun2_full_full_jmcorr_May22.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -253,21 +279,21 @@ void MCvalidation()
   //theTree->SetBranchAddress("xsec_weight", &x_weight);
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
-	//if(p_pt < 225) continue;
-	//if(j_pt < 225) continue;
+	if(p_pt < 225) continue;
+	if(j_pt < 225) continue;
     if(j_mass > 40 && j_mass < 65) {
 		SB++;
-		hist31->Fill(p_pt, 1);
-		hist32->Fill(p_eta, 1);
-		hist33->Fill(j_pt, 1);
-		hist34->Fill(j_eta, 1);
-		hist35->Fill(j_e, 1);
-		hist36->Fill(j_mass, 1);
-		hist37->Fill(j_tau21, 1);
-		hist38->Fill(s_cos, 1);
-		hist39->Fill(s_ptm, 1);
-		hist310->Fill(s_mass, 1);
-		hist311->Fill(p_mva, 1);  
+		hist31->Fill(p_pt, 0.8597);
+		hist32->Fill(p_eta, 0.8597);
+		hist33->Fill(j_pt, 0.8597);
+		hist34->Fill(j_eta, 0.8597);
+		hist35->Fill(j_e, 0.8597);
+		hist36->Fill(j_mass, 0.8597);
+		hist37->Fill(j_tau21, 0.8597);
+		hist38->Fill(s_cos, 0.8597);
+		hist39->Fill(s_ptm, 0.8597);
+		hist310->Fill(s_mass, 0.8597);
+		hist311->Fill(p_mva, 0.8597);  
 		
 		// hist31->Fill(p_pt, 1);
 		// hist32->Fill(p_eta, 1);
@@ -280,7 +306,8 @@ void MCvalidation()
 		// hist39->Fill(s_ptm, 1);
 		// hist310->Fill(s_mass, 1);
 		// hist311->Fill(p_mva, 1);  
-	}
+    }
+	// }
 	if(j_mass > 68 && j_mass < 94) {
 		WB++;
 		hist3a1->Fill(p_pt);
@@ -298,7 +325,7 @@ void MCvalidation()
   }
   
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SignalMC1000N_postproc_WGamma17_full_full_jmcorr_May22.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/presel/SignalMC1000N_postproc_WGamma17_full_full_jmcorr_May22.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -316,25 +343,28 @@ void MCvalidation()
   theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
   theTree->SetBranchAddress("m", &s_mass);
   //theTree->SetBranchAddress("xsec_weight", &x_weight);
+  theTree->SetBranchAddress("xsec_puweight", &x_puweight);
+  theTree->SetBranchAddress("xsec_sf", &x_sf);
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
     if(p_pt < 225) continue;
 	if(j_pt < 225) continue;
-    hist41->Fill(p_pt, 6.8595);
-    hist42->Fill(p_eta, 6.8595);
-    hist43->Fill(j_pt, 6.8595);
-    hist44->Fill(j_eta, 6.8595);
-    hist45->Fill(j_e, 6.8595);
-    hist46->Fill(j_mass, 5*6.8595);
-    hist47->Fill(j_tau21, 6.8595);
-    hist48->Fill(s_cos, 6.8595);
-    hist49->Fill(s_ptm, 6.8595);
-    hist410->Fill(s_mass, 6.8595);
-    hist411->Fill(p_mva, 6.8595);  
+    if(s_mass < 600) continue;
+    hist41->Fill(p_pt, 0.0343 * x_sf * x_puweight);
+    hist42->Fill(p_eta, 0.0343 * x_sf * x_puweight);
+    hist43->Fill(j_pt, 0.0343 * x_sf * x_puweight);
+    hist44->Fill(j_eta, 0.0343 * x_sf * x_puweight);
+    hist45->Fill(j_e, 0.0343 * x_sf * x_puweight);
+    hist46->Fill(j_mass, 400*0.0343 * x_sf * x_puweight);
+    hist47->Fill(j_tau21, 400*0.0343 * x_sf * x_puweight);
+    hist48->Fill(s_cos, 0.0343 * x_sf * x_puweight);
+    hist49->Fill(s_ptm, 0.0343 * x_sf * x_puweight);
+    hist410->Fill(s_mass, 0.0343 * x_sf * x_puweight);
+    hist411->Fill(p_mva, 0.0343 * x_sf * x_puweight);  
   }
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SignalMC1000W_postproc_WGamma17_full_full_jmcorr_May22.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/presel/SignalMC1000W_postproc_WGamma17_full_full_jmcorr_May22.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -352,25 +382,28 @@ void MCvalidation()
   theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
   theTree->SetBranchAddress("m", &s_mass);
   //theTree->SetBranchAddress("xsec_weight", &x_weight);
+  theTree->SetBranchAddress("xsec_puweight", &x_puweight);
+  theTree->SetBranchAddress("xsec_sf", &x_sf);
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
     if(p_pt < 225) continue;
 	if(j_pt < 225) continue;
-    hist51->Fill(p_pt, 6.8595);
-    hist52->Fill(p_eta, 6.8595);
-    hist53->Fill(j_pt, 6.8595);
-    hist54->Fill(j_eta, 6.8595);
-    hist55->Fill(j_e, 6.8595);
-    hist56->Fill(j_mass, 5*6.8595);
-    hist57->Fill(j_tau21, 6.8595);
-    hist58->Fill(s_cos, 6.8595);
-    hist59->Fill(s_ptm, 6.8595);
-    hist510->Fill(s_mass, 6.8595);
-    hist511->Fill(p_mva, 6.8595);  
+    if(s_mass < 600) continue;
+    hist51->Fill(p_pt, 0.0343 * x_sf * x_puweight);
+    hist52->Fill(p_eta, 0.0343 * x_sf * x_puweight);
+    hist53->Fill(j_pt, 0.0343 * x_sf * x_puweight);
+    hist54->Fill(j_eta, 0.0343 * x_sf * x_puweight);
+    hist55->Fill(j_e, 0.0343 * x_sf * x_puweight);
+    hist56->Fill(j_mass, 400*0.0343 * x_sf * x_puweight);
+    hist57->Fill(j_tau21, 400*0.0343 * x_sf * x_puweight);
+    hist58->Fill(s_cos, 0.0343 * x_sf * x_puweight);
+    hist59->Fill(s_ptm, 0.0343 * x_sf * x_puweight);
+    hist510->Fill(s_mass, 0.0343 * x_sf * x_puweight);
+    hist511->Fill(p_mva, 0.0343 * x_sf * x_puweight);  
   }
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SignalMC2000N_postproc_WGamma17_full_full_jmcorr_May22.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/presel/SignalMC3500N_postproc_WGamma17_full_full_jmcorr_May22.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -388,25 +421,28 @@ void MCvalidation()
   theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
   theTree->SetBranchAddress("m", &s_mass);
   //theTree->SetBranchAddress("xsec_weight", &x_weight);
+  theTree->SetBranchAddress("xsec_puweight", &x_puweight);
+  theTree->SetBranchAddress("xsec_sf", &x_sf);
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
     if(p_pt < 225) continue;
 	if(j_pt < 225) continue;
-    hist61->Fill(p_pt, 6.8595);
-    hist62->Fill(p_eta, 6.8595);
-    hist63->Fill(j_pt, 6.8595);
-    hist64->Fill(j_eta, 6.8595);
-    hist65->Fill(j_e, 6.8595);
-    hist66->Fill(j_mass, 5*6.8595);
-    hist67->Fill(j_tau21, 6.8595);
-    hist68->Fill(s_cos, 6.8595);
-    hist69->Fill(s_ptm, 6.8595);
-    hist610->Fill(s_mass, 6.8595);
-    hist611->Fill(p_mva, 6.8595);  
+    if(s_mass < 600) continue;
+    hist61->Fill(p_pt, 0.0343 * x_sf * x_puweight);
+    hist62->Fill(p_eta, 0.0343 * x_sf * x_puweight);
+    hist63->Fill(j_pt, 0.0343 * x_sf * x_puweight);
+    hist64->Fill(j_eta, 0.0343 * x_sf * x_puweight);
+    hist65->Fill(j_e, 0.0343 * x_sf * x_puweight);
+    hist66->Fill(j_mass, 400*0.0343 * x_sf * x_puweight);
+    hist67->Fill(j_tau21, 400*0.0343 * x_sf * x_puweight);
+    hist68->Fill(s_cos, 0.0343 * x_sf * x_puweight);
+    hist69->Fill(s_ptm, 0.0343 * x_sf * x_puweight);
+    hist610->Fill(s_mass, 0.0343 * x_sf * x_puweight);
+    hist611->Fill(p_mva, 0.0343 * x_sf * x_puweight);  
   }
   
-    input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/presel/SignalMC2000W_postproc_WGamma17_full_full_jmcorr_May22.root");
+    input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/presel/SignalMC3500W_postproc_WGamma17_full_full_jmcorr_May22.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -424,22 +460,103 @@ void MCvalidation()
   theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
   theTree->SetBranchAddress("m", &s_mass);
   //theTree->SetBranchAddress("xsec_weight", &x_weight);
+  theTree->SetBranchAddress("xsec_puweight", &x_puweight);
+  theTree->SetBranchAddress("xsec_sf", &x_sf);
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
     if(p_pt < 225) continue;
 	if(j_pt < 225) continue;
-    hist71->Fill(p_pt, 6.8595);
-    hist72->Fill(p_eta, 6.8595);
-    hist73->Fill(j_pt, 6.8595);
-    hist74->Fill(j_eta, 6.8595);
-    hist75->Fill(j_e, 6.8595);
-    hist76->Fill(j_mass, 5*6.8595);
-    hist77->Fill(j_tau21, 6.8595);
-    hist78->Fill(s_cos, 6.8595);
-    hist79->Fill(s_ptm, 6.8595);
-    hist710->Fill(s_mass, 6.8595);
-    hist711->Fill(p_mva, 6.8595);  
+    if(s_mass < 600) continue;
+    hist71->Fill(p_pt, 0.0343 * x_sf * x_puweight);
+    hist72->Fill(p_eta, 0.0343 * x_sf * x_puweight);
+    hist73->Fill(j_pt, 0.0343 * x_sf * x_puweight);
+    hist74->Fill(j_eta, 0.0343 * x_sf * x_puweight);
+    hist75->Fill(j_e, 0.0343 * x_sf * x_puweight);
+    hist76->Fill(j_mass, 400*0.0343 * x_sf * x_puweight);
+    hist77->Fill(j_tau21, 400*0.0343 * x_sf * x_puweight);
+    hist78->Fill(s_cos, 0.0343 * x_sf * x_puweight);
+    hist79->Fill(s_ptm, 0.0343 * x_sf * x_puweight);
+    hist710->Fill(s_mass, 0.0343 * x_sf * x_puweight);
+    hist711->Fill(p_mva, 0.0343 * x_sf * x_puweight);  
+  }
+  
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/presel/SignalMC5000N_postproc_WGamma17_full_full_jmcorr_May22.root");
+  theTree = (TTree*)input->Get("Events");
+  // Improt variables for cutting
+  theTree->SetBranchAddress("photon_pt", &p_pt);
+  theTree->SetBranchAddress("photon_eta", &p_eta);
+  theTree->SetBranchAddress("photon_phi", &p_phi);
+  theTree->SetBranchAddress("photon_e", &p_e);
+  theTree->SetBranchAddress("photon_mvaval", &p_mva);
+  theTree->SetBranchAddress("ak8puppijet_pt", &j_pt);
+  theTree->SetBranchAddress("ak8puppijet_eta", &j_eta);
+  theTree->SetBranchAddress("ak8puppijet_phi", &j_phi);
+  theTree->SetBranchAddress("ak8puppijet_e", &j_e);
+  theTree->SetBranchAddress("ak8puppijet_masssoftdropcorr", &j_mass);
+  theTree->SetBranchAddress("ak8puppijet_tau21", &j_tau21);
+  theTree->SetBranchAddress("sys_costhetastar", &s_cos);
+  theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
+  theTree->SetBranchAddress("m", &s_mass);
+  //theTree->SetBranchAddress("xsec_weight", &x_weight);
+  theTree->SetBranchAddress("xsec_puweight", &x_puweight);
+  theTree->SetBranchAddress("xsec_sf", &x_sf);
+  
+  for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
+    theTree->GetEntry(ievt);
+    if(p_pt < 225) continue;
+	if(j_pt < 225) continue;
+    if(s_mass < 600) continue;
+    hist81->Fill(p_pt, 0.0343 * x_sf * x_puweight);
+    hist82->Fill(p_eta, 0.0343 * x_sf * x_puweight);
+    hist83->Fill(j_pt, 0.0343 * x_sf * x_puweight);
+    hist84->Fill(j_eta, 0.0343 * x_sf * x_puweight);
+    hist85->Fill(j_e, 0.0343 * x_sf * x_puweight);
+    hist86->Fill(j_mass, 400*0.0343 * x_sf * x_puweight);
+    hist87->Fill(j_tau21, 400*0.0343 * x_sf * x_puweight);
+    hist88->Fill(s_cos, 0.0343 * x_sf * x_puweight);
+    hist89->Fill(s_ptm, 0.0343 * x_sf * x_puweight);
+    hist810->Fill(s_mass, 0.0343 * x_sf * x_puweight);
+    hist811->Fill(p_mva, 0.0343 * x_sf * x_puweight);  
+  }
+  
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/presel/SignalMC5000W_postproc_WGamma17_full_full_jmcorr_May22.root");
+  theTree = (TTree*)input->Get("Events");
+  // Improt variables for cutting
+  theTree->SetBranchAddress("photon_pt", &p_pt);
+  theTree->SetBranchAddress("photon_eta", &p_eta);
+  theTree->SetBranchAddress("photon_phi", &p_phi);
+  theTree->SetBranchAddress("photon_e", &p_e);
+  theTree->SetBranchAddress("photon_mvaval", &p_mva);
+  theTree->SetBranchAddress("ak8puppijet_pt", &j_pt);
+  theTree->SetBranchAddress("ak8puppijet_eta", &j_eta);
+  theTree->SetBranchAddress("ak8puppijet_phi", &j_phi);
+  theTree->SetBranchAddress("ak8puppijet_e", &j_e);
+  theTree->SetBranchAddress("ak8puppijet_masssoftdropcorr", &j_mass);
+  theTree->SetBranchAddress("ak8puppijet_tau21", &j_tau21);
+  theTree->SetBranchAddress("sys_costhetastar", &s_cos);
+  theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
+  theTree->SetBranchAddress("m", &s_mass);
+  //theTree->SetBranchAddress("xsec_weight", &x_weight);
+  theTree->SetBranchAddress("xsec_puweight", &x_puweight);
+  theTree->SetBranchAddress("xsec_sf", &x_sf);
+  
+  for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
+    theTree->GetEntry(ievt);
+    if(p_pt < 225) continue;
+	if(j_pt < 225) continue;
+    if(s_mass < 600) continue;
+    hist91->Fill(p_pt, 0.0343 * x_sf * x_puweight);
+    hist92->Fill(p_eta, 0.0343 * x_sf * x_puweight);
+    hist93->Fill(j_pt, 0.0343 * x_sf * x_puweight);
+    hist94->Fill(j_eta, 0.0343 * x_sf * x_puweight);
+    hist95->Fill(j_e, 0.0343 * x_sf * x_puweight);
+    hist96->Fill(j_mass, 400*0.0343 * x_sf * x_puweight);
+    hist97->Fill(j_tau21, 400*0.0343 * x_sf * x_puweight);
+    hist98->Fill(s_cos, 0.0343 * x_sf * x_puweight);
+    hist99->Fill(s_ptm, 0.0343 * x_sf * x_puweight);
+    hist910->Fill(s_mass, 0.0343 * x_sf * x_puweight);
+    hist911->Fill(p_mva, 0.0343 * x_sf * x_puweight);  
   }
   
   
@@ -635,6 +752,28 @@ void MCvalidation()
   hist79->SetLineColor(kViolet);
   hist710->SetLineColor(kViolet);
   hist711->SetLineColor(kViolet);
+  hist81->SetLineColor(kOrange+10);
+  hist82->SetLineColor(kOrange+10);
+  hist83->SetLineColor(kOrange+10);
+  hist84->SetLineColor(kOrange+10);
+  hist85->SetLineColor(kOrange+10);
+  hist86->SetLineColor(kOrange+10);
+  hist87->SetLineColor(kOrange+10);
+  hist88->SetLineColor(kOrange+10);
+  hist89->SetLineColor(kOrange+10);
+  hist810->SetLineColor(kOrange+10);
+  hist811->SetLineColor(kOrange+10);
+  hist91->SetLineColor(kOrange+10);
+  hist92->SetLineColor(kOrange+10);
+  hist93->SetLineColor(kOrange+10);
+  hist94->SetLineColor(kOrange+10);
+  hist95->SetLineColor(kOrange+10);
+  hist96->SetLineColor(kOrange+10);
+  hist97->SetLineColor(kOrange+10);
+  hist98->SetLineColor(kOrange+10);
+  hist99->SetLineColor(kOrange+10);
+  hist910->SetLineColor(kOrange+10);
+  hist911->SetLineColor(kOrange+10);
 
   hist41->SetLineStyle(3);
   hist42->SetLineStyle(3);
@@ -680,54 +819,98 @@ void MCvalidation()
   hist79->SetLineStyle(2);
   hist710->SetLineStyle(2);
   hist711->SetLineStyle(2);
+  hist81->SetLineStyle(3);
+  hist82->SetLineStyle(3);
+  hist83->SetLineStyle(3);
+  hist84->SetLineStyle(3);
+  hist85->SetLineStyle(3);
+  hist86->SetLineStyle(3);
+  hist87->SetLineStyle(3);
+  hist88->SetLineStyle(3);
+  hist89->SetLineStyle(3);
+  hist810->SetLineStyle(3);
+  hist811->SetLineStyle(3);
+  hist91->SetLineStyle(2);
+  hist92->SetLineStyle(2);
+  hist93->SetLineStyle(2);
+  hist94->SetLineStyle(2);
+  hist95->SetLineStyle(2);
+  hist96->SetLineStyle(2);
+  hist97->SetLineStyle(2);
+  hist98->SetLineStyle(2);
+  hist99->SetLineStyle(2);
+  hist910->SetLineStyle(2);
+  hist911->SetLineStyle(2);
   
-  hist41->SetLineWidth(3);
-  hist42->SetLineWidth(3);
-  hist43->SetLineWidth(3);
-  hist44->SetLineWidth(3);
-  hist45->SetLineWidth(3);
-  hist46->SetLineWidth(3);
-  hist47->SetLineWidth(3);
-  hist48->SetLineWidth(3);
-  hist49->SetLineWidth(3);
-  hist410->SetLineWidth(3);
-  hist411->SetLineWidth(3);
-  hist51->SetLineWidth(3);
-  hist52->SetLineWidth(3);
-  hist53->SetLineWidth(3);
-  hist54->SetLineWidth(3);
-  hist55->SetLineWidth(3);
-  hist56->SetLineWidth(3);
-  hist57->SetLineWidth(3);
-  hist58->SetLineWidth(3);
-  hist59->SetLineWidth(3);
-  hist510->SetLineWidth(3);
-  hist511->SetLineWidth(3);
-  hist61->SetLineWidth(3);
-  hist62->SetLineWidth(3);
-  hist63->SetLineWidth(3);
-  hist64->SetLineWidth(3);
-  hist65->SetLineWidth(3);
-  hist66->SetLineWidth(3);
-  hist67->SetLineWidth(3);
-  hist68->SetLineWidth(3);
-  hist69->SetLineWidth(3);
-  hist610->SetLineWidth(3);
-  hist611->SetLineWidth(3);
-  hist71->SetLineWidth(3);
-  hist72->SetLineWidth(3);
-  hist73->SetLineWidth(3);
-  hist74->SetLineWidth(3);
-  hist75->SetLineWidth(3);
-  hist76->SetLineWidth(3);
-  hist77->SetLineWidth(3);
-  hist78->SetLineWidth(3);
-  hist79->SetLineWidth(3);
-  hist710->SetLineWidth(3);
-  hist711->SetLineWidth(3);
+  hist41->SetLineWidth(2);
+  hist42->SetLineWidth(2);
+  hist43->SetLineWidth(2);
+  hist44->SetLineWidth(2);
+  hist45->SetLineWidth(2);
+  hist46->SetLineWidth(2);
+  hist47->SetLineWidth(2);
+  hist48->SetLineWidth(2);
+  hist49->SetLineWidth(2);
+  hist410->SetLineWidth(2);
+  hist411->SetLineWidth(2);
+  hist51->SetLineWidth(2);
+  hist52->SetLineWidth(2);
+  hist53->SetLineWidth(2);
+  hist54->SetLineWidth(2);
+  hist55->SetLineWidth(2);
+  hist56->SetLineWidth(2);
+  hist57->SetLineWidth(2);
+  hist58->SetLineWidth(2);
+  hist59->SetLineWidth(2);
+  hist510->SetLineWidth(2);
+  hist511->SetLineWidth(2);
+  hist61->SetLineWidth(2);
+  hist62->SetLineWidth(2);
+  hist63->SetLineWidth(2);
+  hist64->SetLineWidth(2);
+  hist65->SetLineWidth(2);
+  hist66->SetLineWidth(2);
+  hist67->SetLineWidth(2);
+  hist68->SetLineWidth(2);
+  hist69->SetLineWidth(2);
+  hist610->SetLineWidth(2);
+  hist611->SetLineWidth(2);
+  hist71->SetLineWidth(2);
+  hist72->SetLineWidth(2);
+  hist73->SetLineWidth(2);
+  hist74->SetLineWidth(2);
+  hist75->SetLineWidth(2);
+  hist76->SetLineWidth(2);
+  hist77->SetLineWidth(2);
+  hist78->SetLineWidth(2);
+  hist79->SetLineWidth(2);
+  hist710->SetLineWidth(2);
+  hist711->SetLineWidth(2);
+  hist81->SetLineWidth(2);
+  hist82->SetLineWidth(2);
+  hist83->SetLineWidth(2);
+  hist84->SetLineWidth(2);
+  hist85->SetLineWidth(2);
+  hist86->SetLineWidth(2);
+  hist87->SetLineWidth(2);
+  hist88->SetLineWidth(2);
+  hist89->SetLineWidth(2);
+  hist810->SetLineWidth(2);
+  hist811->SetLineWidth(2);
+  hist91->SetLineWidth(2);
+  hist92->SetLineWidth(2);
+  hist93->SetLineWidth(2);
+  hist94->SetLineWidth(2);
+  hist95->SetLineWidth(2);
+  hist96->SetLineWidth(2);
+  hist97->SetLineWidth(2);
+  hist98->SetLineWidth(2);
+  hist99->SetLineWidth(2);
+  hist910->SetLineWidth(2);
+  hist911->SetLineWidth(2);
 
 
-  TLegend *legend = new TLegend(0.60,0.75,0.9,0.9);
+  TLegend *legend = new TLegend(0.56,0.75,0.929,0.9);
   legend->SetNColumns(2);
   TAxis *xaxis1 = NULL;
   TAxis *yaxis1 = NULL;
@@ -768,18 +951,23 @@ void MCvalidation()
   hist51->Draw("SAMEHIST");
   hist61->Draw("SAMEHIST");
   hist71->Draw("SAMEHIST");
+  hist81->Draw("SAMEHIST");
+  hist91->Draw("SAMEHIST");
   hist31->Draw("E1SAME");
   hist3a1->Draw("E1SAME");
   hist31->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist31,"Data Sideband (Norm)","lep");
-  legend->AddEntry(hist41,"M-1000 N");
   legend->AddEntry(hist3a1,"Data Signal Region","lep");
-  legend->AddEntry(hist51,"M-1000 W"); 
   legend->AddEntry(hist11,"#gamma + jet","f");
-  legend->AddEntry(hist61,"M-2800 N");
-  legend->AddEntry(hist21,"QCD","f");
-  legend->AddEntry(hist71,"M-2800 W");
+  legend->AddEntry(hist21,"QCD","f"); 
+  legend->AddEntry(hist41,"M-1000 N");
+  legend->AddEntry(hist51,"M-1000 W");
+  legend->AddEntry(hist61,"M-3500 N");
+  legend->AddEntry(hist71,"M-3500 W");
+  legend->AddEntry(hist81,"M-5000 N");
+  legend->AddEntry(hist91,"M-5000 W");
+
 
   legend->Draw();
   CMS_lumi(p01a,iPeriod,iPos);
@@ -877,18 +1065,22 @@ void MCvalidation()
   hist52->Draw("SAMEHIST");
   hist62->Draw("SAMEHIST");
   hist72->Draw("SAMEHIST");
+  hist82->Draw("SAMEHIST");
+  hist92->Draw("SAMEHIST");
   hist32->Draw("E1SAME");
   hist3a2->Draw("E1SAME");
   hist32->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist31,"Data Sideband (Norm)","lep");
-  legend->AddEntry(hist41,"M-1000 N");
   legend->AddEntry(hist3a1,"Data Signal Region","lep");
-  legend->AddEntry(hist51,"M-1000 W"); 
   legend->AddEntry(hist11,"#gamma + jet","f");
-  legend->AddEntry(hist61,"M-2800 N");
-  legend->AddEntry(hist21,"QCD","f");
-  legend->AddEntry(hist71,"M-2800 W");
+  legend->AddEntry(hist21,"QCD","f"); 
+  legend->AddEntry(hist41,"M-1000 N");
+  legend->AddEntry(hist51,"M-1000 W");
+  legend->AddEntry(hist61,"M-3500 N");
+  legend->AddEntry(hist71,"M-3500 W");
+  legend->AddEntry(hist81,"M-5000 N");
+  legend->AddEntry(hist91,"M-5000 W");
 
   legend->Draw();
   CMS_lumi(p02a,iPeriod,iPos);
@@ -986,18 +1178,22 @@ void MCvalidation()
   hist53->Draw("SAMEHIST");
   hist63->Draw("SAMEHIST");
   hist73->Draw("SAMEHIST");
+  hist83->Draw("SAMEHIST");
+  hist93->Draw("SAMEHIST");
   hist33->Draw("E1SAME");
   hist3a3->Draw("E1SAME");
   hist33->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist31,"Data Sideband (Norm)","lep");
-  legend->AddEntry(hist41,"M-1000 N");
   legend->AddEntry(hist3a1,"Data Signal Region","lep");
-  legend->AddEntry(hist51,"M-1000 W"); 
   legend->AddEntry(hist11,"#gamma + jet","f");
-  legend->AddEntry(hist61,"M-2800 N");
-  legend->AddEntry(hist21,"QCD","f");
-  legend->AddEntry(hist71,"M-2800 W");
+  legend->AddEntry(hist21,"QCD","f"); 
+  legend->AddEntry(hist41,"M-1000 N");
+  legend->AddEntry(hist51,"M-1000 W");
+  legend->AddEntry(hist61,"M-3500 N");
+  legend->AddEntry(hist71,"M-3500 W");
+  legend->AddEntry(hist81,"M-5000 N");
+  legend->AddEntry(hist91,"M-5000 W");
 
   legend->Draw();
   CMS_lumi(p03a,iPeriod,iPos);
@@ -1095,18 +1291,22 @@ void MCvalidation()
   hist54->Draw("SAMEHIST");
   hist64->Draw("SAMEHIST");
   hist74->Draw("SAMEHIST");
+  hist84->Draw("SAMEHIST");
+  hist94->Draw("SAMEHIST");
   hist34->Draw("E1SAME");
   hist3a4->Draw("E1SAME");
   hist34->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist34,"Data Sideband (Norm)","lep");
-  legend->AddEntry(hist44,"M-1000 N");
-  legend->AddEntry(hist3a4,"Data Signal Region","lep");
-  legend->AddEntry(hist54,"M-1000 W"); 
-  legend->AddEntry(hist14,"#gamma + jet","f");
-  legend->AddEntry(hist64,"M-2800 N");
-  legend->AddEntry(hist24,"QCD","f");
-  legend->AddEntry(hist74,"M-2800 W");
+  legend->AddEntry(hist31,"Data Sideband (Norm)","lep");
+  legend->AddEntry(hist3a1,"Data Signal Region","lep");
+  legend->AddEntry(hist11,"#gamma + jet","f");
+  legend->AddEntry(hist21,"QCD","f"); 
+  legend->AddEntry(hist41,"M-1000 N");
+  legend->AddEntry(hist51,"M-1000 W");
+  legend->AddEntry(hist61,"M-3500 N");
+  legend->AddEntry(hist71,"M-3500 W");
+  legend->AddEntry(hist81,"M-5000 N");
+  legend->AddEntry(hist91,"M-5000 W");
   legend->Draw();
   CMS_lumi(p04a,iPeriod,iPos);
   
@@ -1195,7 +1395,7 @@ void MCvalidation()
   yaxis1->SetTitle("Entries / 1 GeV");
   xaxis1->SetTitleOffset(1.1);
   yaxis1->SetTitleOffset(1.6);
-  yaxis1->SetRangeUser(0,20000);
+  yaxis1->SetRangeUser(0,10000);
   hist36->Draw("PE1");
   hist3a6->Draw("SAMEPE1");
   stack5->Draw("SAMEHIST");
@@ -1203,18 +1403,22 @@ void MCvalidation()
   hist56->Draw("SAMEHIST");
   hist66->Draw("SAMEHIST");
   hist76->Draw("SAMEHIST");
+  hist86->Draw("SAMEHIST");
+  hist96->Draw("SAMEHIST");
   hist36->Draw("E1SAME");
   hist3a6->Draw("E1SAME");
   hist36->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist36,"Data Sideband","lep");
-  legend->AddEntry(hist46,"M-1000 N");
-  legend->AddEntry(hist3a6,"Data Signal Region","lep");
-  legend->AddEntry(hist56,"M-1000 W"); 
-  legend->AddEntry(hist16,"#gamma + jet","f");
-  legend->AddEntry(hist66,"M-2800 N");
-  legend->AddEntry(hist26,"QCD","f");
-  legend->AddEntry(hist76,"M-2800 W");
+  legend->AddEntry(hist31,"Data Sideband (Norm)","lep");
+  legend->AddEntry(hist3a1,"Data Signal Region","lep");
+  legend->AddEntry(hist11,"#gamma + jet","f");
+  legend->AddEntry(hist21,"QCD","f"); 
+  legend->AddEntry(hist41,"M-1000 N");
+  legend->AddEntry(hist51,"M-1000 W");
+  legend->AddEntry(hist61,"M-3500 N");
+  legend->AddEntry(hist71,"M-3500 W");
+  legend->AddEntry(hist81,"M-5000 N");
+  legend->AddEntry(hist91,"M-5000 W");
   legend->Draw();
   CMS_lumi(p05a,iPeriod,iPos);
   
@@ -1303,7 +1507,7 @@ void MCvalidation()
   yaxis1->SetTitle("Entries / 0.02");
   xaxis1->SetTitleOffset(1.1);
   yaxis1->SetTitleOffset(1.6);
-  yaxis1->SetRangeUser(0,16000);
+  yaxis1->SetRangeUser(0,12000);
   hist37->Draw("PE1");
   hist3a7->Draw("SAMEPE1");
   stack6->Draw("SAMEHIST");
@@ -1311,18 +1515,22 @@ void MCvalidation()
   hist57->Draw("SAMEHIST");
   hist67->Draw("SAMEHIST");
   hist77->Draw("SAMEHIST");
+  hist87->Draw("SAMEHIST");
+  hist97->Draw("SAMEHIST");
   hist37->Draw("E1SAME");
   hist3a7->Draw("E1SAME");
   hist37->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist37,"Data Sideband (Norm)","lep");
-  legend->AddEntry(hist47,"M-1000 N");
-  legend->AddEntry(hist3a7,"Data Signal Region","lep");
-  legend->AddEntry(hist57,"M-1000 W"); 
-  legend->AddEntry(hist17,"#gamma + jet","f");
-  legend->AddEntry(hist67,"M-2800 N");
-  legend->AddEntry(hist27,"QCD","f");
-  legend->AddEntry(hist77,"M-2800 W");
+  legend->AddEntry(hist31,"Data Sideband (Norm)","lep");
+  legend->AddEntry(hist3a1,"Data Signal Region","lep");
+  legend->AddEntry(hist11,"#gamma + jet","f");
+  legend->AddEntry(hist21,"QCD","f"); 
+  legend->AddEntry(hist41,"M-1000 N");
+  legend->AddEntry(hist51,"M-1000 W");
+  legend->AddEntry(hist61,"M-3500 N");
+  legend->AddEntry(hist71,"M-3500 W");
+  legend->AddEntry(hist81,"M-5000 N");
+  legend->AddEntry(hist91,"M-5000 W");
   legend->Draw();
   CMS_lumi(p06a,iPeriod,iPos);
   
@@ -1418,18 +1626,22 @@ void MCvalidation()
   hist58->Draw("SAMEHIST");
   hist68->Draw("SAMEHIST");
   hist78->Draw("SAMEHIST");
+  hist88->Draw("SAMEHIST");
+  hist98->Draw("SAMEHIST");
   hist38->Draw("E1SAME");
   hist3a8->Draw("E1SAME");
   hist38->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist38,"Data Sideband (Norm)","lep");
-  legend->AddEntry(hist48,"M-1000 N");
-  legend->AddEntry(hist3a8,"Data Signal Region","lep");
-  legend->AddEntry(hist58,"M-1000 W"); 
-  legend->AddEntry(hist18,"#gamma + jet","f");
-  legend->AddEntry(hist68,"M-2800 N");
-  legend->AddEntry(hist28,"QCD","f");
-  legend->AddEntry(hist78,"M-2800 W");
+  legend->AddEntry(hist31,"Data Sideband (Norm)","lep");
+  legend->AddEntry(hist3a1,"Data Signal Region","lep");
+  legend->AddEntry(hist11,"#gamma + jet","f");
+  legend->AddEntry(hist21,"QCD","f"); 
+  legend->AddEntry(hist41,"M-1000 N");
+  legend->AddEntry(hist51,"M-1000 W");
+  legend->AddEntry(hist61,"M-3500 N");
+  legend->AddEntry(hist71,"M-3500 W");
+  legend->AddEntry(hist81,"M-5000 N");
+  legend->AddEntry(hist91,"M-5000 W");
   legend->Draw();
   CMS_lumi(p07a,iPeriod,iPos);
   
@@ -1526,18 +1738,22 @@ void MCvalidation()
   hist59->Draw("SAMEHIST");
   hist69->Draw("SAMEHIST");
   hist79->Draw("SAMEHIST");
+  hist89->Draw("SAMEHIST");
+  hist99->Draw("SAMEHIST");
   hist39->Draw("E1SAME");
   hist3a9->Draw("E1SAME");
   hist39->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist39,"Data Sideband (Norm)","lep");
-  legend->AddEntry(hist49,"M-1000 N");
-  legend->AddEntry(hist3a9,"Data Signal Region","lep");
-  legend->AddEntry(hist59,"M-1000 W"); 
-  legend->AddEntry(hist19,"#gamma + jet","f");
-  legend->AddEntry(hist69,"M-2800 N");
-  legend->AddEntry(hist29,"QCD","f");
-  legend->AddEntry(hist79,"M-2800 W");
+  legend->AddEntry(hist31,"Data Sideband (Norm)","lep");
+  legend->AddEntry(hist3a1,"Data Signal Region","lep");
+  legend->AddEntry(hist11,"#gamma + jet","f");
+  legend->AddEntry(hist21,"QCD","f"); 
+  legend->AddEntry(hist41,"M-1000 N");
+  legend->AddEntry(hist51,"M-1000 W");
+  legend->AddEntry(hist61,"M-3500 N");
+  legend->AddEntry(hist71,"M-3500 W");
+  legend->AddEntry(hist81,"M-5000 N");
+  legend->AddEntry(hist91,"M-5000 W");
   legend->Draw();
   CMS_lumi(p08a,iPeriod,iPos);
   
@@ -1606,17 +1822,15 @@ void MCvalidation()
   c08->Print("s_ptm.root");
   //==========================================================
   
-  legend = new TLegend(0.57,0.75,0.9,0.9);
-  legend->SetNColumns(2);
-  //===========================================================
+   //===========================================================
   TCanvas *c09 = new TCanvas("c09","",2400,2600);
   c09->cd();
-  TPad *p09a = new TPad("p09a","p09a",0,0.20,1,1.0);
-  TPad *p09b = new TPad("p09b","p09b",0,0.0,1,0.20);
+  TPad *p09a = new TPad("p09a","p09a",0,0.32,1,1.0);
+  TPad *p09b = new TPad("p09b","p09b",0,0.16,1,0.32);
   TPad *p09c = new TPad("p09c","p09c",0,0,1,0.16);
   p09a->Draw();
   p09b->Draw();
-  //p09c->Draw();
+  p09c->Draw();
   p09a->cd();
   p09a->SetBottomMargin(0.12);
   p09a->SetLeftMargin(0.145);
@@ -1625,33 +1839,33 @@ void MCvalidation()
   xaxis1 = hist310->GetXaxis();
   yaxis1 = hist310->GetYaxis();
   xaxis1->SetTitle("M_{j#gamma} (GeV)");
-  yaxis1->SetTitle("Entries / 40 GeV");
+  yaxis1->SetTitle("Entries / 60 GeV");
   xaxis1->SetTitleOffset(1.1);
   yaxis1->SetTitleOffset(1.6);
-  xaxis1->SetTitleSize(0.03);
-  xaxis1->SetLabelSize(0.03);
-  yaxis1->SetTitleSize(0.03);
-  yaxis1->SetLabelSize(0.03);
   yaxis1->SetRangeUser(0.1,1000000);
   hist310->Draw("PE1");
-  //hist3a10->Draw("SAMEPE1");
+  hist3a10->Draw("SAMEPE1");
   stack9->Draw("SAMEHIST");
   hist410->Draw("SAMEHIST");
   hist510->Draw("SAMEHIST");
   hist610->Draw("SAMEHIST");
   hist710->Draw("SAMEHIST");
+  hist810->Draw("SAMEHIST");
+  hist910->Draw("SAMEHIST");
   hist310->Draw("E1SAME");
-  //hist3a10->Draw("E1SAME");
+  hist3a10->Draw("E1SAME");
   hist310->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist310,"Data Sideband (Norm)","lep");
-  legend->AddEntry(hist410,"M-1000 N");
-  legend->AddEntry(hist110,"#gamma + jet","f");
-  legend->AddEntry(hist510,"M-1000 W");
-  legend->AddEntry(hist210,"QCD","f");
-  legend->AddEntry(hist610,"M-2800 N");
-  legend->AddEntry(hist710,"M-2800 W");
-  
+  legend->AddEntry(hist31,"Data Sideband (Norm)","lep");
+  legend->AddEntry(hist3a1,"Data Signal Region","lep");
+  legend->AddEntry(hist11,"#gamma + jet","f");
+  legend->AddEntry(hist21,"QCD","f"); 
+  legend->AddEntry(hist41,"M-1000 N");
+  legend->AddEntry(hist51,"M-1000 W");
+  legend->AddEntry(hist61,"M-3500 N");
+  legend->AddEntry(hist71,"M-3500 W");
+  legend->AddEntry(hist81,"M-5000 N");
+  legend->AddEntry(hist91,"M-5000 W");
   legend->Draw();
   CMS_lumi(p09a,iPeriod,iPos);
   
@@ -1671,12 +1885,13 @@ void MCvalidation()
   yaxis2->SetTitle("data/MC");
   yaxis2->SetTitleOffset(0.5);
   yaxis2->SetRangeUser(0,2);
-  xaxis2->SetLabelSize(0.12);
+  xaxis2->SetLabelSize(0.15);
   xaxis2->SetLabelOffset(0.04);
-  xaxis2->SetTitleSize(0.12);
-  yaxis2->SetLabelSize(0.12);
+  xaxis2->SetTitleSize(0.15);
+  yaxis2->SetLabelSize(0.15);
   yaxis2->SetNdivisions(5);
-  yaxis2->SetTitleSize(0.12);
+  yaxis2->SetTitleSize(0.15);
+  yaxis2->SetTitleOffset(0.4);
   p09b->SetGrid();
   //pull->SetFillColor(kViolet);
   //pull->SetLineColor(kViolet);
@@ -1684,7 +1899,6 @@ void MCvalidation()
   pull->Draw("PE1");
   //pull->Draw("BAR HIST");
   
-  /*
   p09c->cd();
   p09c->SetTopMargin(0.06);
   p09c->SetBottomMargin(0.4);
@@ -1702,6 +1916,7 @@ void MCvalidation()
   yaxis3->SetTitleOffset(0.5);
   yaxis3->SetRangeUser(0,2);
   xaxis3->SetLabelSize(0.15);
+  xaxis3->SetLabelOffset(0.04);
   xaxis3->SetTitleSize(0.15);
   yaxis3->SetLabelSize(0.15);
   yaxis3->SetNdivisions(5);
@@ -1713,8 +1928,6 @@ void MCvalidation()
   //pull->SetFillColorAlpha(kViolet, 0.35);
   pull->Draw("PE1");
   //pull->Draw("BAR HIST");
-  */
-  
   c09->Print("s_M.png");
   c09->Print("s_M.pdf");
   c09->Print("s_M.svg");

@@ -50,7 +50,7 @@ std::string to_str_trim(const float a_value, const int n = 2)
     return std::to_string(a_value).substr(0,std::to_string(a_value).find(".") + n + 1);
 }
 
-void make_signal_wide_shapes_CB2Gaus(int signalmass = 1200, int yhi = 500)
+void make_signal_wide_shapes_CB2Gaus(int signalmass = 5000, int yhi = 200)
 {
   //gErrorIgnoreLevel = kInfo;
   using namespace std;
@@ -80,39 +80,39 @@ void make_signal_wide_shapes_CB2Gaus(int signalmass = 1200, int yhi = 500)
   TString signalmass_str = std::to_string(signalmass);
 
   // --- Create obervable --- 
-  RooRealVar *m = new RooRealVar("m","m",600,4000,""); //the name "m" will be used by RooDataSet to import data
+  RooRealVar *m = new RooRealVar("m","m",600,6000,""); //the name "m" will be used by RooDataSet to import data
 
   
   //--- signal PDF ---
   TString fun_name = "CB2Gaus";
   RooRealVar* CB_mean = new RooRealVar("CB_mean","CB_mean",signalmass,signalmass-100,signalmass+100,"");
-  RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",59,53.71,60,"");
-  RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",1.2,0.1,3,"");
-  RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",1.1,0.1,3,"");
+  RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",180,172.36,200,"");
+  RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",1.25,0.5,2,"");
+  RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",1,0.1,5,"");
   RooCBShape* CB_model = new RooCBShape("CB","Cystal Ball Function",*m,*CB_mean,*CB_sigma,*CB_alpha,*CB_n);
   
   // RooRealVar* Gaus_mean_1 = new RooRealVar("Gaus_mean_1","Gaus_mean_1",signalmass,signalmass-100,signalmass+100,"");
-  RooRealVar* Gaus_sigma_1 = new RooRealVar("Gaus_sigma_1","Gaus_sigma_1",50,20,200,"");
+  RooRealVar* Gaus_sigma_1 = new RooRealVar("Gaus_sigma_1","Gaus_sigma_1",300,200,500,"");
   RooGaussian* Gaus_model_1 = new RooGaussian("Gaussian_1","Gaussian Function",*m,*CB_mean,*Gaus_sigma_1);
   
   // RooRealVar* Gaus_mean_2 = new RooRealVar("Gaus_mean_2","Gaus_mean_2",signalmass,signalmass-100,signalmass+100,"");
-  RooRealVar* Gaus_sigma_2 = new RooRealVar("Gaus_sigma_2","Gaus_sigma_2",70,50,350,"");
+  RooRealVar* Gaus_sigma_2 = new RooRealVar("Gaus_sigma_2","Gaus_sigma_2",300,200,500,"");
   RooGaussian* Gaus_model_2 = new RooGaussian("Gaussian_2","Gaussian Function",*m,*CB_mean,*Gaus_sigma_2);
   
-  RooRealVar* frac1 = new RooRealVar("frac1","frac1",0.85,0.75,0.87);
+  RooRealVar* frac1 = new RooRealVar("frac1","frac1",0.8,0.6,0.9);
   RooAddPdf* com_model_1 = new RooAddPdf("CBGaus","CBGaus",RooArgList(*CB_model,*Gaus_model_1),RooArgList(*frac1));
-  RooRealVar* frac2 = new RooRealVar("frac2","frac2",0.75,0.5,0.85);
+  RooRealVar* frac2 = new RooRealVar("frac2","frac2",0.8,0.5,0.9);
   RooAddPdf* com_model = new RooAddPdf("CB2Gaus","CB2Gaus",RooArgList(*com_model_1,*Gaus_model_2),RooArgList(*frac2));
 
 
   // --- Import Binned dataset ---
-  int bin = 140;
+  int bin = 270;
   if(signalmass > 1999)
-	  bin = 85;
+	  bin = 135;
   float s_mass, xsec_puweight;
-  TH1F MChist("MC","MC",bin,600,4000);
+  TH1F MChist("MC","MC",bin,600,6000);
 									
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/fullcut/SignalMC"+signalmass_str+"W_postproc_WGamma17_SR_sigrange_fullcut_jmcorr_May22.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/fullcut/SignalMC"+signalmass_str+"W_postproc_WGamma17_SR_sigrange_fullcut_jmcorr_May22.root");
   TTree* tree = (TTree*)file.Get("Events");
   tree->SetBranchAddress("m", &s_mass);
   tree->SetBranchAddress("xsec_puweight", &xsec_puweight);

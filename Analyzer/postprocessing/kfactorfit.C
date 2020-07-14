@@ -58,13 +58,13 @@ void kfactorfit()
   TH1 *hist3_11 = new TH1F("3_11","PV_N",50,0,100);
 
   // Open input file
-  float p_pt, p_eta, p_phi, p_e, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight, x_puweight;
+  float p_pt, p_eta, p_phi, p_e, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight, x_puweight, x_sf;
   int s_PV;
   
   // Data
-  TFile* f_data = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/temp/Run2Data_postproc_WGamma17_full_full_jmcorr_May22.root");
-  TFile* f_gjets = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/temp/GJets_postproc_WGamma17_full_full_jmcorr_May22.root");
-  TFile* f_qcd = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/temp/QCD_postproc_WGamma17_full_full_jmcorr_May22.root");
+  TFile* f_data = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/presel/Run2Data_postproc_WGammaRun2_full_full_jmcorr_May22.root");
+  TFile* f_gjets = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/presel/GJets_postproc_WGammaRun2_full_full_jmcorr_May22.root");
+  TFile* f_qcd = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/presel/QCD_postproc_WGammaRun2_full_full_jmcorr_May22.root");
   
   cout<<"Processing data"<<endl;
   
@@ -85,6 +85,7 @@ void kfactorfit()
     theTree->SetBranchAddress("m", &s_mass);
     theTree->SetBranchAddress("xsec_weight", &x_weight);
 	theTree->SetBranchAddress("xsec_puweight", &x_puweight);
+	theTree->SetBranchAddress("xsec_sf", &x_sf);
 	theTree->SetBranchAddress("sys_pvn", &s_PV);
   
   
@@ -123,6 +124,7 @@ void kfactorfit()
     theTree->SetBranchAddress("m", &s_mass);
     theTree->SetBranchAddress("xsec_weight", &x_weight);
 	theTree->SetBranchAddress("xsec_puweight", &x_puweight);
+	theTree->SetBranchAddress("xsec_sf", &x_sf);
 	theTree->SetBranchAddress("sys_pvn", &s_PV);
   
   
@@ -131,17 +133,17 @@ void kfactorfit()
 	  // if(p_pt < 225) continue;
 	  // if(j_pt < 225) continue;
 	  x_weight = x_weight * 3.303395;
-      hist2_1->Fill(p_pt, x_weight*x_puweight);
-      hist2_2->Fill(p_eta, x_weight*x_puweight);
-      hist2_3->Fill(j_pt, x_weight*x_puweight);
-      hist2_4->Fill(j_eta, x_weight*x_puweight);
-      hist2_5->Fill(j_e, x_weight*x_puweight);
-      hist2_6->Fill(j_mass, x_weight*x_puweight);
-      hist2_7->Fill(j_tau21, x_weight*x_puweight);
-      hist2_8->Fill(s_cos, x_weight*x_puweight);
-      hist2_9->Fill(s_ptm, x_weight*x_puweight);
-      hist2_10->Fill(s_mass, x_weight*x_puweight);
-	  hist2_11->Fill(s_PV, x_weight*x_puweight);
+      hist2_1->Fill(p_pt, x_weight*x_puweight*x_sf);
+      hist2_2->Fill(p_eta, x_weight*x_puweight*x_sf);
+      hist2_3->Fill(j_pt, x_weight*x_puweight*x_sf);
+      hist2_4->Fill(j_eta, x_weight*x_puweight*x_sf);
+      hist2_5->Fill(j_e, x_weight*x_puweight*x_sf);
+      hist2_6->Fill(j_mass, x_weight*x_puweight*x_sf);
+      hist2_7->Fill(j_tau21, x_weight*x_puweight*x_sf);
+      hist2_8->Fill(s_cos, x_weight*x_puweight*x_sf);
+      hist2_9->Fill(s_ptm, x_weight*x_puweight*x_sf);
+      hist2_10->Fill(s_mass, x_weight*x_puweight*x_sf);
+	  hist2_11->Fill(s_PV, x_weight*x_puweight*x_sf);
     }
 	
 	cout<<"Processing QCD"<<endl;
@@ -162,6 +164,7 @@ void kfactorfit()
     theTree->SetBranchAddress("m", &s_mass);
     theTree->SetBranchAddress("xsec_weight", &x_weight);
 	theTree->SetBranchAddress("xsec_puweight", &x_puweight);
+	theTree->SetBranchAddress("xsec_sf", &x_sf);
 	theTree->SetBranchAddress("sys_pvn", &s_PV);
   
   
@@ -170,17 +173,17 @@ void kfactorfit()
 	  // if(p_pt < 225) continue;
 	  // if(j_pt < 225) continue;
 	  x_weight = x_weight * 3.303395;
-      hist3_1->Fill(p_pt, x_weight*x_puweight);
-      hist3_2->Fill(p_eta, x_weight*x_puweight);
-      hist3_3->Fill(j_pt, x_weight*x_puweight);
-      hist3_4->Fill(j_eta, x_weight*x_puweight);
-      hist3_5->Fill(j_e, x_weight*x_puweight);
-      hist3_6->Fill(j_mass, x_weight*x_puweight);
-      hist3_7->Fill(j_tau21, x_weight*x_puweight);
-      hist3_8->Fill(s_cos, x_weight*x_puweight);
-      hist3_9->Fill(s_ptm, x_weight*x_puweight);
-      hist3_10->Fill(s_mass, x_weight*x_puweight);
-	  hist3_11->Fill(s_PV, x_weight*x_puweight);
+      hist3_1->Fill(p_pt, x_weight*x_puweight*x_sf);
+      hist3_2->Fill(p_eta, x_weight*x_puweight*x_sf);
+      hist3_3->Fill(j_pt, x_weight*x_puweight*x_sf);
+      hist3_4->Fill(j_eta, x_weight*x_puweight*x_sf);
+      hist3_5->Fill(j_e, x_weight*x_puweight*x_sf);
+      hist3_6->Fill(j_mass, x_weight*x_puweight*x_sf);
+      hist3_7->Fill(j_tau21, x_weight*x_puweight*x_sf);
+      hist3_8->Fill(s_cos, x_weight*x_puweight*x_sf);
+      hist3_9->Fill(s_ptm, x_weight*x_puweight*x_sf);
+      hist3_10->Fill(s_mass, x_weight*x_puweight*x_sf);
+	  hist3_11->Fill(s_PV, x_weight*x_puweight*x_sf);
     }
 	
   // Least Square fit result: GJets: 1.41, QCD: 0.57
@@ -203,7 +206,7 @@ void kfactorfit()
 	    double NQCD = hist3_1->GetBinContent(k);
 	    //cout<<NData<<" "<<NGjets<<" "<<NQCD<<" "<<pow((NData-(scaleGJets*NGjets + scaleQCD*NQCD))/NData,2)<<endl;
 	    if(NData == 0) continue;//exclude first several empty bins lower than trigger turn on
-	    ls += pow((NData-(scaleGJets*NGjets + scaleQCD*NQCD))/sqrt(NData),2);
+	    ls += pow((NData-(scaleGJets*NGjets + scaleQCD*NQCD))/1000,2);
       }
       if(ls < minls){
 	    minls = ls;
@@ -217,8 +220,8 @@ void kfactorfit()
   }
    cout<<sGJets<<" "<<sQCD<<" "<<minls<<endl;
    
-   sGJets = 1.3;
-   sQCD = 1.1;
+   sGJets = 1.35;
+   sQCD = 1.2;
    
   TCanvas *c = new TCanvas("c","scale",1200,900);
   TAxis *xaxis = g->GetXaxis();
@@ -400,7 +403,7 @@ void kfactorfit()
   hist1_1->Draw("E1SAME");
   hist1_1->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_1,"2017 SinglePhoton","lep");
+  legend->AddEntry(hist1_1,"Run2 Data","lep");
   legend->AddEntry(hist2_1,"2017 MC, GJets(weighted)","f");
   legend->AddEntry(hist3_1,"2017 MC, QCD(weighted)","f");
   legend->Draw();
@@ -466,7 +469,7 @@ void kfactorfit()
   hist1_2->Draw("E1SAME");
   hist1_2->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_2,"2017 SinglePhoton","lep");
+  legend->AddEntry(hist1_2,"Run2 Data","lep");
   legend->AddEntry(hist2_2,"2017 MC, GJets(weighted)","f");
   legend->AddEntry(hist3_2,"2017 MC, QCD(weighted)","f");
   legend->Draw();
@@ -532,7 +535,7 @@ void kfactorfit()
   hist1_3->Draw("E1SAME");
   hist1_3->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_3,"2017 SinglePhoton","lep");
+  legend->AddEntry(hist1_3,"Run2 Data","lep");
   legend->AddEntry(hist2_3,"2017 MC, GJets(weighted)","f");
   legend->AddEntry(hist3_3,"2017 MC, QCD(weighted)","f");
   legend->Draw();
@@ -598,7 +601,7 @@ void kfactorfit()
   hist1_4->Draw("E1SAME");
   hist1_4->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_4,"2017 SinglePhoton","lep");
+  legend->AddEntry(hist1_4,"Run2 Data","lep");
   legend->AddEntry(hist2_4,"2017 MC, GJets(weighted)","f");
   legend->AddEntry(hist3_4,"2017 MC, QCD(weighted)","f");
   legend->Draw();
@@ -664,7 +667,7 @@ void kfactorfit()
   hist1_5->Draw("E1SAME");
   hist1_5->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_5,"2017 SinglePhoton","lep");
+  legend->AddEntry(hist1_5,"Run2 Data","lep");
   legend->AddEntry(hist2_5,"2017 MC, GJets(weighted)","f");
   legend->AddEntry(hist3_5,"2017 MC, QCD(weighted)","f");
   legend->Draw();
@@ -731,7 +734,7 @@ void kfactorfit()
   hist1_6->Draw("E1SAME");
   hist1_6->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_6,"2017 SinglePhoton","lep");
+  legend->AddEntry(hist1_6,"Run2 Data","lep");
   legend->AddEntry(hist2_6,"2017 MC, GJets(weighted)","f");
   legend->AddEntry(hist3_6,"2017 MC, QCD(weighted)","f");
   legend->Draw();
@@ -798,7 +801,7 @@ void kfactorfit()
   hist1_7->Draw("E1SAME");
   hist1_7->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_7,"2017 SinglePhoton","lep");
+  legend->AddEntry(hist1_7,"Run2 Data","lep");
   legend->AddEntry(hist2_7,"2017 MC, GJets(weighted)","f");
   legend->AddEntry(hist3_7,"2017 MC, QCD(weighted)","f");
   legend->Draw();
@@ -864,7 +867,7 @@ void kfactorfit()
   hist1_8->Draw("E1SAME");
   hist1_8->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_8,"2017 SinglePhoton","lep");
+  legend->AddEntry(hist1_8,"Run2 Data","lep");
   legend->AddEntry(hist2_8,"2017 MC, GJets(weighted)","f");
   legend->AddEntry(hist3_8,"2017 MC, QCD(weighted)","f");
   legend->Draw();
@@ -930,7 +933,7 @@ void kfactorfit()
   hist1_9->Draw("E1SAME");
   hist1_9->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_9,"2017 SinglePhoton","lep");
+  legend->AddEntry(hist1_9,"Run2 Data","lep");
   legend->AddEntry(hist2_9,"2017 MC, GJets(weighted)","f");
   legend->AddEntry(hist3_9,"2017 MC, QCD(weighted)","f");
   legend->Draw();
@@ -996,7 +999,7 @@ void kfactorfit()
   hist1_10->Draw("E1SAME");
   hist1_10->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist1_10,"2017 SinglePhoton","lep");
+  legend->AddEntry(hist1_10,"Run2 Data","lep");
   legend->AddEntry(hist2_10,"2017 MC, GJets(weighted)","f");
   legend->AddEntry(hist3_10,"2017 MC, QCD(weighted)","f");
   legend->Draw();

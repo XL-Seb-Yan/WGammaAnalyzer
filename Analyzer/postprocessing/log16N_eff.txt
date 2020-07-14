@@ -1,0 +1,134 @@
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(700,0,16)...
+Info in <TUnixSystem::ACLiC>: creating shared library /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/./postproc_C.so
+Entries: 2748
+2761.33,10257.6
+++++,700,2761.33,10257.6
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(800,0,16)...
+Entries: 2535
+2522.29,10794.8
+++++,800,2522.29,10794.8
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(900,0,16)...
+Entries: 2751
+2728.89,11938.5
+++++,900,2728.89,11938.5
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(1000,0,16)...
+Entries: 2662
+2652.66,12346.9
+++++,1000,2652.66,12346.9
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(1200,0,16)...
+Entries: 2647
+2644.98,12788.1
+++++,1200,2644.98,12788.1
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(1400,0,16)...
+Entries: 2676
+2665.17,13066.9
+++++,1400,2665.17,13066.9
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(1600,0,16)...
+Entries: 2664
+2640.02,13258.3
+++++,1600,2640.02,13258.3
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(1800,0,16)...
+Entries: 2545
+2530.68,13256.7
+++++,1800,2530.68,13256.7
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(2000,0,16)...
+Entries: 2441
+2414.02,13316.4
+++++,2000,2414.02,13316.4
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(2200,0,16)...
+Entries: 2521
+2491.72,13540.3
+++++,2200,2491.72,13540.3
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(2400,0,16)...
+Entries: 2412
+2384.64,13585.3
+++++,2400,2384.64,13585.3
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(2600,0,16)...
+
+ *** Break *** segmentation violation
+
+
+
+===========================================================
+There was a crash.
+This is the entire stack trace of all threads:
+===========================================================
+#0  0x00007feba5dbc46c in waitpid () from /lib64/libc.so.6
+#1  0x00007feba5d39f62 in do_system () from /lib64/libc.so.6
+#2  0x00007feba68c6702 in TUnixSystem::StackTrace() () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
+#3  0x00007feba68c8bac in TUnixSystem::DispatchSignals(ESignals) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
+#4  <signal handler called>
+#5  0x00007feb9c2b1630 in postproc(int, int, int) () from /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/postproc_C.so
+#6  0x00007feba2885c29 in cling::Interpreter::RunFunction(clang::FunctionDecl const*, cling::Value*) [clone .part.280] () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#7  0x00007feba2888ffd in cling::Interpreter::EvaluateInternal(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cling::CompilationOptions, cling::Value*, cling::Transaction**, unsigned long) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#8  0x00007feba28891c2 in cling::Interpreter::process(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cling::Value*, cling::Transaction**, bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#9  0x00007feba2910a8f in cling::MetaProcessor::process(char const*, cling::Interpreter::CompilationResult&, cling::Value*, bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#10 0x00007feba2814291 in HandleInterpreterException(cling::MetaProcessor*, char const*, cling::Interpreter::CompilationResult&, cling::Value*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#11 0x00007feba282420e in TCling::ProcessLine(char const*, TInterpreter::EErrorCode*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#12 0x00007feba2816e0d in TCling::ProcessLineSynch(char const*, TInterpreter::EErrorCode*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#13 0x00007feba67adbd7 in TApplication::ExecuteFile(char const*, int*, bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
+#14 0x00007feba67af8a3 in TApplication::ProcessLine(char const*, bool, int*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
+#15 0x00007feba6c0573e in TRint::ProcessLineNr(char const*, char const*, int*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libRint.so
+#16 0x00007feba6c06c57 in TRint::Run(bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libRint.so
+#17 0x0000000000400bbc in main ()
+===========================================================
+
+
+The lines below might hint at the cause of the crash.
+You may get help by asking at the ROOT forum http://root.cern.ch/forum.
+Only if you are really convinced it is a bug in ROOT then please submit a
+report at http://root.cern.ch/bugs. Please post the ENTIRE stack trace
+from above as an attachment in addition to anything else
+that might help us fixing this issue.
+===========================================================
+#5  0x00007feb9c2b1630 in postproc(int, int, int) () from /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/postproc_C.so
+#6  0x00007feba2885c29 in cling::Interpreter::RunFunction(clang::FunctionDecl const*, cling::Value*) [clone .part.280] () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#7  0x00007feba2888ffd in cling::Interpreter::EvaluateInternal(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cling::CompilationOptions, cling::Value*, cling::Transaction**, unsigned long) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#8  0x00007feba28891c2 in cling::Interpreter::process(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cling::Value*, cling::Transaction**, bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#9  0x00007feba2910a8f in cling::MetaProcessor::process(char const*, cling::Interpreter::CompilationResult&, cling::Value*, bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#10 0x00007feba2814291 in HandleInterpreterException(cling::MetaProcessor*, char const*, cling::Interpreter::CompilationResult&, cling::Value*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+===========================================================
+
+
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(2800,0,16)...
+Entries: 2293
+2289.42,13307.5
+++++,2800,2289.42,13307.5
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(3000,0,16)...
+Entries: 2243
+2236.52,13706.5
+++++,3000,2236.52,13706.5
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(3500,0,16)...
+Entries: 2276
+2270.12,13782.2
+++++,3500,2270.12,13782.2

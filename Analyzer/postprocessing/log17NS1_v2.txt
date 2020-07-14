@@ -1,0 +1,30 @@
+
+Processing postproc.C+(700,0,17)...
+Info in <TUnixSystem::ACLiC>: creating shared library /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/./postproc_C.so
+Entries: 1049
+++++,700,958.91,3371.48
+
+Processing postproc.C+(1200,0,17)...
+Entries: 1096
+++++,1200,999.749,4431.48
+
+Processing postproc.C+(2000,0,17)...
+Entries: 1200
+++++,2000,1103.43,4766.33
+
+Processing postproc.C+(2800,0,17)...
+Entries: 1041
+++++,2800,971.455,4941.55
+
+Processing postproc.C+(3500,0,17)...
+Entries: 1060
+++++,3500,959.996,5027.21
+
+Processing postproc.C+(4000,0,17)...
+Entries: 1019
+++++,4000,927.118,4996.53
+
+Processing postproc.C+(5000,0,17)...
+ERROR IN MASS CORR CALCULATION 1.56678
+Entries: 1089
+++++,5000,1010.98,5169.24

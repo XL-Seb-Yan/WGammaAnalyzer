@@ -132,7 +132,7 @@ void make_signalPDF_N_CBGaus()
 	  // delete fileNew;
   // }
   
-  for(int i=700; i<3501; i+=100){
+  for(int i=3150; i<3251; i+=50){
 
 	  if(redoAnchor) break;
 	  std::string mass_str = std::to_string(i);
@@ -144,16 +144,29 @@ void make_signalPDF_N_CBGaus()
 		  continue;
 	  }
 	  TString fun_name = "CBGaus";
+	  // nominal settings
+	  // RooRealVar* CB_mean = new RooRealVar("CB_mean","CB_mean",i,i-100,i+100,"");
+	  // RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",50,20,110,"");
+	  // RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",1.5,0.1,3,"");
+	  // RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",1,0.1,5,"");
+	  // RooCBShape* CB_model = new RooCBShape("CBShape","Cystal Ball Function",*m,*CB_mean,*CB_sigma,*CB_alpha,*CB_n);
+	  
+	  // RooRealVar* Gaus_mean = new RooRealVar("Gaus_mean","Gaus_mean",i,i-100,i+100,"");
+	  // RooRealVar* Gaus_sigma = new RooRealVar("Gaus_sigma","Gaus_sigma",70,20,150,"");
+	  // RooGaussian* Gaus_model = new RooGaussian("Gaussian","Gaussian Function",*m,*Gaus_mean,*Gaus_sigma);
+	  // RooRealVar* frac = new RooRealVar("frac","frac",0.7,0.5,1);
+	  // RooAddPdf* com_model = new RooAddPdf("CBGaus","CBGaus",RooArgList(*CB_model,*Gaus_model),RooArgList(*frac));
+	  
 	  RooRealVar* CB_mean = new RooRealVar("CB_mean","CB_mean",i,i-100,i+100,"");
-	  RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",50,20,110,"");
-	  RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",1,0.1,3,"");
-	  RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",1,0.1,5,"");
+	  RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",70,40,90,"");
+	  RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",2,1,3,"");
+	  RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",3,0.5,5,"");
 	  RooCBShape* CB_model = new RooCBShape("CBShape","Cystal Ball Function",*m,*CB_mean,*CB_sigma,*CB_alpha,*CB_n);
 	  
 	  RooRealVar* Gaus_mean = new RooRealVar("Gaus_mean","Gaus_mean",i,i-100,i+100,"");
-	  RooRealVar* Gaus_sigma = new RooRealVar("Gaus_sigma","Gaus_sigma",70,20,150,"");
+	  RooRealVar* Gaus_sigma = new RooRealVar("Gaus_sigma","Gaus_sigma",100,50,120,"");
 	  RooGaussian* Gaus_model = new RooGaussian("Gaussian","Gaussian Function",*m,*Gaus_mean,*Gaus_sigma);
-	  RooRealVar* frac = new RooRealVar("frac","frac",0.65,0.5,1);
+	  RooRealVar* frac = new RooRealVar("frac","frac",0.75,0.5,1);
 	  RooAddPdf* com_model = new RooAddPdf("CBGaus","CBGaus",RooArgList(*CB_model,*Gaus_model),RooArgList(*frac));
 	  
 	  TH1F *MChist = (TH1F*)f->Get("GeneratedData__m");
@@ -239,7 +252,7 @@ void make_signalPDF_N_CBGaus()
 	xaxis->SetTitleOffset(1.2);
 	yaxis->SetTitle("Events / 20 GeV");
 	yaxis->SetTitleOffset(1.35);
-	yaxis->SetRangeUser(0,15000);
+	//yaxis->SetRangeUser(0,15000);
 	xaxis->SetRangeUser(i*0.75,i*1.25);
 	frame->Draw();
 	CMS_lumi(p01a,iPeriod,iPos);

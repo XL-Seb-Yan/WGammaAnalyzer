@@ -85,8 +85,6 @@ void SignalInterpolationW(){
   alpha.setBins(2000,"cache") ;
     
   RooPlot* frame1[nMCpoints];
-  RooPlot* frame2[nMCpoints];
-  RooPlot* frame3[nMCpoints];
   TH1* hh[nMCpoints];
     
   for (int iPoint = 0; iPoint!=nMCpoints-1; ++iPoint) {
@@ -103,8 +101,6 @@ void SignalInterpolationW(){
 
     // Show end points as blue curves
     frame1[iPoint] = m.frame() ;
-    gMass[iPoint]->plotOn(frame1[iPoint]) ;
-    gMass[iPoint+1]->plotOn(frame1[iPoint]) ;
         
     int nPoints = int((masses[iPoint+1]-masses[iPoint])/step);
     for (int i=1; i!=nPoints; ++i) {
@@ -114,13 +110,12 @@ void SignalInterpolationW(){
       alpha.setVal(double(i)/double(nPoints)) ;
       lmorph.plotOn(frame1[iPoint],LineColor(kRed));
             
-      //RooDataHist* dataGen = lmorph.generateBinned(m,3000);
-      double xlow = (masses[iPoint+1]-i*step)*0.75;
-      double xhig = (masses[iPoint+1]-i*step)*1.25;
-      int bins = (int)((masses[iPoint+1]-i*step)*0.5)/(int)20;
-      TH1D* distribs0 = (TH1D*)lmorph.createHistogram("GeneratedData",m,Binning(bins,xlow,xhig));
-      //TH1D* distribs0 = new TH1D("","",bins,xlow,xhig);
-      //dataGen->fillHistogram(distribs0,m);
+      RooDataSet* dataGen = lmorph.generate(m,50000);
+      double lowend = (masses[iPoint]+i*step)*0.75;
+      double highend = (masses[iPoint]+i*step)*1.25;
+      int bin = int((masses[iPoint]+i*step)*0.5/20);
+      TH1D* distribs0 = (TH1D*)lmorph.createHistogram("GeneratedData",m,Binning(bin,lowend,highend));
+      dataGen->fillHistogram(distribs0,m);
       /*
       double effcy = funcEff->Eval(masses[iPoint+1]-i*step);
       //double weight = effcy/30000.;
@@ -153,6 +148,8 @@ void SignalInterpolationW(){
       delete distribs0;
       //delete c111;
     }
+    gMass[iPoint]->plotOn(frame1[iPoint]) ;
+    gMass[iPoint+1]->plotOn(frame1[iPoint]) ;
   }
   TCanvas *c = new TCanvas("","",2400,1800);
   c->cd();
@@ -165,8 +162,9 @@ void SignalInterpolationW(){
   xaxis->SetTitle("m_{W#gamma}");
   yaxis->SetTitle("Events (a.u.)");
   yaxis->SetTitleOffset(1.1);
-  xaxis->SetRangeUser(0,4000);
-  yaxis->SetRangeUser(0,0.35);
+  xaxis->SetLimits(600,4000);
+  c->SetLogy();
+  yaxis->SetRangeUser(0.0001,1);
   frame1[0]->Draw();
   for (int iPoint = 1; iPoint!=nMCpoints-1; ++iPoint) {
     frame1[iPoint]->Draw("SAME");
@@ -176,6 +174,27 @@ void SignalInterpolationW(){
   c->Print("Signal_interpolation_W.pdf");
   c->Print("Signal_interpolation_W.root");
   c->Print("Signal_interpolation_W.svg");
+  
+  for (int i = 0; i!=nMCpoints; ++i ){
+    TString massname = std::to_string(int(masses[i]));
+    TString name = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/RooFitWorkspace/W/"+massname+"W-shapes-Unbinned-CB2Gaus.root";
+    if (!gSystem->AccessPathName(name)){
+        TFile *f = TFile::Open(name);
+        RooWorkspace *w = (RooWorkspace *)f->Get("w");
+        RooAbsPdf *pdf = w->pdf("CB2Gaus");
+        RooDataSet* dataGen = pdf->generate(m,30000);
+        TH1D* distribs0 = (TH1D*)pdf->createHistogram("GeneratedData",m,Binning(170,600,4000));
+        dataGen->fillHistogram(distribs0,m);
+        TFile* fileNew = new TFile(Form("PdfGenerateSignal/roodataset_signal-%d-wide.root",int(masses[i])),"RECREATE");
+        distribs0->Write();
+        fileNew->Close();
+        delete distribs0;
+    } 
+    else {
+      std::cout<<"File is not found: "<<name<<std::endl;
+      return;
+    }
+  }
     
   return; 
 }

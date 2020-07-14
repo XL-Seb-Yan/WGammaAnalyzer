@@ -7,6 +7,7 @@ for i in {700,800,900,1000}
 # for i in {2000,2200,2400,2600}
 # for i in {2800,3500}
 do
-    root -l -q make_signal_wide_shapes_CB2Gaus.C+\(${i},700\)
+    # root -l -q make_signal_wide_shapes_CB2Gaus.C+\(${i},700\)
+    root -l -q make_signal_wide_shapes_CBGaus.C+\(${i},700\)
 done
 rm *.so *.d *.pcm

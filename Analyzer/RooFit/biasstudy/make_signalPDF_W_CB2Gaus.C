@@ -78,103 +78,41 @@ void make_signalPDF_W_CB2Gaus()
   gStyle->SetHistLineWidth(2);
 
   // --- Create obervable --- 
-  RooRealVar *m = new RooRealVar("m","m",600,4000,""); //the name "m" will be used by RooDataSet to import data
   
-  bool redoAnchor = 0;
   
   //--- initial parameters
-  float CB_mean_nominal, CB_sigma_nominal, CB_alpha_nominal, CB_n_nominal, Gaus_sigma_1_nominal, Gaus_sigma_2_nominal, frac1_nominal, frac2_nominal;
+  for(int i=2300; i<2601; i+=50){  
   
-  for(int i=700; i<3501; i+=100){
-	  if(!redoAnchor) break;
-	  std::string mass_str = std::to_string(i);
-	  TFile *f = NULL;
-	  TString filename = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/RooFitWorkspace/W/"+mass_str+"W-shapes-Unbinned-CB2Gaus.root";
-	  f = TFile::Open(filename);
-	  if(f == NULL) {
-		  cout<<"root file not found!"<<endl;
-		  continue;
-		  }
-	  RooWorkspace *w = (RooWorkspace*)f->Get("w");
-	  CB_mean_nominal = w->var("CB_mean")->getValV();
-	  CB_sigma_nominal = w->var("CB_sigma")->getValV();
-	  CB_alpha_nominal = w->var("CB_alpha")->getValV();
-	  CB_n_nominal = w->var("CB_n")->getValV();
-	  Gaus_sigma_1_nominal = w->var("Gaus_sigma_1")->getValV();
-	  Gaus_sigma_2_nominal = w->var("Gaus_sigma_2")->getValV();
-	  frac1_nominal = w->var("frac1")->getValV();
-	  frac2_nominal = w->var("frac2")->getValV();
-	  
+  	RooRealVar *m = new RooRealVar("m","m",600,4000);
+  
 	TString fun_name = "CB2Gaus";
-	RooRealVar* CB_mean = new RooRealVar("CB_mean","CB_mean",CB_mean_nominal);
-	RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",CB_sigma_nominal);
-	RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",CB_alpha_nominal);
-	RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",CB_n_nominal);
+	RooRealVar* CB_mean = new RooRealVar("CB_mean","CB_mean",i,i-100,i+100);
+	RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",100,20,150);
+	RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",1.1,1,3);
+	RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",1.1,0.5,5);
 	RooCBShape* CB_model = new RooCBShape("CB","Cystal Ball Function",*m,*CB_mean,*CB_sigma,*CB_alpha,*CB_n);
 
 	// RooRealVar* Gaus_mean_1 = new RooRealVar("Gaus_mean_1","Gaus_mean_1",i,i-100,i+100,"");
-	RooRealVar* Gaus_sigma_1 = new RooRealVar("Gaus_sigma_1","Gaus_sigma_1",Gaus_sigma_1_nominal);
+	RooRealVar* Gaus_sigma_1 = new RooRealVar("Gaus_sigma_1","Gaus_sigma_1",125,100,150);
 	RooGaussian* Gaus_model_1 = new RooGaussian("Gaussian_1","Gaussian Function",*m,*CB_mean,*Gaus_sigma_1);
 
 	// RooRealVar* Gaus_mean_2 = new RooRealVar("Gaus_mean_2","Gaus_mean_2",i,i-100,i+100,"");
-	RooRealVar* Gaus_sigma_2 = new RooRealVar("Gaus_sigma_2","Gaus_sigma_2",Gaus_sigma_2_nominal);
+	RooRealVar* Gaus_sigma_2 = new RooRealVar("Gaus_sigma_2","Gaus_sigma_2",220,200,300);
 	RooGaussian* Gaus_model_2 = new RooGaussian("Gaussian_2","Gaussian Function",*m,*CB_mean,*Gaus_sigma_2);
 
-	RooRealVar* frac1 = new RooRealVar("frac1","frac1",frac1_nominal);
+	RooRealVar* frac1 = new RooRealVar("frac1","frac1",0.80,0.75,0.9);
 	RooAddPdf* com_model_1 = new RooAddPdf("CBGaus","CBGaus",RooArgList(*CB_model,*Gaus_model_1),RooArgList(*frac1));
-	RooRealVar* frac2 = new RooRealVar("frac2","frac2",frac2_nominal);
+	RooRealVar* frac2 = new RooRealVar("frac2","frac2",0.8,0.5,0.9);
 	RooAddPdf* com_model = new RooAddPdf("CB2Gaus","CB2Gaus",RooArgList(*com_model_1,*Gaus_model_2),RooArgList(*frac2));
-	  
-	  RooDataSet* dataGen = com_model->generate(*m,30000,RooFit::Name("ImorphData"));
-	  TH1D* distribs0 = (TH1D*)com_model->createHistogram("GeneratedData",*m,Binning(170,600,4000));
-	  dataGen->fillHistogram(distribs0,*m);
-	  TFile* fileNew = new TFile(Form("roodataset_signal-%d-wide.root",int(i)),"RECREATE");
-	  distribs0->Write();
-	  fileNew->Close();
-	  delete fileNew;
-  }
+	
+	
+	TString mass_str = std::to_string(i);
+	TFile *f = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/RooFitWorkspace/W/PdfGenerateSignal/roodataset_signal-"+mass_str+"-wide.root");
   
-  for(int i=1800; i<3501; i+=100){
-
-	  if(redoAnchor) break;
-	  std::string mass_str = std::to_string(i);
-	  TFile *f = NULL;
-	  TString filename = "/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/RooFitWorkspace/N/PdfGenerateSignal/roodataset_signal-"+mass_str+"-narrow.root";
-	  f = TFile::Open(filename);
-	  if(f == NULL) {
-		  cout<<"root file not found: "<<mass_str<<endl;
-		  continue;
-	  }
-	  TString fun_name = "CB2Gaus";
-	RooRealVar* CB_mean = new RooRealVar("CB_mean","CB_mean",i,i-100,i+100,"");
-	RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",50,0,150,"");
-	RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",1.2,0.1,3,"");
-	RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",1.1,0.1,5,"");
-	RooCBShape* CB_model = new RooCBShape("CB","Cystal Ball Function",*m,*CB_mean,*CB_sigma,*CB_alpha,*CB_n);
-
-	// RooRealVar* Gaus_mean_1 = new RooRealVar("Gaus_mean_1","Gaus_mean_1",i,i-100,i+100,"");
-	RooRealVar* Gaus_sigma_1 = new RooRealVar("Gaus_sigma_1","Gaus_sigma_1",70,20,200,"");
-	RooGaussian* Gaus_model_1 = new RooGaussian("Gaussian_1","Gaussian Function",*m,*CB_mean,*Gaus_sigma_1);
-
-	// RooRealVar* Gaus_mean_2 = new RooRealVar("Gaus_mean_2","Gaus_mean_2",i,i-100,i+100,"");
-	RooRealVar* Gaus_sigma_2 = new RooRealVar("Gaus_sigma_2","Gaus_sigma_2",90,30,350,"");
-	RooGaussian* Gaus_model_2 = new RooGaussian("Gaussian_2","Gaussian Function",*m,*CB_mean,*Gaus_sigma_2);
-
-	RooRealVar* frac1 = new RooRealVar("frac1","frac1",0.8,0.75,0.9);
-	RooAddPdf* com_model_1 = new RooAddPdf("CBGaus","CBGaus",RooArgList(*CB_model,*Gaus_model_1),RooArgList(*frac1));
-	RooRealVar* frac2 = new RooRealVar("frac2","frac2",0.7,0.5,0.85);
-	RooAddPdf* com_model = new RooAddPdf("CB2Gaus","CB2Gaus",RooArgList(*com_model_1,*Gaus_model_2),RooArgList(*frac2));
-	  
-	  TH1F *MChist = (TH1F*)f->Get("GeneratedData__m");
-	  
-	  cout<<MChist<<endl;
-
-  
+	TH1F *MChist = (TH1F*)f->Get("GeneratedData__m");
 	RooDataHist datah("Signal MC (W band)","Signal MC (W band)",RooArgSet(*m),MChist);
 
-	RooFitResult *r = com_model->fitTo(datah,Range(i*0.75,i*1.25),RooFit::Minimizer("Minuit2"),SumW2Error(false),Save()); //SumW2Error(false) for weighted data, see how to choose this with same calling without SumW2Error(false)
-
-
+	RooFitResult *r = com_model->fitTo(datah,RooFit::Minimizer("Minuit2"),Save()); //SumW2Error(false) for weighted data, see how to choose this with same calling without SumW2Error(false)
 	// --- Plot ---
 	  gStyle->SetOptStat(111111);
 	  RooPlot *frame = m->frame();
@@ -190,7 +128,7 @@ void make_signalPDF_W_CB2Gaus()
 	  datah.plotOn(frame);
 	  frame->getAttMarker()->SetMarkerSize(2);
 	  
-	  TString chi2txt = "#chi^{2}/ndf: "+to_str_trim(frame->chiSquare("fit","data", 7));
+	  TString chi2txt = "#chi^{2}/ndf: "+to_str_trim(frame->chiSquare("fit","data",8));
 	  TString NLLtxt = "NLL: "+to_str_trim(com_model->createNLL(datah)->getVal());
 	  TString CBmean = "#mu_{CB}: "+to_str_trim(CB_mean->getVal())+" #pm "+to_str_trim(CB_mean->getError())+" (GeV)";
 	  TString CBsigma = "#sigma_{CB}: "+to_str_trim(CB_sigma->getVal())+" #pm "+to_str_trim(CB_sigma->getError())+" (GeV)";
@@ -254,7 +192,7 @@ void make_signalPDF_W_CB2Gaus()
 	  xaxis->SetTitleOffset(1.2);
 	  yaxis->SetTitle("Events / 20 GeV");
 	  yaxis->SetTitleOffset(1.35);
-	  yaxis->SetRangeUser(0,15000);
+	  //yaxis->SetRangeUser(0,15000);
 	  xaxis->SetRangeUser(i*0.75,i*1.25);
 	  frame->Draw();
 	  CMS_lumi(p01a,iPeriod,iPos);
@@ -303,6 +241,8 @@ void make_signalPDF_W_CB2Gaus()
 	  w->import(*com_model);
 	  TString outname = mass_str+"W-shapes-Unbinned-CB2Gaus"+".root";
 	  w->writeToFile(outname);
+	  
+	  delete m;
 	}
 
 }

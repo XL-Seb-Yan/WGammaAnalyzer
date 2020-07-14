@@ -29,8 +29,8 @@
 #include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/CMS_lumi.C"
 #endif
 
-void postproc(std::string dataset, int runondata, int runyear)
-// void postproc(int mass, int runondata, int runyear)
+// void postproc(std::string dataset, int runondata, int runyear)
+void postproc(int mass, int runondata, int runyear)
 {
 
   gROOT->SetBatch(1);
@@ -59,21 +59,23 @@ void postproc(std::string dataset, int runondata, int runyear)
   float ak8puppijet_pt, ak8puppijet_eta, ak8puppijet_phi, ak8puppijet_e, ak8puppijet_masssoftdropcorr, ak8puppijet_tau21;
   // System
   float sys_costhetastar, sys_ptoverm, m;
-  float xsec_weight, xsec_kfactor, xsec_puweight;
-  int sys_pvn;
+  float xsec_weight, xsec_kfactor, xsec_puweight, xsec_sf;
+  int sys_pvn, run_num, evt_num, lumi_block;
   
   // Open input file
   Float_t p_pt, p_eta, p_phi, p_e, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, evt_pdfunc;
   float x_weight = 1;
   float x_kfactor = 1;
   float x_puweight = 1;
-  int s_pv; 
+  float x_sf = 1;
+  int s_pv, s_runnum, s_evtnum, s_lumiblock; 
   
-  // std::string dataset = "SignalMC"+std::to_string(mass)+"N";
+  std::string dataset = "SignalMC"+std::to_string(mass)+"_W_S1";
   
   TString year_str = std::to_string(runyear);
   
- TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/20"+ year_str +"/ntuples_looseID/"+dataset+"_nominal_pileup_WGamma_full_full_May22.root");
+  TFile *input = TFile::Open(("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuples_looseID/" + dataset + "_nominal_pileup_WGamma_full_full_May22.root").c_str());
+  // TFile *input = TFile::Open(("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Selection/2017conf/SelOutPut/"+dataset+"_test.root").c_str());
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -91,13 +93,16 @@ void postproc(std::string dataset, int runondata, int runyear)
   theTree->SetBranchAddress("sys_invmass", &s_mass);
   theTree->SetBranchAddress("xsec_weight", &x_weight);
   theTree->SetBranchAddress("PV_N", &s_pv);
+  theTree->SetBranchAddress("run_num", &s_runnum);
+  theTree->SetBranchAddress("evt_num", &s_evtnum);
+  theTree->SetBranchAddress("lumi_block", &s_lumiblock);
+  
   
   TH1D* pileup_MC = (TH1D*)input->Get("pileup");
   pileup_MC->Scale(1/(double)pileup_MC->Integral());
 
   // Create output file
-  //TFile *outFile = TFile::Open(dataset+"_postproc_WGamma"+year_str+"_full_full_presel_jmcorr_kfactor_Mar17.root", "RECREATE");
-  TFile *outFile = TFile::Open(dataset+"_postproc_WGamma"+year_str+"_SR_fullcut_600_jmcorr_May22.root", "RECREATE");
+  TFile *outFile = TFile::Open(dataset+"_postproc_WGamma"+year_str+"_SR_sigrange_fullcut_jmcorr_May22.root", "RECREATE");
   TTree *outTree = new TTree("Events","Events"); 
   outTree->Branch("sys_pvn",       &sys_pvn,      "sys_pvn/I");
   outTree->Branch("photon_pt",       &photon_pt,      "photon_pt/F");
@@ -116,6 +121,10 @@ void postproc(std::string dataset, int runondata, int runyear)
   outTree->Branch("xsec_weight",             &xsec_weight,           "xsec_weight/F");
   outTree->Branch("xsec_kfactor",            &xsec_kfactor,           "xsec_kfactor/F");
   outTree->Branch("xsec_puweight",          &xsec_puweight,         "xsec_puweight/F");
+  outTree->Branch("xsec_sf",          &xsec_sf,         "xsec_sf/F");
+  outTree->Branch("run_num",          &run_num,         "run_num/I");
+  outTree->Branch("evt_num",          &evt_num,         "evt_num/I");
+  outTree->Branch("lumi_block",       &lumi_block,      "lumi_block/I");
   
   TFile* pileup_central = TFile::Open("/afs/cern.ch/user/x/xuyan/WGProj/PROD17/DATA/pileup/Pileup_"+year_str+".root", "READ");
   TH1F* pileup_Data_central = (TH1F*)pileup_central->Get("pileup");
@@ -131,9 +140,9 @@ void postproc(std::string dataset, int runondata, int runyear)
   
   //17
   TF1* f2 = new TF1("f2","[0]/pow((x+[5])/[6],[1])+[2]/pow((x+[5])/[6]*100,[3])+[4]",400,3000);
-  f2->SetParameters(2.2210,14.0254,-438.18,0.5065,119.99,4428.19,5359.17);
+  f2->SetParameters(0.0000337613,54.4947,105.146,0.282562,50.2222,7290.78,9533.69);
   TF1* f2a = new TF1("f2a","pol1",200,400);
-  f2a->SetParameters(76.332,0.020022);
+  f2a->SetParameters(75.9682,0.020765);
   
    
   float sumWtotal = 0;
@@ -150,13 +159,58 @@ void postproc(std::string dataset, int runondata, int runyear)
 		x_puweight = pileupweight_central ;
 	
 	if(dataset.find("GJets") != std::string::npos)
-		x_kfactor = 1.23;
+		x_kfactor = 1.4;
 	else if(dataset.find("QCD") != std::string::npos)
-		x_kfactor = 1.20;
+		x_kfactor = 1.2;
 	else
 		x_kfactor = 1;
 	
-	sumWtotal += x_weight * x_kfactor * x_puweight;
+	//add w-tagging and photon loose ID / CSEV SF
+	float sf_CSEV = 1;
+	float sf_wtag = 1;
+	float sf_pID = 1;
+	if(!runondata){
+		if(runyear == 16){
+			sf_CSEV = 0.9938;
+			sf_wtag = 0.99;
+			if(p_eta > -1.44 && p_eta < -0.8)
+				sf_pID = 0.999;
+			else if(p_eta < 0)
+				sf_pID = 1.023;
+			else if(p_eta < 0.8)
+				sf_pID = 1.025;
+			else if(p_eta < 1.44)
+				sf_pID = 0.990;	
+		}
+		if(runyear == 17){
+			sf_CSEV = 0.9859;
+			sf_wtag = 0.957;
+			if(p_eta > -1.44 && p_eta < -0.8)
+				sf_pID = 0.971;
+			else if(p_eta < 0)
+				sf_pID = 0.990;
+			else if(p_eta < 0.8)
+				sf_pID = 0.968;
+			else if(p_eta < 1.44)
+				sf_pID = 0.944;	
+		}
+		if(runyear == 18){
+			sf_CSEV = 1.0084;
+			sf_wtag = 0.964;
+			if(p_eta > -1.44 && p_eta < -0.8)
+				sf_pID = 1.033;
+			else if(p_eta < 0)
+				sf_pID = 1.02;
+			else if(p_eta < 0.8)
+				sf_pID = 1.051;
+			else if(p_eta < 1.44)
+				sf_pID = 0.998;	
+		}
+	}
+	
+	x_sf = sf_CSEV * sf_wtag * sf_pID;
+
+	sumWtotal += x_weight * x_kfactor * x_puweight * x_sf;
 	
 	//Apply mass correction
 	double masscorr = 1;
@@ -175,17 +229,17 @@ void postproc(std::string dataset, int runondata, int runyear)
 	else
 			masscorr = 80.379 / f2->Eval(j_pt);
 	}
-	if(masscorr > 5)
-		cout<<"ERROR IN MASS CORR CALCULATION"<<endl;
+	if(masscorr > 1.5)
+		cout<<"ERROR IN MASS CORR CALCULATION"<<" "<<masscorr<<endl;
 	
-	if(s_mass < 600) continue;
-	// if(s_mass < 0.75*mass || s_mass > 1.25*mass) continue;
+	// if(s_mass < 600) continue;
+	if(s_mass < 0.75*mass || s_mass > 1.25*mass) continue;
     if(j_mass * masscorr < 68 || j_mass * masscorr > 94) continue;
 	//if(j_mass * masscorr < 38 || j_mass * masscorr > 64) continue;
 	//if(j_mass * masscorr < 88 || j_mass * masscorr > 114) continue;
 	//if(j_mass * masscorr < 40 || j_mass * masscorr > 65) continue;
-	if(p_pt < 225) continue;
-	if(j_pt < 225) continue;
+	if(p_pt < 225) continue; //presel
+	if(j_pt < 225) continue; //presel
     if(abs(p_eta) > 1.44) continue;
     if(abs(j_eta) > 2) continue;
     if(j_tau21 > 0.35) continue;
@@ -209,14 +263,18 @@ void postproc(std::string dataset, int runondata, int runyear)
 	xsec_kfactor = x_kfactor;
 	xsec_puweight = x_puweight;
 	sys_pvn = s_pv;
+	xsec_sf = x_sf;
+	run_num = s_runnum;
+	evt_num = s_evtnum;
+	lumi_block = s_lumiblock;
 	
 	outTree->Fill();
-	sumWpass += xsec_weight * xsec_kfactor * xsec_puweight;
+	sumWpass += xsec_weight * xsec_kfactor * xsec_puweight * x_sf;
 
   }
   cout<<"Entries: "<<outTree->GetEntries()<<endl;
-  cout<<sumWpass<<","<<sumWtotal<<endl;
-  // cout<<"++++,"<<mass<<","<<sumWpass<<","<<sumWtotal<<endl;
+  // cout<<sumWpass<<","<<sumWtotal<<endl;
+  cout<<"++++,"<<mass<<","<<sumWpass<<","<<sumWtotal<<endl;
   outFile->Write();
   outFile->Close();
 }

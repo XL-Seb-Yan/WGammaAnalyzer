@@ -1,0 +1,133 @@
+
+Processing postproc.C+(700,0,17)...
+Info in <TUnixSystem::ACLiC>: creating shared library /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/./postproc_C.so
+Entries: 2769
+2561.82,9000.81
+++++,700,2561.82,9000.81
+
+Processing postproc.C+(800,0,17)...
+Entries: 2795
+2555.9,10025
+++++,800,2555.9,10025
+
+Processing postproc.C+(900,0,17)...
+Entries: 2825
+2626.58,10758.7
+++++,900,2626.58,10758.7
+
+Processing postproc.C+(1000,0,17)...
+Entries: 2859
+2635.17,10950.4
+++++,1000,2635.17,10950.4
+
+Processing postproc.C+(1200,0,17)...
+Entries: 2782
+2565.96,11486.1
+++++,1200,2565.96,11486.1
+
+Processing postproc.C+(1400,0,17)...
+Entries: 2802
+2581.68,11702.1
+++++,1400,2581.68,11702.1
+
+Processing postproc.C+(1600,0,17)...
+Entries: 2850
+2616.67,12073.6
+++++,1600,2616.67,12073.6
+
+Processing postproc.C+(1800,0,17)...
+Error in <TFile::TFile>: file /afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuples_looseID/SignalMC1800N_nominal_pileup_WGamma_full_full_May22.root does not exist
+
+ *** Break *** segmentation violation
+
+
+
+===========================================================
+There was a crash.
+This is the entire stack trace of all threads:
+===========================================================
+    gdb.printing.register_pretty_printer(gdb.current_objfile(),
+    gdb.printing.register_pretty_printer(gdb.current_objfile(),
+#0  0x00007fc0af2d846c in waitpid () at /lib64/libc.so.6
+#1  0x00007fc0af255f62 in do_system () at /lib64/libc.so.6
+#2  0x00007fc0afdb509c in TUnixSystem::StackTrace() () at /usr/lib64/root/libCore.so.6.20
+#3  0x00007fc0afdb7a6c in TUnixSystem::DispatchSignals(ESignals) () at /usr/lib64/root/libCore.so.6.20
+#4  0x00007fc0af249400 in <signal handler called> () at /lib64/libc.so.6
+#5  0x00007fc0a25cfb38 in postproc(int, int, int) (mass=1800, runondata=0, runyear=17) at /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/./postproc.C:79
+#6  0x00007fc0b0451096 in  ()
+#7  0x000000000096be00 in  ()
+#8  0x00000011a9f4ac60 in  ()
+#9  0x0000070800000000 in  ()
+#10 0x00007fc0a25cf810 in postproc(int, int, int) () at /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/postproc_C_ACLiC_dict.cxx:99
+#11 0x0000000100dd1808 in  ()
+#12 0x00000000009b8350 in  ()
+#13 0x00007fc0aa031180 in cling::runtime::internal::setValueNoAlloc(void*, void*, void*, char) () at /usr/lib64/root/libCling.so
+#14 0x00007ffd1f61a4f0 in  ()
+#15 0x0000000000000000 in  ()
+===========================================================
+
+
+The lines below might hint at the cause of the crash.
+You may get help by asking at the ROOT forum http://root.cern.ch/forum
+Only if you are really convinced it is a bug in ROOT then please submit a
+report at http://root.cern.ch/bugs Please post the ENTIRE stack trace
+from above as an attachment in addition to anything else
+that might help us fixing this issue.
+===========================================================
+#5  0x00007fc0a25cfb38 in postproc(int, int, int) (mass=1800, runondata=0, runyear=17) at /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/./postproc.C:79
+#6  0x00007fc0b0451096 in  ()
+#7  0x000000000096be00 in  ()
+#8  0x00000011a9f4ac60 in  ()
+#9  0x0000070800000000 in  ()
+#10 0x00007fc0a25cf810 in postproc(int, int, int) () at /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/postproc_C_ACLiC_dict.cxx:99
+#11 0x0000000100dd1808 in  ()
+#12 0x00000000009b8350 in  ()
+#13 0x00007fc0aa031180 in cling::runtime::internal::setValueNoAlloc(void*, void*, void*, char) () at /usr/lib64/root/libCling.so
+#14 0x00007ffd1f61a4f0 in  ()
+#15 0x0000000000000000 in  ()
+===========================================================
+
+
+
+Processing postproc.C+(2000,0,17)...
+Entries: 2660
+2454.93,12130.3
+++++,2000,2454.93,12130.3
+
+Processing postproc.C+(2200,0,17)...
+Entries: 2589
+2380.58,12368.4
+++++,2200,2380.58,12368.4
+
+Processing postproc.C+(2400,0,17)...
+Entries: 2552
+2344.7,12502.5
+++++,2400,2344.7,12502.5
+
+Processing postproc.C+(2600,0,17)...
+Entries: 2449
+2268.21,12620
+++++,2600,2268.21,12620
+
+Processing postproc.C+(2800,0,17)...
+Entries: 2502
+2302.6,12599.4
+++++,2800,2302.6,12599.4
+
+Processing postproc.C+(3000,0,17)...
+Entries: 2348
+2164.41,12715.4
+++++,3000,2164.41,12715.4
+
+Processing postproc.C+(3500,0,17)...
+Entries: 2378
+2173.15,12858.8
+++++,3500,2173.15,12858.8
+
+Entries: 1486
+++++,4000,1358.3,9113.49
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(5000,0,17)...
+Entries: 1378
+++++,5000,1252.76,8568.49

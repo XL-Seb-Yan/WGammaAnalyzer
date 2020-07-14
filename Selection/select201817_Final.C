@@ -162,6 +162,8 @@ void select201817_Final(const TString conf="samples.conf", // input file
   float event_pdfunc;
   // Pileup
   int PV_N;		   
+  // evt info
+  int run_num, evt_num, lumi_block;  		  
   
   // Data structures to store info from produced flat ntuples
   //--Event--
@@ -289,7 +291,9 @@ void select201817_Final(const TString conf="samples.conf", // input file
     outTree1->Branch("sys_seperation",          &sys_seperation,        "sys_seperation/F");
     outTree1->Branch("xsec_weight",             &xsec_weight,           "xsec_weight/F");
     outTree1->Branch("event_pdfunc",            &event_pdfunc,          "event_pdfunc/F");
-    
+    outTree1->Branch("run_num",                 &run_num,               "run_num/I");
+	outTree1->Branch("evt_num",                 &evt_num,               "evt_num/I");
+	outTree1->Branch("lumi_block",              &lumi_block,            "lumi_block/I");
    
 
     cout<<"begin loop over files"<<endl;
@@ -309,12 +313,10 @@ void select201817_Final(const TString conf="samples.conf", // input file
       folder = (TDirectory*)infile->Get("ntuplizer");
       eventTree = (TTree*)folder->Get("tree");
       assert(eventTree);
-      /*
+      //--Run Info--
       eventTree->SetBranchAddress("EVENT_run", &runnum);                      
       eventTree->SetBranchAddress("EVENT_event", &evtnum);                    
-      eventTree->SetBranchAddress("EVENT_lumiBlock", &lumiBlock); 
-      */
-      
+      eventTree->SetBranchAddress("EVENT_lumiBlock", &lumiBlock);
 	  //--PV--
 	  eventTree->SetBranchAddress("PV_N", &pv_N);     
       //--Photons--
@@ -736,6 +738,9 @@ void select201817_Final(const TString conf="samples.conf", // input file
 	  xsec_weight = weight;
 	  event_pdfunc = evt_pdfunc;
 	  PV_N = pv_N;			   
+	  run_num = runnum;
+	  evt_num = evtnum;
+	  lumi_block = lumiBlock;				  
 	  outTree1->Fill();
 	}
 	if(pass_p2) count5++;

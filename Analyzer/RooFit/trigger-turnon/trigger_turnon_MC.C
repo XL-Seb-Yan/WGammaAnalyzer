@@ -20,20 +20,41 @@ void trigger_turnon(int seed=37)
   RooGenericPdf * model = new RooGenericPdf("ErfExp","ErfExp","TMath::Exp(p0*m+p1*pow(m,2))*(1.+TMath::Erf((m-offset)/width))/2.",RooArgList(*x, *p0, *p1, *offset, *width));
 
   // --- Import Binned dataset ---
-  float s_mass;
+  Float_t p_pt, p_eta, p_phi, p_e, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, evt_pdfunc;
   float x_weight = 1;
   float x_kfactor = 1;
   float x_puweight = 1;
+  float x_sf = 1;
+  int s_pv; 
   TH1F MChist("MC","MC",80,400,2000);
-  TFile file("/afs/cern.ch/user/x/xuyan/WGProj/PROD17/DATA/2017/fullcut/BkgMC_postproc_WGamma17_SR_fullcut_jmcorr_May22.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/presel/BkgMC_postproc_WGamma17_full_full_jmcorr_May22.root");
   TTree *tree = (TTree*)file.Get("Events");
+  tree->SetBranchAddress("photon_pt", &p_pt);
+  tree->SetBranchAddress("photon_eta", &p_eta);
+  tree->SetBranchAddress("photon_phi", &p_phi);
+  tree->SetBranchAddress("photon_e", &p_e);
+  tree->SetBranchAddress("ak8puppijet_pt", &j_pt);
+  tree->SetBranchAddress("ak8puppijet_eta", &j_eta);
+  tree->SetBranchAddress("ak8puppijet_phi", &j_phi);
+  tree->SetBranchAddress("ak8puppijet_e", &j_e);
+  tree->SetBranchAddress("ak8puppijet_masssoftdropcorr", &j_mass);
+  tree->SetBranchAddress("ak8puppijet_tau21", &j_tau21);
+  tree->SetBranchAddress("sys_costhetastar", &s_cos);
+  tree->SetBranchAddress("sys_ptoverm", &s_ptm);
   tree->SetBranchAddress("m", &s_mass);
   tree->SetBranchAddress("xsec_weight", &x_weight);
-  tree->SetBranchAddress("xsec_kfactor", &x_kfactor);
-  tree->SetBranchAddress("xsec_puweight", &x_puweight);
+  tree->SetBranchAddress("PV_N", &s_pv);
   for (int ievt = 0; ievt<tree->GetEntries();ievt++) {
     tree->GetEntry(ievt);
-    MChist.Fill(s_mass, x_weight*x_kfactor*x_puweight);
+    if(j_mass < 68 || j_mass > 94) continue;
+	if(p_pt < 225) continue;
+	if(j_pt < 225) continue;
+    if(abs(p_eta) > 1.44) continue;
+    if(abs(j_eta) > 2) continue;
+    if(j_tau21 > 0.35) continue;
+    if(s_ptm < 0.37) continue;
+    if(s_cos > 0.6) continue;
+    MChist.Fill(s_mass, x_weight*x_kfactor*x_puweight*x_sf);
   }
   RooDataHist datah("Background MC (W band)","Background MC (W band)",RooArgSet(*x),&MChist);
   cout<<"number of weighted entries: "<<datah.sum(false)<<endl;
@@ -63,7 +84,7 @@ void trigger_turnon(int seed=37)
   xaxis->SetTitleOffset(1.2);
   yaxis->SetTitle("Events / 20 GeV");
   yaxis->SetTitleOffset(1.2);
-  yaxis->SetRangeUser(0,2200);
+  yaxis->SetRangeUser(0,2000);
   xaxis->SetLimits(400,1500);
   //c01->SetLogy();
   frame->Draw();
@@ -106,9 +127,9 @@ void trigger_turnon(int seed=37)
   
   TCanvas *c03 = new TCanvas("c03","c03",1200,900);
   c03->cd();
-  TF1 *f1 = new TF1("erf","1980*(1.+TMath::Erf((x-[0])/[1]))/2.",400,1500);
+  TF1 *f1 = new TF1("erf","1800*(1.+TMath::Erf((x-[0])/[1]))/2.",400,1500);
   f1->SetParameters(offset->getValV(), width->getValV());
-  TF1 *f2 = new TF1("exp","300000*TMath::Exp([0]*x+[1]*pow(x,2))",400,1500);
+  TF1 *f2 = new TF1("exp","500000*TMath::Exp([0]*x+[1]*pow(x,2))",400,1500);
   f2->SetParameters(p0->getValV(), p1->getValV());
   cout<<"Turn-on end point is: "<<f1->GetX(0.99)<<endl;
   f1->GetYaxis()->SetRangeUser(0,2500);

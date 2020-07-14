@@ -1,0 +1,168 @@
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing ../select201817_GENAcc.C+("sample_sig_spin1.conf","SelOutPut",1)...
+700
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin1_700_0p01.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 7000
+Number of events within acceptance: 2801
+Acceptance: 700_N_S1 0.400143
+1200
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin1_1200_0p01.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 7000
+Number of events within acceptance: 3101
+Acceptance: 1200_N_S1 0.443
+2000
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin1_2000_0p01.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 7000
+Number of events within acceptance: 3114
+Acceptance: 2000_N_S1 0.444857
+2800
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin1_2800_0p01.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 7000
+Number of events within acceptance: 3076
+Acceptance: 2800_N_S1 0.439429
+3500
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin1_3500_0p01.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 7000
+Number of events within acceptance: 3014
+Acceptance: 3500_N_S1 0.430571
+4000
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin1_4000_0p01.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 7000
+Number of events within acceptance: 3053
+Acceptance: 4000_N_S1 0.436143
+5000
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin1_5000_0p01.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 7000
+Number of events within acceptance: 2858
+Acceptance: 5000_N_S1 0.408286
+700
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin1_700_5.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 6500
+Number of events within acceptance: 2286
+Acceptance: 700_W_S1 0.351692
+1200
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin1_1200_5.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 7000
+Number of events within acceptance: 2900
+Acceptance: 1200_W_S1 0.414286
+2000
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin1_2000_5.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 7000
+Number of events within acceptance: 3108
+Acceptance: 2000_W_S1 0.444
+2800
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin1_2800_5.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 7000
+Number of events within acceptance: 3016
+Acceptance: 2800_W_S1 0.430857
+3500
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin1_3500_5.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 6500
+Number of events within acceptance: 2716
+Acceptance: 3500_W_S1 0.417846
+4000
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin1_4000_5.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 7000
+Number of events within acceptance: 2802
+Acceptance: 4000_W_S1 0.400286
+5000
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin1_5000_5.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 6000
+Number of events within acceptance: 2445
+Acceptance: 5000_W_S1 0.4075
+selectWG  : Real Time =  16.58 seconds Cpu Time =  15.68 seconds
+
+Processing ../select201817_GENAcc.C+("sample_sig_spin1.conf","SelOutPut",1)...
+700
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin1_700_0p01.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 10000
+Number of events within acceptance: 4075
+Acceptance: 700_N_S1 0.4075
+1200
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin1_1200_0p01.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 10000
+Number of events within acceptance: 4466
+Acceptance: 1200_N_S1 0.4466
+3500
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin1_3500_0p01.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 10000
+Number of events within acceptance: 4276
+Acceptance: 3500_N_S1 0.4276
+700
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin1_700_5.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 10000
+Number of events within acceptance: 3501
+Acceptance: 700_W_S1 0.3501
+1200
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin1_1200_5.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 10000
+Number of events within acceptance: 4159
+Acceptance: 1200_W_S1 0.4159
+3500
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin1_3500_5.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 9500
+Number of events within acceptance: 3937
+Acceptance: 3500_W_S1 0.414421
+selectWG  : Real Time =  15.30 seconds Cpu Time =   9.68 seconds
+

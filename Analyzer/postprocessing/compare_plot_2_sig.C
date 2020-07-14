@@ -29,7 +29,7 @@
 #include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/CMS_lumi.C"
 #endif
 
-void compare_plot_2()
+void compare_plot_2_sig()
 {
   gROOT->SetBatch(1);
   lumi_13TeV = "";
@@ -60,7 +60,7 @@ void compare_plot_2()
   TH1 *hist17 = new TH1F("17","tau21_{j}",50,0,1);
   TH1 *hist18 = new TH1F("18","cos(#theta*)_{p}",50,0,1);
   TH1 *hist19 = new TH1F("19","pt/M",50,0,2);
-  TH1 *hist110 = new TH1F("110","invariant mass",100,0,4000);
+  TH1 *hist110 = new TH1F("110","invariant mass",100,2000,4000);
   TH1 *hist111 = new TH1F("111","#gamma MVA ID",60,-0.2,1);
   TH1 *hist21 = new TH1F("21","pt_{#gamma}",100,0,3000);
   TH1 *hist22 = new TH1F("22","eta_{#gamma}",50,-2,2);
@@ -71,7 +71,7 @@ void compare_plot_2()
   TH1 *hist27 = new TH1F("27","tau21_{j}",50,0,1);
   TH1 *hist28 = new TH1F("28","cos(#theta*)_{p}",50,0,1);
   TH1 *hist29 = new TH1F("29","pt/M",50,0,2);
-  TH1 *hist210 = new TH1F("210","invariant mass",100,0,4000);
+  TH1 *hist210 = new TH1F("210","invariant mass",100,2000,4000);
   TH1 *hist211 = new TH1F("211","#gamma MVA ID",60,-0.2,1);
   // Local variables to store to outfile
   // Photon
@@ -82,9 +82,9 @@ void compare_plot_2()
   float sys_costhetastar, sys_ptoverm, m;
   
   // Open input file
-  Float_t p_pt, p_eta, p_phi, p_e, p_mva, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight;
+  Float_t p_pt, p_eta, p_phi, p_e, p_mva, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight, x_sf, x_puweight;
   
-  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuples_looseID/SignalMC2000W_S1_nominal_pileup_WGamma_full_full_May22.root");
+  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/fullcut/SignalMC2800W_postproc_WGamma17_SR_sigrange_fullcut_jmcorr_May22.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -100,26 +100,29 @@ void compare_plot_2()
   theTree->SetBranchAddress("ak8puppijet_tau21", &j_tau21);
   theTree->SetBranchAddress("sys_costhetastar", &s_cos);
   theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
-  theTree->SetBranchAddress("sys_invmass", &s_mass);
+  theTree->SetBranchAddress("m", &s_mass);
   //theTree->SetBranchAddress("xsec_weight", &x_weight);
+  theTree->SetBranchAddress("xsec_puweight", &x_puweight);
+  theTree->SetBranchAddress("xsec_sf", &x_sf);
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
     
-    hist11->Fill(p_pt);
-    hist12->Fill(p_eta);
-    hist13->Fill(j_pt);
-    hist14->Fill(j_eta);
-    hist15->Fill(j_e);
-    hist16->Fill(j_mass);
-    hist17->Fill(j_tau21);
-    hist18->Fill(s_cos);
-    hist19->Fill(s_ptm);
-    hist110->Fill(s_mass);
-    hist111->Fill(p_mva);  
+	cout<<x_sf<<","<<endl;
+    hist11->Fill(p_pt, x_puweight*x_sf);
+    hist12->Fill(p_eta, x_puweight*x_sf);
+    hist13->Fill(j_pt, x_puweight*x_sf);
+    hist14->Fill(j_eta, x_puweight*x_sf);
+    hist15->Fill(j_e, x_puweight*x_sf);
+    hist16->Fill(j_mass, x_puweight*x_sf);
+    hist17->Fill(j_tau21, x_puweight*x_sf);
+    hist18->Fill(s_cos, x_puweight*x_sf);
+    hist19->Fill(s_ptm, x_puweight*x_sf);
+    hist110->Fill(s_mass, x_puweight*x_sf);
+    hist111->Fill(p_mva, x_puweight*x_sf);  
   }
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuples_looseID/SignalMC2000W_nominal_pileup_WGamma_full_full_May22.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/fullcut/SignalMC2800W_postproc_WGamma17_SR_sigrange_fullcut_jmcorr_May22.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -135,23 +138,26 @@ void compare_plot_2()
   theTree->SetBranchAddress("ak8puppijet_tau21", &j_tau21);
   theTree->SetBranchAddress("sys_costhetastar", &s_cos);
   theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
-  theTree->SetBranchAddress("sys_invmass", &s_mass);
+  theTree->SetBranchAddress("m", &s_mass);
   //theTree->SetBranchAddress("xsec_weight", &x_weight);
+  theTree->SetBranchAddress("xsec_puweight", &x_puweight);
+  theTree->SetBranchAddress("xsec_sf", &x_sf);
   
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
     
-    hist21->Fill(p_pt);
-    hist22->Fill(p_eta);
-    hist23->Fill(j_pt);
-    hist24->Fill(j_eta);
-    hist25->Fill(j_e);
-    hist26->Fill(j_mass);
-    hist27->Fill(j_tau21);
-    hist28->Fill(s_cos);
-    hist29->Fill(s_ptm);
-    hist210->Fill(s_mass);
-    hist211->Fill(p_mva);  
+	x_sf = 1;
+    hist21->Fill(p_pt, x_puweight*x_sf);
+    hist22->Fill(p_eta, x_puweight*x_sf);
+    hist23->Fill(j_pt, x_puweight*x_sf);
+    hist24->Fill(j_eta, x_puweight*x_sf);
+    hist25->Fill(j_e, x_puweight*x_sf);
+    hist26->Fill(j_mass, x_puweight*x_sf);
+    hist27->Fill(j_tau21, x_puweight*x_sf);
+    hist28->Fill(s_cos, x_puweight*x_sf);
+    hist29->Fill(s_ptm, x_puweight*x_sf);
+    hist210->Fill(s_mass, x_puweight*x_sf);
+    hist211->Fill(p_mva, x_puweight*x_sf);  
   }
 
   //=================================================================================
@@ -238,34 +244,34 @@ void compare_plot_2()
   hist211->SetLineWidth(3);
   
   //fix strange error bars...
-  hist11->Sumw2();
-  hist12->Sumw2();
-  hist13->Sumw2();
-  hist14->Sumw2();
-  hist15->Sumw2();
-  hist16->Sumw2();
-  hist17->Sumw2();
-  hist18->Sumw2();
-  hist19->Sumw2();
-  hist110->Sumw2();
-  hist111->Sumw2();
-  hist21->Sumw2();
-  hist22->Sumw2();
-  hist23->Sumw2();
-  hist24->Sumw2();
-  hist25->Sumw2();
-  hist26->Sumw2();
-  hist27->Sumw2();
-  hist28->Sumw2();
-  hist29->Sumw2();
-  hist210->Sumw2();
-  hist211->Sumw2();
+  // hist11->Sumw2();
+  // hist12->Sumw2();
+  // hist13->Sumw2();
+  // hist14->Sumw2();
+  // hist15->Sumw2();
+  // hist16->Sumw2();
+  // hist17->Sumw2();
+  // hist18->Sumw2();
+  // hist19->Sumw2();
+  // hist110->Sumw2();
+  // hist111->Sumw2();
+  // hist21->Sumw2();
+  // hist22->Sumw2();
+  // hist23->Sumw2();
+  // hist24->Sumw2();
+  // hist25->Sumw2();
+  // hist26->Sumw2();
+  // hist27->Sumw2();
+  // hist28->Sumw2();
+  // hist29->Sumw2();
+  // hist210->Sumw2();
+  // hist211->Sumw2();
   
   // double norm1 = 1;
   // double norm2 = 1;
 
-  double norm1 = (double) hist11->GetEntries();
-  double norm2 = (double) hist21->GetEntries();
+  double norm1 = (double) hist11->GetSumOfWeights();
+  double norm2 = (double) hist21->GetSumOfWeights();
   hist11->Scale(1/norm1);
   hist12->Scale(1/norm1);
   hist13->Scale(1/norm1);

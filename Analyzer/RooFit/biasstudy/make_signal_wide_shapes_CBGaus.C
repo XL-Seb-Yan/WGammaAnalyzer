@@ -50,7 +50,7 @@ std::string to_str_trim(const float a_value, const int n = 2)
     return std::to_string(a_value).substr(0,std::to_string(a_value).find(".") + n + 1);
 }
 
-void make_signal_narrow_shapes_CBGaus(int signalmass = 5000, int yhi = 400)
+void make_signal_wide_shapes_CBGaus(int signalmass = 2600, int yhi = 900)
 {
   //gErrorIgnoreLevel = kInfo;
   using namespace std;
@@ -80,36 +80,36 @@ void make_signal_narrow_shapes_CBGaus(int signalmass = 5000, int yhi = 400)
   TString signalmass_str = std::to_string(signalmass);
 
   // --- Create obervable --- 
-  RooRealVar *m = new RooRealVar("m","m",600,6000,""); //the name "m" will be used by RooDataSet to import data
+  RooRealVar *m = new RooRealVar("m","m",600,4000,""); //the name "m" will be used by RooDataSet to import data
 
   //--- signal PDF ---
   TString fun_name = "CBGaus";
-  RooRealVar* CB_mean = new RooRealVar("CB_mean","CB_mean",signalmass,signalmass-100,signalmass+100,"");
-  RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",80,20,150,"");
-  RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",2,0.5,3,"");
-  RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",1,0.5,3,"");
+  RooRealVar* CB_mean = new RooRealVar("CB_mean","CB_mean",signalmass,signalmass-50,signalmass+50,"");
+  RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",40,20,100,"");
+  RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",2.22,0.1,3,"");
+  RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",1.22,0.1,5,"");
   RooCBShape* CB_model = new RooCBShape("CBShape","Cystal Ball Function",*m,*CB_mean,*CB_sigma,*CB_alpha,*CB_n);
   
-  RooRealVar* Gaus_mean = new RooRealVar("Gaus_mean","Gaus_mean",4600,signalmass-500,4950,"");
-  RooRealVar* Gaus_sigma = new RooRealVar("Gaus_sigma","Gaus_sigma",120,50,300,"");
+  RooRealVar* Gaus_mean = new RooRealVar("Gaus_mean","Gaus_mean",signalmass,signalmass-50,signalmass+50,"");
+  RooRealVar* Gaus_sigma = new RooRealVar("Gaus_sigma","Gaus_sigma",50,20,150,"");
   RooGaussian* Gaus_model = new RooGaussian("Gaussian","Gaussian Function",*m,*Gaus_mean,*Gaus_sigma);
-  RooRealVar* frac = new RooRealVar("frac","frac",0.60,0.50,0.80);
+  RooRealVar* frac = new RooRealVar("frac","frac",0.5,0.1,0.90);
   RooAddPdf* com_model = new RooAddPdf("CBGaus","CBGaus",RooArgList(*CB_model,*Gaus_model),RooArgList(*frac));
 
   // --- Import Binned dataset ---
-  int bin = 270;
+  int bin = 140;
   if(signalmass > 1999)
-	  bin = 135;
+	  bin = 85;
   float s_mass, xsec_puweight;
-  TH1F MChist("MC","MC",bin,600,6000);
+  TH1F MChist("MC","MC",bin,600,4000);
 									
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/fullcut/SignalMC"+signalmass_str+"N_postproc_WGamma17_SR_sigrange_fullcut_jmcorr_May22.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/fullcut/SignalMC"+signalmass_str+"W_postproc_WGamma17_SR_sigrange_fullcut_jmcorr_May22.root");
   TTree* tree = (TTree*)file.Get("Events");
   tree->SetBranchAddress("m", &s_mass);
   tree->SetBranchAddress("xsec_puweight", &xsec_puweight);
   for (int ievt = 0; ievt<tree->GetEntries();ievt++) {
     tree->GetEntry(ievt);
-    MChist.Fill(s_mass, xsec_puweight*20000/11000);
+    MChist.Fill(s_mass, xsec_puweight);
   }
   RooDataHist datah("Signal MC (W band)","Signal MC (W band)",RooArgSet(*m),&MChist);
   cout<<"number of weighted entries: "<<datah.sum(false)<<endl;

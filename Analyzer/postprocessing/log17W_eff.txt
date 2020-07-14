@@ -1,0 +1,139 @@
+
+Processing postproc.C+(700,0,17)...
+Entries: 2687
+2467.25,8848.11
+++++,700,2467.25,8848.11
+
+Processing postproc.C+(800,0,17)...
+Entries: 2706
+2478.48,9870.67
+++++,800,2478.48,9870.67
+
+Processing postproc.C+(900,0,17)...
+Entries: 2799
+2559.44,10564.4
+++++,900,2559.44,10564.4
+
+Processing postproc.C+(1000,0,17)...
+Entries: 2794
+2532.84,10920.5
+++++,1000,2532.84,10920.5
+
+Processing postproc.C+(1200,0,17)...
+Entries: 2611
+2399.05,11313.3
+++++,1200,2399.05,11313.3
+
+Processing postproc.C+(1400,0,17)...
+Entries: 2723
+2479.18,11689.5
+++++,1400,2479.18,11689.5
+
+Processing postproc.C+(1600,0,17)...
+Entries: 2608
+2370.21,11730
+++++,1600,2370.21,11730
+
+Processing postproc.C+(1800,0,17)...
+Entries: 2622
+2395.02,12107.3
+++++,1800,2395.02,12107.3
+
+Processing postproc.C+(2000,0,17)...
+Entries: 2471
+2261.48,12122.2
+++++,2000,2261.48,12122.2
+
+Processing postproc.C+(2200,0,17)...
+Entries: 2479
+2278.03,12122.9
+++++,2200,2278.03,12122.9
+
+Processing postproc.C+(2400,0,17)...
+Entries: 2350
+2123.81,12371.9
+++++,2400,2123.81,12371.9
+
+Processing postproc.C+(2600,0,17)...
+Entries: 2265
+2084.74,12440.9
+++++,2600,2084.74,12440.9
+
+Processing postproc.C+(2800,0,17)...
+Entries: 2169
+2013.03,12524
+++++,2800,2013.03,12524
+
+Processing postproc.C+(3000,0,17)...
+Error in <TFile::TFile>: file /afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuples_looseID/SignalMC3000W_nominal_pileup_WGamma_full_full_May22.root does not exist
+
+ *** Break *** segmentation violation
+
+
+
+===========================================================
+There was a crash.
+This is the entire stack trace of all threads:
+===========================================================
+    gdb.printing.register_pretty_printer(gdb.current_objfile(),
+    gdb.printing.register_pretty_printer(gdb.current_objfile(),
+#0  0x00007f8610ebd46c in waitpid () at /lib64/libc.so.6
+#1  0x00007f8610e3af62 in do_system () at /lib64/libc.so.6
+#2  0x00007f861199a09c in TUnixSystem::StackTrace() () at /usr/lib64/root/libCore.so.6.20
+#3  0x00007f861199ca6c in TUnixSystem::DispatchSignals(ESignals) () at /usr/lib64/root/libCore.so.6.20
+#4  0x00007f8610e2e400 in <signal handler called> () at /lib64/libc.so.6
+#5  0x00007f86041b4b38 in postproc(int, int, int) (mass=3000, runondata=0, runyear=17) at /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/./postproc.C:79
+#6  0x00007f8612036096 in  ()
+#7  0x0000000000f66e00 in  ()
+#8  0x000000110bb2fc60 in  ()
+#9  0x00000bb800000000 in  ()
+#10 0x00007f86041b4810 in postproc(int, int, int) () at /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/postproc_C_ACLiC_dict.cxx:99
+#11 0x00000001013e3348 in  ()
+#12 0x0000000000fb3350 in  ()
+#13 0x00007f860bc16180 in cling::runtime::internal::setValueNoAlloc(void*, void*, void*, char) () at /usr/lib64/root/libCling.so
+#14 0x00007ffcf38f94e0 in  ()
+#15 0x0000000000000000 in  ()
+===========================================================
+
+
+The lines below might hint at the cause of the crash.
+You may get help by asking at the ROOT forum http://root.cern.ch/forum
+Only if you are really convinced it is a bug in ROOT then please submit a
+report at http://root.cern.ch/bugs Please post the ENTIRE stack trace
+from above as an attachment in addition to anything else
+that might help us fixing this issue.
+===========================================================
+#5  0x00007f86041b4b38 in postproc(int, int, int) (mass=3000, runondata=0, runyear=17) at /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/./postproc.C:79
+#6  0x00007f8612036096 in  ()
+#7  0x0000000000f66e00 in  ()
+#8  0x000000110bb2fc60 in  ()
+#9  0x00000bb800000000 in  ()
+#10 0x00007f86041b4810 in postproc(int, int, int) () at /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/postproc_C_ACLiC_dict.cxx:99
+#11 0x00000001013e3348 in  ()
+#12 0x0000000000fb3350 in  ()
+#13 0x00007f860bc16180 in cling::runtime::internal::setValueNoAlloc(void*, void*, void*, char) () at /usr/lib64/root/libCling.so
+#14 0x00007ffcf38f94e0 in  ()
+#15 0x0000000000000000 in  ()
+===========================================================
+
+
+
+Processing postproc.C+(3500,0,17)...
+Entries: 1965
+1810.8,12629.9
+++++,3500,1810.8,12629.9
+
+Processing postproc.C+(4000,0,17)...
+Info in <TUnixSystem::ACLiC>: creating shared library /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/./postproc_C.so
+Entries: 1918
+++++,4000,1778.21,12582.6
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(5000,0,17)...
+Entries: 1830
+++++,5000,1676.78,12947.4
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(6000,0,17)...
+Entries: 628
+++++,6000,579.69,4601.21

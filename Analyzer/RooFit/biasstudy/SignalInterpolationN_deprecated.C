@@ -46,7 +46,7 @@ void SignalInterpolationN(){
   const int nMCpoints = 14;  
   RooAbsPdf* gMass[nMCpoints];   
   const double masses[nMCpoints] = {700,800,900,1000,1200,1400,1600,2000,2200,2400,2600,2800,3000,3500};
-  // const double masses[nMCpoints] = {2200,2400,2600,2800,3000,3500};
+  //const double masses[nMCpoints] = {700,800,900,1000};
 
   TFile *f[nMCpoints];
   RooWorkspace* xf[nMCpoints];
@@ -57,7 +57,7 @@ void SignalInterpolationN(){
     if (!gSystem->AccessPathName(name)){
       f[i] = new TFile(name);
       xf[i] = (RooWorkspace*)f[i]->Get("w");
-      xf[i]->var("m")->setRange(600,4000);
+      //xf[i]->var("m")->setRange(600,4000);
       gMass[i] = xf[i]->pdf("CBGaus");
     } else {
       std::cout<<"File is not found: "<<name<<std::endl;
@@ -86,17 +86,17 @@ void SignalInterpolationN(){
   alpha.setBins(1000,"cache") ;
     
   RooPlot* frame1[nMCpoints];
-  RooPlot* frame2[nMCpoints];
-  RooPlot* frame3[nMCpoints];
   TH1* hh[nMCpoints];
   
+  RooPlot* frame_test;
+  RooAbsPdf *pdf = NULL;
+  
   for (int iPoint = 0; iPoint!=nMCpoints-1; ++iPoint) {
-    cout<<"================================================================"<<endl;
-    cout<<"===================Processing "<<iPoint<<" ====================="<<endl; 
     //for (int iPoint = 1; iPoint!=2; ++iPoint) {
             
     // Construct interpolating pdf in (m,a) represent g1(m) at a=a_min and g2(m) at a=a_max
-    cout<<"Running on: "<<iPoint<<" "<<gMass[iPoint]<<" "<<gMass[iPoint+1]<<endl;
+    cout<<endl;
+    cout<<"Running on: ================== "<<masses[iPoint]<<" "<<gMass[iPoint]<<" "<<gMass[iPoint+1]<<" ======================="<<endl;
     RooIntegralMorph lmorph("lmorph","lmorph",*gMass[iPoint],*gMass[iPoint+1],m,alpha) ;
         
     // P l o t   i n t e r p o l a t i n g   p d f   a t   v a r i o u s   a l p h a
@@ -104,19 +104,26 @@ void SignalInterpolationN(){
 
     // Show end points as blue curves
     frame1[iPoint] = m.frame() ;
-    gMass[iPoint]->plotOn(frame1[iPoint]) ;
-    gMass[iPoint+1]->plotOn(frame1[iPoint]) ;
+    frame_test = m.frame() ;
         
     int nPoints = int((masses[iPoint+1]-masses[iPoint])/step);
-    for (int i=1; i!=nPoints; ++i) {
+    for (int i=1; i!=nPoints; i++) {
       cout<<"================================================================"<<endl;
-      cout<<"===================Processing "<<i<<" ====================="<<endl; 
+      cout<<"===================Processing "<<masses[iPoint]+i*step<<" ====================="<<endl; 
       //alpha=double(i)/double(nPoints);
       alpha.setVal(double(i)/double(nPoints)) ;
       lmorph.plotOn(frame1[iPoint],LineColor(kRed));
+      // cout<<"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! trying to access morphing PDF directly !!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+      // pdf = lmorph.getCachePdf(RooArgSet(m));
+      // cout<<pdf<<endl;
+      // pdf->SetTitle("CBGaus");
+      // pdf->plotOn(frame_test);
             
-      RooDataSet* dataGen = lmorph.generate(m,30000);
-      TH1D* distribs0 = (TH1D*)lmorph.createHistogram("GeneratedData",m,Binning(170,600,4000));
+      RooDataSet* dataGen = lmorph.generate(m,50000);
+      double lowend = (masses[iPoint]+i*step)*0.75;
+      double highend = (masses[iPoint]+i*step)*1.25;
+      int bin = int((masses[iPoint]+i*step)*0.5/20);
+      TH1D* distribs0 = (TH1D*)lmorph.createHistogram("GeneratedData",m,Binning(bin,lowend,highend));
       dataGen->fillHistogram(distribs0,m);
       /*
       double effcy = funcEff->Eval(masses[iPoint+1]-i*step);
@@ -134,10 +141,21 @@ void SignalInterpolationN(){
       TFile* fileNew = new TFile(Form("PdfGenerateSignal/roodataset_signal-%d-narrow.root",int(masses[iPoint+1]-i*step)),"RECREATE");
       distribs0->Write();
       fileNew->Close();
+      
+      // TFile* fileNew = new TFile(Form("Signal-%d-narrow.root",int(masses[iPoint+1]-i*step)),"RECREATE");
+      // RooWorkspace w("signals");
+      // w.import(*pdf);
+      // w.Print();
+      // w.Write();
+      //cout<<w.var("CB_mean_point_2")->getValV()<<endl;
+      // fileNew->Close();
             
       delete dataGen;
       delete distribs0;
+      delete fileNew;
     }
+    gMass[iPoint]->plotOn(frame1[iPoint],LineColor(kBlue)) ;
+    gMass[iPoint+1]->plotOn(frame1[iPoint],LineColor(kBlue)) ;
   }
   TCanvas *c = new TCanvas("","",2400,1800);
   c->cd();
@@ -150,8 +168,9 @@ void SignalInterpolationN(){
   xaxis->SetTitle("m_{W#gamma}");
   yaxis->SetTitle("Events (a.u.)");
   yaxis->SetTitleOffset(1.1);
-  xaxis->SetRangeUser(0,4000);
-  yaxis->SetRangeUser(0,0.5);
+  xaxis->SetLimits(600,4000);
+  c->SetLogy();
+  yaxis->SetRangeUser(0.0001,1);
   frame1[0]->Draw();
   for (int iPoint = 1; iPoint!=nMCpoints-1; ++iPoint) {
     frame1[iPoint]->Draw("SAME");
@@ -161,6 +180,24 @@ void SignalInterpolationN(){
   c->Print("Signal_interpolation_N.pdf");
   c->Print("Signal_interpolation_N.root");
   c->Print("Signal_interpolation_N.svg");
+  
+  // TCanvas *c1 = new TCanvas("","",2400,1800);
+  // c1->cd();
+  // c1->Clear();
+  // c1->SetLeftMargin(0.11);
+  // c1->SetBottomMargin(0.105);
+  // frame_test->SetTitle("Signal Interpolation (Narrow)");
+  // xaxis = frame_test->GetXaxis();
+  // yaxis = frame_test->GetYaxis();
+  // xaxis->SetTitle("m_{W#gamma}");
+  // yaxis->SetTitle("Events (a.u.)");
+  // yaxis->SetTitleOffset(1.1);
+  // xaxis->SetLimits(600,4000);
+  // yaxis->SetRangeUser(0,0.5);
+  // frame_test->Draw();
+  // CMS_lumi(c1,iPeriod,iPos);
+  // c1->Print("test.pdf");
+  // frame_test->Print("V");
     
   return; 
 }
