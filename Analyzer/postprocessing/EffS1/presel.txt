@@ -1,0 +1,166 @@
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_700_0p01.root
+Error in <TTree::SetBranchAddress>: unknown branch -> PDF_rms
+0 % done with this dataset
+Number of events: 20000
+Number of events have photon and AK8 jet: 17965
+Number of events fired trigger: 17933 0.89665
+Number of events pass photon pre-selection: 11262 0.5631
+Number of events pass jet pre-selection: 10475 0.52375
+Time remaining: 0:0:0
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_1500_0p01.root
+Error in <TTree::SetBranchAddress>: unknown branch -> PDF_rms
+0 % done with this dataset
+Number of events: 13000
+Number of events have photon and AK8 jet: 12318
+Number of events fired trigger: 12309 0.946846
+Number of events pass photon pre-selection: 9386 0.722
+Number of events pass jet pre-selection: 9254 0.711846
+Time remaining: 0:0:0
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_2000_0p01.root
+Error in <TTree::SetBranchAddress>: unknown branch -> PDF_rms
+0 % done with this dataset
+Number of events: 20000
+Number of events have photon and AK8 jet: 18952
+Number of events fired trigger: 18947 0.94735
+Number of events pass photon pre-selection: 14950 0.7475
+Number of events pass jet pre-selection: 14804 0.7402
+Time remaining: 0:0:0
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_2500_0p01.root
+Error in <TTree::SetBranchAddress>: unknown branch -> PDF_rms
+0 % done with this dataset
+Number of events: 14000
+Number of events have photon and AK8 jet: 13250
+Number of events fired trigger: 13239 0.945643
+Number of events pass photon pre-selection: 10742 0.767286
+Number of events pass jet pre-selection: 10687 0.763357
+Time remaining: 0:0:0
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_3000_0p01.root
+Error in <TTree::SetBranchAddress>: unknown branch -> PDF_rms
+0 % done with this dataset
+Number of events: 20000
+Number of events have photon and AK8 jet: 19003
+Number of events fired trigger: 18993 0.94965
+Number of events pass photon pre-selection: 15626 0.7813
+Number of events pass jet pre-selection: 15553 0.77765
+Time remaining: 0:0:0
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_4000_0p01.root
+Error in <TTree::SetBranchAddress>: unknown branch -> PDF_rms
+0 % done with this dataset
+Number of events: 20000
+Number of events have photon and AK8 jet: 18907
+Number of events fired trigger: 18898 0.9449
+Number of events pass photon pre-selection: 15743 0.78715
+Number of events pass jet pre-selection: 15640 0.782
+Time remaining: 0:0:0
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_6000_0p01.root
+Error in <TTree::SetBranchAddress>: unknown branch -> PDF_rms
+0 % done with this dataset
+Number of events: 19000
+Number of events have photon and AK8 jet: 17968
+Number of events fired trigger: 17963 0.945421
+Number of events pass photon pre-selection: 15178 0.798842
+Number of events pass jet pre-selection: 15106 0.795053
+Time remaining: 0:0:0
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_8000_0p01.root
+Error in <TTree::SetBranchAddress>: unknown branch -> PDF_rms
+0 % done with this dataset
+Number of events: 20000
+Number of events have photon and AK8 jet: 18922
+Number of events fired trigger: 18916 0.9458
+Number of events pass photon pre-selection: 15314 0.7657
+Number of events pass jet pre-selection: 15220 0.761
+Time remaining: 0:0:0
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_700_5.root
+Error in <TTree::SetBranchAddress>: unknown branch -> PDF_rms
+0 % done with this dataset
+Number of events: 19000
+Number of events have photon and AK8 jet: 16895
+Number of events fired trigger: 16867 0.887737
+Number of events pass photon pre-selection: 10841 0.570579
+Number of events pass jet pre-selection: 10120 0.532632
+Time remaining: 0:0:0
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_1500_5.root
+Error in <TTree::SetBranchAddress>: unknown branch -> PDF_rms
+0 % done with this dataset
+Number of events: 15000
+Number of events have photon and AK8 jet: 14113
+Number of events fired trigger: 14101 0.940067
+Number of events pass photon pre-selection: 10758 0.7172
+Number of events pass jet pre-selection: 10609 0.707267
+Time remaining: 0:0:0
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_2000_5.root
+Error in <TTree::SetBranchAddress>: unknown branch -> PDF_rms
+0 % done with this dataset
+Number of events: 16000
+Number of events have photon and AK8 jet: 15125
+Number of events fired trigger: 15117 0.944812
+Number of events pass photon pre-selection: 11997 0.749812
+Number of events pass jet pre-selection: 11846 0.740375
+Time remaining: 0:0:0
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_2500_5.root
+Error in <TTree::SetBranchAddress>: unknown branch -> PDF_rms
+0 % done with this dataset
+Number of events: 20000
+Number of events have photon and AK8 jet: 18915
+Number of events fired trigger: 18908 0.9454
+Number of events pass photon pre-selection: 15256 0.7628
+Number of events pass jet pre-selection: 15058 0.7529
+Time remaining: 0:0:0
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_3000_5.root
+Error in <TTree::SetBranchAddress>: unknown branch -> PDF_rms
+0 % done with this dataset
+Number of events: 20000
+Number of events have photon and AK8 jet: 19022
+Number of events fired trigger: 19013 0.95065
+Number of events pass photon pre-selection: 15646 0.7823
+Number of events pass jet pre-selection: 15559 0.77795
+Time remaining: 0:0:0
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_4000_5.root
+Error in <TTree::SetBranchAddress>: unknown branch -> PDF_rms
+0 % done with this dataset
+Number of events: 18000
+Number of events have photon and AK8 jet: 17107
+Number of events fired trigger: 17100 0.95
+Number of events pass photon pre-selection: 14285 0.793611
+Number of events pass jet pre-selection: 14177 0.787611
+Time remaining: 0:0:0
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_6000_5.root
+Error in <TTree::SetBranchAddress>: unknown branch -> PDF_rms
+0 % done with this dataset
+Number of events: 17000
+Number of events have photon and AK8 jet: 15999
+Number of events fired trigger: 15995 0.940882
+Number of events pass photon pre-selection: 13535 0.796176
+Number of events pass jet pre-selection: 13468 0.792235
+Time remaining: 0:0:0
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_8000_5.root
+Error in <TTree::SetBranchAddress>: unknown branch -> PDF_rms
+0 % done with this dataset
+Number of events: 19000
+Number of events have photon and AK8 jet: 17927
+Number of events fired trigger: 17921 0.943211
+Number of events pass photon pre-selection: 14529 0.764684
+Number of events pass jet pre-selection: 14458 0.760947
+Time remaining: 0:0:0
+Number of events: 19000
+Number of events have photon and AK8 jet: 17927
+Number of events fired trigger: 17921
+Number of events pass photon pre-selection: 14529
+Number of events pass jet pre-selection: 14458
+selectWG  : Real Time =  46.84 seconds Cpu Time =  46.52 seconds

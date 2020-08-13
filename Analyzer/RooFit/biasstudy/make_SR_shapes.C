@@ -1,4 +1,4 @@
-#define fun_type 1
+#define fun_type 3
 #define isNorm 2 //1: Norm 2: Orig
 #if !defined(__CINT__) || defined(__MAKECINT__)
 #include <TROOT.h>                  // access to gROOT, entry point to ROOT system
@@ -79,7 +79,7 @@ void make_SR_shapes(int seed=37)
   gStyle->SetHistLineWidth(2);
 
   // --- Create obervable --- 
-  RooRealVar *x = new RooRealVar("m","m",600,6000,""); //the name "m" will be used by RooDataSet to import data, normalization range is 600-3500 but plot range can be defined to like 600-3000
+  RooRealVar *x = new RooRealVar("m","m",600,8000,""); //the name "m" will be used by RooDataSet to import data, normalization range is 600-3500 but plot range can be defined to like 600-3000
 
   //--- background PDF ---
 #if fun_type == 1
@@ -216,24 +216,24 @@ void make_SR_shapes(int seed=37)
   
   // --- Perform extended ML fit of composite PDF to toy data ---
 #if isNorm == 1
-    RooFitResult *r = model->fitTo(data_norm,Range(600,6000),RooFit::Minimizer("Minuit2"),SumW2Error(false),Save()); //SumW2Error(false) for weighted data, see how to choose this with same calling without SumW2Error(false)
+    RooFitResult *r = model->fitTo(data_norm,Range(600,8000),RooFit::Minimizer("Minuit2"),SumW2Error(false),Save()); //SumW2Error(false) for weighted data, see how to choose this with same calling without SumW2Error(false)
 #else
-    RooFitResult *r = model->fitTo(data,Range(600,6000),RooFit::Minimizer("Minuit2"),Save()); //SumW2Error(false) for weighted data, see how to choose this with same calling without SumW2Error(false)
+    RooFitResult *r = model->fitTo(data,Range(600,8000),RooFit::Minimizer("Minuit2"),Save()); //SumW2Error(false) for weighted data, see how to choose this with same calling without SumW2Error(false)
 #endif
     
   // --- plot for chi2 calculation and visualization ---
-  x->setBins(135); //fit is unbinned but chi2 is calculated by binning data with this value
+  x->setBins(185); //fit is unbinned but chi2 is calculated by binning data with this value
   RooPlot *frame = x->frame();
 #if isNorm == 1
     frame->SetTitle("Data Sideband nomalized to W band");
     RooDataHist datah("dh","binned data",RooArgSet(*x),data_norm);
-    datah.plotOn(frame,RooFit::Name("datah"),Binning(135,600,6000),DataError(RooAbsData::SumW2)); //for weighted data
+    datah.plotOn(frame,RooFit::Name("datah"),Binning(185,600,8000),DataError(RooAbsData::SumW2)); //for weighted data
     // Change attributes of last added plot elements
     frame->getAttMarker()->SetMarkerSize(2);
 #else
     frame->SetTitle("Data Sideband");
     RooDataHist datah("dh","binned data",RooArgSet(*x),data);
-    datah.plotOn(frame,RooFit::Name("datah"),Binning(135,600,6000),DataError(RooAbsData::Poisson)); //for unweighted data
+    datah.plotOn(frame,RooFit::Name("datah"),Binning(185,600,8000),DataError(RooAbsData::Poisson)); //for unweighted data
     // Change attributes of last added plot elements
     frame->getAttMarker()->SetMarkerSize(2);
 #endif
@@ -242,9 +242,9 @@ void make_SR_shapes(int seed=37)
   model->plotOn(frame,VisualizeError(*r,1,kFALSE),FillColor(kGreen),LineColor(0),RooFit::Name("err1"));
   model->plotOn(frame,LineStyle(kDashed),RooFit::Name(fun_name));
 #if isNorm == 1
-    datah.plotOn(frame,RooFit::Name("datah"),Binning(135,600,6000),DataError(RooAbsData::SumW2)); //for weighted data
+    datah.plotOn(frame,RooFit::Name("datah"),Binning(185,600,8000),DataError(RooAbsData::SumW2)); //for weighted data
 #else
-    datah.plotOn(frame,RooFit::Name("datah"),Binning(135,600,6000),DataError(RooAbsData::Poisson)); //for unweighted data
+    datah.plotOn(frame,RooFit::Name("datah"),Binning(185,600,8000),DataError(RooAbsData::Poisson)); //for unweighted data
 #endif
 
   frame->Print("V");
@@ -343,7 +343,7 @@ void make_SR_shapes(int seed=37)
   yaxis->SetTitle("Events / 40 GeV");
   yaxis->SetTitleOffset(1.2);
   yaxis->SetRangeUser(0.0002,100000);
-  xaxis->SetRangeUser(600,6000);
+  xaxis->SetRangeUser(600,8000);
   p01a->SetLogy();
   frame->Draw();
   CMS_lumi(p01a,iPeriod,iPos);
@@ -376,7 +376,7 @@ void make_SR_shapes(int seed=37)
     yaxis->SetRangeUser(-5,5);
     xaxis->SetLabelSize(0.15);
     xaxis->SetTitleSize(0.15);
-    xaxis->SetRangeUser(600,6000);
+    xaxis->SetRangeUser(600,8000);
     yaxis->SetLabelSize(0.15);
     yaxis->SetTitleSize(0.15);
     yaxis->SetNdivisions(5);

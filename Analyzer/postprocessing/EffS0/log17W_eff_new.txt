@@ -1,17 +1,18 @@
-*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
-
 Processing postproc.C+(700,0,17)...
+Info in <TUnixSystem::ACLiC>: creating shared library /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/selection/./postproc_C.so
 Error in <TTree::SetBranchAddress>: unknown branch -> run_num
 Error in <TTree::SetBranchAddress>: unknown branch -> evt_num
 Error in <TTree::SetBranchAddress>: unknown branch -> lumi_block
-Entries: 2748
-++++,700,2526.08,8848.11
+Passed pre-sel: 9675
+Entries: 2690
+++++,700,2468.43,8848.11
 *** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
 
 Processing postproc.C+(800,0,17)...
 Error in <TTree::SetBranchAddress>: unknown branch -> run_num
 Error in <TTree::SetBranchAddress>: unknown branch -> evt_num
 Error in <TTree::SetBranchAddress>: unknown branch -> lumi_block
+Passed pre-sel: 10785
 Entries: 2701
 ++++,800,2475.61,9870.67
 *** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
@@ -20,6 +21,7 @@ Processing postproc.C+(900,0,17)...
 Error in <TTree::SetBranchAddress>: unknown branch -> run_num
 Error in <TTree::SetBranchAddress>: unknown branch -> evt_num
 Error in <TTree::SetBranchAddress>: unknown branch -> lumi_block
+Passed pre-sel: 11494
 Entries: 2797
 ++++,900,2557.52,10564.4
 *** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
@@ -28,6 +30,7 @@ Processing postproc.C+(1000,0,17)...
 Error in <TTree::SetBranchAddress>: unknown branch -> run_num
 Error in <TTree::SetBranchAddress>: unknown branch -> evt_num
 Error in <TTree::SetBranchAddress>: unknown branch -> lumi_block
+Passed pre-sel: 11916
 Entries: 2787
 ++++,1000,2527.05,10920.5
 *** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
@@ -36,6 +39,7 @@ Processing postproc.C+(1200,0,17)...
 Error in <TTree::SetBranchAddress>: unknown branch -> run_num
 Error in <TTree::SetBranchAddress>: unknown branch -> evt_num
 Error in <TTree::SetBranchAddress>: unknown branch -> lumi_block
+Passed pre-sel: 12342
 Entries: 2613
 ++++,1200,2400.86,11313.3
 *** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
@@ -44,6 +48,7 @@ Processing postproc.C+(1400,0,17)...
 Error in <TTree::SetBranchAddress>: unknown branch -> run_num
 Error in <TTree::SetBranchAddress>: unknown branch -> evt_num
 Error in <TTree::SetBranchAddress>: unknown branch -> lumi_block
+Passed pre-sel: 12768
 Entries: 2734
 ++++,1400,2488.59,11689.5
 *** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
@@ -52,6 +57,7 @@ Processing postproc.C+(1600,0,17)...
 Error in <TTree::SetBranchAddress>: unknown branch -> run_num
 Error in <TTree::SetBranchAddress>: unknown branch -> evt_num
 Error in <TTree::SetBranchAddress>: unknown branch -> lumi_block
+Passed pre-sel: 12840
 Entries: 2614
 ++++,1600,2375.94,11730
 *** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
@@ -60,6 +66,7 @@ Processing postproc.C+(1800,0,17)...
 Error in <TTree::SetBranchAddress>: unknown branch -> run_num
 Error in <TTree::SetBranchAddress>: unknown branch -> evt_num
 Error in <TTree::SetBranchAddress>: unknown branch -> lumi_block
+Passed pre-sel: 13213
 Entries: 2631
 ++++,1800,2400.54,12107.3
 *** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
@@ -68,6 +75,7 @@ Processing postproc.C+(2000,0,17)...
 Error in <TTree::SetBranchAddress>: unknown branch -> run_num
 Error in <TTree::SetBranchAddress>: unknown branch -> evt_num
 Error in <TTree::SetBranchAddress>: unknown branch -> lumi_block
+Passed pre-sel: 13228
 Entries: 2481
 ++++,2000,2270.55,12122.2
 *** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
@@ -76,6 +84,7 @@ Processing postproc.C+(2200,0,17)...
 Error in <TTree::SetBranchAddress>: unknown branch -> run_num
 Error in <TTree::SetBranchAddress>: unknown branch -> evt_num
 Error in <TTree::SetBranchAddress>: unknown branch -> lumi_block
+Passed pre-sel: 13276
 Entries: 2474
 ++++,2200,2272.14,12122.9
 *** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
@@ -84,6 +93,7 @@ Processing postproc.C+(2400,0,17)...
 Error in <TTree::SetBranchAddress>: unknown branch -> run_num
 Error in <TTree::SetBranchAddress>: unknown branch -> evt_num
 Error in <TTree::SetBranchAddress>: unknown branch -> lumi_block
+Passed pre-sel: 13506
 Entries: 2333
 ++++,2400,2112.03,12371.9
 *** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
@@ -92,6 +102,7 @@ Processing postproc.C+(2600,0,17)...
 Error in <TTree::SetBranchAddress>: unknown branch -> run_num
 Error in <TTree::SetBranchAddress>: unknown branch -> evt_num
 Error in <TTree::SetBranchAddress>: unknown branch -> lumi_block
+Passed pre-sel: 13551
 Entries: 2256
 ++++,2600,2075.07,12440.9
 *** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
@@ -100,7 +111,7 @@ Processing postproc.C+(2800,0,17)...
 Error in <TTree::SetBranchAddress>: unknown branch -> run_num
 Error in <TTree::SetBranchAddress>: unknown branch -> evt_num
 Error in <TTree::SetBranchAddress>: unknown branch -> lumi_block
-ERROR IN MASS CORR CALCULATION 1.61829
+Passed pre-sel: 13665
 Entries: 2157
 ++++,2800,2004.3,12524
 *** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
@@ -116,34 +127,24 @@ Error in <TFile::TFile>: file /afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/n
 There was a crash.
 This is the entire stack trace of all threads:
 ===========================================================
-#0  0x00007f4ef994046c in waitpid () from /lib64/libc.so.6
-#1  0x00007f4ef98bdf62 in do_system () from /lib64/libc.so.6
-#2  0x00007f4efa47f911 in TUnixSystem::StackTrace() () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/lib/libCore.so
-#3  0x00007f4efa481f5c in TUnixSystem::DispatchSignals(ESignals) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/lib/libCore.so
+#0  0x00007fbde64f446c in waitpid () from /lib64/libc.so.6
+#1  0x00007fbde6471f62 in do_system () from /lib64/libc.so.6
+#2  0x00007fbde6ffe702 in TUnixSystem::StackTrace() () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
+#3  0x00007fbde7000bac in TUnixSystem::DispatchSignals(ESignals) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
 #4  <signal handler called>
-#5  0x00007f4eedcddc70 in postproc(int, int, int) () from /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/postproc_C.so
-#6  0x00007f4eedccd096 in ?? ()
-#7  0x00007fff3e709410 in ?? ()
-#8  0x000000113e7093b0 in ?? ()
-#9  0x00000bb800000000 in ?? ()
-#10 0x00007f4eedcdd930 in ?? () from /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/postproc_C.so
-#11 0x000000013e709410 in ?? ()
-#12 0x00000000018cb7b0 in ?? ()
-#13 0x00007f4ef5b9d680 in ?? () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/lib/libCling.so
-#14 0x00007fff3e709840 in ?? ()
-#15 0x00007f4eedccd000 in ?? ()
-#16 0x00007f4ef5b211a2 in cling::Interpreter::RunFunction(clang::FunctionDecl const*, cling::Value*) [clone .part.248] () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/lib/libCling.so
-#17 0x00007f4ef5b23889 in cling::Interpreter::EvaluateInternal(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cling::CompilationOptions, cling::Value*, cling::Transaction**, unsigned long) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/lib/libCling.so
-#18 0x00007f4ef5b23d9b in cling::Interpreter::process(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cling::Value*, cling::Transaction**, bool) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/lib/libCling.so
-#19 0x00007f4ef5bc1f9d in cling::MetaProcessor::process(llvm::StringRef, cling::Interpreter::CompilationResult&, cling::Value*, bool) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/lib/libCling.so
-#20 0x00007f4ef5a8f51e in HandleInterpreterException(cling::MetaProcessor*, char const*, cling::Interpreter::CompilationResult&, cling::Value*) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/lib/libCling.so
-#21 0x00007f4ef5a9ccf1 in TCling::ProcessLine(char const*, TInterpreter::EErrorCode*) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/lib/libCling.so
-#22 0x00007f4ef5a959a7 in TCling::ProcessLineSynch(char const*, TInterpreter::EErrorCode*) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/lib/libCling.so
-#23 0x00007f4efa351225 in TApplication::ExecuteFile(char const*, int*, bool) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/lib/libCore.so
-#24 0x00007f4efa352ef2 in TApplication::ProcessLine(char const*, bool, int*) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/lib/libCore.so
-#25 0x00007f4efa7c40a2 in TRint::ProcessLineNr(char const*, char const*, int*) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/lib/libRint.so
-#26 0x00007f4efa7c56a0 in TRint::Run(bool) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/lib/libRint.so
-#27 0x0000000000400c7c in main ()
+#5  0x00007fbddc9d56a2 in postproc(int, int, int) () from /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/selection/postproc_C.so
+#6  0x00007fbde2faac29 in cling::Interpreter::RunFunction(clang::FunctionDecl const*, cling::Value*) [clone .part.280] () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#7  0x00007fbde2fadffd in cling::Interpreter::EvaluateInternal(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cling::CompilationOptions, cling::Value*, cling::Transaction**, unsigned long) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#8  0x00007fbde2fae1c2 in cling::Interpreter::process(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cling::Value*, cling::Transaction**, bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#9  0x00007fbde3035a8f in cling::MetaProcessor::process(char const*, cling::Interpreter::CompilationResult&, cling::Value*, bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#10 0x00007fbde2f39291 in HandleInterpreterException(cling::MetaProcessor*, char const*, cling::Interpreter::CompilationResult&, cling::Value*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#11 0x00007fbde2f4920e in TCling::ProcessLine(char const*, TInterpreter::EErrorCode*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#12 0x00007fbde2f3be0d in TCling::ProcessLineSynch(char const*, TInterpreter::EErrorCode*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#13 0x00007fbde6ee5bd7 in TApplication::ExecuteFile(char const*, int*, bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
+#14 0x00007fbde6ee78a3 in TApplication::ProcessLine(char const*, bool, int*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCore.so
+#15 0x00007fbde733d73e in TRint::ProcessLineNr(char const*, char const*, int*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libRint.so
+#16 0x00007fbde733ec57 in TRint::Run(bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libRint.so
+#17 0x0000000000400bbc in main ()
 ===========================================================
 
 
@@ -154,34 +155,24 @@ report at http://root.cern.ch/bugs. Please post the ENTIRE stack trace
 from above as an attachment in addition to anything else
 that might help us fixing this issue.
 ===========================================================
-#5  0x00007f4eedcddc70 in postproc(int, int, int) () from /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/postproc_C.so
-#6  0x00007f4eedccd096 in ?? ()
-#7  0x00007fff3e709410 in ?? ()
-#8  0x000000113e7093b0 in ?? ()
-#9  0x00000bb800000000 in ?? ()
-#10 0x00007f4eedcdd930 in ?? () from /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/postproc_C.so
-#11 0x000000013e709410 in ?? ()
-#12 0x00000000018cb7b0 in ?? ()
-#13 0x00007f4ef5b9d680 in ?? () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/lib/libCling.so
-#14 0x00007fff3e709840 in ?? ()
-#15 0x00007f4eedccd000 in ?? ()
-#16 0x00007f4ef5b211a2 in cling::Interpreter::RunFunction(clang::FunctionDecl const*, cling::Value*) [clone .part.248] () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/lib/libCling.so
-#17 0x00007f4ef5b23889 in cling::Interpreter::EvaluateInternal(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cling::CompilationOptions, cling::Value*, cling::Transaction**, unsigned long) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/lib/libCling.so
-#18 0x00007f4ef5b23d9b in cling::Interpreter::process(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cling::Value*, cling::Transaction**, bool) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/lib/libCling.so
-#19 0x00007f4ef5bc1f9d in cling::MetaProcessor::process(llvm::StringRef, cling::Interpreter::CompilationResult&, cling::Value*, bool) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/lib/libCling.so
-#20 0x00007f4ef5a8f51e in HandleInterpreterException(cling::MetaProcessor*, char const*, cling::Interpreter::CompilationResult&, cling::Value*) () from /cvmfs/cms.cern.ch/slc6_amd64_gcc700/lcg/root/6.12.07-gnimlf5/lib/libCling.so
+#5  0x00007fbddc9d56a2 in postproc(int, int, int) () from /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/selection/postproc_C.so
+#6  0x00007fbde2faac29 in cling::Interpreter::RunFunction(clang::FunctionDecl const*, cling::Value*) [clone .part.280] () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#7  0x00007fbde2fadffd in cling::Interpreter::EvaluateInternal(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cling::CompilationOptions, cling::Value*, cling::Transaction**, unsigned long) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#8  0x00007fbde2fae1c2 in cling::Interpreter::process(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, cling::Value*, cling::Transaction**, bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#9  0x00007fbde3035a8f in cling::MetaProcessor::process(char const*, cling::Interpreter::CompilationResult&, cling::Value*, bool) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
+#10 0x00007fbde2f39291 in HandleInterpreterException(cling::MetaProcessor*, char const*, cling::Interpreter::CompilationResult&, cling::Value*) () from /cvmfs/cms.cern.ch/slc7_amd64_gcc630/lcg/root/6.10.08-fmblme2/lib/libCling.so
 ===========================================================
 
 
-*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+Root > *** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
 
 Processing postproc.C+(3500,0,17)...
 Error in <TTree::SetBranchAddress>: unknown branch -> run_num
 Error in <TTree::SetBranchAddress>: unknown branch -> evt_num
 Error in <TTree::SetBranchAddress>: unknown branch -> lumi_block
+Passed pre-sel: 13764
 Entries: 1940
 ++++,3500,1792.54,12629.9
-*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
 
 Processing postproc.C+(4000,0,17)...
 Entries: 1895
@@ -203,4 +194,24 @@ Processing postproc.C+(5000,0,17)...
 ERROR IN MASS CORR CALCULATION 1.84512
 Entries: 1784
 ++++,5000,1634.51,12502.4
+
+Processing postproc.C+(6000,0,17)...
+Info in <TUnixSystem::ACLiC>: creating shared library /afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/./postproc_C.so
+ERROR IN MASS CORR CALCULATION 2.38763
+Entries: 1698
+++++,6000,1546.79,13019.7
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(7000,0,17)...
+ERROR IN MASS CORR CALCULATION 2.04404
+ERROR IN MASS CORR CALCULATION 2.26307
+Entries: 1380
+++++,7000,1236.88,12744.2
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(8000,0,17)...
+ERROR IN MASS CORR CALCULATION 2.51691
+Entries: 1081
+++++,8000,1008.69,11903.5
+
 

@@ -70,12 +70,14 @@ void postproc(int mass, int runondata, int runyear)
   float x_sf = 1;
   int s_pv, s_runnum, s_evtnum, s_lumiblock; 
   
-  std::string dataset = "SignalMC"+std::to_string(mass)+"_W_S1";
+  std::string dataset = "SignalMC"+std::to_string(mass)+"W";
+  //std::string dataset = std::to_string(mass)+"_N_S1";
   
   TString year_str = std::to_string(runyear);
   
-  TFile *input = TFile::Open(("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuples_looseID/" + dataset + "_nominal_pileup_WGamma_full_full_May22.root").c_str());
-  // TFile *input = TFile::Open(("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Selection/2017conf/SelOutPut/"+dataset+"_test.root").c_str());
+  //TFile *input = TFile::Open(("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuples_looseID/" + dataset + "_nominal_pileup_WGamma_full_full_May22.root").c_str());
+  TFile *input = TFile::Open(("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/" + dataset + "_nominal_pileup_WGamma_full_full_May22.root").c_str());
+  //TFile *input = TFile::Open((dataset+"_nominal_pileup_WGamma_full_full_May22.root").c_str());
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -133,13 +135,13 @@ void postproc(int mass, int runondata, int runyear)
   
   //jet mass correction
   //16
-  TF1* f1 = new TF1("f1","[0]/pow((x+[5])/[6],[1])+[2]/pow((x+[5])/[6]*100,[3])+[4]",400,3000);
+  TF1* f1 = new TF1("f1","[0]/pow((x+[5])/[6],[1])+[2]/pow((x+[5])/[6]*100,[3])+[4]",400,4000);
   f1->SetParameters(3.610,3.840,-458.30,0.4894,126.0119,1783.41,3403.76);
   TF1* f1a = new TF1("f1a","pol1",200,400);
   f1a->SetParameters(77.9253,0.019194);
   
   //17
-  TF1* f2 = new TF1("f2","[0]/pow((x+[5])/[6],[1])+[2]/pow((x+[5])/[6]*100,[3])+[4]",400,3000);
+  TF1* f2 = new TF1("f2","[0]/pow((x+[5])/[6],[1])+[2]/pow((x+[5])/[6]*100,[3])+[4]",400,4000);
   f2->SetParameters(0.0000337613,54.4947,105.146,0.282562,50.2222,7290.78,9533.69);
   TF1* f2a = new TF1("f2a","pol1",200,400);
   f2a->SetParameters(75.9682,0.020765);
@@ -229,12 +231,14 @@ void postproc(int mass, int runondata, int runyear)
 	else
 			masscorr = 80.379 / f2->Eval(j_pt);
 	}
-	if(masscorr > 1.5)
-		cout<<"ERROR IN MASS CORR CALCULATION"<<" "<<masscorr<<endl;
+	if(masscorr > 1.1){
+		//cout<<"ERROR IN MASS CORR CALCULATION"<<" "<<masscorr<<endl;
+		//cout<<j_mass * masscorr<<" "<<j_mass<<endl;
+	}
 	
-	// if(s_mass < 600) continue;
+	if(s_mass < 600) continue;
 	if(s_mass < 0.75*mass || s_mass > 1.25*mass) continue;
-    if(j_mass * masscorr < 68 || j_mass * masscorr > 94) continue;
+    if(j_mass * masscorr <  68 || j_mass * masscorr > 94) continue;
 	//if(j_mass * masscorr < 38 || j_mass * masscorr > 64) continue;
 	//if(j_mass * masscorr < 88 || j_mass * masscorr > 114) continue;
 	//if(j_mass * masscorr < 40 || j_mass * masscorr > 65) continue;
@@ -272,6 +276,7 @@ void postproc(int mass, int runondata, int runyear)
 	sumWpass += xsec_weight * xsec_kfactor * xsec_puweight * x_sf;
 
   }
+  cout<<"Passed pre-sel: "<<theTree->GetEntries()<<endl;
   cout<<"Entries: "<<outTree->GetEntries()<<endl;
   // cout<<sumWpass<<","<<sumWtotal<<endl;
   cout<<"++++,"<<mass<<","<<sumWpass<<","<<sumWtotal<<endl;

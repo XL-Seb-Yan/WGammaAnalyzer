@@ -37,7 +37,7 @@ void compare_plot_2_mc()
   lumiTextOffset = 0.15;
   relPosX = 0.11;
   bool plot_CMS = true;
-  extraText = "Preliminary";
+  extraText = "Simulation";
   lumiTextSize = 0.35;
   cmsTextSize = 0.45;
   int iPeriod = 12;
@@ -84,7 +84,7 @@ void compare_plot_2_mc()
   // Open input file
   Float_t p_pt, p_eta, p_phi, p_e, p_mva, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight, x_puweight, x_kfactor, x_sf;;
   
-  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/fullcut/Run2Data_postproc_WGammaRun2_SR_sigrange_fullcut_jmcorr_May22.root");
+  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/presel/SignalMC2000N_postproc_WGamma17_full_full_jmcorr_May22.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -119,7 +119,7 @@ void compare_plot_2_mc()
     hist111->Fill(p_mva);  
   }
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/fullcut/BkgMC_postproc_WGamma17_SR_full_fullcut_jmcorr_May22.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/presel/2000_N_S1_postproc_WGamma17_full_full_jmcorr_May22.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -165,8 +165,8 @@ void compare_plot_2_mc()
   }
 
   //=================================================================================
-  int color1 = 4;
-  int color2 = 2;
+  int color1 = 2;
+  int color2 = 8;
   hist11->SetLineColor(color1);
   hist12->SetLineColor(color1);
   hist13->SetLineColor(color1);
@@ -272,7 +272,7 @@ void compare_plot_2_mc()
   // hist211->Sumw2();
   
   double norm1 = 1;
-  double norm2 = 1/3.3033;
+  double norm2 = 1;
 
   // double norm1 = (double) hist11->GetEntries();
   // double norm2 = (double) hist21->GetEntries();
@@ -299,7 +299,7 @@ void compare_plot_2_mc()
   hist210->Scale(1/norm2);
   hist211->Scale(1/norm2);
 
-  TLegend *legend = new TLegend(0.7,0.82,0.9,0.9);
+  TLegend *legend = new TLegend(0.55,0.82,0.9,0.9);
   TAxis *xaxis = NULL;
   TAxis *yaxis = NULL;
   
@@ -313,10 +313,10 @@ void compare_plot_2_mc()
   TAxis *yaxisadd2 = NULL;
   
   //gStyle->SetHistMinimumZero();
-  TCanvas *c01 = new TCanvas("c01","",2400,2100);
+  TCanvas *c01 = new TCanvas("c01","",1800,2400);
   c01->cd();
   TPad *p01a = new TPad("p01a","p01a",0,0.10,1,1.0);
-  TPad *p01b = new TPad("p01b","p01b",0,0,1,0.19);
+  TPad *p01b = new TPad("p01b","p01b",0,0,1,0.20);
   p01a->Draw();
   p01b->Draw();
   p01a->cd();
@@ -332,8 +332,8 @@ void compare_plot_2_mc()
   hist11->Draw("HIST");
   hist21->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Data SR","f");
-  legend->AddEntry(hist21,"MC SR","f");
+  legend->AddEntry(hist11,"Signal M-700 S0","f");
+  legend->AddEntry(hist21,"Signal M-700 S1","f");
   legend->Draw();
   CMS_lumi(p01a,iPeriod,iPos);
   legend->Draw();
@@ -348,7 +348,7 @@ void compare_plot_2_mc()
   yaxisadd1 = pull1->GetYaxis();
   xaxisadd1->SetTitle("pt_{#gamma} (GeV)");
   xaxisadd1->SetTitleOffset(1.25);
-  yaxisadd1->SetTitle("Data SR / MC SR");
+  yaxisadd1->SetTitle("S0 / S1");
   yaxisadd1->SetTitleOffset(0.4);
   yaxisadd1->SetRangeUser(0,2);
   xaxisadd1->SetLabelSize(0.1);
@@ -362,17 +362,17 @@ void compare_plot_2_mc()
   //pull1->SetFillColorAlpha(kViolet, 0.35);
   pull1->Draw("PE1");
   //pull1->Draw("BAR HIST");
-  c01->Print("p_pt.png");
+  //c01->Print("p_pt.png");
   c01->Print("p_pt.pdf");
   c01->Print("p_pt.svg");
-  c01->Print("p_pt.root");
+  //c01->Print("p_pt.root");
   //==========================================================
   
     //gStyle->SetHistMinimumZero();
-  TCanvas *c02 = new TCanvas("c02","",2400,2100);
+  TCanvas *c02 = new TCanvas("c02","",1800,2400);
   c02->cd();
   TPad *p02a = new TPad("p02a","p02a",0,0.10,1,1.0);
-  TPad *p02b = new TPad("p02b","p02b",0,0,1,0.19);
+  TPad *p02b = new TPad("p02b","p02b",0,0,1,0.20);
   p02a->Draw();
   p02b->Draw();
   p02a->cd();
@@ -388,8 +388,8 @@ void compare_plot_2_mc()
   hist12->Draw("HIST");
   hist22->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Data SR","f");
-  legend->AddEntry(hist21,"MC SR","f");
+  legend->AddEntry(hist11,"Signal M-700 S0","f");
+  legend->AddEntry(hist21,"Signal M-700 S1","f");
   legend->Draw();
   CMS_lumi(p02a,iPeriod,iPos);
   legend->Draw();
@@ -404,7 +404,7 @@ void compare_plot_2_mc()
   yaxisadd1 = pull1->GetYaxis();
   xaxisadd1->SetTitle("#eta_{#gamma}");
   xaxisadd1->SetTitleOffset(1.25);
-  yaxisadd1->SetTitle("Data SR / MC SR");
+  yaxisadd1->SetTitle("S0 / S1");
   yaxisadd1->SetTitleOffset(0.4);
   yaxisadd1->SetRangeUser(0,2);
   xaxisadd1->SetLabelSize(0.1);
@@ -418,17 +418,17 @@ void compare_plot_2_mc()
   //pull1->SetFillColorAlpha(kViolet, 0.35);
   pull1->Draw("PE1");
   //pull1->Draw("BAR HIST");
-  c02->Print("p_eta.png");
+  //c02->Print("p_eta.png");
   c02->Print("p_eta.pdf");
   c02->Print("p_eta.svg");
-  c02->Print("p_eta.root");
+  //c02->Print("p_eta.root");
   //==========================================================
   
      //gStyle->SetHistMinimumZero();
-  TCanvas *c03 = new TCanvas("c03","",2400,2100);
+  TCanvas *c03 = new TCanvas("c03","",1800,2400);
   c03->cd();
   TPad *p03a = new TPad("p03a","p03a",0,0.10,1,1.0);
-  TPad *p03b = new TPad("p03b","p03b",0,0,1,0.19);
+  TPad *p03b = new TPad("p03b","p03b",0,0,1,0.20);
   p03a->Draw();
   p03b->Draw();
   p03a->cd();
@@ -444,8 +444,8 @@ void compare_plot_2_mc()
   hist13->Draw("HIST");
   hist23->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Data SR","f");
-  legend->AddEntry(hist21,"MC SR","f");
+  legend->AddEntry(hist11,"Signal M-700 S0","f");
+  legend->AddEntry(hist21,"Signal M-700 S1","f");
   legend->Draw();
   CMS_lumi(p03a,iPeriod,iPos);
   legend->Draw();
@@ -460,7 +460,7 @@ void compare_plot_2_mc()
   yaxisadd1 = pull1->GetYaxis();
   xaxisadd1->SetTitle("pt_{j} (GeV)");
   xaxisadd1->SetTitleOffset(1.25);
-  yaxisadd1->SetTitle("Data SR / MC SR");
+  yaxisadd1->SetTitle("S0 / S1");
   yaxisadd1->SetTitleOffset(0.4);
   yaxisadd1->SetRangeUser(0,2);
   xaxisadd1->SetLabelSize(0.1);
@@ -475,18 +475,18 @@ void compare_plot_2_mc()
   pull1->Draw("PE1");
   //pull1->Draw("BAR HIST");
 
-  c03->Print("j_pt.png");
+  //c03->Print("j_pt.png");
   c03->Print("j_pt.pdf");
   c03->Print("j_pt.svg");
-  c03->Print("j_pt.root");
+  //c03->Print("j_pt.root");
   
   //==========================================================
   
       //gStyle->SetHistMinimumZero();
-  TCanvas *c04 = new TCanvas("c04","",2400,2100);
+  TCanvas *c04 = new TCanvas("c04","",1800,2400);
   c04->cd();
   TPad *p04a = new TPad("p04a","p04a",0,0.10,1,1.0);
-  TPad *p04b = new TPad("p04b","p04b",0,0,1,0.19);
+  TPad *p04b = new TPad("p04b","p04b",0,0,1,0.20);
   p04a->Draw();
   p04b->Draw();
   p04a->cd();
@@ -502,8 +502,8 @@ void compare_plot_2_mc()
   hist14->Draw("HIST");
   hist24->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Data SR","f");
-  legend->AddEntry(hist21,"MC SR","f");
+  legend->AddEntry(hist11,"Signal M-700 S0","f");
+  legend->AddEntry(hist21,"Signal M-700 S1","f");
   legend->Draw();
   CMS_lumi(p04a,iPeriod,iPos);
   legend->Draw();
@@ -518,7 +518,7 @@ void compare_plot_2_mc()
   yaxisadd1 = pull1->GetYaxis();
   xaxisadd1->SetTitle("#eta_{j}");
   xaxisadd1->SetTitleOffset(1.25);
-  yaxisadd1->SetTitle("Data SR / MC SR");
+  yaxisadd1->SetTitle("S0 / S1");
   yaxisadd1->SetTitleOffset(0.4);
   yaxisadd1->SetRangeUser(0,2);
   xaxisadd1->SetLabelSize(0.1);
@@ -533,18 +533,18 @@ void compare_plot_2_mc()
   pull1->Draw("PE1");
   //pull1->Draw("BAR HIST");
 
-  c04->Print("j_eta.png");
+  //c04->Print("j_eta.png");
   c04->Print("j_eta.pdf");
   c04->Print("j_eta.svg");
-  c04->Print("j_eta.root");
+  //c04->Print("j_eta.root");
   
   //==========================================================
   
        //gStyle->SetHistMinimumZero();
-  TCanvas *c05 = new TCanvas("c05","",2400,2100);
+  TCanvas *c05 = new TCanvas("c05","",1800,2400);
   c05->cd();
   TPad *p05a = new TPad("p05a","p05a",0,0.10,1,1.0);
-  TPad *p05b = new TPad("p05b","p05b",0,0,1,0.19);
+  TPad *p05b = new TPad("p05b","p05b",0,0,1,0.20);
   p05a->Draw();
   p05b->Draw();
   p05a->cd();
@@ -560,8 +560,8 @@ void compare_plot_2_mc()
   hist15->Draw("HIST");
   hist25->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Data SR","f");
-  legend->AddEntry(hist21,"MC SR","f");
+  legend->AddEntry(hist11,"Signal M-700 S0","f");
+  legend->AddEntry(hist21,"Signal M-700 S1","f");
   legend->Draw();
   CMS_lumi(p05a,iPeriod,iPos);
   legend->Draw();
@@ -576,7 +576,7 @@ void compare_plot_2_mc()
   yaxisadd1 = pull1->GetYaxis();
   xaxisadd1->SetTitle("E_{j} (GeV)");
   xaxisadd1->SetTitleOffset(1.25);
-  yaxisadd1->SetTitle("Data SR / MC SR");
+  yaxisadd1->SetTitle("S0 / S1");
   yaxisadd1->SetTitleOffset(0.4);
   yaxisadd1->SetRangeUser(0,2);
   xaxisadd1->SetLabelSize(0.1);
@@ -591,18 +591,18 @@ void compare_plot_2_mc()
   pull1->Draw("PE1");
   //pull1->Draw("BAR HIST");
 
-  c05->Print("j_e.png");
+  //c05->Print("j_e.png");
   c05->Print("j_e.pdf");
   c05->Print("j_e.svg");
-  c05->Print("j_e.root");
+  //c05->Print("j_e.root");
   
   //==========================================================
   
         //gStyle->SetHistMinimumZero();
-  TCanvas *c06 = new TCanvas("c06","",2400,2100);
+  TCanvas *c06 = new TCanvas("c06","",1800,2400);
   c06->cd();
   TPad *p06a = new TPad("p06a","p06a",0,0.10,1,1.0);
-  TPad *p06b = new TPad("p06b","p06b",0,0,1,0.19);
+  TPad *p06b = new TPad("p06b","p06b",0,0,1,0.20);
   p06a->Draw();
   p06b->Draw();
   p06a->cd();
@@ -618,8 +618,8 @@ void compare_plot_2_mc()
   hist16->Draw("HIST");
   hist26->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Data SR","f");
-  legend->AddEntry(hist21,"MC SR","f");
+  legend->AddEntry(hist11,"Signal M-700 S0","f");
+  legend->AddEntry(hist21,"Signal M-700 S1","f");
   legend->Draw();
   CMS_lumi(p06a,iPeriod,iPos);
   legend->Draw();
@@ -634,7 +634,7 @@ void compare_plot_2_mc()
   yaxisadd1 = pull1->GetYaxis();
   xaxisadd1->SetTitle("SD m_{j} (GeV)");
   xaxisadd1->SetTitleOffset(1.25);
-  yaxisadd1->SetTitle("Data SR / MC SR");
+  yaxisadd1->SetTitle("S0 / S1");
   yaxisadd1->SetTitleOffset(0.4);
   yaxisadd1->SetRangeUser(0,2);
   xaxisadd1->SetLabelSize(0.1);
@@ -648,18 +648,18 @@ void compare_plot_2_mc()
   //pull1->SetFillColorAlpha(kViolet, 0.35);
   pull1->Draw("PE1");
   //pull1->Draw("BAR HIST");
-  c06->Print("j_sdm.png");
+  //c06->Print("j_sdm.png");
   c06->Print("j_sdm.pdf");
   c06->Print("j_sdm.svg");
-  c06->Print("j_sdm.root");
+  //c06->Print("j_sdm.root");
   
   //==========================================================
   
           //gStyle->SetHistMinimumZero();
-  TCanvas *c07 = new TCanvas("c07","",2400,2100);
+  TCanvas *c07 = new TCanvas("c07","",1800,2400);
   c07->cd();
   TPad *p07a = new TPad("p07a","p07a",0,0.10,1,1.0);
-  TPad *p07b = new TPad("p07b","p07b",0,0,1,0.19);
+  TPad *p07b = new TPad("p07b","p07b",0,0,1,0.20);
   p07a->Draw();
   p07b->Draw();
   p07a->cd();
@@ -675,8 +675,8 @@ void compare_plot_2_mc()
   hist17->Draw("HIST");
   hist27->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Data SR","f");
-  legend->AddEntry(hist21,"MC SR","f");
+  legend->AddEntry(hist11,"Signal M-700 S0","f");
+  legend->AddEntry(hist21,"Signal M-700 S1","f");
   legend->Draw();
   CMS_lumi(p07a,iPeriod,iPos);
   legend->Draw();
@@ -691,7 +691,7 @@ void compare_plot_2_mc()
   yaxisadd1 = pull1->GetYaxis();
   xaxisadd1->SetTitle("#tau21_{j}");
   xaxisadd1->SetTitleOffset(1.25);
-  yaxisadd1->SetTitle("Data SR / MC SR");
+  yaxisadd1->SetTitle("S0 / S1");
   yaxisadd1->SetTitleOffset(0.4);
   yaxisadd1->SetRangeUser(0,2);
   xaxisadd1->SetLabelSize(0.1);
@@ -706,18 +706,18 @@ void compare_plot_2_mc()
   pull1->Draw("PE1");
   //pull1->Draw("BAR HIST");
   
-  c07->Print("j_tau21.png");
+  //c07->Print("j_tau21.png");
   c07->Print("j_tau21.pdf");
   c07->Print("j_tau21.svg");
-  c07->Print("j_tau21.root");
+  //c07->Print("j_tau21.root");
   
   //==========================================================
   
             //gStyle->SetHistMinimumZero();
-  TCanvas *c08 = new TCanvas("c08","",2400,2100);
+  TCanvas *c08 = new TCanvas("c08","",1800,2400);
   c08->cd();
   TPad *p08a = new TPad("p08a","p08a",0,0.10,1,1.0);
-  TPad *p08b = new TPad("p08b","p08b",0,0,1,0.19);
+  TPad *p08b = new TPad("p08b","p08b",0,0,1,0.20);
   p08a->Draw();
   p08b->Draw();
   p08a->cd();
@@ -733,8 +733,8 @@ void compare_plot_2_mc()
   hist18->Draw("HIST");
   hist28->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Data SR","f");
-  legend->AddEntry(hist21,"MC SR","f");
+  legend->AddEntry(hist11,"Signal M-700 S0","f");
+  legend->AddEntry(hist21,"Signal M-700 S1","f");
   legend->Draw();
   CMS_lumi(p08a,iPeriod,iPos);
   legend->Draw();
@@ -749,7 +749,7 @@ void compare_plot_2_mc()
   yaxisadd1 = pull1->GetYaxis();
   xaxisadd1->SetTitle("cos(#theta*)");
   xaxisadd1->SetTitleOffset(1.25);
-  yaxisadd1->SetTitle("Data SR / MC SR");
+  yaxisadd1->SetTitle("S0 / S1");
   yaxisadd1->SetTitleOffset(0.4);
   yaxisadd1->SetRangeUser(0,2);
   xaxisadd1->SetLabelSize(0.1);
@@ -764,20 +764,20 @@ void compare_plot_2_mc()
   pull1->Draw("PE1");
   //pull1->Draw("BAR HIST");
 
-  c08->Print("s_cos.png");
+  //c08->Print("s_cos.png");
   c08->Print("s_cos.pdf");
   c08->Print("s_cos.svg");
-  c08->Print("s_cos.root");
+  //c08->Print("s_cos.root");
   
   //==========================================================
   
     //==========================================================
   
             //gStyle->SetHistMinimumZero();
-  TCanvas *c09 = new TCanvas("c09","",2400,2100);
+  TCanvas *c09 = new TCanvas("c09","",1800,2400);
   c09->cd();
   TPad *p09a = new TPad("p09a","p09a",0,0.10,1,1.0);
-  TPad *p09b = new TPad("p09b","p09b",0,0,1,0.19);
+  TPad *p09b = new TPad("p09b","p09b",0,0,1,0.20);
   p09a->Draw();
   p09b->Draw();
   p09a->cd();
@@ -793,8 +793,8 @@ void compare_plot_2_mc()
   hist19->Draw("HIST");
   hist29->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Data SR","f");
-  legend->AddEntry(hist21,"MC SR","f");
+  legend->AddEntry(hist11,"Signal M-700 S0","f");
+  legend->AddEntry(hist21,"Signal M-700 S1","f");
   legend->Draw();
   CMS_lumi(p09a,iPeriod,iPos);
   legend->Draw();
@@ -809,7 +809,7 @@ void compare_plot_2_mc()
   yaxisadd1 = pull1->GetYaxis();
   xaxisadd1->SetTitle("pt_{#gamma} / M_{j#gamma}");
   xaxisadd1->SetTitleOffset(1.25);
-  yaxisadd1->SetTitle("Data SR / MC SR");
+  yaxisadd1->SetTitle("S0 / S1");
   yaxisadd1->SetTitleOffset(0.4);
   yaxisadd1->SetRangeUser(0,2);
   xaxisadd1->SetLabelSize(0.1);
@@ -824,19 +824,19 @@ void compare_plot_2_mc()
   pull1->Draw("PE1");
   //pull1->Draw("BAR HIST");
   
-  c09->Print("s_ptm.png");
+  //c09->Print("s_ptm.png");
   c09->Print("s_ptm.pdf");
   c09->Print("s_ptm.svg");
-  c09->Print("s_ptm.root");
+  //c09->Print("s_ptm.root");
   
   //==========================================================
   
   
             //gStyle->SetHistMinimumZero();
-  TCanvas *c10 = new TCanvas("c10","",2400,2100);
+  TCanvas *c10 = new TCanvas("c10","",1800,2400);
   c10->cd();
   TPad *p10a = new TPad("p10a","p10a",0,0.10,1,1.0);
-  TPad *p10b = new TPad("p10b","p10b",0,0,1,0.19);
+  TPad *p10b = new TPad("p10b","p10b",0,0,1,0.20);
   p10a->Draw();
   p10b->Draw();
   p10a->cd();
@@ -852,8 +852,8 @@ void compare_plot_2_mc()
   hist110->Draw("HIST");
   hist210->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Data SR","f");
-  legend->AddEntry(hist21,"MC SR","f");
+  legend->AddEntry(hist11,"Signal M-700 S0","f");
+  legend->AddEntry(hist21,"Signal M-700 S1","f");
   legend->Draw();
   CMS_lumi(p10a,iPeriod,iPos);
   legend->Draw();
@@ -868,7 +868,7 @@ void compare_plot_2_mc()
   yaxisadd1 = pull1->GetYaxis();
   xaxisadd1->SetTitle("M_{j#gamma} (GeV)");
   xaxisadd1->SetTitleOffset(1.25);
-  yaxisadd1->SetTitle("Data SR / MC SR");
+  yaxisadd1->SetTitle("S0 / S1");
   yaxisadd1->SetTitleOffset(0.4);
   yaxisadd1->SetRangeUser(0,2);
   xaxisadd1->SetLabelSize(0.1);
@@ -883,19 +883,19 @@ void compare_plot_2_mc()
   pull1->Draw("PE1");
   //pull1->Draw("BAR HIST");
  
-  c10->Print("s_M.png");
+  //c10->Print("s_M.png");
   c10->Print("s_M.pdf");
   c10->Print("s_M.svg");
-  c10->Print("s_M.root");
+  //c10->Print("s_M.root");
   
   //==========================================================
   
   
             //gStyle->SetHistMinimumZero();
-  TCanvas *c11 = new TCanvas("c11","",2400,2100);
+  TCanvas *c11 = new TCanvas("c11","",1800,2400);
   c11->cd();
   TPad *p11a = new TPad("p11a","p11a",0,0.10,1,1.0);
-  TPad *p11b = new TPad("p11b","p11b",0,0,1,0.19);
+  TPad *p11b = new TPad("p11b","p11b",0,0,1,0.20);
   p11a->Draw();
   p11b->Draw();
   p11a->cd();
@@ -903,7 +903,7 @@ void compare_plot_2_mc()
   p11a->SetLogy();
   xaxis = hist111->GetXaxis();
   yaxis = hist111->GetYaxis();
-  xaxis->SetTitle("#gamma Data SR");
+  xaxis->SetTitle("#gamma Signal MC S0");
   yaxis->SetTitle("Entries / 0.04");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.35);
@@ -911,8 +911,8 @@ void compare_plot_2_mc()
   hist111->Draw("HIST");
   hist211->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Data SR","f");
-  legend->AddEntry(hist21,"MC SR","f");
+  legend->AddEntry(hist11,"Signal M-700 S0","f");
+  legend->AddEntry(hist21,"Signal M-700 S1","f");
   legend->Draw();
   CMS_lumi(p11a,iPeriod,iPos);
   legend->Draw();
@@ -925,9 +925,9 @@ void compare_plot_2_mc()
   pull1->Divide(main);
   xaxisadd1 = pull1->GetXaxis();
   yaxisadd1 = pull1->GetYaxis();
-  xaxisadd1->SetTitle("#gamma Data SR");
+  xaxisadd1->SetTitle("#gamma Signal MC S0");
   xaxisadd1->SetTitleOffset(1.25);
-  yaxisadd1->SetTitle("Data SR / MC SR");
+  yaxisadd1->SetTitle("S0 / S1");
   yaxisadd1->SetTitleOffset(0.4);
   yaxisadd1->SetRangeUser(0,2);
   xaxisadd1->SetLabelSize(0.1);
@@ -941,10 +941,10 @@ void compare_plot_2_mc()
   //pull1->SetFillColorAlpha(kViolet, 0.35);
   pull1->Draw("PE1");
   //pull1->Draw("BAR HIST");
-  c11->Print("p_mva.png");
+  //c11->Print("p_mva.png");
   c11->Print("p_mva.pdf");
   c11->Print("p_mva.svg");
-  c11->Print("p_mva.root");
+  //c11->Print("p_mva.root");
   
   //==========================================================
 

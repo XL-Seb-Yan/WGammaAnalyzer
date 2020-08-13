@@ -4,18 +4,19 @@ void makeRooMultiPdfWorkspaceSigN(){
   gROOT->SetBatch(1);
   // Load the combine Library 
   gSystem->Load("libHiggsAnalysisCombinedLimit.so");
-  RooRealVar *x = new RooRealVar("m","m",600,5000,"");
+  RooRealVar *x = new RooRealVar("m","m",600,7500,"");
   RooPlot *frame = x->frame();
 
   // Open anchor workspace narrow
-  int sigmass_N[16] = {700,800,900,1000,1200,1400,1600,2000,2200,2400,2600,2800,3000,3500,4000,5000};
+  int sigmass_N[15]={700,800,1000,1200,1400,1600,2000,2200,2400,2600,2800,3500,4000,5000,6000};
+  //int sigmass_N[7]={700,800,1000,1200,1400,1600,2000};
   TFile *f_1 = NULL;
   TFile *f_2 = NULL;
-  for(int i = 0; i<15; i++){
+  for(int i = 0; i<14; i++){
     TString sig_type_1 = std::to_string(sigmass_N[i])+"N";
     TString sig_type_2 = std::to_string(sigmass_N[i+1])+"N";
-	f_1 = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/RooFit/biasstudy/"+sig_type_1+"-shapes-Unbinned-CBGaus.root");
-    f_2 = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/RooFit/biasstudy/"+sig_type_2+"-shapes-Unbinned-CBGaus.root");
+	f_1 = TFile::Open(sig_type_1+"-shapes-Unbinned-CBGaus.root");
+    f_2 = TFile::Open(sig_type_2+"-shapes-Unbinned-CBGaus.root");
     if(f_1 == NULL) continue;
     if(f_2 == NULL) continue;
     cout<<"Processing..."<<endl;
@@ -95,7 +96,7 @@ void makeRooMultiPdfWorkspaceSigN(){
     // delete com_model;
     
     //interpolated signal shapes
-    int step = 50;
+    int step = 10;
     int npoints = (sigmass_N[i+1] - sigmass_N[i]) / step;
     float CB_mean_low = w_1->var("CB_mean")->getValV();
     float CB_sigma_low = w_1->var("CB_sigma")->getValV();
@@ -116,7 +117,7 @@ void makeRooMultiPdfWorkspaceSigN(){
     cout<<"Anchor variables high:  "<<CB_mean_high<<" "<<CB_sigma_high<<" "<<CB_alpha_high<<" "<<CB_n_high<<" "<<Gaus_mean_high<<" "<<Gaus_sigma_high<<" "<<frac_high<<endl;
     cout<<"========================================================================================="<<endl;
     for(int ip=0; ip<npoints+1; ip++){
-        m = new RooRealVar("m","m",600,6000,"");
+        m = new RooRealVar("m","m",(sigmass_N[i]+step*ip)*0.75,(sigmass_N[i]+step*ip)*1.25,"");
         float CB_mean_p = CB_mean_low + ip * (CB_mean_high - CB_mean_low) / npoints;
         float CB_sigma_p = CB_sigma_low + ip * (CB_sigma_high - CB_sigma_low) / npoints;
         float CB_alpha_p = CB_alpha_low + ip * (CB_alpha_high - CB_alpha_low) / npoints;

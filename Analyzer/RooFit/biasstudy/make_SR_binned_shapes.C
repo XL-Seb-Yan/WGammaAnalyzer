@@ -1,4 +1,4 @@
-#define fun_type 3
+#define fun_type 7
 #if !defined(__CINT__) || defined(__MAKECINT__)
 #include <TROOT.h>                  // access to gROOT, entry point to ROOT system
 #include <TSystem.h>                // interface to OS
@@ -64,8 +64,8 @@ void make_SR_binned_shapes(int seed=37)
   lumiTextOffset = 0.15;
   bool plot_CMS = true;
   extraText = "Preliminary";
-  lumiTextSize = 0.35;
-  cmsTextSize = 0.45;
+  lumiTextSize = 0.4;
+  cmsTextSize = 0.5;
   int iPeriod = 12;
   int iPos = 11;
   gStyle->SetOptStat(0);
@@ -78,37 +78,36 @@ void make_SR_binned_shapes(int seed=37)
   gStyle->SetHistLineWidth(2);
 
   // --- Create obervable --- 
-  RooRealVar *x = new RooRealVar("m","m",600,5000,""); //the name "m" will be used by RooDataSet to import data, normalization range is 600-3500 but plot range can be defined to like 600-3000
+  RooRealVar *x = new RooRealVar("m","m",600,8000,""); //the name "m" will be used by RooDataSet to import data, normalization range is 600-3500 but plot range can be defined to like 600-3000
 
   //--- background PDF ---
 #if fun_type == 1
-  //-----------------------------dijet 2-----------------------------------
-  TString fun_name = "dijet2";
-  RooRealVar *dijet2_p0 = new RooRealVar("dijet2_p0","dijet2_p_0",-11,-20,-5,""); //-10.5471 +- 3.06516
-  RooRealVar *dijet2_p1 = new RooRealVar("dijet2_p1","dijet2_p_1",-1,-5,-0.01,""); //-0.799413 +- 0.560435
-  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(m/13000,dijet2_p0+dijet2_p1*log(m/13000)))",RooArgList(*x,*dijet2_p0,*dijet2_p1));
+  //-----------------------------dijet 1-----------------------------------
+  TString fun_name = "dijet-1";
+  RooRealVar *dijet1_p0 = new RooRealVar("dijet1_p0","dijet1_p_0",0,-100,100,""); //-10.5471 +- 3.06516
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(m/13000,dijet1_p0))",RooArgList(*x,*dijet1_p0));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 2
-  //-----------------------------ATLAS1-----------------------------------
-  TString fun_name = "ATLAS1";
-  RooRealVar *ATLAS1_p0 = new RooRealVar("ATLAS1_p0","ATLAS1_p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
-  RooRealVar *ATLAS1_p1 = new RooRealVar("ATLAS1_p1","ATLAS1_p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
-  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-pow(m/13000,1/3),ATLAS1_p0)/pow(m/13000,ATLAS1_p1))",RooArgList(*x,*ATLAS1_p0,*ATLAS1_p1));
+//-----------------------------dijet 2-----------------------------------
+  TString fun_name = "dijet-2";
+  RooRealVar *dijet2_p0 = new RooRealVar("dijet2_p0","dijet2_p_0",0,-100,100,""); //-10.5471 +- 3.06516
+  RooRealVar *dijet2_p1 = new RooRealVar("dijet2_p1","dijet2_p_1",0,-100,100,""); //-0.799413 +- 0.560435
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(m/13000,dijet2_p0+dijet2_p1*log(m/13000)))",RooArgList(*x,*dijet2_p0,*dijet2_p1));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 3
-  //-----------------------------VVdijet2-----------------------------------
-  TString fun_name = "VVdijet2";
-  RooRealVar *VVdijet2_p0 = new RooRealVar("VVdijet2_p0","VVdijet2_p_0",-10,-40,20,""); //-10.5471 +- 3.06516
-  RooRealVar *VVdijet2_p1 = new RooRealVar("VVdijet2_p1","VVdijet2_p_1",0,-20,20,""); //-0.799413 +- 0.560435
-  RooRealVar *VVdijet2_p2 = new RooRealVar("VVdijet2_p2","VVdijet2_p_2",0,-20,20,""); //-0.799413 +- 0.560435
-  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-m/13000,VVdijet2_p0)/pow(m/13000,VVdijet2_p1+VVdijet2_p2*log(m/13000)))",RooArgList(*x,*VVdijet2_p0,*VVdijet2_p1,*VVdijet2_p2));
+//-----------------------------dijet 3-----------------------------------
+  TString fun_name = "dijet-3";
+  RooRealVar *dijet3_p0 = new RooRealVar("dijet3_p0","dijet3_p_0",0,-100,100,""); //-10.5471 +- 3.06516
+  RooRealVar *dijet3_p1 = new RooRealVar("dijet3_p1","dijet3_p_1",0,-100,100,""); //-0.799413 +- 0.560435
+  RooRealVar *dijet3_p2 = new RooRealVar("dijet3_p2","dijet3_p_2",0,-100,100,""); //-0.799413 +- 0.560435
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(m/13000,dijet3_p0+dijet3_p1*log(m/13000)+dijet3_p2*pow(log(m/13000),2)))",RooArgList(*x,*dijet3_p0,*dijet3_p1,*dijet3_p2));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 4
-  //-----------------------------dijet -----------------------------------
-  TString fun_name = "dijet4";
+  //-----------------------------dijet 4 -----------------------------------
+  TString fun_name = "dijet-4";
   RooRealVar *dijet4_p0 = new RooRealVar("dijet4_p0","dijet4_p_0",0,-20,20,""); //-10.5471 +- 3.06516
   RooRealVar *dijet4_p1 = new RooRealVar("dijet4_p1","dijet4_p_1",0,-20,20,""); //-0.799413 +- 0.560435
   RooRealVar *dijet4_p2 = new RooRealVar("dijet4_p2","dijet4_p_2",0,-20,20,""); //-0.799413 +- 0.560435
@@ -117,62 +116,62 @@ void make_SR_binned_shapes(int seed=37)
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 5
-  //-----------------------------dijet 1-----------------------------------
-  TString fun_name = "dijet1";
-  RooRealVar *dijet1_p0 = new RooRealVar("dijet1_p0","dijet1_p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
-  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(m/13000,dijet1_p0))",RooArgList(*x,*dijet1_p0));
+//-----------------------------VVdijet1-----------------------------------
+  TString fun_name = "VVdijet-1";
+  RooRealVar *VVdijet1_p0 = new RooRealVar("VVdijet1_p0","VVdijet1_p_0",0,-100,100,""); //-10.5471 +- 3.06516
+  RooRealVar *VVdijet1_p1 = new RooRealVar("VVdijet1_p1","VVdijet1_p_1",0,-100,100,""); //-0.799413 +- 0.560435
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-m/13000,VVdijet1_p0)/pow(m/13000,VVdijet1_p1))",RooArgList(*x,*VVdijet1_p0,*VVdijet1_p1));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 6
-  //-----------------------------dijet 3-----------------------------------
-  TString fun_name = "dijet3";
-  RooRealVar *dijet3_p0 = new RooRealVar("dijet3_p0","dijet3_p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
-  RooRealVar *dijet3_p1 = new RooRealVar("dijet3_p1","dijet3_p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
-  RooRealVar *dijet3_p2 = new RooRealVar("dijet3_p2","dijet3_p_2",0,-1000,1000,""); //-0.799413 +- 0.560435
-  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(m/13000,dijet3_p0+dijet3_p1*log(m/13000)+dijet3_p2*pow(log(m/13000),2)))",RooArgList(*x,*dijet3_p0,*dijet3_p1,*dijet3_p2));
+  //-----------------------------VVdijet2-----------------------------------
+  TString fun_name = "VVdijet-2";
+  RooRealVar *VVdijet2_p0 = new RooRealVar("VVdijet2_p0","VVdijet2_p_0",0,-100,100,""); //-10.5471 +- 3.06516
+  RooRealVar *VVdijet2_p1 = new RooRealVar("VVdijet2_p1","VVdijet2_p_1",0,-100,100,""); //-0.799413 +- 0.560435
+  RooRealVar *VVdijet2_p2 = new RooRealVar("VVdijet2_p2","VVdijet2_p_2",0,-100,100,""); //-0.799413 +- 0.560435
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-m/13000,VVdijet2_p0)/pow(m/13000,VVdijet2_p1+VVdijet2_p2*log(m/13000)))",RooArgList(*x,*VVdijet2_p0,*VVdijet2_p1,*VVdijet2_p2));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 7
+//-----------------------------VVdijet3-----------------------------------
+  TString fun_name = "VVdijet-3";
+  RooRealVar *VVdijet3_p0 = new RooRealVar("VVdijet3_p0","VVdijet3_p_0",-17,-30,0,""); //-10.5471 +- 3.06516
+  RooRealVar *VVdijet3_p1 = new RooRealVar("VVdijet3_p1","VVdijet3_p_1",16,0,25,""); //-0.799413 +- 0.560435
+  RooRealVar *VVdijet3_p2 = new RooRealVar("VVdijet3_p2","VVdijet3_p_2",1,-100,100,""); //-0.799413 +- 0.560435
+  RooRealVar *VVdijet3_p3 = new RooRealVar("VVdijet3_p3","VVdijet3_p_3",0,-100,100,""); //-0.799413 +- 0.560435
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-m/13000,VVdijet3_p0)/pow(m/13000,VVdijet3_p1+VVdijet3_p2*log(m/13000)+VVdijet3_p3*pow(log(m/13000),2)))",RooArgList(*x,*VVdijet3_p0,*VVdijet3_p1,*VVdijet3_p2,*VVdijet3_p3));
+  RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
+  RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
+#elif fun_type == 8
+//-----------------------------ATLAS1-----------------------------------
+  TString fun_name = "ATLAS-1";
+  RooRealVar *ATLAS1_p0 = new RooRealVar("ATLAS1_p0","ATLAS1_p_0",0,-100,100,""); //-10.5471 +- 3.06516
+  RooRealVar *ATLAS1_p1 = new RooRealVar("ATLAS1_p1","ATLAS1_p_1",0,-100,100,""); //-0.799413 +- 0.560435
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-pow(m/13000,1/3),ATLAS1_p0)/pow(m/13000,ATLAS1_p1))",RooArgList(*x,*ATLAS1_p0,*ATLAS1_p1));
+  RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
+  RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
+#elif fun_type == 9
   //-----------------------------ATLAS2-----------------------------------
-  TString fun_name = "ATLAS2";
+  TString fun_name = "ATLAS-2";
   RooRealVar *ATLAS2_p0 = new RooRealVar("ATLAS2_p0","ATLAS2_p_0",0,-100,100,""); //-10.5471 +- 3.06516
   RooRealVar *ATLAS2_p1 = new RooRealVar("ATLAS2_p1","ATLAS2_p_1",0,-100,100,""); //-0.799413 +- 0.560435
   RooRealVar *ATLAS2_p2 = new RooRealVar("ATLAS2_p2","ATLAS2_p_2",0,-100,100,""); //-0.799413 +- 0.560435
   RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-pow(m/13000,1/3),ATLAS2_p0)/pow(m/13000,ATLAS2_p1+ATLAS2_p2*log(m/13000)))",RooArgList(*x,*ATLAS2_p0,*ATLAS2_p1,*ATLAS2_p2));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
-#elif fun_type == 8
-  //-----------------------------ATLAS3-----------------------------------
-  TString fun_name = "ATLAS3";
-  RooRealVar *ATLAS3_p0 = new RooRealVar("ATLAS3_p0","ATLAS3_p_0",-7,-20,20,""); //-10.5471 +- 3.06516
-  RooRealVar *ATLAS3_p1 = new RooRealVar("ATLAS3_p1","ATLAS3_p_1",0,-20,20,""); //-0.799413 +- 0.560435
-  RooRealVar *ATLAS3_p2 = new RooRealVar("ATLAS3_p2","ATLAS3_p_2",-4,-20,20,""); //-0.799413 +- 0.560435
-  RooRealVar *ATLAS3_p3 = new RooRealVar("ATLAS3_p3","ATLAS3_p_3",0,-20,20,""); //-0.799413 +- 0.560435
-  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-pow(m/13000,1/3),ATLAS3_p0)/pow(m/13000,ATLAS3_p1+ATLAS3_p2*log(m/13000)+ATLAS3_p3*pow(log(m/13000),2)))",RooArgList(*x,*ATLAS3_p0,*ATLAS3_p1,*ATLAS3_p2,*ATLAS3_p3));
-  RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
-  RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
-#elif fun_type == 9
-  //-----------------------------VVdijet1-----------------------------------
-  TString fun_name = "VVdijet1";
-  RooRealVar *VVdijet1_p0 = new RooRealVar("VVdijet1_p0","VVdijet1_p_0",0,-100,100,""); //-10.5471 +- 3.06516
-  RooRealVar *VVdijet1_p1 = new RooRealVar("VVdijet1_p1","VVdijet1_p_1",0,-10,10,""); //-0.799413 +- 0.560435
-  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-m/13000,VVdijet1_p0)/pow(m/13000,VVdijet1_p1))",RooArgList(*x,*VVdijet1_p0,*VVdijet1_p1));
-  RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
-  RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 10
-  //-----------------------------VVdijet3-----------------------------------
-  TString fun_name = "VVdijet3";
-
-  RooRealVar *VVdijet3_p0 = new RooRealVar("VVdijet3_p0","VVdijet3_p_0",1,-20,20,""); //-10.5471 +- 3.06516
-  RooRealVar *VVdijet3_p1 = new RooRealVar("VVdijet3_p1","VVdijet3_p_1",-1,-20,20,""); //-0.799413 +- 0.560435
-  RooRealVar *VVdijet3_p2 = new RooRealVar("VVdijet3_p2","VVdijet3_p_2",0,-20,20,""); //-0.799413 +- 0.560435
-  RooRealVar *VVdijet3_p3 = new RooRealVar("VVdijet3_p3","VVdijet3_p_3",0,-20,20,""); //-0.799413 +- 0.560435
-  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-m/13000,VVdijet3_p0)/pow(m/13000,VVdijet3_p1+VVdijet3_p2*log(m/13000)+VVdijet3_p3*pow(log(m/13000),2)))",RooArgList(*x,*VVdijet3_p0,*VVdijet3_p1,*VVdijet3_p2,*VVdijet3_p3));
+  //-----------------------------ATLAS3-----------------------------------
+  TString fun_name = "ATLAS-3";
+  RooRealVar *ATLAS3_p0 = new RooRealVar("ATLAS3_p0","ATLAS3_p_0",0,-100,100,""); //-10.5471 +- 3.06516
+  RooRealVar *ATLAS3_p1 = new RooRealVar("ATLAS3_p1","ATLAS3_p_1",0,-100,100,""); //-0.799413 +- 0.560435
+  RooRealVar *ATLAS3_p2 = new RooRealVar("ATLAS3_p2","ATLAS3_p_2",0,-100,100,""); //-0.799413 +- 0.560435
+  RooRealVar *ATLAS3_p3 = new RooRealVar("ATLAS3_p3","ATLAS3_p_3",0,-100,100,""); //-0.799413 +- 0.560435
+  RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-pow(m/13000,1/3),ATLAS3_p0)/pow(m/13000,ATLAS3_p1+ATLAS3_p2*log(m/13000)+ATLAS3_p3*pow(log(m/13000),2)))",RooArgList(*x,*ATLAS3_p0,*ATLAS3_p1,*ATLAS3_p2,*ATLAS3_p3));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 11
   //-----------------------------dijet5-----------------------------------
-  TString fun_name = "dijet5";
+  TString fun_name = "dijet-5";
   RooRealVar *dijet5_p0 = new RooRealVar("dijet5_p0","dijet5_p_0",0,-100,100,""); //-10.5471 +- 3.06516
   RooRealVar *dijet5_p1 = new RooRealVar("dijet5_p1","dijet5_p_1",0,-100,100,""); //-0.799413 +- 0.560435
   RooRealVar *dijet5_p2 = new RooRealVar("dijet5_p2","dijet5_p_2",0,-100,100,""); //-0.799413 +- 0.560435
@@ -183,7 +182,7 @@ void make_SR_binned_shapes(int seed=37)
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 12
   //-----------------------------VVdijet4-----------------------------------
-  TString fun_name = "VVdijet4";
+  TString fun_name = "VVdijet-4";
   RooRealVar *VVdijet4_p0 = new RooRealVar("VVdijet4_p0","VVdijet4_p_0",0,-100,100,""); //-10.5471 +- 3.06516
   RooRealVar *VVdijet4_p1 = new RooRealVar("VVdijet4_p1","VVdijet4_p_1",0,-100,100,""); //-0.799413 +- 0.560435
   RooRealVar *VVdijet4_p2 = new RooRealVar("VVdijet4_p2","VVdijet4_p_2",0,-100,100,""); //-0.799413 +- 0.560435
@@ -194,7 +193,7 @@ void make_SR_binned_shapes(int seed=37)
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 13
   //-----------------------------ATLAS4-----------------------------------
-  TString fun_name = "ATLAS4";
+  TString fun_name = "ATLAS-4";
   RooRealVar *ATLAS4_p0 = new RooRealVar("ATLAS4_p0","ATLAS4_p_0",0,-100,100,""); //-10.5471 +- 3.06516
   RooRealVar *ATLAS4_p1 = new RooRealVar("ATLAS4_p1","ATLAS4_p_1",0,-100,100,""); //-0.799413 +- 0.560435
   RooRealVar *ATLAS4_p2 = new RooRealVar("ATLAS4_p2","ATLAS4_p_2",0,-100,100,""); //-0.799413 +- 0.560435
@@ -207,17 +206,18 @@ void make_SR_binned_shapes(int seed=37)
 
   // --- Import unBinned dataset ---
   
-  // float xbinlow[66] = {600,637,674,711,748,785,822,859,896,933,970,1007,1053,1099,1145,1191,1237,1283,1329,1375,1421,1467,1513,1573,1633,1693,1753,1813,1873,1933,1993,2053,2127,2201,2275,2349,2423,2497,2585,2673,2761,2849,2937,3039,3141,3243,3345,3447,3666,3783,3900,4017,4148,4279,4410,4541,4672,4803,4934,5093,5252,5411,5570,5729,5888,6000};
+  //float xbinlow[53] = {600,650,700,750,800,850,900,950,1000,1050,1100,1050,1100,1150,1200,1250,1300,1350,1400,1450,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700,2800,2900,3000,3200,3400,3600,3800,400,4200,4400,4600,4800,5000,5400,5800,6200,6600,7000,7400,7800};
   // ------------------------Photons------------------------
-  // TH1F* DATAh = new TH1F("DATAh","DATAh",65,&xbinlow[0]);
-  TH1F* DATAh = new TH1F("DATAh","DATAh",110,600,5000);
+  //TH1F* DATAh = new TH1F("DATAh","DATAh",52,&xbinlow[0]);
+  TH1F* DATAh = new TH1F("DATAh","DATAh",185,600,8000);
   float s_mass;
-  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/fullcut/Run2Data_postproc_WGammaRun2_SB_sigrange_fullcut_jmcorr_May22.root");
+  TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/fullcut/Run2Data_postproc_WGammaRun2_SR_sigrange_fullcut_jmcorr_May22.root");
   TTree* tree = (TTree*)file.Get("Events");
   tree->SetBranchAddress("m", &s_mass);
   for (int ievt = 0; ievt<tree->GetEntries();ievt++) {
     tree->GetEntry(ievt);
-    DATAh->Fill(s_mass, 2.4826);
+    DATAh->Fill(s_mass, 1);
+    //DATAh->Fill(s_mass, 2.4826);
   }
   RooDataHist datah("Data SR","Data SR",RooArgSet(*x),DATAh);
   cout<<"number of weighted entries: "<<datah.sum(false)<<endl;
@@ -229,13 +229,13 @@ void make_SR_binned_shapes(int seed=37)
   RooPlot *frame = x->frame();
 
   frame->SetTitle("Data Sideband");
-  datah.plotOn(frame,RooFit::Name("datah"),DataError(RooAbsData::SumW2)); //for unweighted data
+  datah.plotOn(frame,RooFit::Name("datah"),DataError(RooAbsData::Poisson),MarkerStyle(20)); //for unweighted data
   // Change attributes of last added plot elements
   frame->getAttMarker()->SetMarkerSize(2);
-  model->plotOn(frame,LineStyle(kDashed),RooFit::Name(fun_name));
+  model->plotOn(frame,LineWidth(2),RooFit::Name(fun_name));
   model->plotOn(frame,VisualizeError(*r,2,kFALSE),FillColor(kYellow),LineColor(0),RooFit::Name("err2"));
   model->plotOn(frame,VisualizeError(*r,1,kFALSE),FillColor(kGreen),LineColor(0),RooFit::Name("err1"));
-  model->plotOn(frame,LineStyle(kDashed),RooFit::Name(fun_name));
+  model->plotOn(frame,LineWidth(2),RooFit::Name(fun_name));
 
     datah.plotOn(frame,RooFit::Name("datah"),DataError(RooAbsData::Poisson)); //for unweighted data
 
@@ -308,17 +308,68 @@ void make_SR_binned_shapes(int seed=37)
   
   // write Chi2
   TString chi2txt = "#chi^{2}/ndof: " + to_str_trim(frame->chiSquare(fun_name,"datah") * (datah.numEntries() - n_0)) + "/" + std::to_string(datah.numEntries() - n_0 - nfloparam) + "=" + to_str_trim(frame->chiSquare(fun_name,"datah", nfloparam));
-  TLatex *chi2lax = new TLatex(0.5,0.6,chi2txt);
+  TLatex *chi2lax = new TLatex(0.5,0.55,chi2txt);
   chi2lax->SetNDC();
   chi2lax->SetTextSize(0.028);
   chi2lax->SetTextColor(kBlack);
   frame->addObject(chi2lax);
+  
+   // --- Perform extended ML fit of composite PDF to toy data ---
+  RooFitResult *ex_r = NULL;
+  // if(isNorm)
+    // ex_r = ex_model->fitTo(data_norm,Range(600,8000),RooFit::Minimizer("Minuit2"),Extended(true),SumW2Error(false),Save());
+  // else
+    ex_r = ex_model->fitTo(datah,Range(600,8000),RooFit::Minimizer("Minuit2"),Extended(true),Save());
+  cout<<"Normalization is: "<<bkg_norm->getVal()<<endl;
+  
+  std::vector<float> massbin;
+  std::vector<TGraph*> signalpullplot_vector;
+  
+  TString plotmass[6]={"1000N","2600N","4000N","1000W","2600W","4000W"};
+  
+  for(int j=0; j<6; j++){
+    std::vector<float> signalpull;
+    float sig_norm = 0;
+    TString width = "N";
+    TString sigfun = "CBGaus";
+    int linestyle = 1;
+    int linecolor = 2;
+    if(plotmass[j].Contains("W")){
+        width = "W";
+        sigfun="CB2Gaus";
+        linestyle = 2;
+    }
+    if(plotmass[j] == "1000N") sig_norm=270; //10fb
+    if(plotmass[j] == "1000W") sig_norm=260; //10fb
+    if(plotmass[j] == "2600N") {sig_norm=15.46; linecolor=4;}//1fb
+    if(plotmass[j] == "2600W") {sig_norm=14.49; linecolor=4;}//1fb
+    if(plotmass[j] == "4000N") {sig_norm=6.0196; linecolor=8;}//0.4fb
+    if(plotmass[j] == "4000W") {sig_norm=4.8068; linecolor=8;}//0.4fb
+    TFile *signal = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/RooFitWorkspace/"+width+"/"+plotmass[j]+"-shapes-Unbinned-"+sigfun+".root");
+    RooWorkspace *sig_w = (RooWorkspace*)signal->Get("w");
+    RooAbsPdf *sig_pdf = sig_w->pdf("CBGaus");
+    for(int i=600; i<8001; i+=20){
+      float masspoint = i;
+      massbin.push_back(i+10);
+      x->setRange("sig",i,i+20);
+      RooAbsReal* fracInt_bkg = model->createIntegral(*x,NormSet(*x),Range("sig"));
+      RooRealVar* m = sig_w->var("m");
+      m->setRange("sig",i,i+20);
+      RooAbsReal* fracInt_sig = sig_pdf->createIntegral(*m,NormSet(*m),Range("sig"));
+      signalpull.push_back(fracInt_sig->getValV()*sig_norm/sqrt(fracInt_bkg->getValV()*bkg_norm->getVal()));
+    }
+    TGraph *gr = new TGraph(185,&massbin[0],&signalpull[0]);
+    gr->SetLineWidth(2);
+    gr->SetLineColor(linecolor);
+    gr->SetLineStyle(linestyle);
+    signalpullplot_vector.push_back(gr);
+  }
 
   // --- Visualization ---
   gStyle->SetOptStat(111111);
   TCanvas *c01 = new TCanvas("c01","c01",2100,2000);
-  TPad *p01a = new TPad("p01a","p01a",0,0.2,1,1.0);
-  TPad *p01b = new TPad("p01b","p01b",0,0,1,0.25);
+  TPad *p01a = new TPad("p01a","p01a",0,0.178,1,1.0);
+  TPad *p01b = new TPad("p01b","p01b",0,0,1,0.26);
   p01a->Draw();
   p01b->Draw();
   p01a->cd();
@@ -332,65 +383,62 @@ void make_SR_binned_shapes(int seed=37)
   xaxis->SetTitleOffset(1.2);
   yaxis->SetTitle("Events / 40 GeV");
   yaxis->SetTitleOffset(1.2);
-  yaxis->SetRangeUser(0.001,100000);
-  xaxis->SetLimits(600,5000);
+  yaxis->SetRangeUser(0.002,100000);
+  xaxis->SetLimits(600,8000);
   p01a->SetLogy();
   frame->Draw();
   CMS_lumi(p01a,iPeriod,iPos);
-  TLegend *l =  new TLegend(0.44,0.7,0.88,0.85);
-    l->AddEntry(frame->findObject(fun_name),"Data signal region fit "+fun_name,"l");
-  //l->AddEntry(frame->findObject("bkgfun"),"Background Fit","l");
-    l->AddEntry(frame->findObject("err1"),"Fit Error 1 #sigma","f");
-    l->AddEntry(frame->findObject("err2"),"Fit Error 2 #sigma","f");
-    l->Draw("same");
+  TLegend *l =  new TLegend(0.48,0.65,0.85,0.85);
+  l->AddEntry(frame->findObject("datah"),"Data SR","lep");
+  l->AddEntry(frame->findObject(fun_name),"Data SR Fit "+fun_name,"l");
+  l->AddEntry(frame->findObject("err1"),"Fit Error 1 #sigma","f");
+  l->AddEntry(frame->findObject("err2"),"Fit Error 2 #sigma","f");
+  l->Draw("same");
   
-    p01b->cd();
-	p01b->SetLeftMargin(0.13);
-    p01b->SetRightMargin(0.1);
-    p01b->SetTopMargin(0.1);
-    p01b->SetBottomMargin(0.36);
-	RooHist* hpull = frame->pullHist();
-    RooPlot* pull_frame = x->frame();
-    pull_frame->addPlotable(hpull,"P") ;
-    hpull->SetMarkerStyle(8);
-    hpull->SetMarkerSize(2);
-    xaxis = pull_frame->GetXaxis();
-    yaxis = pull_frame->GetYaxis();
-    xaxis->SetTitle("M_{j#gamma}");
-    yaxis->SetTitle("#frac{data-fit}{#sigma_{stat}}");
-    yaxis->SetTitleOffset(0.37);
-    yaxis->SetRangeUser(-5,5);
-    xaxis->SetLabelSize(0.15);
-    xaxis->SetTitleSize(0.15);
-    xaxis->SetLimits(600,5000);
-    yaxis->SetLabelSize(0.15);
-    yaxis->SetTitleSize(0.15);
-    yaxis->SetNdivisions(5);
-    p01b->SetGrid();
-    pull_frame->Draw();
-    p01b->Update();
-	
-    c01->Print(fun_name+".png");
-    c01->Print(fun_name+".pdf");
-	c01->Print(fun_name+".svg");
+  p01b->cd();
+  p01b->SetLeftMargin(0.13);
+  p01b->SetRightMargin(0.1);
+  p01b->SetTopMargin(0);
+  p01b->SetBottomMargin(0.36);
+  RooHist* hpull = frame->pullHist();
+  RooPlot* pull_frame = x->frame();
+  // for(int i=0; i<6; i++){
+    // pull_frame->addObject(signalpullplot_vector.at(i),"l");
+  // }
+  pull_frame->addPlotable(hpull,"P");
+  hpull->SetMarkerStyle(8);
+  hpull->SetMarkerSize(2);
+  xaxis = pull_frame->GetXaxis();
+  yaxis = pull_frame->GetYaxis();
+  xaxis->SetTitle("M_{j#gamma} (GeV)");
+  yaxis->SetTitle("#frac{data-fit}{#sigma_{stat.}}");
+  yaxis->SetTitleOffset(0.37);
+  yaxis->SetRangeUser(-5,5);
+  xaxis->SetLabelSize(0.15);
+  xaxis->SetTitleSize(0.15);
+  xaxis->SetLimits(600,8000);
+  yaxis->SetLabelSize(0.15);
+  yaxis->SetTitleSize(0.15);
+  yaxis->SetNdivisions(5);
+  p01b->SetGrid();
+  pull_frame->Draw();
+  p01b->Update();
   
-  // --- Output root file ---
-    RooWorkspace *w = new RooWorkspace("w","w");
-    w->import(*x);
-    w->import(datah,Rename("data_SR"));
-    w->import(*model);
-    w->writeToFile("SR-shapes-Unbinned-"+fun_name+".root");
-    
+  c01->Print(fun_name+".png");
+  c01->Print(fun_name+".pdf");
+  c01->Print(fun_name+".svg");
   
+  frame->GetXaxis()->SetLimits(600,5000);
+  pull_frame->GetXaxis()->SetLimits(600,5000);
+  c01->Print(fun_name+"_5000plotrange.png");
+  c01->Print(fun_name+"_5000plotrange.pdf");
+  c01->Print(fun_name+"_5000plotrange.svg");
 
-  /*
-  // --- Perform extended ML fit of composite PDF to toy data ---
-  RooFitResult *ex_r = NULL;
-  if(isNorm)
-    ex_r = ex_model->fitTo(data_norm,Range(600,3000),RooFit::Minimizer("Minuit2"),Extended(true),SumW2Error(false),Save());
-  else
-    ex_r = ex_model->fitTo(data,Range(600,3000),RooFit::Minimizer("Minuit2"),Extended(true),Save());
-  cout<<"Normalization is: "<<bkg_norm->getVal()<<endl;
-  */
+// --- Output root file ---
+  RooWorkspace *w = new RooWorkspace("w","w");
+  w->import(*x);
+  w->import(datah,Rename("data_SR"));
+  w->import(*model);
+  w->writeToFile("SR-shapes-Unbinned-"+fun_name+".root");
   
 }

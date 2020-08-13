@@ -16,14 +16,17 @@
 #include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/tdrstyle.C"
 #include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/CMS_lumi.C"
 
-using namespace RooFit;
-
 std::string to_str_trim(const float a_value, const int n = 2)
 {
     return std::to_string(a_value).substr(0,std::to_string(a_value).find(".") + n + 1);
 }
 
 void plotSignalPDF(){
+    
+  //gErrorIgnoreLevel = kInfo;
+  using namespace std;
+  using namespace RooFit;
+  RooMsgService::instance().setGlobalKillBelow(RooFit::WARNING);
 
   gROOT->SetBatch(1);
   lumi_13TeV = "";
@@ -44,15 +47,16 @@ void plotSignalPDF(){
   gStyle->SetBarWidth(2);
   gStyle->SetHistLineWidth(2);
   
-  RooRealVar *m = new RooRealVar("m","m",0,6000);
+  RooRealVar *m = new RooRealVar("m","m",0,7500);
   RooPlot *frame = m->frame();
   RooAbsPdf *model1 = NULL;
   RooAbsPdf *model2 = NULL;
   RooAbsPdf *model3 = NULL;
   
-  int mass[16]={700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3500,4000,5000};
+  int mass[17]={700,800,900,1000,1200,1400,1600,2000,2200,2400,2600,2800,3000,3500,4000,5000,6000};
+  TFile *f_1 = NULL;
   
-  for(int i=700; i<5001; i+=50){
+  for(int i=700; i<6001; i+=50){
   
   std::string mass_str = std::to_string(i);
   
@@ -63,7 +67,7 @@ void plotSignalPDF(){
   
   // TLegend* leg = new TLegend(0.7,0.2,0.9,0.8);
   bool isanchor = 0;
-  for(int j=0; j<16; j++){
+  for(int j=0; j<17; j++){
       if(i == mass[j]) isanchor = 1;
   }
   
@@ -112,15 +116,15 @@ void plotSignalPDF(){
   TAxis *yaxis = frame->GetYaxis();
   xaxis->SetTitle("m_{W#gamma}");
   yaxis->SetTitle("Events (a.u.)");
-  yaxis->SetTitleOffset(1.1);
-  xaxis->SetLimits(600,6000);
+  yaxis->SetTitleOffset(1.2);
+  xaxis->SetLimits(600,7500);
   //c->SetLogy();
-  yaxis->SetRangeUser(0,0.75);
+  yaxis->SetRangeUser(0,1.1);
   frame->Draw();
   CMS_lumi(c,iPeriod,iPos);
-  c->Print("SignalInterpolationW.pdf");
-  c->Print("SignalInterpolationW.png");
-  c->Print("SignalInterpolationW.svg");
+  c->Print("SignalInterpolationN.pdf");
+  c->Print("SignalInterpolationN.png");
+  c->Print("SignalInterpolationN.svg");
   
   /*
   TFile *file1 = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_10_2_13/src/HiggsAnalysis/CombinedLimit/data/tutorials/Combine/Bias/combine_workspace/SR_pdfs_noNormSet_ATLAS2.root");
