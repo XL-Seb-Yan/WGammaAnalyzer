@@ -1,6 +1,6 @@
 #include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/tdrstyle.C"
 #include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/CMS_lumi.C"
-void plotEff(){
+void plotEff_noWtag(){
   gROOT->SetBatch(1);
   lumi_13TeV = "41.53 fb^{-1}";
   writeExtraText = 1;
@@ -41,48 +41,13 @@ void plotEff(){
   std::vector<float> effw_err17s1;
   
   ifstream file16n("EffS0/log16N_eff.txt");
-  ifstream file17n("EffS0/log17N_eff_new.txt");
+  ifstream file17n("EffS0/S0N_noWtag.txt");
   ifstream file16w("EffS0/log16W_eff.txt");
-  ifstream file17w("EffS0/log17W_eff_new.txt");
-  ifstream file17ns1("EffS1/log17NS1_newmpoints.txt");
-  ifstream file17ws1("EffS1/log17WS1_newmpoints.txt");
+  ifstream file17w("EffS0/S0W_noWtag.txt");
+  ifstream file17ns1("EffS1/S1N_noWtag.txt");
+  ifstream file17ws1("EffS1/S1W_noWtag.txt");
   string str; 
   
-  
-  // while (getline(file16n,str)) {
-   // if(str.find("++++") != std::string::npos){
-	   // std::stringstream ss(str);
-	   // int index = -1;
-	   // while(ss.good()){
-          // string substr;
-          // getline(ss,substr,',');
-		  // index++;
-          // if(index == 0) continue;
-		  // if(index == 1) massn16.push_back(strtof((substr).c_str(),0));
-		  // if(index == 2){
-			  // effn16.push_back(strtof((substr).c_str(),0) / 20000);
-			  // effn_err16.push_back(sqrt(strtof((substr).c_str(),0)) / 20000);
-		  // }
-       // }
-   // }
-  // }
-  // while (getline(file16w,str)) {
-   // if(str.find("++++") != std::string::npos){
-	   // std::stringstream ss(str);
-	   // int index = -1;
-	   // while(ss.good()){
-          // string substr;
-          // getline(ss,substr,',');
-		  // index++;
-          // if(index == 0) continue;
-		  // if(index == 1) massw16.push_back(strtof((substr).c_str(),0));
-		  // if(index == 2){
-			  // effw16.push_back(strtof((substr).c_str(),0) / 20000);
-			  // effw_err16.push_back(sqrt(strtof((substr).c_str(),0)) / 20000);
-		  // }
-       // }
-   // }
-  // }
   while (getline(file17n,str)) {
    if(str.find("++++") != std::string::npos){
 	   std::stringstream ss(str);
@@ -185,34 +150,6 @@ void plotEff(){
        }
    }
   }
-  // cout<<"=========================Fitting 16==========================="<<endl;
-  // TGraphErrors *gr1 = new TGraphErrors(massn16.size(),&massn16[0],&effn16[0],0,&effn_err16[0]);
-  // gr1->SetMarkerColor(2);
-  // gr1->SetMarkerStyle(20);
-  // gr1->SetMarkerSize(2.8);
-  // gr1->SetLineWidth(2);
-  // gr1->SetLineColor(2);
-  // TF1 *f1 = new TF1("fun1","pol4",700,3500);
-  // f1->SetParameters(0.0796303,0.000227561,-1.8753*pow(10,-7),5.7758*pow(10,-11),-6.1749*pow(10,-15));
-  // f1->SetLineColor(2);
-  // gr1->Fit(f1,"R");
-  // gr1->Fit(f1,"R");
-  // f1->SetLineColor(2);
-  // f1->SetLineWidth(2);
-  
-  // TGraphErrors *gr2 = new TGraphErrors(massw16.size(),&massw16[0],&effw16[0],0,&effw_err16[0]);
-  // gr2->SetMarkerColor(4);
-  // gr2->SetMarkerStyle(20);
-  // gr2->SetMarkerSize(2.8);
-  // gr2->SetLineWidth(2);
-  // gr2->SetLineColor(4);
-  // TF1 *f2 = new TF1("fun2","pol4",700,3500);
-  // f2->SetParameters(0.0796303,0.000227561,-1.8753*pow(10,-7),5.7758*pow(10,-11),-6.1749*pow(10,-15));
-  // f2->SetLineColor(4);
-  // gr2->Fit(f2,"R");
-  // gr2->Fit(f2,"R");
-  // f2->SetLineColor(4);
-  // f2->SetLineWidth(2);
   
   cout<<"=========================Fitting 17==========================="<<endl;
   TGraphErrors *gr3 = new TGraphErrors(massn17.size(),&massn17[0],&effn17[0],0,&effn_err17[0]);
@@ -286,34 +223,6 @@ void plotEff(){
   TAxis *xaxis = NULL;
   TAxis *yaxis = NULL;
   
-  // TCanvas *c0 = new TCanvas("c0","",2400,1800);
-  // c0->cd();
-  // c0->SetBottomMargin(0.11);
-  // c0->SetLeftMargin(0.13);
-  // gr1->SetTitle("Total Efficiency");
-  // TAxis *xaxis = gr1->GetXaxis();
-  // TAxis *yaxis = gr1->GetYaxis();
-  // xaxis->SetTitle("m_{X} (GeV)");
-  // xaxis->SetLimits(700,5000); 
-  // yaxis->SetRangeUser(0,0.3);
-  // yaxis->SetTitle("Acc. #times Eff.");
-  // yaxis->SetTitleOffset(1.2);
-  // f1->Draw("APL");
-  // f1->Draw("APL");
-  // gr1->Draw("AP");
-  // gr2->Draw("SAMEP");
-  // f1->Draw("PLSAME");
-  // f2->Draw("PLSAME");
-  // lumi_13TeV = "35.92 fb^{-1}";
-  // CMS_lumi(c0,4,iPos);
-  // leg->AddEntry(gr1,"2016 FullSIM Narrow S-0","lep");
-  // leg->AddEntry(gr2,"2016 FullSIM Wide S-0","lep");
-  // leg->Draw();
-  // c0->SetGrid();
-  // c0->Print("EffAcc16.png");
-  // c0->Print("EffAcc16.pdf");
-  // c0->Print("EffAcc16.svg");
-  
   leg = new TLegend(0.6,0.7,0.9,0.9);
   TCanvas *c1 = new TCanvas("c1","",2400,1800);
   c1->cd();
@@ -324,8 +233,8 @@ void plotEff(){
   yaxis = gr3->GetYaxis();
   xaxis->SetTitle("m_{X} (GeV)");
   xaxis->SetLimits(700,8000); 
-  yaxis->SetRangeUser(0,0.3);
-  yaxis->SetTitle("Acc. #times Eff.");
+  yaxis->SetRangeUser(0,0.5);
+  yaxis->SetTitle("Acc. #times Eff. (w/o W tagging)");
   yaxis->SetTitleOffset(1.2);
   f3->Draw("APL");
   f4->Draw("APLSAME");
@@ -359,14 +268,14 @@ void plotEff(){
   // for(int i=0; i<massw17.size(); i++){
 	  // cout<<massw17.at(i)<<" "<<effw17.at(i)<<endl;
   // }
-  // cout<<endl;
-  // for(int i=0; i<massn17s1.size(); i++){
-	  // cout<<massn17s1.at(i)<<" "<<effn17s1.at(i)<<endl;
-  // }
-  // cout<<endl;
-  // for(int i=0; i<massw17s1.size(); i++){
-	  // cout<<massw17s1.at(i)<<" "<<effw17s1.at(i)<<endl;
-  // }
+  cout<<endl;
+  for(int i=0; i<massn17s1.size(); i++){
+	  cout<<massn17s1.at(i)<<" "<<effn17s1.at(i)<<endl;
+  }
+  cout<<endl;
+  for(int i=0; i<massw17s1.size(); i++){
+	  cout<<massw17s1.at(i)<<" "<<effw17s1.at(i)<<endl;
+  }
   
   //17 S-0 Acceptance
   float MCmassN[19]={700,800,900,1000,1200,1400,1600,2000,2200,2400,2600,2800,3000,3500,4000,5000,6000,7000,8000};
@@ -542,8 +451,8 @@ void plotEff(){
   yaxis = gr9->GetYaxis();
   xaxis->SetTitle("m_{X} (GeV)");
   xaxis->SetLimits(700,8000); 
-  yaxis->SetRangeUser(0.0,0.6);
-  yaxis->SetTitle("Efficiencies");
+  yaxis->SetRangeUser(0.5,0.9);
+  yaxis->SetTitle("Efficiencies w/o W tagging");
   yaxis->SetTitleOffset(1.2);
   gr9->SetLineColor(2);
   gr10->SetLineColor(4);
@@ -662,7 +571,7 @@ void plotEff(){
   yaxis = gr9->GetYaxis();
   xaxis->SetTitle("m_{X} (GeV)");
   xaxis->SetLimits(700,8000); 
-  yaxis->SetRangeUser(0.2,0.5);
+  yaxis->SetRangeUser(0.4,0.9);
   yaxis->SetTitle("Efficiency");
   yaxis->SetTitleOffset(1.2);
   f9->Draw("APL");
@@ -671,12 +580,12 @@ void plotEff(){
   gr10->Draw("SAMEP");
   f9->Draw("APLSAME");
   f10->Draw("APLSAME");
-  f13->Draw("APLSAME");
-  f14->Draw("APLSAME");
-  gr13->Draw("SAMEP");
-  gr14->Draw("SAMEP");
-  f13->Draw("APLSAME");
-  f14->Draw("APLSAME");
+  // f13->Draw("APLSAME");
+  // f14->Draw("APLSAME");
+  // gr13->Draw("SAMEP");
+  // gr14->Draw("SAMEP");
+  // f13->Draw("APLSAME");
+  // f14->Draw("APLSAME");
   lumi_13TeV = "";
   CMS_lumi(c3,5,iPos);
   leg->Clear();
@@ -727,7 +636,7 @@ void plotEff(){
   }
   */
   
-  /*
+/*
   cout<<"S-0 Eff: ========================================="<<endl;
   // Yield calculation
   for(int i=1500; i<8001; i+=10){
@@ -743,7 +652,7 @@ void plotEff(){
     cout<<"W"<<mass<<" "<<yield<<endl;
     // cout<<mass<<" "<<yield<<" "<<limit*yield*3<<" "<<limit*yield*10<<endl;
   }
-  */
+*/
   
   /*
   cout<<"S-1 Eff: ========================================="<<endl;
@@ -762,5 +671,6 @@ void plotEff(){
     // cout<<mass<<" "<<yield<<" "<<limit*yield*3<<" "<<limit*yield*10<<endl;
   }
   */
+  
   
 }

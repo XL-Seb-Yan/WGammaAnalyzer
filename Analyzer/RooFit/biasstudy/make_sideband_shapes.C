@@ -100,7 +100,7 @@ void make_sideband_shapes(int seed=37)
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 3
   //-----------------------------VVdijet2-----------------------------------
-  TString fun_name = "VVdijet2";
+  TString fun_name = "VVdijet-2";
   /*
   //Normalized fit
   RooRealVar *VVdijet2_p0 = new RooRealVar("VVdijet2_p0","VVdijet2_p_0",-15,-20,20,""); //-10.5471 +- 3.06516

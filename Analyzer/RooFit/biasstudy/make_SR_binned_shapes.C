@@ -1,4 +1,4 @@
-#define fun_type 7
+#define fun_type 9
 #if !defined(__CINT__) || defined(__MAKECINT__)
 #include <TROOT.h>                  // access to gROOT, entry point to ROOT system
 #include <TSystem.h>                // interface to OS
@@ -204,7 +204,7 @@ void make_SR_binned_shapes(int seed=37)
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #endif
 
-  // --- Import unBinned dataset ---
+  // --- Import Binned dataset ---
   
   //float xbinlow[53] = {600,650,700,750,800,850,900,950,1000,1050,1100,1050,1100,1150,1200,1250,1300,1350,1400,1450,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700,2800,2900,3000,3200,3400,3600,3800,400,4200,4400,4600,4800,5000,5400,5800,6200,6600,7000,7400,7800};
   // ------------------------Photons------------------------
@@ -219,8 +219,11 @@ void make_SR_binned_shapes(int seed=37)
     DATAh->Fill(s_mass, 1);
     //DATAh->Fill(s_mass, 2.4826);
   }
-  RooDataHist datah("Data SR","Data SR",RooArgSet(*x),DATAh);
+  RooDataHist datah("Data SR binned","Data SR binned",RooArgSet(*x),DATAh);
   cout<<"number of weighted entries: "<<datah.sum(false)<<endl;
+  
+  // --- Import unBinned dataset ---
+  RooDataSet data("Data SR","Data SR",RooArgSet(*x),Import(*tree));//import branches with names match the "variable name" (not variable) listed in imargset
   
   // --- Perform extended ML fit of composite PDF to toy data ---
   RooFitResult *r = model->fitTo(datah,RooFit::Minimizer("Minuit2"),Save()); //SumW2Error(false) for weighted data, see how to choose this with same calling without SumW2Error(false)
@@ -339,12 +342,12 @@ void make_SR_binned_shapes(int seed=37)
         sigfun="CB2Gaus";
         linestyle = 2;
     }
-    if(plotmass[j] == "1000N") sig_norm=270; //10fb
-    if(plotmass[j] == "1000W") sig_norm=260; //10fb
-    if(plotmass[j] == "2600N") {sig_norm=15.46; linecolor=4;}//1fb
-    if(plotmass[j] == "2600W") {sig_norm=14.49; linecolor=4;}//1fb
-    if(plotmass[j] == "4000N") {sig_norm=6.0196; linecolor=8;}//0.4fb
-    if(plotmass[j] == "4000W") {sig_norm=4.8068; linecolor=8;}//0.4fb
+    if(plotmass[j] == "1000N") sig_norm=267; //15fb
+    if(plotmass[j] == "1000W") sig_norm=257; //15fb
+    if(plotmass[j] == "2600N") {sig_norm=15.80; linecolor=4;}//1fb
+    if(plotmass[j] == "2600W") {sig_norm=14.42; linecolor=4;}//1fb
+    if(plotmass[j] == "4000N") {sig_norm=6.894; linecolor=8;}//0.5fb
+    if(plotmass[j] == "4000W") {sig_norm=6.041; linecolor=8;}//0.5fb
     TFile *signal = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/RooFitWorkspace/"+width+"/"+plotmass[j]+"-shapes-Unbinned-"+sigfun+".root");
     RooWorkspace *sig_w = (RooWorkspace*)signal->Get("w");
     RooAbsPdf *sig_pdf = sig_w->pdf("CBGaus");
@@ -416,7 +419,7 @@ void make_SR_binned_shapes(int seed=37)
   yaxis->SetRangeUser(-5,5);
   xaxis->SetLabelSize(0.15);
   xaxis->SetTitleSize(0.15);
-  xaxis->SetLimits(600,8000);
+  xaxis->SetLimits(600,6000);
   yaxis->SetLabelSize(0.15);
   yaxis->SetTitleSize(0.15);
   yaxis->SetNdivisions(5);
@@ -428,16 +431,17 @@ void make_SR_binned_shapes(int seed=37)
   c01->Print(fun_name+".pdf");
   c01->Print(fun_name+".svg");
   
-  frame->GetXaxis()->SetLimits(600,5000);
-  pull_frame->GetXaxis()->SetLimits(600,5000);
-  c01->Print(fun_name+"_5000plotrange.png");
-  c01->Print(fun_name+"_5000plotrange.pdf");
-  c01->Print(fun_name+"_5000plotrange.svg");
+  frame->GetXaxis()->SetLimits(600,6000);
+  pull_frame->GetXaxis()->SetLimits(600,6000);
+  c01->Print(fun_name+"_6000plotrange.png");
+  c01->Print(fun_name+"_6000plotrange.pdf");
+  c01->Print(fun_name+"_6000plotrange.svg");
 
 // --- Output root file ---
   RooWorkspace *w = new RooWorkspace("w","w");
   w->import(*x);
-  w->import(datah,Rename("data_SR"));
+  w->import(data,Rename("data_SR"));
+  w->import(datah,Rename("data_SR_binned"));
   w->import(*model);
   w->writeToFile("SR-shapes-Unbinned-"+fun_name+".root");
   

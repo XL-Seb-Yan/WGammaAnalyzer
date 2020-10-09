@@ -70,13 +70,13 @@ void postproc(int mass, int runondata, int runyear)
   float x_sf = 1;
   int s_pv, s_runnum, s_evtnum, s_lumiblock; 
   
-  std::string dataset = "SignalMC"+std::to_string(mass)+"W";
-  //std::string dataset = std::to_string(mass)+"_N_S1";
+  // std::string dataset = "SignalMC"+std::to_string(mass)+"N";
+  std::string dataset = std::to_string(mass)+"_N_S1";
   
   TString year_str = std::to_string(runyear);
   
-  //TFile *input = TFile::Open(("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuples_looseID/" + dataset + "_nominal_pileup_WGamma_full_full_May22.root").c_str());
-  TFile *input = TFile::Open(("/afs/cern.ch/work/x/xuyan/work5/PROD17/Analyzer/CMSSW_9_4_13/src/WGammaAnalyzer/Analyzer/postprocessing/" + dataset + "_nominal_pileup_WGamma_full_full_May22.root").c_str());
+  TFile *input = TFile::Open(("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuples_looseID/S1/" + dataset + "_nominal_pileup_WGamma_full_full_May22.root").c_str());
+  //TFile *input = TFile::Open((dataset + "_nominal_pileup_WGamma_full_full_May22.root").c_str());
   //TFile *input = TFile::Open((dataset+"_nominal_pileup_WGamma_full_full_May22.root").c_str());
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
@@ -246,7 +246,7 @@ void postproc(int mass, int runondata, int runyear)
 	if(j_pt < 225) continue; //presel
     if(abs(p_eta) > 1.44) continue;
     if(abs(j_eta) > 2) continue;
-    if(j_tau21 > 0.35) continue;
+    // if(j_tau21 > 0.35) continue;
     if(s_ptm < 0.37) continue;
     if(s_cos > 0.6) continue;
     

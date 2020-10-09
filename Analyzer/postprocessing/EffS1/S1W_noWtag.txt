@@ -1,0 +1,49 @@
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(700,0,17)...
+Info in <TUnixSystem::ACLiC>: creating shared library /afs/cern.ch/work/x/xuyan/work5/PROD17/CombineLimit/CMSSW_10_2_13/src/WGammaAnalyzer/Analyzer/postprocessing/selection/./postproc_C.so
+Passed pre-sel: 9958
+Entries: 3790
+++++,700,3488.77,9145.43
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(1500,0,17)...
+Passed pre-sel: 10569
+Entries: 4562
+++++,1500,4198.86,9681.88
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(2000,0,17)...
+Passed pre-sel: 11803
+Entries: 5287
+++++,2000,4878.25,10822.8
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(2500,0,17)...
+Passed pre-sel: 15011
+Entries: 6416
+++++,2500,5964.4,13773
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(3000,0,17)...
+Passed pre-sel: 15527
+Entries: 6341
+++++,3000,5862.39,14237.4
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(4000,0,17)...
+Passed pre-sel: 14152
+Entries: 5585
+++++,4000,5138.13,12995
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(6000,0,17)...
+Passed pre-sel: 13445
+Entries: 4956
+++++,6000,4568.89,12326.5
+*** DISPLAY not set, setting it to lfbn-ann-1-78-85.w86-220.abo.wanadoo.fr:0.0
+
+Processing postproc.C+(8000,0,17)...
+Passed pre-sel: 14444
+Entries: 4958
+++++,8000,4607.72,13300.7

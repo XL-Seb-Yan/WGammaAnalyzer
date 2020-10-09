@@ -53,14 +53,14 @@ void plotSignalPDF(){
   RooAbsPdf *model2 = NULL;
   RooAbsPdf *model3 = NULL;
   
-  int mass[17]={700,800,900,1000,1200,1400,1600,2000,2200,2400,2600,2800,3000,3500,4000,5000,6000};
+  int mass[17]={700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3500,4000,5000,6000};
   TFile *f_1 = NULL;
   
   for(int i=700; i<6001; i+=50){
   
   std::string mass_str = std::to_string(i);
   
-  TFile *file = TFile::Open(("signal_pdfs_"+mass_str+"N.root").c_str());
+  TFile *file = TFile::Open(("signal_pdfs_"+mass_str+"W.root").c_str());
   RooWorkspace *w = (RooWorkspace*)file->Get("signals");
   w->Print();
   //RooPlot *frame = w->var("m")->frame();
@@ -71,7 +71,7 @@ void plotSignalPDF(){
       if(i == mass[j]) isanchor = 1;
   }
   
-  RooAbsPdf *model = w->pdf("CBGaus");
+  RooAbsPdf *model = w->pdf("CB2Gaus");
   //model->plotOn(frame,Range(0.75*mass[i],1.25*mass[i],kTRUE));
   if(isanchor)
     model->plotOn(frame,LineWidth(2),LineColor(2));
@@ -116,15 +116,15 @@ void plotSignalPDF(){
   TAxis *yaxis = frame->GetYaxis();
   xaxis->SetTitle("m_{W#gamma}");
   yaxis->SetTitle("Events (a.u.)");
-  yaxis->SetTitleOffset(1.2);
+  yaxis->SetTitleOffset(0.8);
   xaxis->SetLimits(600,7500);
   //c->SetLogy();
-  yaxis->SetRangeUser(0,1.1);
+  yaxis->SetRangeUser(0,0.8);
   frame->Draw();
   CMS_lumi(c,iPeriod,iPos);
-  c->Print("SignalInterpolationN.pdf");
-  c->Print("SignalInterpolationN.png");
-  c->Print("SignalInterpolationN.svg");
+  c->Print("SignalInterpolationW.pdf");
+  c->Print("SignalInterpolationW.png");
+  c->Print("SignalInterpolationW.svg");
   
   /*
   TFile *file1 = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CMSSW_10_2_13/src/HiggsAnalysis/CombinedLimit/data/tutorials/Combine/Bias/combine_workspace/SR_pdfs_noNormSet_ATLAS2.root");
