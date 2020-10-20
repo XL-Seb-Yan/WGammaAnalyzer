@@ -2,13 +2,13 @@
 #include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/CMS_lumi.C"
 void plotEff(){
   gROOT->SetBatch(1);
-  lumi_13TeV = "41.53 fb^{-1}";
+  lumi_13TeV = "";
   writeExtraText = 1;
   lumiTextOffset = 0.15;
   bool plot_CMS = true;
   extraText = "Simulation";
-  lumiTextSize = 0.35;
-  cmsTextSize = 0.45;
+  lumiTextSize = 0.45;
+  cmsTextSize = 0.6;
   int iPeriod = 5;
   int iPos = 11;
   gStyle->SetOptStat(0);
@@ -16,7 +16,7 @@ void plotEff(){
   gStyle->SetTitleSize(0.05,"XYZ");
   gStyle->SetLabelSize(0.05,"XYZ");
   gStyle->SetFrameLineWidth(2);
-  gStyle->SetLegendTextSize(0.022);
+  gStyle->SetLegendTextSize(0.03);
   gStyle->SetHistLineWidth(3);
   gStyle->SetEndErrorSize(5);
   
@@ -218,7 +218,7 @@ void plotEff(){
   TGraphErrors *gr3 = new TGraphErrors(massn17.size(),&massn17[0],&effn17[0],0,&effn_err17[0]);
   gr3->SetMarkerColor(2);
   gr3->SetMarkerStyle(20);
-  gr3->SetMarkerSize(1);
+  gr3->SetMarkerSize(2);
   gr3->SetLineWidth(2);
   gr3->SetLineColor(2);
   TF1 *f3 = new TF1("fun3","pol4",700,8000);
@@ -233,7 +233,7 @@ void plotEff(){
   TGraphErrors *gr4 = new TGraphErrors(massw17.size(),&massw17[0],&effw17[0],0,&effw_err17[0]);
   gr4->SetMarkerColor(4);
   gr4->SetMarkerStyle(20);
-  gr4->SetMarkerSize(1);
+  gr4->SetMarkerSize(2);
   gr4->SetLineWidth(2);
   gr4->SetLineColor(4);
   TF1 *f4 = new TF1("fun3","pol4",700,8000);
@@ -251,7 +251,7 @@ void plotEff(){
   TGraphErrors *gr5 = new TGraphErrors(8,&massn17s1[0],&effn17s1[0],0,&effn_err17s1[0]);
   gr5->SetMarkerColor(2);
   gr5->SetMarkerStyle(21);
-  gr5->SetMarkerSize(1);
+  gr5->SetMarkerSize(2);
   gr5->SetLineWidth(2);
   gr5->SetLineColor(2);
   TF1 *f5 = new TF1("fun5","pol4",700,8000);
@@ -268,7 +268,7 @@ void plotEff(){
   TGraphErrors *gr6 = new TGraphErrors(8,&massw17s1[0],&effw17s1[0],0,&effw_err17s1[0]);
   gr6->SetMarkerColor(4);
   gr6->SetMarkerStyle(21);
-  gr6->SetMarkerSize(1);
+  gr6->SetMarkerSize(2);
   gr6->SetLineColor(4);
   gr6->SetLineWidth(2);
   TF1 *f6 = new TF1("fun6","pol4",700,8000);
@@ -293,7 +293,7 @@ void plotEff(){
   // gr1->SetTitle("Total Efficiency");
   // TAxis *xaxis = gr1->GetXaxis();
   // TAxis *yaxis = gr1->GetYaxis();
-  // xaxis->SetTitle("m_{X} (GeV)");
+  // xaxis->SetTitle("m_{X} [GeV]");
   // xaxis->SetLimits(700,5000); 
   // yaxis->SetRangeUser(0,0.3);
   // yaxis->SetTitle("Acc. #times Eff.");
@@ -307,25 +307,28 @@ void plotEff(){
   // lumi_13TeV = "35.92 fb^{-1}";
   // CMS_lumi(c0,4,iPos);
   // leg->AddEntry(gr1,"2016 FullSIM Narrow S-0","lep");
-  // leg->AddEntry(gr2,"2016 FullSIM Wide S-0","lep");
+  // leg->AddEntry(gr2,"2016 FullSIM Broad S-0","lep");
   // leg->Draw();
   // c0->SetGrid();
   // c0->Print("EffAcc16.png");
   // c0->Print("EffAcc16.pdf");
   // c0->Print("EffAcc16.svg");
   
-  leg = new TLegend(0.6,0.7,0.9,0.9);
+  leg = new TLegend(0.5,0.65,0.85,0.75);
+  leg->SetBorderSize(0);
+  leg->SetNColumns(2);
+  leg->SetFillStyle(0);
   TCanvas *c1 = new TCanvas("c1","",2400,1800);
   c1->cd();
   c1->SetBottomMargin(0.11);
   c1->SetLeftMargin(0.13);
-  gr3->SetTitle("Total Efficiency");
+  gr3->SetTitle("A #varepsilon");
   xaxis = gr3->GetXaxis();
   yaxis = gr3->GetYaxis();
-  xaxis->SetTitle("m_{X} (GeV)");
+  xaxis->SetTitle("m_{X} [GeV]");
   xaxis->SetLimits(700,8000); 
   yaxis->SetRangeUser(0,0.3);
-  yaxis->SetTitle("Acc. #times Eff.");
+  yaxis->SetTitle("A #varepsilon");
   yaxis->SetTitleOffset(1.2);
   f3->Draw("APL");
   f4->Draw("APLSAME");
@@ -339,17 +342,17 @@ void plotEff(){
   f4->Draw("APLSAME");
   f5->Draw("APLSAME");
   f6->Draw("APLSAME");
-  lumi_13TeV = "41.53 fb^{-1}";
+  lumi_13TeV = "";
   CMS_lumi(c1,5,iPos);
   leg->Clear();
-  leg->AddEntry(gr3,"2017 FullSIM Narrow S-0","lep");
-  leg->AddEntry(gr4,"2017 FullSIM Wide S-0","lep");
-  leg->AddEntry(gr5,"2017 FullSIM narrow S-1","lep");
-  leg->AddEntry(gr6,"2017 FullSIM wide S-1","lep");
+  leg->AddEntry(gr3,"Narrow S-0","lep");
+  leg->AddEntry(gr4,"Broad S-0","lep");
+  leg->AddEntry(gr5,"Narrow S-1","lep");
+  leg->AddEntry(gr6,"Broad S-1","lep");
   leg->Draw();
   c1->SetGrid();
-  c1->Print("EffAcc17.png");
   c1->Print("EffAcc17.pdf");
+  c1->Print("EffAcc17.png");
   c1->Print("EffAcc17.svg");
   
   // for(int i=0; i<massn17.size(); i++){
@@ -424,7 +427,7 @@ void plotEff(){
   TGraphErrors *gr7 = new TGraphErrors(19,MCmassN,AccN,0,AccN_err);
   gr7->SetMarkerColor(2);
   gr7->SetMarkerStyle(20);
-  gr7->SetMarkerSize(1);
+  gr7->SetMarkerSize(2);
   gr7->SetLineColor(2);
   gr7->SetLineWidth(2);
   TF1 *f7 = new TF1("fun7","pol4",700,8000);
@@ -437,7 +440,7 @@ void plotEff(){
   TGraphErrors *gr8 = new TGraphErrors(19,MCmassW,AccW,0,AccW_err);
   gr8->SetMarkerColor(4);
   gr8->SetMarkerStyle(20);
-  gr8->SetMarkerSize(1);
+  gr8->SetMarkerSize(2);
   gr8->SetLineColor(4);
   gr8->SetLineWidth(2);
   TF1 *f8 = new TF1("fun8","pol4",700,8000);
@@ -454,7 +457,7 @@ void plotEff(){
   TGraphErrors *gr11 = new TGraphErrors(8,MCmassNS1,AccNS1,0,AccNS1_err);
   gr11->SetMarkerColor(2);
   gr11->SetMarkerStyle(21);
-  gr11->SetMarkerSize(1);
+  gr11->SetMarkerSize(2);
   gr11->SetLineColor(2);
   gr11->SetLineWidth(2);
   TF1 *f11 = new TF1("fun11","pol4",700,8000);
@@ -469,7 +472,7 @@ void plotEff(){
   TGraphErrors *gr12 = new TGraphErrors(8,MCmassWS1,AccWS1,0,AccWS1_err);
   gr12->SetMarkerColor(4);
   gr12->SetMarkerStyle(21);
-  gr12->SetMarkerSize(1);
+  gr12->SetMarkerSize(2);
   gr12->SetLineColor(4);
   gr12->SetLineWidth(2);
   TF1 *f12 = new TF1("fun12","pol4",700,8000);
@@ -486,13 +489,13 @@ void plotEff(){
   c2->cd();
   c2->SetBottomMargin(0.11);
   c2->SetLeftMargin(0.13);
-  gr7->SetTitle("Acceptance");
+  gr7->SetTitle("A");
   xaxis = gr7->GetXaxis();
   yaxis = gr7->GetYaxis();
-  xaxis->SetTitle("m_{X} (GeV)");
+  xaxis->SetTitle("m_{X} [GeV]");
   xaxis->SetLimits(700,8000); 
   yaxis->SetRangeUser(0,0.7);
-  yaxis->SetTitle("Acceptance");
+  yaxis->SetTitle("A");
   yaxis->SetTitleOffset(1.2);
   f7->Draw("APL");
   f8->Draw("APLSAME");
@@ -509,15 +512,13 @@ void plotEff(){
   lumi_13TeV = "";
   CMS_lumi(c2,5,iPos);
   leg->Clear();
-  leg->AddEntry(gr7,"2017 FullSIM Narrow S-0","lep");
-  leg->AddEntry(gr8,"2017 FullSIM Wide S-0","lep");
-  leg->AddEntry(gr11,"2017 FullSIM Narrow S-1","lep");
-  leg->AddEntry(gr12,"2017 FullSIM Wide S-1","lep");
+  leg->AddEntry(gr7,"Narrow S-0","lep");
+  leg->AddEntry(gr8,"Broad S-0","lep");
+  leg->AddEntry(gr11,"Narrow S-1","lep");
+  leg->AddEntry(gr12,"Broad S-1","lep");
   leg->Draw();
   c2->SetGrid();
-  c2->Print("Acc17.png");
   c2->Print("Acc17.pdf");
-  c2->Print("Acc17.root");
   c2->Print("Acc17.svg");
   
   TGraph *gr9 = new TGraph();
@@ -540,10 +541,10 @@ void plotEff(){
   c3->SetLeftMargin(0.13);
   xaxis = gr9->GetXaxis();
   yaxis = gr9->GetYaxis();
-  xaxis->SetTitle("m_{X} (GeV)");
+  xaxis->SetTitle("m_{X} [GeV]");
   xaxis->SetLimits(700,8000); 
   yaxis->SetRangeUser(0.0,0.6);
-  yaxis->SetTitle("Efficiencies");
+  yaxis->SetTitle("#varepsilon");
   yaxis->SetTitleOffset(1.2);
   gr9->SetLineColor(2);
   gr10->SetLineColor(4);
@@ -562,15 +563,13 @@ void plotEff(){
   lumi_13TeV = "";
   CMS_lumi(c3,5,iPos);
   leg->Clear();
-  leg->AddEntry(gr9,"2017 FullSIM Narrow S-0","l");
-  leg->AddEntry(gr10,"2017 FullSIM Wide S-0","l");
-  leg->AddEntry(gr13,"2017 FullSIM Narrow S-1","l");
-  leg->AddEntry(gr14,"2017 FullSIM Wide S-1","l");
+  leg->AddEntry(gr9,"Narrow S-0","l");
+  leg->AddEntry(gr10,"Broad S-0","l");
+  leg->AddEntry(gr13,"Narrow S-1","l");
+  leg->AddEntry(gr14,"Broad S-1","l");
   leg->Draw();
   c3->SetGrid();
-  c3->Print("Eff17.png");
   c3->Print("Eff17.pdf");
-  c3->Print("Eff17.root");
   c3->Print("Eff17.svg");
   
   /*
@@ -660,7 +659,7 @@ void plotEff(){
   gr9->SetTitle("Acceptance");
   xaxis = gr9->GetXaxis();
   yaxis = gr9->GetYaxis();
-  xaxis->SetTitle("m_{X} (GeV)");
+  xaxis->SetTitle("m_{X} [GeV]");
   xaxis->SetLimits(700,8000); 
   yaxis->SetRangeUser(0.2,0.5);
   yaxis->SetTitle("Efficiency");
@@ -680,67 +679,63 @@ void plotEff(){
   lumi_13TeV = "";
   CMS_lumi(c3,5,iPos);
   leg->Clear();
-  leg->AddEntry(gr9,"2017 FullSIM Narrow S-0","lep");
-  leg->AddEntry(gr10,"2017 FullSIM Wide S-0","lep");
-  leg->AddEntry(gr13,"2017 FullSIM Narrow S-1","lep");
-  leg->AddEntry(gr14,"2017 FullSIM Wide S-1","lep");
+  leg->AddEntry(gr9,"FullSIM Narrow S-0","lep");
+  leg->AddEntry(gr10,"FullSIM Broad S-0","lep");
+  leg->AddEntry(gr13,"FullSIM Narrow S-1","lep");
+  leg->AddEntry(gr14,"FullSIM Broad S-1","lep");
   leg->Draw();
   c3->SetGrid();
   c3->Print("Eff17.png");
   c3->Print("Eff17.pdf");
   c3->Print("Eff17.svg");
   */
-    
   /*
   // Yield calculation
   cout<<"S-0 Acc*Eff: ========================================="<<endl;
   for(int i=700; i<8001; i+=10){
     double mass = i;
     double yield = 137.19*1*f3->Eval(mass);
-    cout<<"N"<<mass<<" "<<yield<<endl;
+    cout<<"N"<<mass<<" "<<yield<<" ;"<<endl;
     // cout<<mass<<" "<<yield<<" "<<limit*yield*3<<" "<<limit*yield*10<<endl;
   }
   // Yield calculation
   for(int i=700; i<8001; i+=10){
     double mass = i;
     double yield = 137.19*1*f4->Eval(mass);
-    cout<<"W"<<mass<<" "<<yield<<endl;
+    cout<<"W"<<mass<<" "<<yield<<" ;"<<endl;
     // cout<<mass<<" "<<yield<<" "<<limit*yield*3<<" "<<limit*yield*10<<endl;
   }
   */
   
-  /*
   cout<<"S-1 Acc*Eff: ========================================="<<endl;
   // Yield calculation
   for(int i=700; i<8001; i+=10){
     double mass = i;
     double yield = 137.19*1*f5->Eval(mass);
-    cout<<"N"<<mass<<" "<<yield<<endl;
+    cout<<"N"<<mass<<" "<<yield<<" ;"<<endl;
     // cout<<mass<<" "<<yield<<" "<<limit*yield*3<<" "<<limit*yield*10<<endl;
   }
   // Yield calculation
   for(int i=700; i<8001; i+=10){
     double mass = i;
     double yield = 137.19*1*f6->Eval(mass);
-    cout<<"W"<<mass<<" "<<yield<<endl;
+    cout<<"W"<<mass<<" "<<yield<<" ;"<<endl;
     // cout<<mass<<" "<<yield<<" "<<limit*yield*3<<" "<<limit*yield*10<<endl;
   }
-  */
-  
   /*
   cout<<"S-0 Eff: ========================================="<<endl;
   // Yield calculation
   for(int i=1500; i<8001; i+=10){
     double mass = i;
     double yield = 137.19*1*f3->Eval(mass)/f7->Eval(mass);
-    cout<<"N"<<mass<<" "<<yield<<endl;
+    cout<<"N"<<mass<<" "<<yield<<" "<<endl;
     // cout<<mass<<" "<<yield<<" "<<limit*yield*3<<" "<<limit*yield*10<<endl;
   }
   // Yield calculation
   for(int i=1500; i<8001; i+=10){
     double mass = i;
     double yield = 137.19*1*f4->Eval(mass)/f8->Eval(mass);
-    cout<<"W"<<mass<<" "<<yield<<endl;
+    cout<<"W"<<mass<<" "<<yield<<" "<<endl;
     // cout<<mass<<" "<<yield<<" "<<limit*yield*3<<" "<<limit*yield*10<<endl;
   }
   */
@@ -751,14 +746,14 @@ void plotEff(){
   for(int i=1500; i<8001; i+=20){
     double mass = i;
     double yield = 137.19*1*f5->Eval(mass)/f11->Eval(mass);
-    cout<<"N"<<mass<<" "<<yield<<endl;
+    cout<<"N"<<mass<<" "<<yield<<" "<<endl;
     // cout<<mass<<" "<<yield<<" "<<limit*yield*3<<" "<<limit*yield*10<<endl;
   }
   // Yield calculation
   for(int i=1500; i<8001; i+=20){
     double mass = i;
     double yield = 137.19*1*f6->Eval(mass)/f12->Eval(mass);
-    cout<<"W"<<mass<<" "<<yield<<endl;
+    cout<<"W"<<mass<<" "<<yield<<" "<<endl;
     // cout<<mass<<" "<<yield<<" "<<limit*yield*3<<" "<<limit*yield*10<<endl;
   }
   */

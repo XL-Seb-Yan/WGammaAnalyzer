@@ -3,13 +3,13 @@
 void WtagEff(){
 	
 	gROOT->SetBatch(1);
-	lumi_13TeV = "41.53 fb^{-1}";
+	lumi_13TeV = "";
 	writeExtraText = 1;
 	lumiTextOffset = 0.15;
 	bool plot_CMS = true;
 	extraText = "Simulation";
-	lumiTextSize = 0.35;
-	cmsTextSize = 0.45;
+	lumiTextSize = 0.45;
+	cmsTextSize = 0.6;
 	int iPeriod = 5;
 	int iPos = 0;
 	gStyle->SetOptStat(0);
@@ -17,7 +17,7 @@ void WtagEff(){
 	gStyle->SetTitleSize(0.05,"XYZ");
 	gStyle->SetLabelSize(0.05,"XYZ");
 	gStyle->SetFrameLineWidth(2);
-	gStyle->SetLegendTextSize(0.022);
+	gStyle->SetLegendTextSize(0.03);
 	gStyle->SetHistLineWidth(3);
 	gStyle->SetEndErrorSize(5);
   
@@ -61,25 +61,12 @@ void WtagEff(){
 	  ipoints++;
 	}
 	
-	TLegend *leg = new TLegend(0.6,0.7,0.9,0.9);
-
-	TCanvas *c3 = new TCanvas("c3","",2400,1800);
-	c3->cd();
-	c3->SetBottomMargin(0.11);
-	c3->SetLeftMargin(0.13);
-	TAxis *xaxis = gr9->GetXaxis();
-	TAxis *yaxis = gr9->GetYaxis();
-	xaxis->SetTitle("m_{X} (GeV)");
-	xaxis->SetLimits(700,8000); 
-	yaxis->SetRangeUser(0.3,0.7);
-	yaxis->SetTitle("#varepsilon_{W tagging}");
-	yaxis->SetTitleOffset(1.2);
-	gr9->SetLineColor(2);
+	gr9->SetLineColor(kRed-4);
 	gr10->SetLineColor(4);
-	gr13->SetLineColor(2);
+	gr13->SetLineColor(kRed-4);
 	gr14->SetLineColor(4);
-	gr1->SetLineColor(8);
-	gr1->SetFillColor(8);
+	gr1->SetLineColor(3);
+	gr1->SetFillColor(3);
 	gr1->SetFillStyle(3010);
 	gr9->SetLineWidth(2);
 	gr10->SetLineWidth(2);
@@ -88,20 +75,37 @@ void WtagEff(){
 	gr1->SetLineWidth(3);
 	gr13->SetLineStyle(2);
 	gr14->SetLineStyle(2);
-	gr9->Draw("AL");
+	
+	TLegend *leg = new TLegend(0.5,0.60,0.85,0.75);
+	leg->SetBorderSize(0);
+	leg->SetNColumns(2);
+	leg->SetFillStyle(0);
+
+	TCanvas *c3 = new TCanvas("c3","",2400,1800);
+	c3->cd();
+	c3->SetBottomMargin(0.15);
+	c3->SetLeftMargin(0.13);
+	TAxis *xaxis = gr1->GetXaxis();
+	TAxis *yaxis = gr1->GetYaxis();
+	xaxis->SetTitle("m_{X} [GeV]");
+	xaxis->SetTitleOffset(1);
+	xaxis->SetLimits(500,8200); 
+	yaxis->SetRangeUser(0.3,0.7);
+	yaxis->SetTitle("#varepsilon_{W tag}");
+	yaxis->SetTitleOffset(1.2);
 	gr1->Draw("A4 L");
-	gr9->Draw("SAMEL");
-	gr10->Draw("SAMEL");
-	gr13->Draw("SAMEL");
-	gr14->Draw("SAMEL");
+	gr9->Draw("LSAME");
+	gr10->Draw("LSAME");
+	gr13->Draw("LSAME");
+	gr14->Draw("LSAME");
 	
 	lumi_13TeV = "";
-	CMS_lumi(c3,0,iPos);
+	CMS_lumi(c3,5,iPos);
 	leg->Clear();
-	leg->AddEntry(gr9,"2017 FullSIM Narrow S-0","l");
-	leg->AddEntry(gr10,"2017 FullSIM Wide S-0","l");
-	leg->AddEntry(gr13,"2017 FullSIM Narrow S-1","l");
-	leg->AddEntry(gr14,"2017 FullSIM Wide S-1","l");
+	leg->AddEntry(gr9,"Narrow S-0","l");
+	leg->AddEntry(gr10,"Broad S-0","l");
+	leg->AddEntry(gr13,"Narrow S-1","l");
+	leg->AddEntry(gr14,"Broad S-1","l");
 	leg->AddEntry(gr1,"2017 Average","fl");
 	leg->Draw();
 	c3->SetGrid();

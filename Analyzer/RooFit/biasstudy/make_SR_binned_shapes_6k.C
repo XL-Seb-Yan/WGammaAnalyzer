@@ -1,4 +1,4 @@
-#define fun_type 3
+#define fun_type 12
 #if !defined(__CINT__) || defined(__MAKECINT__)
 #include <TROOT.h>                  // access to gROOT, entry point to ROOT system
 #include <TSystem.h>                // interface to OS
@@ -50,7 +50,7 @@ std::string to_str_trim(const float a_value, const int n = 2)
     return std::to_string(a_value).substr(0,std::to_string(a_value).find(".") + n + 1);
 }
 
-void make_SR_binned_shapes(int seed=37)
+void make_SR_binned_shapes_6k(int seed=37)
 {
   gErrorIgnoreLevel = kInfo;
   gROOT->SetBatch(1);
@@ -59,7 +59,7 @@ void make_SR_binned_shapes(int seed=37)
   RooRandom::randomGenerator()->SetSeed(37); 
   
   gROOT->SetBatch(1);
-  lumi_13TeV = "137.19 fb^{-1}";
+  lumi_13TeV = "137 fb^{-1}";
   writeExtraText = 1;
   lumiTextOffset = 0.15;
   bool plot_CMS = true;
@@ -78,7 +78,7 @@ void make_SR_binned_shapes(int seed=37)
   gStyle->SetHistLineWidth(2);
 
   // --- Create obervable --- 
-  RooRealVar *x = new RooRealVar("m","m",600,5000,""); //the name "m" will be used by RooDataSet to import data, normalization range is 600-3500 but plot range can be defined to like 600-3000
+  RooRealVar *x = new RooRealVar("m","m",600,6000,""); //the name "m" will be used by RooDataSet to import data, normalization range is 600-3500 but plot range can be defined to like 600-3000
 
   //--- background PDF ---
 #if fun_type == 1
@@ -126,19 +126,19 @@ void make_SR_binned_shapes(int seed=37)
 #elif fun_type == 6
   //-----------------------------VVdijet2-----------------------------------
   TString fun_name = "VVdijet-2";
-  RooRealVar *VVdijet2_p0 = new RooRealVar("VVdijet2_p0","VVdijet2_p_0",0,-100,100,""); //-10.5471 +- 3.06516
-  RooRealVar *VVdijet2_p1 = new RooRealVar("VVdijet2_p1","VVdijet2_p_1",0,-100,100,""); //-0.799413 +- 0.560435
-  RooRealVar *VVdijet2_p2 = new RooRealVar("VVdijet2_p2","VVdijet2_p_2",0,-100,100,""); //-0.799413 +- 0.560435
+  RooRealVar *VVdijet2_p0 = new RooRealVar("VVdijet2_p0","VVdijet2_p_0",-11,-11.72,-9,""); //-10.5471 +- 3.06516
+  RooRealVar *VVdijet2_p1 = new RooRealVar("VVdijet2_p1","VVdijet2_p_1",15,12,18,""); //-0.799413 +- 0.560435
+  RooRealVar *VVdijet2_p2 = new RooRealVar("VVdijet2_p2","VVdijet2_p_2",1.5,0,3,""); //-0.799413 +- 0.560435
   RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-m/13000,VVdijet2_p0)/pow(m/13000,VVdijet2_p1+VVdijet2_p2*log(m/13000)))",RooArgList(*x,*VVdijet2_p0,*VVdijet2_p1,*VVdijet2_p2));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 7
 //-----------------------------VVdijet3-----------------------------------
   TString fun_name = "VVdijet-3";
-  RooRealVar *VVdijet3_p0 = new RooRealVar("VVdijet3_p0","VVdijet3_p_0",-17,-30,0,""); //-10.5471 +- 3.06516
-  RooRealVar *VVdijet3_p1 = new RooRealVar("VVdijet3_p1","VVdijet3_p_1",16,0,25,""); //-0.799413 +- 0.560435
-  RooRealVar *VVdijet3_p2 = new RooRealVar("VVdijet3_p2","VVdijet3_p_2",1,-100,100,""); //-0.799413 +- 0.560435
-  RooRealVar *VVdijet3_p3 = new RooRealVar("VVdijet3_p3","VVdijet3_p_3",0,-100,100,""); //-0.799413 +- 0.560435
+  RooRealVar *VVdijet3_p0 = new RooRealVar("VVdijet3_p0","VVdijet3_p_0",-10.74,-12,0,""); //-10.5471 +- 3.06516
+  RooRealVar *VVdijet3_p1 = new RooRealVar("VVdijet3_p1","VVdijet3_p_1",13.65,0,14.5,""); //-0.799413 +- 0.560435
+  RooRealVar *VVdijet3_p2 = new RooRealVar("VVdijet3_p2","VVdijet3_p_2",0.5,0,1,""); //-0.799413 +- 0.560435
+  RooRealVar *VVdijet3_p3 = new RooRealVar("VVdijet3_p3","VVdijet3_p_3",-0.1,0,""); //-0.799413 +- 0.560435
   RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-m/13000,VVdijet3_p0)/pow(m/13000,VVdijet3_p1+VVdijet3_p2*log(m/13000)+VVdijet3_p3*pow(log(m/13000),2)))",RooArgList(*x,*VVdijet3_p0,*VVdijet3_p1,*VVdijet3_p2,*VVdijet3_p3));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
@@ -148,14 +148,14 @@ void make_SR_binned_shapes(int seed=37)
   RooRealVar *ATLAS1_p0 = new RooRealVar("ATLAS1_p0","ATLAS1_p_0",0,-100,100,""); //-10.5471 +- 3.06516
   RooRealVar *ATLAS1_p1 = new RooRealVar("ATLAS1_p1","ATLAS1_p_1",0,-100,100,""); //-0.799413 +- 0.560435
   RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-pow(m/13000,1/3),ATLAS1_p0)/pow(m/13000,ATLAS1_p1))",RooArgList(*x,*ATLAS1_p0,*ATLAS1_p1));
-  RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
+  RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,"");
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
 #elif fun_type == 9
   //-----------------------------ATLAS2-----------------------------------
   TString fun_name = "ATLAS-2";
-  RooRealVar *ATLAS2_p0 = new RooRealVar("ATLAS2_p0","ATLAS2_p_0",0,-100,100,""); //-10.5471 +- 3.06516
-  RooRealVar *ATLAS2_p1 = new RooRealVar("ATLAS2_p1","ATLAS2_p_1",0,-100,100,""); //-0.799413 +- 0.560435
-  RooRealVar *ATLAS2_p2 = new RooRealVar("ATLAS2_p2","ATLAS2_p_2",0,-100,100,""); //-0.799413 +- 0.560435
+  RooRealVar *ATLAS2_p0 = new RooRealVar("ATLAS2_p0","ATLAS2_p_0",-8.2874,-11.3,0,""); //-10.5471 +- 3.06516
+  RooRealVar *ATLAS2_p1 = new RooRealVar("ATLAS2_p1","ATLAS2_p_1",18.8419,15,20,""); //-0.799413 +- 0.560435
+  RooRealVar *ATLAS2_p2 = new RooRealVar("ATLAS2_p2","ATLAS2_p_2",1.84,1,2,""); //-0.799413 +- 0.560435
   RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-pow(m/13000,1/3),ATLAS2_p0)/pow(m/13000,ATLAS2_p1+ATLAS2_p2*log(m/13000)))",RooArgList(*x,*ATLAS2_p0,*ATLAS2_p1,*ATLAS2_p2));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
@@ -209,7 +209,7 @@ void make_SR_binned_shapes(int seed=37)
   //float xbinlow[53] = {600,650,700,750,800,850,900,950,1000,1050,1100,1050,1100,1150,1200,1250,1300,1350,1400,1450,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700,2800,2900,3000,3200,3400,3600,3800,400,4200,4400,4600,4800,5000,5400,5800,6200,6600,7000,7400,7800};
   // ------------------------Photons------------------------
   //TH1F* DATAh = new TH1F("DATAh","DATAh",52,&xbinlow[0]);
-  TH1F* DATAh = new TH1F("DATAh","DATAh",110,600,5000);
+  TH1F* DATAh = new TH1F("DATAh","DATAh",135,600,6000);
   float s_mass;
   TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/fullcut/Run2Data_postproc_WGammaRun2_SR_sigrange_fullcut_jmcorr_May22.root");
   TTree* tree = (TTree*)file.Get("Events");
@@ -282,6 +282,7 @@ void make_SR_binned_shapes(int seed=37)
   NLLlax->SetTextSize(0.028);
   NLLlax->SetTextColor(kBlack);
   frame->addObject(NLLlax);
+  */
 
   // access residuals
   double SSR = 0;
@@ -307,7 +308,6 @@ void make_SR_binned_shapes(int seed=37)
   SSRlax->SetTextSize(0.028);
   SSRlax->SetTextColor(kBlack);
   frame->addObject(SSRlax);
-  */
   
   // write Chi2
   TString chi2txt = "#chi^{2}/ndof: " + to_str_trim(frame->chiSquare(fun_name,"datah") * (datah.numEntries() - n_0)) + "/" + std::to_string(datah.numEntries() - n_0 - nfloparam) + "=" + to_str_trim(frame->chiSquare(fun_name,"datah", nfloparam));
@@ -320,9 +320,9 @@ void make_SR_binned_shapes(int seed=37)
    // --- Perform extended ML fit of composite PDF to toy data ---
   RooFitResult *ex_r = NULL;
   // if(isNorm)
-    // ex_r = ex_model->fitTo(data_norm,Range(600,5000),RooFit::Minimizer("Minuit2"),Extended(true),SumW2Error(false),Save());
+    // ex_r = ex_model->fitTo(data_norm,Range(600,6000),RooFit::Minimizer("Minuit2"),Extended(true),SumW2Error(false),Save());
   // else
-    ex_r = ex_model->fitTo(datah,Range(600,5000),RooFit::Minimizer("Minuit2"),Extended(true),Save());
+    ex_r = ex_model->fitTo(datah,Range(600,6000),RooFit::Minimizer("Minuit2"),Extended(true),Save());
   cout<<"Normalization is: "<<bkg_norm->getVal()<<endl;
   
   std::vector<float> massbin;
@@ -346,12 +346,12 @@ void make_SR_binned_shapes(int seed=37)
     if(plotmass[j] == "1000W") sig_norm=257; //15fb
     if(plotmass[j] == "2600N") {sig_norm=15.80; linecolor=4;}//1fb
     if(plotmass[j] == "2600W") {sig_norm=14.42; linecolor=4;}//1fb
-    if(plotmass[j] == "4000N") {sig_norm=6.894; linecolor=8;}//0.5fb
-    if(plotmass[j] == "4000W") {sig_norm=6.041; linecolor=8;}//0.5fb
+    if(plotmass[j] == "4000N") {sig_norm=5.515; linecolor=8;}//0.4fb
+    if(plotmass[j] == "4000W") {sig_norm=4.833; linecolor=8;}//0.4fb
     TFile *signal = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/RooFitWorkspace/"+width+"/"+plotmass[j]+"-shapes-Unbinned-"+sigfun+".root");
     RooWorkspace *sig_w = (RooWorkspace*)signal->Get("w");
     RooAbsPdf *sig_pdf = sig_w->pdf("CBGaus");
-    for(int i=600; i<8001; i+=20){
+    for(int i=600; i<6001; i+=20){
       float masspoint = i;
       massbin.push_back(i+10);
       x->setRange("sig",i,i+20);
@@ -371,8 +371,8 @@ void make_SR_binned_shapes(int seed=37)
   // --- Visualization ---
   gStyle->SetOptStat(111111);
   TCanvas *c01 = new TCanvas("c01","c01",2100,2000);
-  TPad *p01a = new TPad("p01a","p01a",0,0.178,1,1.0);
-  TPad *p01b = new TPad("p01b","p01b",0,0,1,0.26);
+  TPad *p01a = new TPad("p01a","p01a",0,0.218,1,1.0);
+  TPad *p01b = new TPad("p01b","p01b",0,0,1,0.3);
   p01a->Draw();
   p01b->Draw();
   p01a->cd();
@@ -387,7 +387,7 @@ void make_SR_binned_shapes(int seed=37)
   yaxis->SetTitle("Events / 40 GeV");
   yaxis->SetTitleOffset(1.2);
   yaxis->SetRangeUser(0.002,100000);
-  xaxis->SetLimits(600,5000);
+  xaxis->SetLimits(600,6000);
   p01a->SetLogy();
   frame->Draw();
   CMS_lumi(p01a,iPeriod,iPos);
@@ -405,9 +405,9 @@ void make_SR_binned_shapes(int seed=37)
   p01b->SetBottomMargin(0.36);
   RooHist* hpull = frame->pullHist();
   RooPlot* pull_frame = x->frame();
-  // for(int i=0; i<6; i++){
-    // pull_frame->addObject(signalpullplot_vector.at(i),"l");
-  // }
+  for(int i=0; i<6; i++){
+    pull_frame->addObject(signalpullplot_vector.at(i),"l");
+  }
   pull_frame->addPlotable(hpull,"P");
   hpull->SetMarkerStyle(8);
   hpull->SetMarkerSize(2);
@@ -419,9 +419,9 @@ void make_SR_binned_shapes(int seed=37)
   yaxis->SetRangeUser(-5,5);
   xaxis->SetLabelSize(0.15);
   xaxis->SetTitleSize(0.15);
-  xaxis->SetLimits(600,5000);
-  yaxis->SetLabelSize(0.15);
-  yaxis->SetTitleSize(0.15);
+  xaxis->SetLimits(600,6000);
+  yaxis->SetLabelSize(0.13);
+  yaxis->SetTitleSize(0.135);
   yaxis->SetNdivisions(5);
   p01b->SetGrid();
   pull_frame->Draw();
@@ -431,11 +431,11 @@ void make_SR_binned_shapes(int seed=37)
   c01->Print(fun_name+".pdf");
   c01->Print(fun_name+".svg");
   
-  frame->GetXaxis()->SetLimits(600,5000);
-  pull_frame->GetXaxis()->SetLimits(600,5000);
-  c01->Print(fun_name+"_5000plotrange.png");
-  c01->Print(fun_name+"_5000plotrange.pdf");
-  c01->Print(fun_name+"_5000plotrange.svg");
+  frame->GetXaxis()->SetLimits(600,6000);
+  pull_frame->GetXaxis()->SetLimits(600,6000);
+  c01->Print(fun_name+"_6000plotrange.png");
+  c01->Print(fun_name+"_6000plotrange.pdf");
+  c01->Print(fun_name+"_6000plotrange.svg");
 
 // --- Output root file ---
   RooWorkspace *w = new RooWorkspace("w","w");
@@ -443,6 +443,6 @@ void make_SR_binned_shapes(int seed=37)
   w->import(data,Rename("data_SR"));
   w->import(datah,Rename("data_SR_binned"));
   w->import(*model);
-  w->writeToFile("SR-shapes-Unbinned-"+fun_name+"_5k.root");
+  w->writeToFile("SR-shapes-Unbinned-"+fun_name+"_6k.root");
   
 }

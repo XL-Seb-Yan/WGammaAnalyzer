@@ -665,17 +665,17 @@ void MCvalidation()
   hist310->SetMarkerStyle(21);
   hist311->SetMarkerStyle(21);
   
-  hist31->SetMarkerSize(3);
-  hist32->SetMarkerSize(3);
-  hist33->SetMarkerSize(3);
-  hist34->SetMarkerSize(3);
-  hist35->SetMarkerSize(3);
-  hist36->SetMarkerSize(3);
-  hist37->SetMarkerSize(3);
-  hist38->SetMarkerSize(3);
-  hist39->SetMarkerSize(3);
-  hist310->SetMarkerSize(3);
-  hist311->SetMarkerSize(3);
+  hist31->SetMarkerSize(5);
+  hist32->SetMarkerSize(5);
+  hist33->SetMarkerSize(5);
+  hist34->SetMarkerSize(5);
+  hist35->SetMarkerSize(5);
+  hist36->SetMarkerSize(5);
+  hist37->SetMarkerSize(5);
+  hist38->SetMarkerSize(5);
+  hist39->SetMarkerSize(5);
+  hist310->SetMarkerSize(5);
+  hist311->SetMarkerSize(5);
   
   hist31->SetMarkerColor(kBlack);
   hist32->SetMarkerColor(kBlack);
@@ -725,17 +725,17 @@ void MCvalidation()
   hist3a10->SetMarkerStyle(20);
   hist3a11->SetMarkerStyle(20);
   
-  hist3a1->SetMarkerSize(3);
-  hist3a2->SetMarkerSize(3);
-  hist3a3->SetMarkerSize(3);
-  hist3a4->SetMarkerSize(3);
-  hist3a5->SetMarkerSize(3);
-  hist3a6->SetMarkerSize(3);
-  hist3a7->SetMarkerSize(3);
-  hist3a8->SetMarkerSize(3);
-  hist3a9->SetMarkerSize(3);
-  hist3a10->SetMarkerSize(3);
-  hist3a11->SetMarkerSize(3);
+  hist3a1->SetMarkerSize(5);
+  hist3a2->SetMarkerSize(5);
+  hist3a3->SetMarkerSize(5);
+  hist3a4->SetMarkerSize(5);
+  hist3a5->SetMarkerSize(5);
+  hist3a6->SetMarkerSize(5);
+  hist3a7->SetMarkerSize(5);
+  hist3a8->SetMarkerSize(5);
+  hist3a9->SetMarkerSize(5);
+  hist3a10->SetMarkerSize(5);
+  hist3a11->SetMarkerSize(5);
   
   hist3a1->SetMarkerColor(kRed);
   hist3a2->SetMarkerColor(kRed);
@@ -975,7 +975,7 @@ void MCvalidation()
   double lower_pad2_lower_margin = 0.45;
 
   //===========================================================
-  TCanvas *c01 = new TCanvas("c01","",4200,3900);
+  TCanvas *c01 = new TCanvas("c01","",5000,5000);
   c01->cd();
   TPad *p01a = new TPad("p01a","p01a",0,lp3,1,1.0);
   TPad *p01b = new TPad("p01b","p01b",0,lp2,1,hp2);
@@ -1008,8 +1008,8 @@ void MCvalidation()
   hist3a1->Draw("E1SAME");
   hist31->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist31,"Data SB (Norm)","lep");
-  legend->AddEntry(hist3a1,"Data SR","lep");
+  legend->AddEntry(hist31,"Data SB (Norm)","e1p");
+  legend->AddEntry(hist3a1,"Data SR","e1p");
   legend->AddEntry(hist11,"#gamma + jet","f");
   legend->AddEntry(hist21,"QCD","f"); 
   legend->AddEntry(hist41,"M-1000 N");
@@ -1082,12 +1082,12 @@ void MCvalidation()
   //pull->Draw("BAR HIST");
   //c01->Print("p_pt.png");
   c01->Print("p_pt.pdf");
-  c01->Print("p_pt.eps");
+  c01->Print("p_pt.svg");
   //c01->Print("p_pt.root");
   //=========================================================
   
   //===========================================================
-  TCanvas *c02 = new TCanvas("c02","",4200,3900);
+  TCanvas *c02 = new TCanvas("c02","",5000,5000);
   c02->cd();
   TPad *p02a = new TPad("p02a","p02a",0,lp3,1,1.0);
   TPad *p02b = new TPad("p02b","p02b",0,lp2,1,hp2);
@@ -1120,8 +1120,8 @@ void MCvalidation()
   hist3a2->Draw("E1SAME");
   hist32->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist31,"Data SB (Norm)","lep");
-  legend->AddEntry(hist3a1,"Data SR","lep");
+  legend->AddEntry(hist31,"Data SB (Norm)","e1p");
+  legend->AddEntry(hist3a1,"Data SR","e1p");
   legend->AddEntry(hist11,"#gamma + jet","f");
   legend->AddEntry(hist21,"QCD","f"); 
   legend->AddEntry(hist41,"M-1000 N");
@@ -1193,12 +1193,12 @@ void MCvalidation()
   //pull->Draw("BAR HIST");
   //c02->Print("p_eta.png");
   c02->Print("p_eta.pdf");
-  c02->Print("p_eta.eps");
+  c02->Print("p_eta.svg");
   //c02->Print("p_eta.root");
   //=========================================================
   
     //===========================================================
-  TCanvas *c03 = new TCanvas("c03","",4200,3900);
+  TCanvas *c03 = new TCanvas("c03","",5000,5000);
   c03->cd();
   TPad *p03a = new TPad("p03a","p03a",0,lp3,1,1.0);
   TPad *p03b = new TPad("p03b","p03b",0,lp2,1,hp2);
@@ -1231,8 +1231,8 @@ void MCvalidation()
   hist3a3->Draw("E1SAME");
   hist33->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist31,"Data SB (Norm)","lep");
-  legend->AddEntry(hist3a1,"Data SR","lep");
+  legend->AddEntry(hist31,"Data SB (Norm)","e1p");
+  legend->AddEntry(hist3a1,"Data SR","e1p");
   legend->AddEntry(hist11,"#gamma + jet","f");
   legend->AddEntry(hist21,"QCD","f"); 
   legend->AddEntry(hist41,"M-1000 N");
@@ -1304,12 +1304,12 @@ void MCvalidation()
   //pull->Draw("BAR HIST");
   //c03->Print("j_pt.png");
   c03->Print("j_pt.pdf");
-  c03->Print("j_pt.eps");
+  c03->Print("j_pt.svg");
   //c03->Print("j_pt.root");
   //=========================================================
   
   //===========================================================
-  TCanvas *c04 = new TCanvas("c04","",4200,3900);
+  TCanvas *c04 = new TCanvas("c04","",5000,5000);
   c04->cd();
   TPad *p04a = new TPad("p04a","p04a",0,lp3,1,1.0);
   TPad *p04b = new TPad("p04b","p04b",0,lp2,1,hp2);
@@ -1342,8 +1342,8 @@ void MCvalidation()
   hist3a4->Draw("E1SAME");
   hist34->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist31,"Data SB (Norm)","lep");
-  legend->AddEntry(hist3a1,"Data SR","lep");
+  legend->AddEntry(hist31,"Data SB (Norm)","e1p");
+  legend->AddEntry(hist3a1,"Data SR","e1p");
   legend->AddEntry(hist11,"#gamma + jet","f");
   legend->AddEntry(hist21,"QCD","f"); 
   legend->AddEntry(hist41,"M-1000 N");
@@ -1414,13 +1414,13 @@ void MCvalidation()
   //pull->Draw("BAR HIST");
   //c04->Print("j_eta.png");
   c04->Print("j_eta.pdf");
-  c04->Print("j_eta.eps");
+  c04->Print("j_eta.svg");
   //c04->Print("j_eta.root");
   //==========================================================
   
   
     //===========================================================
-  TCanvas *c05 = new TCanvas("c05","",4200,3900);
+  TCanvas *c05 = new TCanvas("c05","",5000,5000);
   c05->cd();
   TPad *p05a = new TPad("p05a","p05a",0,lp3,1,1.0);
   TPad *p05b = new TPad("p05b","p05b",0,lp2,1,hp2);
@@ -1452,8 +1452,8 @@ void MCvalidation()
   hist3a6->Draw("E1SAME");
   hist36->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist31,"Data SB (Norm)","lep");
-  legend->AddEntry(hist3a1,"Data SR","lep");
+  legend->AddEntry(hist31,"Data SB (Norm)","e1p");
+  legend->AddEntry(hist3a1,"Data SR","e1p");
   legend->AddEntry(hist11,"#gamma + jet","f");
   legend->AddEntry(hist21,"QCD","f"); 
   legend->AddEntry(hist41,"M-1000 N");
@@ -1524,12 +1524,12 @@ void MCvalidation()
   //pull->Draw("BAR HIST");
   //c05->Print("j_m.png");
   c05->Print("j_m.pdf");
-  c05->Print("j_m.eps");
+  c05->Print("j_m.svg");
   //c05->Print("j_m.root");
   //==========================================================
   
   //===========================================================
-  TCanvas *c06 = new TCanvas("c06","",4200,3900);
+  TCanvas *c06 = new TCanvas("c06","",5000,5000);
   c06->cd();
   TPad *p06a = new TPad("p06a","p06a",0,lp3,1,1.0);
   TPad *p06b = new TPad("p06b","p06b",0,lp2,1,hp2);
@@ -1562,8 +1562,8 @@ void MCvalidation()
   hist3a7->Draw("E1SAME");
   hist37->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist31,"Data SB (Norm)","lep");
-  legend->AddEntry(hist3a1,"Data SR","lep");
+  legend->AddEntry(hist31,"Data SB (Norm)","e1p");
+  legend->AddEntry(hist3a1,"Data SR","e1p");
   legend->AddEntry(hist11,"#gamma + jet","f");
   legend->AddEntry(hist21,"QCD","f"); 
   legend->AddEntry(hist41,"M-1000 N");
@@ -1618,6 +1618,7 @@ void MCvalidation()
   xaxis3->SetTitle("#tau_{21}");
   xaxis3->SetTitleOffset(1.1);
   yaxis3->SetTitle("data/MC");
+  yaxis3->SetRangeUser(0,2);
   xaxis3->SetLabelSize(0.15);
   xaxis3->SetLabelOffset(0.05);
   xaxis3->SetTitleSize(0.18);
@@ -1633,12 +1634,12 @@ void MCvalidation()
   //pull->Draw("BAR HIST");
   //c06->Print("j_tau21.png");
   c06->Print("j_tau21.pdf");
-  c06->Print("j_tau21.eps");
+  c06->Print("j_tau21.svg");
   //c06->Print("j_tau21.root");
   //==========================================================
   
   //===========================================================
-  TCanvas *c07 = new TCanvas("c07","",4200,3900);
+  TCanvas *c07 = new TCanvas("c07","",5000,5000);
   c07->cd();
   TPad *p07a = new TPad("p07a","p07a",0,lp3,1,1.0);
   TPad *p07b = new TPad("p07b","p07b",0,lp2,1,hp2);
@@ -1671,8 +1672,8 @@ void MCvalidation()
   hist3a8->Draw("E1SAME");
   hist38->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist31,"Data SB (Norm)","lep");
-  legend->AddEntry(hist3a1,"Data SR","lep");
+  legend->AddEntry(hist31,"Data SB (Norm)","e1p");
+  legend->AddEntry(hist3a1,"Data SR","e1p");
   legend->AddEntry(hist11,"#gamma + jet","f");
   legend->AddEntry(hist21,"QCD","f"); 
   legend->AddEntry(hist41,"M-1000 N");
@@ -1743,12 +1744,12 @@ void MCvalidation()
   //pull->Draw("BAR HIST");
   //c07->Print("s_cos.png");
   c07->Print("s_cos.pdf");
-  c07->Print("s_cos.eps");
+  c07->Print("s_cos.svg");
   //c07->Print("s_cos.root");
   //==========================================================
   
   //===========================================================
-  TCanvas *c08 = new TCanvas("c08","",4200,3900);
+  TCanvas *c08 = new TCanvas("c08","",5000,5000);
   c08->cd();
   TPad *p08a = new TPad("p08a","p08a",0,lp3,1,1.0);
   TPad *p08b = new TPad("p08b","p08b",0,lp2,1,hp2);
@@ -1781,8 +1782,8 @@ void MCvalidation()
   hist3a9->Draw("E1SAME");
   hist39->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist31,"Data SB (Norm)","lep");
-  legend->AddEntry(hist3a1,"Data SR","lep");
+  legend->AddEntry(hist31,"Data SB (Norm)","e1p");
+  legend->AddEntry(hist3a1,"Data SR","e1p");
   legend->AddEntry(hist11,"#gamma + jet","f");
   legend->AddEntry(hist21,"QCD","f"); 
   legend->AddEntry(hist41,"M-1000 N");
@@ -1795,7 +1796,7 @@ void MCvalidation()
   CMS_lumi(p08a,iPeriod,iPos);
   
   p08b->cd();
-  p06b->SetTopMargin(lower_pad1_upper_margin);
+  p08b->SetTopMargin(lower_pad1_upper_margin);
   p08b->SetBottomMargin(lower_pad1_lower_margin);
   p08b->SetLeftMargin(0.144);
   p08b->SetRightMargin(0.07);
@@ -1834,7 +1835,7 @@ void MCvalidation()
   pull->Divide(bkg);
   xaxis3 = pull->GetXaxis();
   yaxis3 = pull->GetYaxis();
-  xaxis3->SetTitle("pT_{#gamma} / M_{j#gamma}");
+  xaxis3->SetTitle("M_{j#gamma}");
   xaxis3->SetTitleOffset(1.1);
   yaxis3->SetTitle("data/MC");
   yaxis3->SetRangeUser(0,2);
@@ -1851,14 +1852,14 @@ void MCvalidation()
   //pull->SetFillColorAlpha(kOrange, 0.35);
   pull->Draw("PE1");
   //pull->Draw("BAR HIST");
-  //c08->Print("s_ptm.png");
+  //c08->Print("s_cos.png");
   c08->Print("s_ptm.pdf");
-  c08->Print("s_ptm.eps");
-  //c08->Print("s_ptm.root");
+  c08->Print("s_ptm.svg");
+  //c08->Print("s_cos.root");
   //==========================================================
   
-   //===========================================================
-  TCanvas *c09 = new TCanvas("c09","",4200,3900);
+  //===========================================================
+  TCanvas *c09 = new TCanvas("c09","",5000,5000);
   c09->cd();
   TPad *p09a = new TPad("p09a","p09a",0,lp3,1,1.0);
   TPad *p09b = new TPad("p09b","p09b",0,lp2,1,hp2);
@@ -1873,8 +1874,8 @@ void MCvalidation()
   p09a->SetLogy();
   xaxis1 = hist310->GetXaxis();
   yaxis1 = hist310->GetYaxis();
-  xaxis1->SetTitle("M_{j#gamma} [GeV]");
-  yaxis1->SetTitle("Entries / 60 GeV");
+  xaxis1->SetTitle("M_{j#gamma}");
+  yaxis1->SetTitle("Entries / 0.04");
   xaxis1->SetLabelOffset(2);
   yaxis1->SetTitleOffset(1.4);
   yaxis1->SetRangeUser(0.2,1000000);
@@ -1891,8 +1892,8 @@ void MCvalidation()
   hist3a10->Draw("E1SAME");
   hist310->Draw("AXISSAME");
   legend->Clear();
-  legend->AddEntry(hist31,"Data SB (Norm)","lep");
-  legend->AddEntry(hist3a1,"Data SR","lep");
+  legend->AddEntry(hist31,"Data SB (Norm)","e1p");
+  legend->AddEntry(hist3a1,"Data SR","e1p");
   legend->AddEntry(hist11,"#gamma + jet","f");
   legend->AddEntry(hist21,"QCD","f"); 
   legend->AddEntry(hist41,"M-1000 N");
@@ -1905,7 +1906,7 @@ void MCvalidation()
   CMS_lumi(p09a,iPeriod,iPos);
   
   p09b->cd();
-  p06b->SetTopMargin(lower_pad1_upper_margin);
+  p09b->SetTopMargin(lower_pad1_upper_margin);
   p09b->SetBottomMargin(lower_pad1_lower_margin);
   p09b->SetLeftMargin(0.144);
   p09b->SetRightMargin(0.07);
@@ -1915,7 +1916,7 @@ void MCvalidation()
   pull->Divide(bkg);
   xaxis2 = pull->GetXaxis();
   yaxis2 = pull->GetYaxis();
-  xaxis2->SetTitle("M_{j#gamma} [GeV]");
+  xaxis2->SetTitle("M_{j#gamma}");
   xaxis2->SetTitleOffset(1.15);
   yaxis2->SetTitle("data/MC");
   yaxis2->SetRangeUser(0,2);
@@ -1944,7 +1945,7 @@ void MCvalidation()
   pull->Divide(bkg);
   xaxis3 = pull->GetXaxis();
   yaxis3 = pull->GetYaxis();
-  xaxis3->SetTitle("M_{j#gamma} [GeV]");
+  xaxis3->SetTitle("pT_{#gamma} / M_{j#gamma}");
   xaxis3->SetTitleOffset(1.1);
   yaxis3->SetTitle("data/MC");
   yaxis3->SetRangeUser(0,2);
@@ -1961,10 +1962,10 @@ void MCvalidation()
   //pull->SetFillColorAlpha(kOrange, 0.35);
   pull->Draw("PE1");
   //pull->Draw("BAR HIST");
-  //c09->Print("s_M.png");
+  //c09->Print("s_cos.png");
   c09->Print("s_M.pdf");
-  c09->Print("s_M.eps");
-  //c09->Print("s_M.root");
+  c09->Print("s_M.svg");
+  //c09->Print("s_cos.root");
   //==========================================================
   
   cout<<SB<<endl;
