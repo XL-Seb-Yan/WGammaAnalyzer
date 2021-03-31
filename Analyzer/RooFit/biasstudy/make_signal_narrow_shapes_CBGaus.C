@@ -50,7 +50,7 @@ std::string to_str_trim(const float a_value, const int n = 2)
     return std::to_string(a_value).substr(0,std::to_string(a_value).find(".") + n + 1);
 }
 
-void make_signal_narrow_shapes_CBGaus(int signalmass = 1600, int yhi = 600)
+void make_signal_narrow_shapes_CBGaus(int signalmass = 6000, int yhi = 600)
 {
   //gErrorIgnoreLevel = kInfo;
   using namespace std;
@@ -79,32 +79,32 @@ void make_signal_narrow_shapes_CBGaus(int signalmass = 1600, int yhi = 600)
   TString signalmass_str = std::to_string(signalmass);
 
   // --- Create obervable --- 
-  RooRealVar *m = new RooRealVar("m","m",600,7500,""); //the name "m" will be used by RooDataSet to import data
+  RooRealVar *m = new RooRealVar("m","m",600,8800,""); //the name "m" will be used by RooDataSet to import data
 
   //--- signal PDF ---
   TString fun_name = "CBGaus";
   RooRealVar* CB_mean = new RooRealVar("CB_mean","CB_mean",signalmass,signalmass-100,signalmass+100,"");
-  RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",50,43,54,"");
+  RooRealVar* CB_sigma = new RooRealVar("CB_sigma","CB_sigma",170,130,250,"");
   RooRealVar* CB_alpha = new RooRealVar("CB_alpha","CB_alpha",2,0.5,3,"");
-  RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",1.1,0.93,1.35,"");
+  RooRealVar* CB_n = new RooRealVar("CB_n","CB_n",1,0.5,3,"");
   RooCBShape* CB_model = new RooCBShape("CBShape","Cystal Ball Function",*m,*CB_mean,*CB_sigma,*CB_alpha,*CB_n);
   
   RooRealVar* Gaus_mean = new RooRealVar("Gaus_mean","Gaus_mean",signalmass-40,signalmass-150,signalmass+50,"");
-  RooRealVar* Gaus_sigma = new RooRealVar("Gaus_sigma","Gaus_sigma",70,63,85,"");
+  RooRealVar* Gaus_sigma = new RooRealVar("Gaus_sigma","Gaus_sigma",300,250,350,"");
   RooGaussian* Gaus_model = new RooGaussian("Gaussian","Gaussian Function",*m,*Gaus_mean,*Gaus_sigma);
-  RooRealVar* frac = new RooRealVar("frac","frac",0.7,0.5,0.9);
+  RooRealVar* frac = new RooRealVar("frac","frac",0.75,0.7,0.85);
   RooAddPdf* com_model = new RooAddPdf("CBGaus","CBGaus",RooArgList(*CB_model,*Gaus_model),RooArgList(*frac));
 
   // --- Import Binned dataset ---
-  int bin = 345; //20GeV
+  int bin = 410; //20GeV
   if(signalmass > 1999)//40GeV
-	  bin = 173;
+	  bin = 205;
   if(signalmass > 4999) //80GeV
-	  bin = 86;
-  if(signalmass > 6999) //150GeV
-	  bin = 59;
+	  bin = 103;
+  if(signalmass > 6999) //100GeV
+	  bin = 82;
   float s_mass, xsec_puweight, xsec_sf;
-  TH1F MChist("MC","MC",bin,600,7500);
+  TH1F MChist("MC","MC",bin,600,8800);
 									
   TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/fullcut/SignalMC"+signalmass_str+"N_postproc_WGamma17_SR_sigrange_fullcut_jmcorr_May22.root");
   TTree* tree = (TTree*)file.Get("Events");
@@ -192,7 +192,7 @@ void make_signal_narrow_shapes_CBGaus(int signalmass = 1600, int yhi = 600)
   TAxis* yaxis = frame->GetYaxis();
   xaxis->SetTitle("");
   xaxis->SetTitleOffset(1.2);
-  yaxis->SetTitle("Events / 20 GeV");
+  yaxis->SetTitle("Events / 100 GeV");
   yaxis->SetTitleOffset(1.35);
   yaxis->SetRangeUser(0,yhi);
   xaxis->SetRangeUser(signalmass*0.75,signalmass*1.25);

@@ -25,7 +25,6 @@
 #include "TRandom.h"
 #include <algorithm>
 #include <map>
-#include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/tdrstyle.C"
 #include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/CMS_lumi.C"
 #endif
 
@@ -63,7 +62,8 @@ void postproc(int mass, int runondata, int runyear)
   int sys_pvn, run_num, evt_num, lumi_block;
   
   // Open input file
-  Float_t p_pt, p_eta, p_phi, p_e, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, evt_pdfunc;
+  Float_t p_pt, p_eta, p_phi, p_e, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass;
+	float pdf_weight = 1;
   float x_weight = 1;
   float x_kfactor = 1;
   float x_puweight = 1;
@@ -71,11 +71,12 @@ void postproc(int mass, int runondata, int runyear)
   int s_pv, s_runnum, s_evtnum, s_lumiblock; 
   
   // std::string dataset = "SignalMC"+std::to_string(mass)+"N";
-  std::string dataset = std::to_string(mass)+"_N_S1";
+  std::string dataset = std::to_string(mass)+"_N";
   
   TString year_str = std::to_string(runyear);
   
-  TFile *input = TFile::Open(("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuples_looseID/S1/" + dataset + "_nominal_pileup_WGamma_full_full_May22.root").c_str());
+	//TFile *input = TFile::Open(("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuples_looseID/S1/" + dataset + "_nominal_pileup_WGamma_full_full_May22.root").c_str());
+  TFile *input = TFile::Open(("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/spin-0_scalar_21Mar23/ntuple/" + dataset + "_nominal_pileup_WGamma_full_full_Mar23.root").c_str());
   //TFile *input = TFile::Open((dataset + "_nominal_pileup_WGamma_full_full_May22.root").c_str());
   //TFile *input = TFile::Open((dataset+"_nominal_pileup_WGamma_full_full_May22.root").c_str());
   TTree* theTree = (TTree*)input->Get("Events");
@@ -94,6 +95,7 @@ void postproc(int mass, int runondata, int runyear)
   theTree->SetBranchAddress("sys_ptoverm", &s_ptm);
   theTree->SetBranchAddress("sys_invmass", &s_mass);
   theTree->SetBranchAddress("xsec_weight", &x_weight);
+	theTree->SetBranchAddress("event_pdfunc", &pdf_weight);
   theTree->SetBranchAddress("PV_N", &s_pv);
   theTree->SetBranchAddress("run_num", &s_runnum);
   theTree->SetBranchAddress("evt_num", &s_evtnum);
@@ -104,7 +106,8 @@ void postproc(int mass, int runondata, int runyear)
   pileup_MC->Scale(1/(double)pileup_MC->Integral());
 
   // Create output file
-  TFile *outFile = TFile::Open(dataset+"_postproc_WGamma"+year_str+"_SR_sigrange_fullcut_jmcorr_May22.root", "RECREATE");
+	//TFile *outFile = TFile::Open(dataset+"_postproc_WGamma"+year_str+"_full_full_jmcorr_Mar23.root", "RECREATE");
+  TFile *outFile = TFile::Open(dataset+"_postproc_WGamma"+year_str+"_SR_sigrange_fullcut_jmcorr_Mar23.root", "RECREATE");
   TTree *outTree = new TTree("Events","Events"); 
   outTree->Branch("sys_pvn",       &sys_pvn,      "sys_pvn/I");
   outTree->Branch("photon_pt",       &photon_pt,      "photon_pt/F");
@@ -236,34 +239,36 @@ void postproc(int mass, int runondata, int runyear)
 		//cout<<j_mass * masscorr<<" "<<j_mass<<endl;
 	}
 	
-	if(s_mass < 600) continue;
-	if(s_mass < 0.75*mass || s_mass > 1.25*mass) continue;
-    if(j_mass * masscorr <  68 || j_mass * masscorr > 94) continue;
-	//if(j_mass * masscorr < 38 || j_mass * masscorr > 64) continue;
-	//if(j_mass * masscorr < 88 || j_mass * masscorr > 114) continue;
-	//if(j_mass * masscorr < 40 || j_mass * masscorr > 65) continue;
+	// pre-selection
 	if(p_pt < 225) continue; //presel
 	if(j_pt < 225) continue; //presel
-    if(abs(p_eta) > 1.44) continue;
-    if(abs(j_eta) > 2) continue;
-    // if(j_tau21 > 0.35) continue;
-    if(s_ptm < 0.37) continue;
-    if(s_cos > 0.6) continue;
-    
-    photon_pt = p_pt;
-    photon_eta = p_eta;
-    photon_phi = p_phi;
-    photon_e = p_e;
-    ak8puppijet_pt = j_pt;
-    ak8puppijet_eta = j_eta;
-    ak8puppijet_phi = j_phi;
-    ak8puppijet_e = j_e;
+	
+	//cuts
+	if(s_mass < 600) continue;
+	if(s_mass < 0.75*mass || s_mass > 1.25*mass) continue;
+	if(j_mass * masscorr <  68 || j_mass * masscorr > 94) continue;
+	//if(j_mass * masscorr < 40 || j_mass * masscorr > 65) continue;
+
+	if(abs(p_eta) > 1.44) continue;
+	if(abs(j_eta) > 2) continue;
+	if(s_ptm < 0.37) continue;
+	if(s_cos > 0.6) continue;
+  if(j_tau21 > 0.35) continue;
+	
+	photon_pt = p_pt;
+	photon_eta = p_eta;
+	photon_phi = p_phi;
+	photon_e = p_e;
+	ak8puppijet_pt = j_pt;
+	ak8puppijet_eta = j_eta;
+	ak8puppijet_phi = j_phi;
+	ak8puppijet_e = j_e;
 	ak8puppijet_masssoftdropcorr = j_mass * masscorr;
-    ak8puppijet_tau21 = j_tau21;
-    sys_costhetastar = s_cos;
-    sys_ptoverm = s_ptm;
-    m = s_mass;
-    xsec_weight = x_weight;
+	ak8puppijet_tau21 = j_tau21;
+	sys_costhetastar = s_cos;
+	sys_ptoverm = s_ptm;
+	m = s_mass;
+	xsec_weight = x_weight;
 	xsec_kfactor = x_kfactor;
 	xsec_puweight = x_puweight;
 	sys_pvn = s_pv;

@@ -1,4 +1,4 @@
-#define fun_type 7
+#define fun_type 2
 #if !defined(__CINT__) || defined(__MAKECINT__)
 #include <TROOT.h>                  // access to gROOT, entry point to ROOT system
 #include <TSystem.h>                // interface to OS
@@ -41,7 +41,6 @@
 #include <RooWorkspace.h>
 #include <RooAddPdf.h>
 #include <RooBukinPdf.h>
-#include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/tdrstyle.C"
 #include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/CMS_lumi.C"
 #endif
 
@@ -78,7 +77,7 @@ void make_SR_shapes_Oct18(int seed=37)
   gStyle->SetHistLineWidth(2);
 
   // --- Create obervable --- 
-  RooRealVar *x = new RooRealVar("m","m",600,6000,""); //the name "m" will be used by RooDataSet to import data, normalization range is 600-3500 but plot range can be defined to like 600-3000
+  RooRealVar *x = new RooRealVar("m","m",600,7600,""); //the name "m" will be used by RooDataSet to import data, normalization range is 600-3500 but plot range can be defined to like 600-3000
 
   //--- background PDF ---
 #if fun_type == 1
@@ -239,22 +238,22 @@ void make_SR_shapes_Oct18(int seed=37)
   cout<<"number of data: "<<data.numEntries()<<endl;
 
   // --- Perform extended ML fit of composite PDF to toy data ---
-    RooFitResult *r = model->fitTo(data,Range(600,6000),RooFit::Minimizer("Minuit2"),Save()); //SumW2Error(false) for weighted data, see how to choose this with same calling without SumW2Error(false)
+    RooFitResult *r = model->fitTo(data,Range(600,7600),RooFit::Minimizer("Minuit2"),Save()); //SumW2Error(false) for weighted data, see how to choose this with same calling without SumW2Error(false)
 
   // --- plot for chi2 calculation and visualization ---
-  x->setBins(135); //fit is unbinned but chi2 is calculated by binning data with this value
+  x->setBins(175); //fit is unbinned but chi2 is calculated by binning data with this value
   RooPlot *frame = x->frame();
 
     frame->SetTitle("Data Sideband");
     RooDataHist datah("dh","binned data",RooArgSet(*x),data);
-    datah.plotOn(frame,RooFit::Name("datah"),Binning(135,600,6000),DataError(RooAbsData::Poisson)); //for unweighted data
+    datah.plotOn(frame,RooFit::Name("datah"),Binning(175,600,7600),DataError(RooAbsData::Poisson)); //for unweighted data
     // Change attributes of last added plot elements
     frame->getAttMarker()->SetMarkerSize(2);
   model->plotOn(frame,LineStyle(kDashed),RooFit::Name(fun_name));
   model->plotOn(frame,VisualizeError(*r,2,kFALSE),FillColor(kYellow),LineColor(0),RooFit::Name("err2"));
   model->plotOn(frame,VisualizeError(*r,1,kFALSE),FillColor(kGreen),LineColor(0),RooFit::Name("err1"));
   model->plotOn(frame,LineStyle(kDashed),RooFit::Name(fun_name));
-    datah.plotOn(frame,RooFit::Name("datah"),Binning(135,600,6000),DataError(RooAbsData::Poisson)); //for unweighted data
+    datah.plotOn(frame,RooFit::Name("datah"),Binning(175,600,7600),DataError(RooAbsData::Poisson)); //for unweighted data
 
   frame->Print("V");
   RooAbsReal* nll = NULL;
@@ -349,26 +348,26 @@ void make_SR_shapes_Oct18(int seed=37)
         sigfun="CB2Gaus";
         linestyle = 2;
     }
-    if(plotmass[j] == "1000N") sig_norm=267; //15fb
-    if(plotmass[j] == "1000W") sig_norm=257; //15fb
-    if(plotmass[j] == "2600N") {sig_norm=15.80; linecolor=4;}//1fb
-    if(plotmass[j] == "2600W") {sig_norm=14.42; linecolor=4;}//1fb
-    if(plotmass[j] == "4000N") {sig_norm=2.757; linecolor=8;}//0.2fb for VVdijet1 and ATLAS1. 0.3fb for others
-    if(plotmass[j] == "4000W") {sig_norm=2.417; linecolor=8;}//0.2fb
+    if(plotmass[j] == "1000N") sig_norm=356; //20fb
+    if(plotmass[j] == "1000W") sig_norm=343; //20fb
+    if(plotmass[j] == "2600N") {sig_norm=31.6; linecolor=4;}//2fb
+    if(plotmass[j] == "2600W") {sig_norm=28.84; linecolor=4;}//2fb
+    if(plotmass[j] == "4000N") {sig_norm=6.90; linecolor=8;}//0.5fb for VVdijet1 and ATLAS1. 0.3fb for others
+    if(plotmass[j] == "4000W") {sig_norm=6.0425; linecolor=8;}//0.5fb
     TFile *signal = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/RooFitWorkspace/"+width+"/"+plotmass[j]+"-shapes-Unbinned-"+sigfun+".root");
     RooWorkspace *sig_w = (RooWorkspace*)signal->Get("w");
     RooAbsPdf *sig_pdf = sig_w->pdf("CBGaus");
-    for(int i=600; i<6001; i+=20){
+    for(int i=600; i<6001; i+=10){
       float masspoint = i;
-      massbin.push_back(i+10);
-      x->setRange("sig",i,i+20);
+      massbin.push_back(i+5);
+      x->setRange("sig",i,i+10);
       RooAbsReal* fracInt_bkg = model->createIntegral(*x,NormSet(*x),Range("sig"));
       RooRealVar* m = sig_w->var("m");
-      m->setRange("sig",i,i+20);
+      m->setRange("sig",i,i+10);
       RooAbsReal* fracInt_sig = sig_pdf->createIntegral(*m,NormSet(*m),Range("sig"));
       signalpull.push_back(fracInt_sig->getValV()*sig_norm/sqrt(fracInt_bkg->getValV()*data.numEntries()));
     }
-    TGraph *gr = new TGraph(185,&massbin[0],&signalpull[0]);
+    TGraph *gr = new TGraph(370,&massbin[0],&signalpull[0]);
     gr->SetLineWidth(2);
     gr->SetLineColor(linecolor);
     gr->SetLineStyle(linestyle);
@@ -379,7 +378,7 @@ void make_SR_shapes_Oct18(int seed=37)
   gStyle->SetOptStat(111111);
   TCanvas *c01 = new TCanvas("c01","c01",2100,2000);
   TPad *p01a = new TPad("p01a","p01a",0,0.218,1,1.0);
-  TPad *p01b = new TPad("p01b","p01b",0,0,1,0.3);
+  TPad *p01b = new TPad("p01b","p01b",0,0,1,0.295);
   p01a->Draw();
   p01b->Draw();
   p01a->cd();
@@ -389,20 +388,21 @@ void make_SR_shapes_Oct18(int seed=37)
   //axis,log scale and range setting functions must be called after all plotOn functions being called
   TAxis* xaxis = frame->GetXaxis();
   TAxis* yaxis = frame->GetYaxis();
-  xaxis->SetTitle("m_{j#gamma} (GeV)");
+  xaxis->SetTitle("m_{J#gamma} [GeV]");
   xaxis->SetTitleOffset(1.2);
   yaxis->SetTitle("Events / 40 GeV");
   yaxis->SetTitleOffset(1.2);
-  yaxis->SetRangeUser(0.002,100000);
-  xaxis->SetLimits(600,6000);
+  yaxis->SetRangeUser(0.0007,100000);
+  xaxis->SetLimits(600,7600);
   p01a->SetLogy();
+  p01a->SetLogx();
   frame->Draw();
   CMS_lumi(p01a,iPeriod,iPos);
   TLegend *l =  new TLegend(0.44,0.67,0.8,0.85);
     l->AddEntry(frame->findObject("datah"),"Data SR","lep");
   l->AddEntry(frame->findObject(fun_name),"Data SR Fit "+fun_name,"l");
-  l->AddEntry(frame->findObject("err1"),"Fit Error 1 #sigma","f");
-  l->AddEntry(frame->findObject("err2"),"Fit Error 2 #sigma","f");
+  l->AddEntry(frame->findObject("err1"),"Fit uncert. 68% CL","f");
+  l->AddEntry(frame->findObject("err2"),"Fit uncert. 95% CL","f");
     l->Draw("same");
 
     p01b->cd();
@@ -420,17 +420,18 @@ void make_SR_shapes_Oct18(int seed=37)
   hpull->SetMarkerSize(2);
   xaxis = pull_frame->GetXaxis();
   yaxis = pull_frame->GetYaxis();
-  xaxis->SetTitle("M_{ j#gamma} [GeV]");
-  yaxis->SetTitle("#frac{data-fit}{#sigma_{stat.}}");
+  xaxis->SetTitle("m_{J#gamma} [GeV]");
+  yaxis->SetTitle("#frac{Data-Fit}{#sigma_{Stat.}}");
   yaxis->SetTitleOffset(0.37);
   yaxis->SetRangeUser(-5,5);
   xaxis->SetLabelSize(0.15);
   xaxis->SetTitleSize(0.15);
-  xaxis->SetLimits(600,6000);
+  xaxis->SetLimits(600,7600);
   yaxis->SetLabelSize(0.13);
-  yaxis->SetTitleSize(0.135);
+  yaxis->SetTitleSize(0.175);
   yaxis->SetNdivisions(5);
   p01b->SetGrid();
+  p01b->SetLogx();
   pull_frame->Draw();
   p01b->Update();
 

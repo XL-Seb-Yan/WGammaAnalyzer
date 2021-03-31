@@ -4,15 +4,14 @@ void makeRooMultiPdfWorkspaceSigN(){
   gROOT->SetBatch(1);
   // Load the combine Library 
   gSystem->Load("libHiggsAnalysisCombinedLimit.so");
-  RooRealVar *x = new RooRealVar("m","m",600,7500,"");
+  RooRealVar *x = new RooRealVar("m","m",600,8800,"");
   RooPlot *frame = x->frame();
 
   // Open anchor workspace narrow
-  int sigmass_N[15]={700,800,1000,1200,1400,1600,2000,2200,2400,2600,2800,3500,4000,5000,6000};
-  //int sigmass_N[7]={700,800,1000,1200,1400,1600,2000};
+  int sigmass_N[16]={700,800,1000,1200,1400,1600,2000,2200,2400,2600,2800,3500,4000,5000,6000,7000};
   TFile *f_1 = NULL;
   TFile *f_2 = NULL;
-  for(int i = 0; i<14; i++){
+  for(int i = 0; i<15; i++){
     TString sig_type_1 = std::to_string(sigmass_N[i])+"N";
     TString sig_type_2 = std::to_string(sigmass_N[i+1])+"N";
 	f_1 = TFile::Open(sig_type_1+"-shapes-Unbinned-CBGaus.root");

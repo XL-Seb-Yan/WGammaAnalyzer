@@ -4,11 +4,11 @@ void makeRooMultiPdfWorkspaceSigW(){
   gROOT->SetBatch(1);
   // Load the combine Library 
   gSystem->Load("libHiggsAnalysisCombinedLimit.so");
-  RooRealVar *x = new RooRealVar("m","m",600,7500,"");
+  RooRealVar *x = new RooRealVar("m","m",600,8800,"");
   RooPlot *frame = x->frame();
   
   // Open anchor workspace wide
-  int sigmass_W[15]={700,800,900,1000,1200,1400,1600,1800,2000,2400,2600,2800,3500,5000,6000};
+  int sigmass_W[15]={700,800,900,1000,1200,1400,1600,1800,2000,2400,2600,2800,3500,5000,7000};
   TFile *f_1 = NULL;
   TFile *f_2 = NULL;
   for(int i = 0; i<14; i++){

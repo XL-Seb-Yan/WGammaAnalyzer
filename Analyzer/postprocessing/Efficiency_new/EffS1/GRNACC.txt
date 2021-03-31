@@ -1,0 +1,130 @@
+700
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_700_0p01.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 20000
+Number of events within acceptance: 7848
+Acceptance: 700_N_S1 0.3924
+1500
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_1500_0p01.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 13000
+Number of events within acceptance: 5631
+Acceptance: 1500_N_S1 0.433154
+2000
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_2000_0p01.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 20000
+Number of events within acceptance: 9063
+Acceptance: 2000_N_S1 0.45315
+2500
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_2500_0p01.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 14000
+Number of events within acceptance: 6262
+Acceptance: 2500_N_S1 0.447286
+3000
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_3000_0p01.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 20000
+Number of events within acceptance: 8605
+Acceptance: 3000_N_S1 0.43025
+4000
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_4000_0p01.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 20000
+Number of events within acceptance: 8429
+Acceptance: 4000_N_S1 0.42145
+6000
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_6000_0p01.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 19000
+Number of events within acceptance: 7293
+Acceptance: 6000_N_S1 0.383842
+8000
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_8000_0p01.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 20000
+Number of events within acceptance: 7277
+Acceptance: 8000_N_S1 0.36385
+700
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_700_5.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 19000
+Number of events within acceptance: 6740
+Acceptance: 700_W_S1 0.354737
+1500
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_1500_5.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 15000
+Number of events within acceptance: 6622
+Acceptance: 1500_W_S1 0.441467
+2000
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_2000_5.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 16000
+Number of events within acceptance: 7055
+Acceptance: 2000_W_S1 0.440937
+2500
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_2500_5.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 20000
+Number of events within acceptance: 8618
+Acceptance: 2500_W_S1 0.4309
+3000
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_3000_5.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 20000
+Number of events within acceptance: 8490
+Acceptance: 3000_W_S1 0.4245
+4000
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_4000_5.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 18000
+Number of events within acceptance: 7353
+Acceptance: 4000_W_S1 0.4085
+6000
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_6000_5.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 17000
+Number of events within acceptance: 6421
+Acceptance: 6000_W_S1 0.377706
+8000
+begin loop over files
+Processing /home/xyan13/WGProj/spin-1-highmass/flatTuple_spin-1_8000_5.root
+0 % done with this dataset
+Time remaining: 0:0:0
+Number of events: 19000
+Number of events within acceptance: 6374
+Acceptance: 8000_W_S1 0.335474
+selectWG  : Real Time =  41.52 seconds Cpu Time =  41.46 seconds
+[xyan13@brux7 2017conf]$

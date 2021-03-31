@@ -1,4 +1,3 @@
-#include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/tdrstyle.C"
 #include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/CMS_lumi.C"
 void WtagEff(){
 	
@@ -9,7 +8,7 @@ void WtagEff(){
 	bool plot_CMS = true;
 	extraText = "Simulation";
 	lumiTextSize = 0.45;
-	cmsTextSize = 0.6;
+	cmsTextSize = 0.55;
 	int iPeriod = 5;
 	int iPos = 0;
 	gStyle->SetOptStat(0);
@@ -61,22 +60,22 @@ void WtagEff(){
 	  ipoints++;
 	}
 	
-	gr9->SetLineColor(kRed-4);
-	gr10->SetLineColor(4);
-	gr13->SetLineColor(kRed-4);
-	gr14->SetLineColor(4);
-	gr1->SetLineColor(3);
-	gr1->SetFillColor(3);
-	gr1->SetFillStyle(3010);
-	gr9->SetLineWidth(2);
-	gr10->SetLineWidth(2);
-	gr13->SetLineWidth(2);
-	gr14->SetLineWidth(2);
+	gr9->SetLineColor(kPink+9);
+	gr10->SetLineColor(kBlue);
+	gr13->SetLineColor(kPink+9);
+	gr14->SetLineColor(kBlue);
+	gr1->SetLineColor(kSpring-1);
+	gr1->SetFillColor(kSpring-1);
+	gr1->SetFillStyle(3244);
+	gr9->SetLineWidth(3);
+	gr10->SetLineWidth(3);
+	gr13->SetLineWidth(3);
+	gr14->SetLineWidth(3);
 	gr1->SetLineWidth(3);
 	gr13->SetLineStyle(2);
 	gr14->SetLineStyle(2);
 	
-	TLegend *leg = new TLegend(0.5,0.60,0.85,0.75);
+	TLegend *leg = new TLegend(0.3,0.6,0.85,0.75);
 	leg->SetBorderSize(0);
 	leg->SetNColumns(2);
 	leg->SetFillStyle(0);
@@ -102,13 +101,13 @@ void WtagEff(){
 	lumi_13TeV = "";
 	CMS_lumi(c3,5,iPos);
 	leg->Clear();
-	leg->AddEntry(gr9,"Narrow S-0","l");
-	leg->AddEntry(gr10,"Broad S-0","l");
-	leg->AddEntry(gr13,"Narrow S-1","l");
-	leg->AddEntry(gr14,"Broad S-1","l");
+	leg->AddEntry(gr9,"Spin-0, #Gamma_{X} / m_{X} = 0.01%","l");
+	leg->AddEntry(gr10,"Spin-0, #Gamma_{X} / m_{X} = 5%","l");
+	leg->AddEntry(gr13,"Spin-1, #Gamma_{X} / m_{X} = 0.01%","l");
+	leg->AddEntry(gr14,"Spin-1, #Gamma_{X} / m_{X} = 5%","l");
 	leg->AddEntry(gr1,"2017 Average","fl");
 	leg->Draw();
-	c3->SetGrid();
+	//c3->SetGrid();
 	c3->Print("WtagEff17.png");
 	c3->Print("WtagEff17.pdf");
 	c3->Print("WtagEff17.svg");

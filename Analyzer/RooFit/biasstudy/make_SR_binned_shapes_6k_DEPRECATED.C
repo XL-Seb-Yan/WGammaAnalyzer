@@ -1,4 +1,4 @@
-#define fun_type 12
+#define fun_type 3
 #if !defined(__CINT__) || defined(__MAKECINT__)
 #include <TROOT.h>                  // access to gROOT, entry point to ROOT system
 #include <TSystem.h>                // interface to OS
@@ -78,7 +78,7 @@ void make_SR_binned_shapes_6k(int seed=37)
   gStyle->SetHistLineWidth(2);
 
   // --- Create obervable --- 
-  RooRealVar *x = new RooRealVar("m","m",600,6000,""); //the name "m" will be used by RooDataSet to import data, normalization range is 600-3500 but plot range can be defined to like 600-3000
+  RooRealVar *x = new RooRealVar("m","m",600,7600,""); //the name "m" will be used by RooDataSet to import data, normalization range is 600-3500 but plot range can be defined to like 600-3000
 
   //--- background PDF ---
 #if fun_type == 1
@@ -126,9 +126,12 @@ void make_SR_binned_shapes_6k(int seed=37)
 #elif fun_type == 6
   //-----------------------------VVdijet2-----------------------------------
   TString fun_name = "VVdijet-2";
-  RooRealVar *VVdijet2_p0 = new RooRealVar("VVdijet2_p0","VVdijet2_p_0",-11,-11.72,-9,""); //-10.5471 +- 3.06516
-  RooRealVar *VVdijet2_p1 = new RooRealVar("VVdijet2_p1","VVdijet2_p_1",15,12,18,""); //-0.799413 +- 0.560435
-  RooRealVar *VVdijet2_p2 = new RooRealVar("VVdijet2_p2","VVdijet2_p_2",1.5,0,3,""); //-0.799413 +- 0.560435
+  // RooRealVar *VVdijet2_p0 = new RooRealVar("VVdijet2_p0","VVdijet2_p_0",-11,-11.72,-9,""); //-10.5471 +- 3.06516
+  // RooRealVar *VVdijet2_p1 = new RooRealVar("VVdijet2_p1","VVdijet2_p_1",15,12,18,""); //-0.799413 +- 0.560435
+  // RooRealVar *VVdijet2_p2 = new RooRealVar("VVdijet2_p2","VVdijet2_p_2",1.5,0,3,""); //-0.799413 +- 0.560435
+  RooRealVar *VVdijet2_p0 = new RooRealVar("VVdijet2_p0","VVdijet2_p_0",0,-1000,1000,""); //-10.5471 +- 3.06516
+  RooRealVar *VVdijet2_p1 = new RooRealVar("VVdijet2_p1","VVdijet2_p_1",0,-1000,1000,""); //-0.799413 +- 0.560435
+  RooRealVar *VVdijet2_p2 = new RooRealVar("VVdijet2_p2","VVdijet2_p_2",0,-1000,1000,""); //-0.799413 +- 0.560435
   RooGenericPdf *model = new RooGenericPdf(fun_name,"(pow(1-m/13000,VVdijet2_p0)/pow(m/13000,VVdijet2_p1+VVdijet2_p2*log(m/13000)))",RooArgList(*x,*VVdijet2_p0,*VVdijet2_p1,*VVdijet2_p2));
   RooRealVar *bkg_norm = new RooRealVar("bkg_norm","bkg_norm",5000,0,100000,""); 
   RooAddPdf *ex_model = new RooAddPdf(fun_name+"extended",fun_name+"extended",RooArgList(*model),RooArgList(*bkg_norm));
@@ -209,7 +212,7 @@ void make_SR_binned_shapes_6k(int seed=37)
   //float xbinlow[53] = {600,650,700,750,800,850,900,950,1000,1050,1100,1050,1100,1150,1200,1250,1300,1350,1400,1450,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700,2800,2900,3000,3200,3400,3600,3800,400,4200,4400,4600,4800,5000,5400,5800,6200,6600,7000,7400,7800};
   // ------------------------Photons------------------------
   //TH1F* DATAh = new TH1F("DATAh","DATAh",52,&xbinlow[0]);
-  TH1F* DATAh = new TH1F("DATAh","DATAh",135,600,6000);
+  TH1F* DATAh = new TH1F("DATAh","DATAh",175,600,7600);
   float s_mass;
   TFile file("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/fullcut/Run2Data_postproc_WGammaRun2_SR_sigrange_fullcut_jmcorr_May22.root");
   TTree* tree = (TTree*)file.Get("Events");
@@ -320,9 +323,9 @@ void make_SR_binned_shapes_6k(int seed=37)
    // --- Perform extended ML fit of composite PDF to toy data ---
   RooFitResult *ex_r = NULL;
   // if(isNorm)
-    // ex_r = ex_model->fitTo(data_norm,Range(600,6000),RooFit::Minimizer("Minuit2"),Extended(true),SumW2Error(false),Save());
+    // ex_r = ex_model->fitTo(data_norm,Range(600,7600),RooFit::Minimizer("Minuit2"),Extended(true),SumW2Error(false),Save());
   // else
-    ex_r = ex_model->fitTo(datah,Range(600,6000),RooFit::Minimizer("Minuit2"),Extended(true),Save());
+    ex_r = ex_model->fitTo(datah,Range(600,7600),RooFit::Minimizer("Minuit2"),Extended(true),Save());
   cout<<"Normalization is: "<<bkg_norm->getVal()<<endl;
   
   std::vector<float> massbin;
@@ -387,7 +390,7 @@ void make_SR_binned_shapes_6k(int seed=37)
   yaxis->SetTitle("Events / 40 GeV");
   yaxis->SetTitleOffset(1.2);
   yaxis->SetRangeUser(0.002,100000);
-  xaxis->SetLimits(600,6000);
+  xaxis->SetLimits(600,7600);
   p01a->SetLogy();
   frame->Draw();
   CMS_lumi(p01a,iPeriod,iPos);
@@ -419,7 +422,7 @@ void make_SR_binned_shapes_6k(int seed=37)
   yaxis->SetRangeUser(-5,5);
   xaxis->SetLabelSize(0.15);
   xaxis->SetTitleSize(0.15);
-  xaxis->SetLimits(600,6000);
+  xaxis->SetLimits(600,7600);
   yaxis->SetLabelSize(0.13);
   yaxis->SetTitleSize(0.135);
   yaxis->SetNdivisions(5);
@@ -431,11 +434,11 @@ void make_SR_binned_shapes_6k(int seed=37)
   c01->Print(fun_name+".pdf");
   c01->Print(fun_name+".svg");
   
-  frame->GetXaxis()->SetLimits(600,6000);
-  pull_frame->GetXaxis()->SetLimits(600,6000);
-  c01->Print(fun_name+"_6000plotrange.png");
-  c01->Print(fun_name+"_6000plotrange.pdf");
-  c01->Print(fun_name+"_6000plotrange.svg");
+  frame->GetXaxis()->SetLimits(600,7600);
+  pull_frame->GetXaxis()->SetLimits(600,7600);
+  c01->Print(fun_name+"_7600plotrange.png");
+  c01->Print(fun_name+"_7600plotrange.pdf");
+  c01->Print(fun_name+"_7600plotrange.svg");
 
 // --- Output root file ---
   RooWorkspace *w = new RooWorkspace("w","w");

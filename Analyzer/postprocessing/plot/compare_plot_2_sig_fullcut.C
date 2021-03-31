@@ -28,7 +28,7 @@
 #include "/afs/cern.ch/work/x/xuyan/work5/PROD17/AN/AN-19-280/utils/general/CMS_lumi.C"
 #endif
 
-void compare_plot_2_sig()
+void compare_plot_2_sig_fullcut()
 {
   gROOT->SetBatch(1);
   lumi_13TeV = "";
@@ -49,9 +49,6 @@ void compare_plot_2_sig()
   gStyle->SetLegendTextSize(0.025);
   gStyle->SetBarWidth(2);
   gStyle->SetHistLineWidth(2);
-  
-  int count1 = 0;
-  int count2 = 0;
 
   TH1 *hist11 = new TH1F("11","p_{T}^{#gamma}",100,0,5000);
   TH1 *hist12 = new TH1F("12","eta_{#gamma}",50,-2,2);
@@ -62,7 +59,7 @@ void compare_plot_2_sig()
   TH1 *hist17 = new TH1F("17","tau21_{J}",50,0,1);
   TH1 *hist18 = new TH1F("18","cos(#theta*_{#gamma})_{p}",50,0,1);
   TH1 *hist19 = new TH1F("19","pt/M",50,0,1.5);
-  TH1 *hist110 = new TH1F("110","invariant mass",100,0,10000);
+  TH1 *hist110 = new TH1F("110","invariant mass",100,500,1500);
   TH1 *hist111 = new TH1F("111","#gamma MVA ID",60,-0.2,1);
   TH1 *hist21 = new TH1F("21","p_{T}^{#gamma}",100,0,5000);
   TH1 *hist22 = new TH1F("22","eta_{#gamma}",50,-2,2);
@@ -73,7 +70,7 @@ void compare_plot_2_sig()
   TH1 *hist27 = new TH1F("27","tau21_{J}",50,0,1);
   TH1 *hist28 = new TH1F("28","cos(#theta*_{#gamma})_{p}",50,0,1);
   TH1 *hist29 = new TH1F("29","pt/M",50,0,1.5);
-  TH1 *hist210 = new TH1F("210","invariant mass",100,0,10000);
+  TH1 *hist210 = new TH1F("210","invariant mass",100,500,1500);
   TH1 *hist211 = new TH1F("211","#gamma MVA ID",60,-0.2,1);
   // Local variables to store to outfile
   // Photon
@@ -86,7 +83,8 @@ void compare_plot_2_sig()
   // Open input file
   Float_t p_pt, p_eta, p_phi, p_e, p_mva, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight, x_sf, x_puweight;
   
-  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/presel/6000_N_S1_postproc_WGamma17_full_full_jmcorr_May22.root");
+  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/fullcut/SignalMC1000N_postproc_WGamma17_SR_sigrange_fullcut_jmcorr_May22.root");
+  //TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/presel/SignalMC8000W_postproc_WGamma17_full_full_jmcorr_May22.root");
   //TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CombineLimit/CMSSW_10_2_13/src/WGammaAnalyzer/Analyzer/postprocessing/selection/8000_N_S1_postproc_WGamma17_full_full_jmcorr_May22.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
@@ -112,14 +110,6 @@ void compare_plot_2_sig()
     theTree->GetEntry(ievt);
     
 	cout<<x_sf<<","<<endl;
-    // if(p_pt < 225) continue;
-    // if(j_pt < 225) continue;
-    // if(p_eta > 1.44) continue;
-    // if(j_eta > 2) continue;
-    // if(j_mass > 94 || j_mass < 68) continue;
-    // if(s_ptm < 0.37) continue;
-    // if(s_cos > 0.60) continue;
-    // if(s_mass < 4500 || s_mass > 7500) continue;
     hist11->Fill(p_pt, x_puweight*x_sf);
     hist12->Fill(p_eta, x_puweight*x_sf);
     hist13->Fill(j_pt, x_puweight*x_sf);
@@ -131,13 +121,10 @@ void compare_plot_2_sig()
     hist19->Fill(s_ptm, x_puweight*x_sf);
     hist110->Fill(s_mass, x_puweight*x_sf);
     hist111->Fill(p_mva, x_puweight*x_sf);  
-    
-    if(j_tau21 < 0.35) count1++;
   }
-  float eff1 = float(count1) / theTree->GetEntries();
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/spin-0_scalar_21Mar23/presel/6000_N_postproc_WGamma17_full_full_jmcorr_Mar23.root");
-  //input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/presel/SignalMC6000W_postproc_WGamma17_full_full_jmcorr_May22.root");
+  //input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/presel/2000_N_S1_postproc_WGamma17_full_full_jmcorr_May22.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CombineLimit/CMSSW_10_2_13/src/WGammaAnalyzer/Analyzer/postprocessing/selection/1000_N_postproc_WGamma17_SR_sigrange_fullcut_jmcorr_Mar23.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -162,14 +149,6 @@ void compare_plot_2_sig()
     theTree->GetEntry(ievt);
     
 	x_sf = 1;
-  // if(p_pt < 225) continue;
-    // if(j_pt < 225) continue;
-    // if(p_eta > 1.44) continue;
-    // if(j_eta > 2) continue;
-    // if(j_mass > 94 || j_mass < 68) continue;
-    // if(s_ptm < 0.37) continue;
-    // if(s_cos > 0.60) continue;
-    // if(s_mass < 4500 || s_mass > 7500) continue;
     hist21->Fill(p_pt, x_puweight*x_sf);
     hist22->Fill(p_eta, x_puweight*x_sf);
     hist23->Fill(j_pt, x_puweight*x_sf);
@@ -181,10 +160,7 @@ void compare_plot_2_sig()
     hist29->Fill(s_ptm, x_puweight*x_sf);
     hist210->Fill(s_mass, x_puweight*x_sf);
     hist211->Fill(p_mva, x_puweight*x_sf);  
-    
-    if(j_tau21 < 0.35) count2++;
   }
-  float eff2 = float(count2) / theTree->GetEntries();
 
   //=================================================================================
   int color1 = 4;
@@ -366,8 +342,8 @@ void compare_plot_2_sig()
   hist11->Draw("HIST");
   hist21->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Spin-1 B, 6.0 TeV","f");
-  legend->AddEntry(hist21,"New Spin-0 B, 6.0 TeV","f");
+  legend->AddEntry(hist11,"Old Spin-0 B, 8.0 TeV","f");
+  legend->AddEntry(hist21,"New Spin-0 B, 8.0 TeV","f");
   legend->Draw();
   CMS_lumi(p01a,iPeriod,iPos);
   legend->Draw();
@@ -423,8 +399,8 @@ void compare_plot_2_sig()
   hist12->Draw("HIST");
   hist22->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Spin-1 B, 6.0 TeV","f");
-  legend->AddEntry(hist21,"New Spin-0 B, 6.0 TeV","f");
+  legend->AddEntry(hist11,"Old Spin-0 B, 8.0 TeV","f");
+  legend->AddEntry(hist21,"New Spin-0 B, 8.0 TeV","f");
   legend->Draw();
   CMS_lumi(p02a,iPeriod,iPos);
   legend->Draw();
@@ -481,8 +457,8 @@ void compare_plot_2_sig()
   hist13->Draw("HIST");
   hist23->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Spin-1 B, 6.0 TeV","f");
-  legend->AddEntry(hist21,"New Spin-0 B, 6.0 TeV","f");
+  legend->AddEntry(hist11,"Old Spin-0 B, 8.0 TeV","f");
+  legend->AddEntry(hist21,"New Spin-0 B, 8.0 TeV","f");
   legend->Draw();
   CMS_lumi(p03a,iPeriod,iPos);
   legend->Draw();
@@ -540,8 +516,8 @@ void compare_plot_2_sig()
   hist14->Draw("HIST");
   hist24->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Spin-1 B, 6.0 TeV","f");
-  legend->AddEntry(hist21,"New Spin-0 B, 6.0 TeV","f");
+  legend->AddEntry(hist11,"Old Spin-0 B, 8.0 TeV","f");
+  legend->AddEntry(hist21,"New Spin-0 B, 8.0 TeV","f");
   legend->Draw();
   CMS_lumi(p04a,iPeriod,iPos);
   legend->Draw();
@@ -599,8 +575,8 @@ void compare_plot_2_sig()
   hist15->Draw("HIST");
   hist25->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Spin-1 B, 6.0 TeV","f");
-  legend->AddEntry(hist21,"New Spin-0 B, 6.0 TeV","f");
+  legend->AddEntry(hist11,"Old Spin-0 B, 8.0 TeV","f");
+  legend->AddEntry(hist21,"New Spin-0 B, 8.0 TeV","f");
   legend->Draw();
   CMS_lumi(p05a,iPeriod,iPos);
   legend->Draw();
@@ -658,8 +634,8 @@ void compare_plot_2_sig()
   hist16->Draw("HIST");
   hist26->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Spin-1 B, 6.0 TeV","f");
-  legend->AddEntry(hist21,"New Spin-0 B, 6.0 TeV","f");
+  legend->AddEntry(hist11,"Old Spin-0 B, 8.0 TeV","f");
+  legend->AddEntry(hist21,"New Spin-0 B, 8.0 TeV","f");
   legend->Draw();
   CMS_lumi(p06a,iPeriod,iPos);
   legend->Draw();
@@ -705,19 +681,19 @@ void compare_plot_2_sig()
   p07b->Draw();
   p07a->cd();
   p07a->SetBottomMargin(0.2);
-  //p07a->SetLogy();
+  p07a->SetLogy();
   xaxis = hist17->GetXaxis();
   yaxis = hist17->GetYaxis();
   xaxis->SetTitle("#tau_{21}");
   yaxis->SetTitle("Events / 0.02");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.6);
-  yaxis->SetRangeUser(0.00002,0.07);
+  yaxis->SetRangeUser(0.00002,1);
   hist17->Draw("HIST");
   hist27->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Spin-1 B, 6.0 TeV","f");
-  legend->AddEntry(hist21,"New Spin-0 B, 6.0 TeV","f");
+  legend->AddEntry(hist11,"Old Spin-0 B, 8.0 TeV","f");
+  legend->AddEntry(hist21,"New Spin-0 B, 8.0 TeV","f");
   legend->Draw();
   CMS_lumi(p07a,iPeriod,iPos);
   legend->Draw();
@@ -775,8 +751,8 @@ void compare_plot_2_sig()
   hist18->Draw("HIST");
   hist28->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Spin-1 B, 6.0 TeV","f");
-  legend->AddEntry(hist21,"New Spin-0 B, 6.0 TeV","f");
+  legend->AddEntry(hist11,"Old Spin-0 B, 8.0 TeV","f");
+  legend->AddEntry(hist21,"New Spin-0 B, 8.0 TeV","f");
   legend->Draw();
   CMS_lumi(p08a,iPeriod,iPos);
   legend->Draw();
@@ -836,8 +812,8 @@ void compare_plot_2_sig()
   hist19->Draw("HIST");
   hist29->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Spin-1 B, 6.0 TeV","f");
-  legend->AddEntry(hist21,"New Spin-0 B, 6.0 TeV","f");
+  legend->AddEntry(hist11,"Old Spin-0 B, 8.0 TeV","f");
+  legend->AddEntry(hist21,"New Spin-0 B, 8.0 TeV","f");
   legend->Draw();
   CMS_lumi(p09a,iPeriod,iPos);
   legend->Draw();
@@ -892,13 +868,13 @@ void compare_plot_2_sig()
   yaxis->SetTitle("Events / 40 GeV");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.6);
-  yaxis->SetRangeUser(0.00002,0.1);
+  yaxis->SetRangeUser(0.00002,0.2);
   //yaxis->SetRangeUser(0.00002,1);
   hist110->Draw("HIST");
   hist210->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Spin-1 B, 6.0 TeV","f");
-  legend->AddEntry(hist21,"New Spin-0 B, 6.0 TeV","f");
+  legend->AddEntry(hist11,"Old Spin-0 B, 8.0 TeV","f");
+  legend->AddEntry(hist21,"New Spin-0 B, 8.0 TeV","f");
   legend->Draw();
   CMS_lumi(p10a,iPeriod,iPos);
   legend->Draw();
@@ -957,8 +933,8 @@ void compare_plot_2_sig()
   hist111->Draw("HIST");
   hist211->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"Spin-1 B, 6.0 TeV","f");
-  legend->AddEntry(hist21,"New Spin-0 B, 6.0 TeV","f");
+  legend->AddEntry(hist11,"Old Spin-0 B, 8.0 TeV","f");
+  legend->AddEntry(hist21,"New Spin-0 B, 8.0 TeV","f");
   legend->Draw();
   CMS_lumi(p11a,iPeriod,iPos);
   legend->Draw();
@@ -994,7 +970,5 @@ void compare_plot_2_sig()
   c11->Print("p_mva.svg");
   
   //==========================================================
-  
-  cout<<eff1<<" "<<eff2<<endl;
 
 }

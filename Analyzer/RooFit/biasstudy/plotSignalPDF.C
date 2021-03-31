@@ -37,7 +37,7 @@ void plotSignalPDF(){
   lumiTextSize = 0.35;
   cmsTextSize = 0.45;
   int iPeriod = 5;
-  int iPos = 33;
+  int iPos = 0;
   gStyle->SetOptStat(0);
   gStyle->SetOptTitle(0);
   gStyle->SetTitleSize(0.05,"XYZ");
@@ -47,16 +47,16 @@ void plotSignalPDF(){
   gStyle->SetBarWidth(2);
   gStyle->SetHistLineWidth(2);
   
-  RooRealVar *m = new RooRealVar("m","m",0,7500);
+  RooRealVar *m = new RooRealVar("m","m",0,8800);
   RooPlot *frame = m->frame();
   RooAbsPdf *model1 = NULL;
   RooAbsPdf *model2 = NULL;
   RooAbsPdf *model3 = NULL;
   
-  int mass[17]={700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3500,4000,5000,6000};
+  int mass[18]={700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3500,4000,5000,6000,7000};
   TFile *f_1 = NULL;
   
-  for(int i=700; i<6001; i+=50){
+  for(int i=700; i<7001; i+=50){
   
   std::string mass_str = std::to_string(i);
   
@@ -67,7 +67,7 @@ void plotSignalPDF(){
   
   // TLegend* leg = new TLegend(0.7,0.2,0.9,0.8);
   bool isanchor = 0;
-  for(int j=0; j<17; j++){
+  for(int j=0; j<18; j++){
       if(i == mass[j]) isanchor = 1;
   }
   
@@ -111,15 +111,16 @@ void plotSignalPDF(){
   c->Clear();
   c->SetLeftMargin(0.11);
   c->SetBottomMargin(0.105);
-  frame->SetTitle("Signal Interpolation (Narrow)");
+  c->SetGrid(1);
+  frame->SetTitle("Signal Interpolation (Wide)");
   TAxis *xaxis = frame->GetXaxis();
   TAxis *yaxis = frame->GetYaxis();
-  xaxis->SetTitle("m_{W#gamma}");
+  xaxis->SetTitle("M_{W#gamma}");
   yaxis->SetTitle("Events (a.u.)");
-  yaxis->SetTitleOffset(0.8);
-  xaxis->SetLimits(600,7500);
+  yaxis->SetTitleOffset(1);
+  xaxis->SetLimits(600,8800);
   //c->SetLogy();
-  yaxis->SetRangeUser(0,0.8);
+  yaxis->SetRangeUser(0,0.9);
   frame->Draw();
   CMS_lumi(c,iPeriod,iPos);
   c->Print("SignalInterpolationW.pdf");
