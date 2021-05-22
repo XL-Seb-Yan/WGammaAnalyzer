@@ -71,12 +71,12 @@ void postproc(int mass, int runondata, int runyear)
   int s_pv, s_runnum, s_evtnum, s_lumiblock; 
   
   // std::string dataset = "SignalMC"+std::to_string(mass)+"N";
-  std::string dataset = std::to_string(mass)+"_N";
+  std::string dataset = std::to_string(mass)+"_N_S1";
   
   TString year_str = std::to_string(runyear);
   
 	//TFile *input = TFile::Open(("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/ntuples_looseID/S1/" + dataset + "_nominal_pileup_WGamma_full_full_May22.root").c_str());
-  TFile *input = TFile::Open(("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/spin-0_scalar_21Mar23/ntuple/" + dataset + "_nominal_pileup_WGamma_full_full_Mar23.root").c_str());
+  TFile *input = TFile::Open(("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/EE_prefire_check/ntuples/" + dataset + "EEPrefire_nominal_pileup_WGamma_full_full_Apr29.root").c_str());
   //TFile *input = TFile::Open((dataset + "_nominal_pileup_WGamma_full_full_May22.root").c_str());
   //TFile *input = TFile::Open((dataset+"_nominal_pileup_WGamma_full_full_May22.root").c_str());
   TTree* theTree = (TTree*)input->Get("Events");
@@ -107,7 +107,7 @@ void postproc(int mass, int runondata, int runyear)
 
   // Create output file
 	//TFile *outFile = TFile::Open(dataset+"_postproc_WGamma"+year_str+"_full_full_jmcorr_Mar23.root", "RECREATE");
-  TFile *outFile = TFile::Open(dataset+"_postproc_WGamma"+year_str+"_SR_sigrange_fullcut_jmcorr_Mar23.root", "RECREATE");
+  TFile *outFile = TFile::Open(dataset+"_postproc_WGamma"+year_str+"_full_full_jmcorr_Apr29.root", "RECREATE");
   TTree *outTree = new TTree("Events","Events"); 
   outTree->Branch("sys_pvn",       &sys_pvn,      "sys_pvn/I");
   outTree->Branch("photon_pt",       &photon_pt,      "photon_pt/F");
@@ -244,16 +244,16 @@ void postproc(int mass, int runondata, int runyear)
 	if(j_pt < 225) continue; //presel
 	
 	//cuts
-	if(s_mass < 600) continue;
-	if(s_mass < 0.75*mass || s_mass > 1.25*mass) continue;
-	if(j_mass * masscorr <  68 || j_mass * masscorr > 94) continue;
+	// if(s_mass < 600) continue;
+	// if(s_mass < 0.75*mass || s_mass > 1.25*mass) continue;
+	// if(j_mass * masscorr <  68 || j_mass * masscorr > 94) continue;
 	//if(j_mass * masscorr < 40 || j_mass * masscorr > 65) continue;
 
-	if(abs(p_eta) > 1.44) continue;
-	if(abs(j_eta) > 2) continue;
-	if(s_ptm < 0.37) continue;
-	if(s_cos > 0.6) continue;
-  if(j_tau21 > 0.35) continue;
+	// if(abs(p_eta) > 1.44) continue;
+	// if(abs(j_eta) > 2) continue;
+	// if(s_ptm < 0.37) continue;
+	// if(s_cos > 0.6) continue;
+  // if(j_tau21 > 0.35) continue;
 	
 	photon_pt = p_pt;
 	photon_eta = p_eta;
