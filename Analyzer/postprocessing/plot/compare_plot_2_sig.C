@@ -62,7 +62,7 @@ void compare_plot_2_sig()
   TH1 *hist17 = new TH1F("17","tau21_{J}",50,0,1);
   TH1 *hist18 = new TH1F("18","cos(#theta*_{#gamma})_{p}",50,0,1);
   TH1 *hist19 = new TH1F("19","pt/M",50,0,1.5);
-  TH1 *hist110 = new TH1F("110","invariant mass",100,0,10000);
+  TH1 *hist110 = new TH1F("110","invariant mass",100,0,2000);
   TH1 *hist111 = new TH1F("111","#gamma MVA ID",60,-0.2,1);
   TH1 *hist21 = new TH1F("21","p_{T}^{#gamma}",100,0,5000);
   TH1 *hist22 = new TH1F("22","eta_{#gamma}",50,-2,2);
@@ -73,7 +73,7 @@ void compare_plot_2_sig()
   TH1 *hist27 = new TH1F("27","tau21_{J}",50,0,1);
   TH1 *hist28 = new TH1F("28","cos(#theta*_{#gamma})_{p}",50,0,1);
   TH1 *hist29 = new TH1F("29","pt/M",50,0,1.5);
-  TH1 *hist210 = new TH1F("210","invariant mass",100,0,10000);
+  TH1 *hist210 = new TH1F("210","invariant mass",100,0,2000);
   TH1 *hist211 = new TH1F("211","#gamma MVA ID",60,-0.2,1);
   // Local variables to store to outfile
   // Photon
@@ -86,7 +86,7 @@ void compare_plot_2_sig()
   // Open input file
   Float_t p_pt, p_eta, p_phi, p_e, p_mva, j_pt, j_eta, j_phi, j_e, j_mass, j_tau21, s_cos, s_ptm, s_mass, x_weight, x_sf, x_puweight;
   
-  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/presel/6000_N_S1_postproc_WGamma17_full_full_jmcorr_May22.root");
+  TFile *input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/Run2/presel/SignalMC1000W_postproc_WGamma17_full_full_jmcorr_May22.root");
   TTree* theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -135,7 +135,7 @@ void compare_plot_2_sig()
   }
   float eff1 = float(count1) / theTree->GetEntries();
 
-  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/CombineLimit/CMSSW_10_2_13/src/WGammaAnalyzer/Analyzer/postprocessing/selection/6000_N_S1_EEPrefire_postproc_WGamma17_full_full_jmcorr_Apr29.root");
+  input = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/spin-0_scalar_21Mar23/presel/1000_W_postproc_WGamma17_full_full_jmcorr_Mar23.root");
   theTree = (TTree*)input->Get("Events");
   // Improt variables for cutting
   theTree->SetBranchAddress("photon_pt", &p_pt);
@@ -159,7 +159,7 @@ void compare_plot_2_sig()
   for (int ievt = 0; ievt<theTree->GetEntries();ievt++) {
     theTree->GetEntry(ievt);
     
-	x_sf = 1;
+	// x_sf = 1;
   // if(p_pt < 225) continue;
     // if(j_pt < 225) continue;
     // if(p_eta > 1.44) continue;
@@ -364,8 +364,8 @@ void compare_plot_2_sig()
   hist11->Draw("HIST");
   hist21->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"no rejection, S1N-6.0 TeV","f");
-  legend->AddEntry(hist21,"with rejection, S1N-6.0 TeV","f");
+  legend->AddEntry(hist11,"old, S0W-1.0 TeV","f");
+  legend->AddEntry(hist21,"new, S0W-1.0 TeV","f");
   legend->Draw();
   CMS_lumi(p01a,iPeriod,iPos);
   legend->Draw();
@@ -421,8 +421,8 @@ void compare_plot_2_sig()
   hist12->Draw("HIST");
   hist22->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"no rejection, S1N-6.0 TeV","f");
-  legend->AddEntry(hist21,"with rejection, S1N-6.0 TeV","f");
+  legend->AddEntry(hist11,"old, S0W-1.0 TeV","f");
+  legend->AddEntry(hist21,"new, S0W-1.0 TeV","f");
   legend->Draw();
   CMS_lumi(p02a,iPeriod,iPos);
   legend->Draw();
@@ -479,8 +479,8 @@ void compare_plot_2_sig()
   hist13->Draw("HIST");
   hist23->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"no rejection, S1N-6.0 TeV","f");
-  legend->AddEntry(hist21,"with rejection, S1N-6.0 TeV","f");
+  legend->AddEntry(hist11,"old, S0W-1.0 TeV","f");
+  legend->AddEntry(hist21,"new, S0W-1.0 TeV","f");
   legend->Draw();
   CMS_lumi(p03a,iPeriod,iPos);
   legend->Draw();
@@ -538,8 +538,8 @@ void compare_plot_2_sig()
   hist14->Draw("HIST");
   hist24->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"no rejection, S1N-6.0 TeV","f");
-  legend->AddEntry(hist21,"with rejection, S1N-6.0 TeV","f");
+  legend->AddEntry(hist11,"old, S0W-1.0 TeV","f");
+  legend->AddEntry(hist21,"new, S0W-1.0 TeV","f");
   legend->Draw();
   CMS_lumi(p04a,iPeriod,iPos);
   legend->Draw();
@@ -597,8 +597,8 @@ void compare_plot_2_sig()
   hist15->Draw("HIST");
   hist25->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"no rejection, S1N-6.0 TeV","f");
-  legend->AddEntry(hist21,"with rejection, S1N-6.0 TeV","f");
+  legend->AddEntry(hist11,"old, S0W-1.0 TeV","f");
+  legend->AddEntry(hist21,"new, S0W-1.0 TeV","f");
   legend->Draw();
   CMS_lumi(p05a,iPeriod,iPos);
   legend->Draw();
@@ -656,8 +656,8 @@ void compare_plot_2_sig()
   hist16->Draw("HIST");
   hist26->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"no rejection, S1N-6.0 TeV","f");
-  legend->AddEntry(hist21,"with rejection, S1N-6.0 TeV","f");
+  legend->AddEntry(hist11,"old, S0W-1.0 TeV","f");
+  legend->AddEntry(hist21,"new, S0W-1.0 TeV","f");
   legend->Draw();
   CMS_lumi(p06a,iPeriod,iPos);
   legend->Draw();
@@ -714,8 +714,8 @@ void compare_plot_2_sig()
   hist17->Draw("HIST");
   hist27->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"no rejection, S1N-6.0 TeV","f");
-  legend->AddEntry(hist21,"with rejection, S1N-6.0 TeV","f");
+  legend->AddEntry(hist11,"old, S0W-1.0 TeV","f");
+  legend->AddEntry(hist21,"new, S0W-1.0 TeV","f");
   legend->Draw();
   CMS_lumi(p07a,iPeriod,iPos);
   legend->Draw();
@@ -773,8 +773,8 @@ void compare_plot_2_sig()
   hist18->Draw("HIST");
   hist28->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"no rejection, S1N-6.0 TeV","f");
-  legend->AddEntry(hist21,"with rejection, S1N-6.0 TeV","f");
+  legend->AddEntry(hist11,"old, S0W-1.0 TeV","f");
+  legend->AddEntry(hist21,"new, S0W-1.0 TeV","f");
   legend->Draw();
   CMS_lumi(p08a,iPeriod,iPos);
   legend->Draw();
@@ -834,8 +834,8 @@ void compare_plot_2_sig()
   hist19->Draw("HIST");
   hist29->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"no rejection, S1N-6.0 TeV","f");
-  legend->AddEntry(hist21,"with rejection, S1N-6.0 TeV","f");
+  legend->AddEntry(hist11,"old, S0W-1.0 TeV","f");
+  legend->AddEntry(hist21,"new, S0W-1.0 TeV","f");
   legend->Draw();
   CMS_lumi(p09a,iPeriod,iPos);
   legend->Draw();
@@ -890,13 +890,13 @@ void compare_plot_2_sig()
   yaxis->SetTitle("Events / 40 GeV");
   xaxis->SetTitleOffset(1.1);
   yaxis->SetTitleOffset(1.6);
-  yaxis->SetRangeUser(0,0.2);
+  yaxis->SetRangeUser(0,0.3);
   //yaxis->SetRangeUser(0.00002,1);
   hist110->Draw("HIST");
   hist210->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"no rejection, S1N-6.0 TeV","f");
-  legend->AddEntry(hist21,"with rejection, S1N-6.0 TeV","f");
+  legend->AddEntry(hist11,"old, S0W-1.0 TeV","f");
+  legend->AddEntry(hist21,"new, S0W-1.0 TeV","f");
   legend->Draw();
   CMS_lumi(p10a,iPeriod,iPos);
   legend->Draw();
@@ -929,8 +929,8 @@ void compare_plot_2_sig()
   pull1->Draw("PE1");
   //pull1->Draw("BAR HIST");
  
-  c10->Print("s_M.pdf");
-  c10->Print("s_M.svg");
+  c10->Print("s_M_fullcut.pdf");
+  c10->Print("s_M_fullcut.svg");
   
   //==========================================================
   
@@ -955,8 +955,8 @@ void compare_plot_2_sig()
   hist111->Draw("HIST");
   hist211->Draw("HISTSAME");
   legend->Clear();
-  legend->AddEntry(hist11,"no rejection, S1N-6.0 TeV","f");
-  legend->AddEntry(hist21,"with rejection, S1N-6.0 TeV","f");
+  legend->AddEntry(hist11,"old, S0W-1.0 TeV","f");
+  legend->AddEntry(hist21,"new, S0W-1.0 TeV","f");
   legend->Draw();
   CMS_lumi(p11a,iPeriod,iPos);
   legend->Draw();

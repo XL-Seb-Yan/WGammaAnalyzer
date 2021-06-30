@@ -153,7 +153,8 @@ void plotEff_Wtag(){
 	  gr1->SetPoint(ipoints,i,((f3->Eval(i) + f4->Eval(i) + f5->Eval(i) + f6->Eval(i))/4));
 	  gr1->SetPointError(ipoints,0,temp.GetStdDev());
 	  ipoints++;
-    cout<<i<<" "<<137.19 * effacc_S0N.Eval(i) / acc_S0N.Eval(i) / ((f3->Eval(i) + f4->Eval(i) + f5->Eval(i) + f6->Eval(i))/4) <<" :"<<endl;
+    //cout<<i<<" "<<137.19 * effacc_S0N.Eval(i) / acc_S0N.Eval(i) / ((f3->Eval(i) + f4->Eval(i) + f5->Eval(i) + f6->Eval(i))/4) <<" :"<<endl;
+    cout<<i<<" "<<((f3->Eval(i) + f4->Eval(i) + f5->Eval(i) + f6->Eval(i))/4)<<" "<<temp.GetStdDev()<<endl;
 	}
   
   gr1->SetLineColor(6);

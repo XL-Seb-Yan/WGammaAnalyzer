@@ -83,6 +83,13 @@ void plotEff(){
   f3->SetLineColor(kPink+9);
   f3->SetLineWidth(2);
   cout<<f3->GetParameter(0)<<","<<f3->GetParameter(1)<<","<<f3->GetParameter(2)<<","<<f3->GetParameter(3)<<","<<f3->GetParameter(4)<<endl;
+  TGraphErrors *gr3_unc = new TGraphErrors(365);
+  for(int i=0; i<385; i++){
+    gr3_unc->SetPoint(i, 500+i*20, 0);
+  }
+  (TVirtualFitter::GetFitter())->GetConfidenceIntervals(gr3_unc);
+  gr3_unc->SetFillStyle(3002);
+  gr3_unc->SetFillColorAlpha(6,0.5);
   
   TGraphErrors *gr4 = new TGraphErrors(massw17.size(),&massw17[0],&effw17[0],0,&effw_err17[0]);
   gr4->SetMarkerColor(kBlue);
@@ -98,6 +105,13 @@ void plotEff(){
   f4->SetLineColor(kBlue);
   f4->SetLineWidth(2);
   cout<<f4->GetParameter(0)<<","<<f4->GetParameter(1)<<","<<f4->GetParameter(2)<<","<<f4->GetParameter(3)<<","<<f4->GetParameter(4)<<endl;
+  TGraphErrors *gr4_unc = new TGraphErrors(365);
+  for(int i=0; i<385; i++){
+    gr4_unc->SetPoint(i, 500+i*20, 0);
+  }
+  (TVirtualFitter::GetFitter())->GetConfidenceIntervals(gr4_unc);
+  gr4_unc->SetFillStyle(3002);
+  gr4_unc->SetFillColorAlpha(kBlue,0.5);
   
   cout<<endl;
   cout<<endl;
@@ -118,6 +132,13 @@ void plotEff(){
   f5->SetLineStyle(2);
   f5->SetLineWidth(2);
   cout<<f5->GetParameter(0)<<","<<f5->GetParameter(1)<<","<<f5->GetParameter(2)<<","<<f5->GetParameter(3)<<","<<f5->GetParameter(4)<<endl;
+  TGraphErrors *gr5_unc = new TGraphErrors(365);
+  for(int i=0; i<385; i++){
+    gr5_unc->SetPoint(i, 500+i*20, 0);
+  }
+  (TVirtualFitter::GetFitter())->GetConfidenceIntervals(gr5_unc);
+  gr5_unc->SetFillStyle(3002);
+  gr5_unc->SetFillColorAlpha(6,0.5);
 
   TGraphErrors *gr6 = new TGraphErrors(8,&massw17s1[0],&effw17s1[0],0,&effw_err17s1[0]);
   gr6->SetMarkerColor(kBlue);
@@ -135,6 +156,13 @@ void plotEff(){
   f6->SetLineStyle(2);
   f6->SetLineWidth(2);
   cout<<f6->GetParameter(0)<<","<<f6->GetParameter(1)<<","<<f6->GetParameter(2)<<","<<f6->GetParameter(3)<<","<<f6->GetParameter(4)<<endl;
+  TGraphErrors *gr6_unc = new TGraphErrors(365);
+  for(int i=0; i<385; i++){
+    gr6_unc->SetPoint(i, 500+i*20, 0);
+  }
+  (TVirtualFitter::GetFitter())->GetConfidenceIntervals(gr6_unc);
+  gr6_unc->SetFillStyle(3002);
+  gr6_unc->SetFillColorAlpha(kBlue,0.5);
 
   TLegend *leg = new TLegend(0.3,0.65,0.85,0.75);
   TAxis *xaxis = NULL;
@@ -156,14 +184,19 @@ void plotEff(){
   yaxis->SetRangeUser(0,0.3);
   yaxis->SetTitle("A #varepsilon");
   yaxis->SetTitleOffset(1.2);
+  
   f3->Draw("APL");
   f4->Draw("APLSAME");
   f5->Draw("APLSAME");
   f6->Draw("APLSAME");
   gr3->Draw("AP");
+  gr3_unc->Draw("E3SAME");
   gr4->Draw("SAMEP");
+  gr4_unc->Draw("E3SAME");
   gr5->Draw("SAMEP");
+  gr5_unc->Draw("E3SAME");
   gr6->Draw("SAMEP");
+  gr6_unc->Draw("E3SAME");
   f3->Draw("APLSAME");
   f4->Draw("APLSAME");
   f5->Draw("APLSAME");
@@ -237,6 +270,15 @@ void plotEff(){
   gr7->Fit(f7,"R");
   f7->SetLineColor(kPink+9);
   f7->SetLineWidth(2);
+  TGraphErrors *gr7_unc = new TGraphErrors(365);
+  for(int i=0; i<385; i++){
+    gr7_unc->SetPoint(i, 500+i*20, 0);
+  }
+  (TVirtualFitter::GetFitter())->GetConfidenceIntervals(gr7_unc);
+  gr7_unc->SetFillStyle(3002);
+  gr7_unc->SetFillColorAlpha(6,0.5);
+  cout<<f7->GetParameter(0)<<","<<f7->GetParameter(1)<<","<<f7->GetParameter(2)<<","<<f7->GetParameter(3)<<","<<f7->GetParameter(4)<<endl;
+  
   TGraphErrors *gr8 = new TGraphErrors(20,MCmassS0,AccW,0,AccW_err);
   gr8->SetMarkerColor(kBlue);
   gr8->SetMarkerStyle(20);
@@ -250,6 +292,13 @@ void plotEff(){
   gr8->Fit(f8,"R");
   f8->SetLineColor(kBlue);
   f8->SetLineWidth(2);
+  TGraphErrors *gr8_unc = new TGraphErrors(365);
+  for(int i=0; i<385; i++){
+    gr8_unc->SetPoint(i, 500+i*20, 0);
+  }
+  (TVirtualFitter::GetFitter())->GetConfidenceIntervals(gr8_unc);
+  gr8_unc->SetFillStyle(3002);
+  gr8_unc->SetFillColorAlpha(kBlue,0.5);
   cout<<f8->GetParameter(0)<<","<<f8->GetParameter(1)<<","<<f8->GetParameter(2)<<","<<f8->GetParameter(3)<<","<<f8->GetParameter(4)<<endl;
   
   cout<<endl;
@@ -270,6 +319,15 @@ void plotEff(){
   f11->SetLineColor(kPink+9);
   f11->SetLineStyle(2);
   f11->SetLineWidth(2);
+  TGraphErrors *gr11_unc = new TGraphErrors(365);
+  for(int i=0; i<385; i++){
+    gr11_unc->SetPoint(i, 500+i*20, 0);
+  }
+  (TVirtualFitter::GetFitter())->GetConfidenceIntervals(gr11_unc);
+  gr11_unc->SetFillStyle(3002);
+  gr11_unc->SetFillColorAlpha(6,0.5);
+  cout<<f11->GetParameter(0)<<","<<f11->GetParameter(1)<<","<<f11->GetParameter(2)<<","<<f11->GetParameter(3)<<","<<f11->GetParameter(4)<<endl;
+  
   TGraphErrors *gr12 = new TGraphErrors(8,MCmassWS1,AccWS1,0,AccWS1_err);
   gr12->SetMarkerColor(kBlue);
   gr12->SetMarkerStyle(21);
@@ -285,6 +343,15 @@ void plotEff(){
   f12->SetLineColor(kBlue);
   f12->SetLineStyle(2);
   f12->SetLineWidth(2);
+  TGraphErrors *gr12_unc = new TGraphErrors(365);
+  for(int i=0; i<385; i++){
+    gr12_unc->SetPoint(i, 500+i*20, 0);
+  }
+  (TVirtualFitter::GetFitter())->GetConfidenceIntervals(gr12_unc);
+  gr12_unc->SetFillStyle(3002);
+  gr12_unc->SetFillColorAlpha(kBlue,0.5);
+  cout<<f12->GetParameter(0)<<","<<f12->GetParameter(1)<<","<<f12->GetParameter(2)<<","<<f12->GetParameter(3)<<","<<f12->GetParameter(4)<<endl;
+  
   
   TCanvas *c2 = new TCanvas("c2","",2400,1800);
   c2->cd();
@@ -303,9 +370,13 @@ void plotEff(){
   f11->Draw("APLSAME");
   f12->Draw("APLSAME");
   gr7->Draw("AP");
+  gr7_unc->Draw("E3SAME");
   gr8->Draw("SAMEP");
+  gr8_unc->Draw("E3SAME");
   gr11->Draw("SAMEP");
+  gr11_unc->Draw("E3SAME");
   gr12->Draw("SAMEP");
+  gr12_unc->Draw("E3SAME");
   f7->Draw("APLSAME");
   f8->Draw("APLSAME");
   f11->Draw("APLSAME");
@@ -444,5 +515,15 @@ void plotEff(){
     // cout<<mass<<" "<<yield<<" "<<limit*yield*3<<" "<<limit*yield*10<<endl;
   }
   */
+  
+    for(int i=0; i<385; i++){
+      int mass = i*20+500;
+      cout<<mass<<" "<<f3->Eval(mass)<<" "<<gr3_unc->GetErrorYhigh(i)<<" "<<gr3_unc->GetErrorYlow(i)<<" "<<f4->Eval(mass)<<" "<<gr4_unc->GetErrorYhigh(i)<<" "<<gr4_unc->GetErrorYlow(i)<<" "<<f5->Eval(mass)<<" "<<gr5_unc->GetErrorYhigh(i)<<" "<<gr5_unc->GetErrorYlow(i)<<" "<<f6->Eval(mass)<<" "<<gr6_unc->GetErrorYhigh(i)<<" "<<gr6_unc->GetErrorYlow(i)<<endl;
+  }
+  
+    for(int i=0; i<385; i++){
+      int mass = i*20+500;
+      cout<<mass<<" "<<f7->Eval(mass)<<" "<<gr7_unc->GetErrorYhigh(i)<<" "<<gr7_unc->GetErrorYlow(i)<<" "<<f8->Eval(mass)<<" "<<gr8_unc->GetErrorYhigh(i)<<" "<<gr8_unc->GetErrorYlow(i)<<" "<<f11->Eval(mass)<<" "<<gr11_unc->GetErrorYhigh(i)<<" "<<gr11_unc->GetErrorYlow(i)<<" "<<f12->Eval(mass)<<" "<<gr12_unc->GetErrorYhigh(i)<<" "<<gr12_unc->GetErrorYlow(i)<<endl;
+  }
   
 }

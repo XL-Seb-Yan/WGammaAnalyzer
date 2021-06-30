@@ -253,7 +253,35 @@ void make_SR_shapes_Oct18(int seed=37)
   model->plotOn(frame,VisualizeError(*r,2,kFALSE),FillColor(kYellow),LineColor(0),RooFit::Name("err2"));
   model->plotOn(frame,VisualizeError(*r,1,kFALSE),FillColor(kGreen),LineColor(0),RooFit::Name("err1"));
   model->plotOn(frame,LineStyle(kDashed),RooFit::Name(fun_name));
-    datah.plotOn(frame,RooFit::Name("datah"),Binning(175,600,7600),DataError(RooAbsData::Poisson)); //for unweighted data
+  datah.plotOn(frame,RooFit::Name("datah"),Binning(175,600,7600),DataError(RooAbsData::Poisson)); //for unweighted data
+  
+  //*** Reading error band values, check out this python code:
+  /*
+  main = frame.getCurve("dijet-3")
+err1 = frame.getCurve("err1")
+# err1.Print("V")
+err2 = frame.getCurve("err2")
+exp_gr = TGraph(main.GetN())
+err1h_gr = TGraph(err1.GetN())
+err1l_gr = TGraph(err1.GetN())
+err2h_gr = TGraph(err2.GetN())
+err2l_gr = TGraph(err2.GetN())
+for i in range(0,main.GetN()):
+    print(i)
+    exp_gr.SetPoint(i, main.GetX()[i],main.GetY()[i])
+    err1h_gr.SetPoint(i, err1.GetX()[i],err1.GetY()[i])
+    err1l_gr.SetPoint(i, err1.GetX()[i+192],err1.GetY()[i+192])
+    err2h_gr.SetPoint(i, err2.GetX()[i],err2.GetY()[i])
+    err2l_gr.SetPoint(i, err2.GetX()[i+192],err2.GetY()[i+192])
+
+f = open("data.txt", "a")
+i=620
+while i <=7600:
+    print(i)
+    f.write("{} {} {} {} {} {} \n".format(i, exp_gr.Eval(i), err1h_gr.Eval(i),err1l_gr.Eval(i),err2h_gr.Eval(i),err2l_gr.Eval(i)))
+    i = i+40
+f.close()
+  */
 
   frame->Print("V");
   RooAbsReal* nll = NULL;
@@ -269,6 +297,7 @@ void make_SR_shapes_Oct18(int seed=37)
     datah.get(i) ;
     if(datah.weight() == 0)
       n_0++;
+    cout<<620+i*40<<" "<<datah.weight()<<endl;
   }
   cout<<"Number of empty bins: "<<n_0<<endl;
 
@@ -331,6 +360,12 @@ void make_SR_shapes_Oct18(int seed=37)
   frame->addObject(chi2lax);
   */
   
+  for(int i=600; i<7601; i+=40){
+    x->setRange("sig",i,i+40);
+    RooAbsReal* fracInt_bkg = model->createIntegral(*x,NormSet(*x),Range("sig"));
+    cout<<i<<" "<<fracInt_bkg->getValV()*data.numEntries()<<endl;
+  }
+  
   std::vector<float> massbin;
   std::vector<TGraph*> signalpullplot_vector;
   
@@ -339,6 +374,8 @@ void make_SR_shapes_Oct18(int seed=37)
   for(int j=0; j<6; j++){
     std::vector<float> signalpull;
     float sig_norm = 0;
+    float lrange = 0;
+    float hrange = 0;
     TString width = "N";
     TString sigfun = "CBGaus";
     int linestyle = 1;
@@ -348,12 +385,12 @@ void make_SR_shapes_Oct18(int seed=37)
         sigfun="CB2Gaus";
         linestyle = 2;
     }
-    if(plotmass[j] == "1000N") sig_norm=356; //20fb
-    if(plotmass[j] == "1000W") sig_norm=343; //20fb
-    if(plotmass[j] == "2600N") {sig_norm=31.6; linecolor=4;}//2fb
-    if(plotmass[j] == "2600W") {sig_norm=28.84; linecolor=4;}//2fb
-    if(plotmass[j] == "4000N") {sig_norm=6.90; linecolor=8;}//0.5fb for VVdijet1 and ATLAS1. 0.3fb for others
-    if(plotmass[j] == "4000W") {sig_norm=6.0425; linecolor=8;}//0.5fb
+    if(plotmass[j] == "1000N") {sig_norm=356; lrange=750; hrange=1250;} //20fb
+    if(plotmass[j] == "1000W") {sig_norm=343; lrange=750; hrange=1250;} //20fb
+    if(plotmass[j] == "2600N") {sig_norm=31.6; linecolor=4; lrange=1950; hrange=3250;}//2fb
+    if(plotmass[j] == "2600W") {sig_norm=28.84; linecolor=4; lrange=1950; hrange=3250;}//2fb
+    if(plotmass[j] == "4000N") {sig_norm=6.90; linecolor=8; lrange=3000; hrange=5000;}//0.5fb for VVdijet1 and ATLAS1. 0.3fb for others
+    if(plotmass[j] == "4000W") {sig_norm=6.0425; linecolor=8; lrange=3000; hrange=5000;}//0.5fb
     TFile *signal = TFile::Open("/afs/cern.ch/work/x/xuyan/work5/PROD17/DATA/2017/RooFitWorkspace/"+width+"/"+plotmass[j]+"-shapes-Unbinned-"+sigfun+".root");
     RooWorkspace *sig_w = (RooWorkspace*)signal->Get("w");
     RooAbsPdf *sig_pdf = sig_w->pdf("CBGaus");
@@ -389,6 +426,7 @@ void make_SR_shapes_Oct18(int seed=37)
   TAxis* xaxis = frame->GetXaxis();
   TAxis* yaxis = frame->GetYaxis();
   xaxis->SetTitle("m_{J#gamma} [GeV]");
+  // xaxis->SetNdivisions(807);
   xaxis->SetTitleOffset(1.2);
   yaxis->SetTitle("Events / 40 GeV");
   yaxis->SetTitleOffset(1.2);
@@ -405,35 +443,35 @@ void make_SR_shapes_Oct18(int seed=37)
   l->AddEntry(frame->findObject("err2"),"Fit uncert. 95% CL","f");
     l->Draw("same");
 
-    p01b->cd();
-  p01b->SetLeftMargin(0.13);
-  p01b->SetRightMargin(0.1);
-  p01b->SetTopMargin(0);
-  p01b->SetBottomMargin(0.36);
-  RooHist* hpull = frame->pullHist();
-  RooPlot* pull_frame = x->frame();
-  for(int i=0; i<6; i++){
-    pull_frame->addObject(signalpullplot_vector.at(i),"l");
-  }
-  pull_frame->addPlotable(hpull,"P");
-  hpull->SetMarkerStyle(8);
-  hpull->SetMarkerSize(2);
-  xaxis = pull_frame->GetXaxis();
-  yaxis = pull_frame->GetYaxis();
-  xaxis->SetTitle("m_{J#gamma} [GeV]");
-  yaxis->SetTitle("#frac{Data-Fit}{#sigma_{Stat.}}");
-  yaxis->SetTitleOffset(0.37);
-  yaxis->SetRangeUser(-5,5);
-  xaxis->SetLabelSize(0.15);
-  xaxis->SetTitleSize(0.15);
-  xaxis->SetLimits(600,7600);
-  yaxis->SetLabelSize(0.13);
-  yaxis->SetTitleSize(0.175);
-  yaxis->SetNdivisions(5);
-  p01b->SetGrid();
-  p01b->SetLogx();
-  pull_frame->Draw();
-  p01b->Update();
+    // p01b->cd();
+  // p01b->SetLeftMargin(0.13);
+  // p01b->SetRightMargin(0.1);
+  // p01b->SetTopMargin(0);
+  // p01b->SetBottomMargin(0.36);
+  // RooHist* hpull = frame->pullHist();
+  // RooPlot* pull_frame = x->frame();
+  // for(int i=0; i<6; i++){
+    // pull_frame->addObject(signalpullplot_vector.at(i),"l");
+  // }
+  // pull_frame->addPlotable(hpull,"P");
+  // hpull->SetMarkerStyle(8);
+  // hpull->SetMarkerSize(2);
+  // xaxis = pull_frame->GetXaxis();
+  // yaxis = pull_frame->GetYaxis();
+  // xaxis->SetTitle("m_{J#gamma} [GeV]");
+  // yaxis->SetTitle("#frac{Data-Fit}{#sigma_{Stat.}}");
+  // yaxis->SetTitleOffset(0.37);
+  // yaxis->SetRangeUser(-5,5);
+  // xaxis->SetLabelSize(0.15);
+  // xaxis->SetTitleSize(0.15);
+  // xaxis->SetLimits(600,7600);
+  // yaxis->SetLabelSize(0.13);
+  // yaxis->SetTitleSize(0.175);
+  // yaxis->SetNdivisions(5);
+  // p01b->SetGrid();
+  // p01b->SetLogx();
+  // pull_frame->Draw();
+  // p01b->Update();
 
     c01->Print(fun_name+".png");
     c01->Print(fun_name+".pdf");
@@ -443,6 +481,8 @@ void make_SR_shapes_Oct18(int seed=37)
     w->import(*x);
     w->import(data,Rename("data_SR"));
     w->import(*model);
+    w->import(*r);
+    w->import(*frame);
     w->writeToFile("SR-shapes-Unbinned-"+fun_name+".root");
 
 

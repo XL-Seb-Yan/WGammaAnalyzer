@@ -1094,8 +1094,8 @@ void MCvalidation_S01()
   hist71->Draw("SAMEHIST");
   // hist81->Draw("SAMEHIST");
   // hist91->Draw("SAMEHIST");
-  hist31->Draw("E1SAME");
-  hist3a1->Draw("E1SAME");
+  hist31->Draw("E1X0SAME");
+  hist3a1->Draw("E1X0SAME");
   hist31->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist31,"Data SB (Norm)","e1p");
@@ -1158,7 +1158,7 @@ void MCvalidation_S01()
   p01b->SetGrid();
   bkgerr->Draw("E2");
   bkgerrline->Draw("hist SAME");
-  pull->Draw("PE1 SAME");
+  pull->Draw("PE1X0 SAME");
   
   p01c->cd();
   p01c->SetTopMargin(lower_pad2_upper_margin);
@@ -1205,7 +1205,7 @@ void MCvalidation_S01()
   p01c->SetGrid();
   bkgerr->Draw("E2");
   bkgerrline->Draw("hist SAME");
-  pull->Draw("PE1 SAME");
+  pull->Draw("PE1X0 SAME");
   c01->Print("p_pt.pdf");
   c01->Print("p_pt.svg");
   //=========================================================
@@ -1240,8 +1240,8 @@ void MCvalidation_S01()
   hist72->Draw("SAMEHIST");
   // hist82->Draw("SAMEHIST");
   // hist92->Draw("SAMEHIST");
-  hist32->Draw("E1SAME");
-  hist3a2->Draw("E1SAME");
+  hist32->Draw("E1X0SAME");
+  hist3a2->Draw("E1X0SAME");
   hist32->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist31,"Data SB (Norm)","e1p");
@@ -1303,7 +1303,7 @@ void MCvalidation_S01()
   p02b->SetGrid();
   bkgerr->Draw("E2");
   bkgerrline->Draw("hist SAME");
-  pull->Draw("PE1 SAME");
+  pull->Draw("PE1X0 SAME");
   
   p02c->cd();
   p02c->SetTopMargin(lower_pad2_upper_margin);
@@ -1350,7 +1350,7 @@ void MCvalidation_S01()
   p02c->SetGrid();
   bkgerr->Draw("E2");
   bkgerrline->Draw("hist SAME");
-  pull->Draw("PE1 SAME");
+  pull->Draw("PE1X0 SAME");
   c02->Print("p_eta.pdf");
   c02->Print("p_eta.svg");
   //=========================================================
@@ -1385,8 +1385,8 @@ void MCvalidation_S01()
   hist73->Draw("SAMEHIST");
   // hist83->Draw("SAMEHIST");
   // hist93->Draw("SAMEHIST");
-  hist33->Draw("E1SAME");
-  hist3a3->Draw("E1SAME");
+  hist33->Draw("E1X0SAME");
+  hist3a3->Draw("E1X0SAME");
   hist33->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist31,"Data SB (Norm)","e1p");
@@ -1448,7 +1448,7 @@ void MCvalidation_S01()
   p03b->SetGrid();
   bkgerr->Draw("E2");
   bkgerrline->Draw("hist SAME");
-  pull->Draw("PE1 SAME");
+  pull->Draw("PE1X0 SAME");
   
   p03c->cd();
   p03c->SetTopMargin(lower_pad2_upper_margin);
@@ -1495,7 +1495,7 @@ void MCvalidation_S01()
   p03c->SetGrid();
   bkgerr->Draw("E2");
   bkgerrline->Draw("hist SAME");
-  pull->Draw("PE1 SAME");
+  pull->Draw("PE1X0 SAME");
   c03->Print("j_pt.pdf");
   c03->Print("j_pt.svg");
   //=========================================================
@@ -1521,8 +1521,8 @@ void MCvalidation_S01()
   xaxis1->SetLabelOffset(2);
   yaxis1->SetTitleOffset(1.4);
   yaxis1->SetRangeUser(0.2,1000000);
-  hist34->Draw("PE1");
-  hist3a4->Draw("SAMEPE1");
+  hist34->Draw("PE1X0");
+  hist3a4->Draw("SAMEPE1X0");
   stack4->Draw("SAMEHIST");
   hist44->Draw("SAMEHIST");
   hist54->Draw("SAMEHIST");
@@ -1530,8 +1530,8 @@ void MCvalidation_S01()
   hist74->Draw("SAMEHIST");
   // hist84->Draw("SAMEHIST");
   // hist94->Draw("SAMEHIST");
-  hist34->Draw("E1SAME");
-  hist3a4->Draw("E1SAME");
+  hist34->Draw("E1X0SAME");
+  hist3a4->Draw("E1X0SAME");
   hist34->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist31,"Data SB (Norm)","e1p");
@@ -1592,7 +1592,7 @@ void MCvalidation_S01()
   p04b->SetGrid();
   bkgerr->Draw("E2");
   bkgerrline->Draw("hist SAME");
-  pull->Draw("PE1 SAME");
+  pull->Draw("PE1X0 SAME");
   
   p04c->cd();
   p04c->SetTopMargin(lower_pad2_upper_margin);
@@ -1639,7 +1639,7 @@ void MCvalidation_S01()
   p04c->SetGrid();
   bkgerr->Draw("E2");
   bkgerrline->Draw("hist SAME");
-  pull->Draw("PE1 SAME");
+  pull->Draw("PE1X0 SAME");
   c04->Print("j_eta.pdf");
   c04->Print("j_eta.svg");
   //==========================================================
@@ -1665,8 +1665,8 @@ void MCvalidation_S01()
   xaxis1->SetLabelOffset(2);
   yaxis1->SetTitleOffset(1.4);
   yaxis1->SetRangeUser(0,12000);
-  hist36->Draw("PE1");
-  hist3a6->Draw("SAMEPE1");
+  hist36->Draw("PE1X0");
+  hist3a6->Draw("SAMEPE1X0");
   stack5->Draw("SAMEHIST");
   hist46->Draw("SAMEHIST");
   hist56->Draw("SAMEHIST");
@@ -1674,8 +1674,8 @@ void MCvalidation_S01()
   hist76->Draw("SAMEHIST");
   // hist86->Draw("SAMEHIST");
   // hist96->Draw("SAMEHIST");
-  hist36->Draw("E1SAME");
-  hist3a6->Draw("E1SAME");
+  hist36->Draw("E1X0SAME");
+  hist3a6->Draw("E1X0SAME");
   hist36->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist31,"Data SB (Norm)","e1p");
@@ -1736,7 +1736,7 @@ void MCvalidation_S01()
   p05b->SetGrid();
   bkgerr->Draw("E2");
   bkgerrline->Draw("hist SAME");
-  pull->Draw("PE1 SAME");
+  pull->Draw("PE1X0 SAME");
   
   p05c->cd();
   p05c->SetTopMargin(lower_pad2_upper_margin);
@@ -1783,7 +1783,7 @@ void MCvalidation_S01()
   p05c->SetGrid();
   bkgerr->Draw("E2");
   bkgerrline->Draw("hist SAME");
-  pull->Draw("PE1 SAME");
+  pull->Draw("PE1X0 SAME");
   c05->Print("j_m.pdf");
   c05->Print("j_m.svg");
   //==========================================================
@@ -1809,8 +1809,8 @@ void MCvalidation_S01()
   xaxis1->SetLabelOffset(2);
   yaxis1->SetTitleOffset(1.4);
   yaxis1->SetRangeUser(0,12000);
-  hist37->Draw("PE1");
-  hist3a7->Draw("SAMEPE1");
+  hist37->Draw("PE1X0");
+  hist3a7->Draw("SAMEPE1X0");
   stack6->Draw("SAMEHIST");
   hist47->Draw("SAMEHIST");
   hist57->Draw("SAMEHIST");
@@ -1818,8 +1818,8 @@ void MCvalidation_S01()
   hist77->Draw("SAMEHIST");
   // hist87->Draw("SAMEHIST");
   // hist97->Draw("SAMEHIST");
-  hist37->Draw("E1SAME");
-  hist3a7->Draw("E1SAME");
+  hist37->Draw("E1X0SAME");
+  hist3a7->Draw("E1X0SAME");
   hist37->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist31,"Data SB (Norm)","e1p");
@@ -1880,7 +1880,7 @@ void MCvalidation_S01()
   p06b->SetGrid();
  bkgerr->Draw("E2");
   bkgerrline->Draw("hist SAME");
-  pull->Draw("PE1 SAME");
+  pull->Draw("PE1X0 SAME");
   
   p06c->cd();
   p06c->SetTopMargin(lower_pad2_upper_margin);
@@ -1927,7 +1927,7 @@ void MCvalidation_S01()
   p06c->SetGrid();
   bkgerr->Draw("E2");
   bkgerrline->Draw("hist SAME");
-  pull->Draw("PE1 SAME");
+  pull->Draw("PE1X0 SAME");
   c06->Print("j_tau21.pdf");
   c06->Print("j_tau21.svg");
   //==========================================================
@@ -1953,8 +1953,8 @@ void MCvalidation_S01()
   xaxis1->SetLabelOffset(2);
   yaxis1->SetTitleOffset(1.4);
   yaxis1->SetRangeUser(0.2,1000000);
-  hist38->Draw("PE1");
-  hist3a8->Draw("SAMEPE1");
+  hist38->Draw("PE1X0");
+  hist3a8->Draw("SAMEPE1X0");
   stack7->Draw("SAMEHIST");
   hist48->Draw("SAMEHIST");
   hist58->Draw("SAMEHIST");
@@ -1962,8 +1962,8 @@ void MCvalidation_S01()
   hist78->Draw("SAMEHIST");
   // hist88->Draw("SAMEHIST");
   // hist98->Draw("SAMEHIST");
-  hist38->Draw("E1SAME");
-  hist3a8->Draw("E1SAME");
+  hist38->Draw("E1X0SAME");
+  hist3a8->Draw("E1X0SAME");
   hist38->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist31,"Data SB (Norm)","e1p");
@@ -2024,7 +2024,7 @@ void MCvalidation_S01()
   p07b->SetGrid();
   bkgerr->Draw("E2");
   bkgerrline->Draw("hist SAME");
-  pull->Draw("PE1 SAME");
+  pull->Draw("PE1X0 SAME");
   
   p07c->cd();
   p07c->SetTopMargin(lower_pad2_upper_margin);
@@ -2071,7 +2071,7 @@ void MCvalidation_S01()
   p07c->SetGrid();
   bkgerr->Draw("E2");
   bkgerrline->Draw("hist SAME");
-  pull->Draw("PE1 SAME");
+  pull->Draw("PE1X0 SAME");
   c07->Print("s_cos.pdf");
   c07->Print("s_cos.svg");
   //==========================================================
@@ -2097,8 +2097,8 @@ void MCvalidation_S01()
   xaxis1->SetLabelOffset(2);
   yaxis1->SetTitleOffset(1.4);
   yaxis1->SetRangeUser(0.2,1000000);
-  hist39->Draw("PE1");
-  hist3a9->Draw("SAMEPE1");
+  hist39->Draw("PE1X0");
+  hist3a9->Draw("SAMEPE1X0");
   stack8->Draw("SAMEHIST");
   hist49->Draw("SAMEHIST");
   hist59->Draw("SAMEHIST");
@@ -2106,8 +2106,8 @@ void MCvalidation_S01()
   hist79->Draw("SAMEHIST");
   // hist89->Draw("SAMEHIST");
   // hist99->Draw("SAMEHIST");
-  hist39->Draw("E1SAME");
-  hist3a9->Draw("E1SAME");
+  hist39->Draw("E1X0SAME");
+  hist3a9->Draw("E1X0SAME");
   hist39->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist31,"Data SB (Norm)","e1p");
@@ -2168,7 +2168,7 @@ void MCvalidation_S01()
   p08b->SetGrid();
   bkgerr->Draw("E2");
   bkgerrline->Draw("hist SAME");
-  pull->Draw("PE1 SAME");
+  pull->Draw("PE1X0 SAME");
   
   p08c->cd();
   p08c->SetTopMargin(lower_pad2_upper_margin);
@@ -2215,7 +2215,7 @@ void MCvalidation_S01()
   p08c->SetGrid();
   bkgerr->Draw("E2");
   bkgerrline->Draw("hist SAME");
-  pull->Draw("PE1 SAME");
+  pull->Draw("PE1X0 SAME");
   c08->Print("s_ptm.pdf");
   c08->Print("s_ptm.svg");
   //==========================================================
@@ -2241,8 +2241,8 @@ void MCvalidation_S01()
   xaxis1->SetLabelOffset(2);
   yaxis1->SetTitleOffset(1.4);
   yaxis1->SetRangeUser(0.2,100000);
-  hist310->Draw("PE1");
-  hist3a10->Draw("SAMEPE1");
+  hist310->Draw("PE1X0");
+  hist3a10->Draw("SAMEPE1X0");
   stack9->Draw("SAMEHIST");
   hist410->Draw("SAMEHIST");
   hist510->Draw("SAMEHIST");
@@ -2250,8 +2250,8 @@ void MCvalidation_S01()
   hist710->Draw("SAMEHIST");
   // hist810->Draw("SAMEHIST");
   // hist910->Draw("SAMEHIST");
-  hist310->Draw("E1SAME");
-  hist3a10->Draw("E1SAME");
+  hist310->Draw("E1X0SAME");
+  hist3a10->Draw("E1X0SAME");
   hist310->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist31,"Data SB (Norm)","e1p");
@@ -2312,7 +2312,7 @@ void MCvalidation_S01()
   p09b->SetGrid();
   bkgerr->Draw("E2");
   bkgerrline->Draw("hist SAME");
-  pull->Draw("PE1 SAME");
+  pull->Draw("PE1X0 SAME");
   
   p09c->cd();
   p09c->SetTopMargin(lower_pad2_upper_margin);
@@ -2359,7 +2359,7 @@ void MCvalidation_S01()
   p09c->SetGrid();
   bkgerr->Draw("E2");
   bkgerrline->Draw("hist SAME");
-  pull->Draw("PE1 SAME");
+  pull->Draw("PE1X0 SAME");
   c09->Print("s_M.pdf");
   c09->Print("s_M.svg");
   //==========================================================
@@ -2394,8 +2394,8 @@ void MCvalidation_S01()
   hist712->Draw("SAMEHIST");
   // hist81->Draw("SAMEHIST");
   // hist91->Draw("SAMEHIST");
-  hist312->Draw("E1SAME");
-  hist3a12->Draw("E1SAME");
+  hist312->Draw("E1X0SAME");
+  hist3a12->Draw("E1X0SAME");
   hist312->Draw("AXISSAME");
   legend->Clear();
   legend->AddEntry(hist312,"Data SB (Norm)","e1p");
@@ -2458,7 +2458,7 @@ void MCvalidation_S01()
   p10b->SetGrid();
   bkgerr->Draw("E2");
   bkgerrline->Draw("hist SAME");
-  pull->Draw("PE1 SAME");
+  pull->Draw("PE1X0 SAME");
   
   p10c->cd();
   p10c->SetTopMargin(lower_pad2_upper_margin);
@@ -2505,7 +2505,7 @@ void MCvalidation_S01()
   p10c->SetGrid();
   bkgerr->Draw("E2");
   bkgerrline->Draw("hist SAME");
-  pull->Draw("PE1 SAME");
+  pull->Draw("PE1X0 SAME");
   c10->Print("pt_jgamma.pdf");
   c10->Print("pt_jgamma.svg");
   //=========================================================
