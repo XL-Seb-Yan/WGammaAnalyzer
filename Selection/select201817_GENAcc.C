@@ -42,8 +42,9 @@ void select201817_GENAcc(const TString conf="samples.conf", // input file
   // Settings 
   //=============================================================================================================
   bool isPlot = false; 
-  gStyle->SetOptStat(0);
+  //gStyle->SetOptStat(0);
   
+	TH1F* hist_y = new TH1F("y","y",25,-0.2,0.2);
   //--------------------------------------------------------------------------------------------------------------
   // Main analysis code 
   //==============================================================================================================  
@@ -80,6 +81,7 @@ void select201817_GENAcc(const TString conf="samples.conf", // input file
   
   // loop over samples
   TTree* eventTree = 0;
+	TString GENmass_str;
   for(UInt_t isam=0; isam<samplev.size(); isam++) {
 	UInt_t count0=0, count1=0;
 	CSample* samp = samplev[isam];
@@ -88,6 +90,7 @@ void select201817_GENAcc(const TString conf="samples.conf", // input file
 	string substr;
     getline(ss,substr,'_');
 	float GENmass = strtof((substr).c_str(),0);
+	GENmass_str = (substr).c_str();
 	cout<<GENmass<<endl;
 
 	cout<<"begin loop over files"<<endl;
@@ -126,7 +129,7 @@ void select201817_GENAcc(const TString conf="samples.conf", // input file
 		eventTree->SetBranchAddress("genParticle_dau_e", &genPart_daughter_e);
 
 		for(UInt_t ientry=0; ientry<eventTree->GetEntries(); ientry++) {
-		// for(UInt_t ientry=0; ientry<10; ientry++) {
+		 //for(UInt_t ientry=0; ientry<10; ientry++) {
 			genPart_pt->clear();
 			genPart_eta->clear();
 			genPart_phi->clear();
@@ -145,14 +148,25 @@ void select201817_GENAcc(const TString conf="samples.conf", // input file
 			genPart_daughter_e->clear();
 			eventTree->GetEntry(ientry);
 			count0++;
+			
+			for(int i=0; i<genPart_pt->size(); i++){
+				if(genPart_pdgId->at(i) == 7002 && genPart_status->at(i) == 62){
+					TLorentzVector res;
+					res.SetPtEtaPhiM(genPart_pt->at(i), genPart_eta->at(i), genPart_phi->at(i), genPart_mass->at(i));
+					float y = 0.5*TMath::Log((res.E()+res.Pz())/(res.E()-res.Pz()));
+					if(abs(y) < 0.2)
+						hist_y->Fill(y);
+				}
+			}
+			
 			//-------locating candidate photon and W boson
-				
 			TLorentzVector gen_p;
 			int index_p_gen = -99;
 			for(int i=0; i<genPart_pt->size(); i++){
-				if(genPart_pdgId->at(i) == 22 && genPart_status->at(i) == 1 && abs(genPart_eta->at(i)) < 1.44 && genPart_pt->at(i) > 225){
+				if(genPart_pdgId->at(i) == 22 && genPart_status->at(i) == 1 && abs(genPart_eta->at(i)) < 1.44 && genPart_pt->at(i) > 50){
 					for(int j=0; j<genPart_mother->at(i).size(); j++){
-						if(abs(genPart_mother->at(i).at(j)) == 9000007){
+						//if(abs(genPart_mother->at(i).at(j)) == 9000007){
+						if(abs(genPart_mother->at(i).at(j)) == 7002){
 						   gen_p.SetPtEtaPhiM(genPart_pt->at(i),genPart_eta->at(i),genPart_phi->at(i),genPart_mass->at(i));
 						   index_p_gen = i;
 						   break;
@@ -164,9 +178,10 @@ void select201817_GENAcc(const TString conf="samples.conf", // input file
 			TLorentzVector gen_W;
 			int index_W_gen = -99;
 			for(int i=0; i<genPart_pt->size(); i++){
-				if(abs(genPart_pdgId->at(i)) == 24 && abs(genPart_eta->at(i)) < 2 && genPart_pt->at(i) > 225){
+				if(abs(genPart_pdgId->at(i)) == 24 && abs(genPart_eta->at(i)) < 2 && genPart_pt->at(i) > 50){
 					for(int j=0; j<genPart_mother->at(i).size(); j++){
-						if(abs(genPart_mother->at(i).at(j)) == 9000007){
+						//if(abs(genPart_mother->at(i).at(j)) == 9000007){
+						if(abs(genPart_mother->at(i).at(j)) == 7002){
 						   gen_W.SetPtEtaPhiM(genPart_pt->at(i),genPart_eta->at(i),genPart_phi->at(i),genPart_mass->at(i));
 						   index_W_gen = i;
 						   break;
@@ -176,6 +191,7 @@ void select201817_GENAcc(const TString conf="samples.conf", // input file
 			} 
 			
 			if(index_p_gen == -99 || index_W_gen == -99){
+				//cout<<index_p_gen<<" "<<index_W_gen<<endl;
 				continue;
 			}
 			
@@ -187,6 +203,7 @@ void select201817_GENAcc(const TString conf="samples.conf", // input file
 			Double_t invmass = 0;
 			Double_t ptoverM = 0;
 			invmass = (v_sys).M();
+			// hist_y->Fill(invmass);
 			ptoverM = genPart_pt->at(index_p_gen)/invmass;
 
 			// Calculate cos(theta*)
@@ -236,6 +253,19 @@ void select201817_GENAcc(const TString conf="samples.conf", // input file
 	cout<<"Number of events within acceptance: "<<count1<<endl;
 	cout<<"Acceptance: "<<snamev[isam]<<" "<<float(count1)/float(count0)<<endl;
   }//end of sample loop
+	
+	TCanvas *c0 = new TCanvas("","",1200,900);
+	c0->cd();
+	//c0->SetLogy();
+	hist_y->Scale(float(1)/hist_y->GetEntries());
+	hist_y->SetLineColor(2);
+	hist_y->Draw("HIST");
+	hist_y->GetYaxis()->SetRangeUser(0,0.1);
+	TString name = "y_"+GENmass_str+"_s1.pdf";
+	c0->Print(name);
+	name = "y_"+GENmass_str+"_s1.svg";
+	c0->Print(name);
+	
   gBenchmark->Show("selectWG");
 
 }

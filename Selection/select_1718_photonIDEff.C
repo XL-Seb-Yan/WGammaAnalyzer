@@ -40,14 +40,15 @@ void select_1718_photonIDEff(const TString conf="samples.conf", // input file
   gROOT->SetBatch(1);
 
   //Variable bin size
-  float xbinlow[20] = {0,25,50,75,100,150,200,250,300,350,400,500,600,700,800,1000,1200,1600,2000,3000};
+  float xbinlow[21] = {0,25,50,75,100,150,200,250,300,350,400,500,600,700,800,1000,1200,1600,2000,3000,4000};
+  //float xbinlow[20] = {0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190};
   // ------------------------Photons------------------------
-  TH1F* hist00pa = new TH1F("WGamma00pa","Base",19,&xbinlow[0]);
-  TH1F* hist01pa = new TH1F("WGamma01pa","LID",19,&xbinlow[0]);
-  TH1F* hist02pa = new TH1F("WGamma02pa","MID",19,&xbinlow[0]);
-  TH1F* hist03pa = new TH1F("WGamma03pa","TID",19,&xbinlow[0]);
-  TH1F* hist04pa = new TH1F("WGamma04pa","80ID",19,&xbinlow[0]);
-  TH1F* hist05pa = new TH1F("WGamma05pa","90ID",19,&xbinlow[0]);
+  TH1F* hist00pa = new TH1F("WGamma00pa","Base",20,&xbinlow[0]);
+  TH1F* hist01pa = new TH1F("WGamma01pa","LID",20,&xbinlow[0]);
+  TH1F* hist02pa = new TH1F("WGamma02pa","MID",20,&xbinlow[0]);
+  TH1F* hist03pa = new TH1F("WGamma03pa","TID",20,&xbinlow[0]);
+  TH1F* hist04pa = new TH1F("WGamma04pa","80ID",20,&xbinlow[0]);
+  TH1F* hist05pa = new TH1F("WGamma05pa","90ID",20,&xbinlow[0]);
  
   gStyle->SetOptStat(0);
 
@@ -213,7 +214,7 @@ void select_1718_photonIDEff(const TString conf="samples.conf", // input file
 		  if (it->first.find("HLT_Photon200") != std::string::npos && it->second == 1)
 			passTrig = true;
 		}
-		 if (!passTrig) continue;
+		 //if (!passTrig) continue;
 		count1++;
 		eventTree->GetEntry(ientry);
 
@@ -232,7 +233,7 @@ void select_1718_photonIDEff(const TString conf="samples.conf", // input file
 		for(int i=0; i<genPart_pt->size(); i++){
 			if(genPart_pdgId->at(i) == 22 && genPart_status->at(i) == 1 && abs(genPart_eta->at(i)) < 1.44){
 				for(int j=0; j<genPart_mother->at(i).size(); j++){
-					if(abs(genPart_mother->at(i).at(j)) == 9000007){
+					if(abs(genPart_mother->at(i).at(j)) == 7002){
 				       gen_ph.SetPtEtaPhiM(genPart_pt->at(i),genPart_eta->at(i),genPart_phi->at(i),genPart_mass->at(i));
 				       index_p_gen = i;
 				       break;

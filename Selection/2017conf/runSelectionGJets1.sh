@@ -4,17 +4,15 @@
 NTUPDIR=SelOutPut
 
 #weight:
-#GJets100-200: 36.03
-#GJets200-400: 4.89
-#GJets400-600: 2.32
-#GJets600-Inf: 1.08
-#QCD300-500: 222.10
-#QCD500-700: 22.15
-#QCD700-1000: 5.514
-#QCD1000-1500: 2.72
-#QCD1500-2000: 0.35
-#QCD2000-Inf: 0.14
-root -l -q select.C+\(\"GJets_HT-100To200.conf\",\"${NTUPDIR}\",36.03\)
-root -l -q select.C+\(\"GJets_HT-200To400.conf\",\"${NTUPDIR}\",4.89\)
-
-rm *.so *.d *.pcm
+#GJets100-200: 36.02895
+#GJets200-400: 4.895264
+#GJets400-600: 2.322734
+#GJets600-Inf: 1.076998
+#QCD300-500: 222.6718
+#QCD500-700: 22.26943
+#QCD700-1000: 5.490946
+#QCD1000-1500: 2.737698
+#QCD1500-2000: 0.354744
+#QCD2000-Inf: 0.141199
+root -l -q ../select201817_Final.C+\(\"GJets_HT-100To200.conf\",\"${NTUPDIR}\",36.02895\)
+root -l -q ../select201817_Final.C+\(\"GJets_HT-200To400.conf\",\"${NTUPDIR}\",4.895264\)
